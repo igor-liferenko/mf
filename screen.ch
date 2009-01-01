@@ -4,7 +4,6 @@ Screen contents are in shared memory.
 @x
 @h
 @y
-#include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -17,47 +16,9 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @y
 int screen_width=768; /*number of pixels in each row of screen display*/
 int screen_depth=1024; /*number of pixels in each column of screen display*/
+int shm_fd;
+void *screen_data;
 char *screen_prog, *screen_name = "online-display";
-@z
-
-@x
-{@+reset(*f, name_of_file, "r"); return reset_OK(*f);
-@y
-{@+reset(*f, name_of_file, "r");
-if (f->f != NULL) @<Set close-on-exec flag@>
-return reset_OK(*f);
-@z
-
-@x
-{@+rewrite(*f, name_of_file, "w"); return rewrite_OK(*f);
-@y
-{@+rewrite(*f, name_of_file, "w");
-if (f->f != NULL) @<Set close-on-exec flag@>
-return rewrite_OK(*f);
-@z
-
-@x
-{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
-@y
-{@+rewrite(*f, name_of_file, "wb");
-if (f->f != NULL) @<Set close-on-exec flag@>
-return rewrite_OK(*f);
-@z
-
-@x
-{@+reset(*f, name_of_file, "rb"); return reset_OK(*f);
-@y
-{@+reset(*f, name_of_file, "rb");
-if (f->f != NULL) @<Set close-on-exec flag@>
-return reset_OK(*f);
-@z
-
-@x
-{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
-@y
-{@+rewrite(*f, name_of_file, "wb");
-if (f->f != NULL) @<Set close-on-exec flag@>
-return rewrite_OK(*f);
 @z
 
 @x
@@ -65,25 +26,21 @@ return rewrite_OK(*f);
 {@+return false;
 } 
 @y
-@p
-typedef int32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
-int shm_fd;
-void *screen_data;
-bool init_screen(void)
+@p bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
 
-  int screen_size = screen_width * screen_depth * sizeof (pixel_t);
+  int screen_size = screen_width * screen_depth * sizeof (pixel_color);
   assert(ftruncate(shm_fd, screen_size) != -1);
 
   assert((screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, shm_fd, 0)) != MAP_FAILED);
 
-  pixel_t *pixel = screen_data;
+  pixel_color *pixel = screen_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
-    *pixel++ = -1; /* initialize the memory */
+    *pixel++ = white;
 
   return true;
 }
@@ -118,6 +75,21 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 @z
 
 @x
+@d white	0 /*background pixels*/
+@d black	1 /*visible pixels*/
+@y
+@d white	0xffffffff /*background pixels*/
+@d black	0x00000000 /*visible pixels*/
+@d swap_color(b) 0xffffffff-b
+@z
+
+@x
+typedef uint8_t pixel_color; /*specifies one of the two pixel values*/
+@y
+typedef uint32_t pixel_color; /*specifies one of the two pixel values*/
+@z
+
+@x
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
 {@+int @!r;
@@ -138,12 +110,12 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
 {
-  pixel_t *pixel;
+  pixel_color *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
     pixel = screen_data;
     pixel += screen_width*r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
-      *pixel++ = -1;
+      *pixel++ = white;
   }
 }
 @z
@@ -174,17 +146,17 @@ wlog_ln(")");
 @y
 @p void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
-  pixel_t *pixel = screen_data;
+  pixel_color *pixel = screen_data;
   pixel += screen_width*r + a[0];
   int k = 0;
   screen_col c = a[0];
   do {
     k++;
     do {
-      *pixel++ = b ? 0 : -1;
+      *pixel++ = b;
       c++;
     } while (c != a[k]);
-    b = !b;
+    b = swap_color(b);
   } while (k != n);
 }
 @z
@@ -204,17 +176,5 @@ assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (scree
 assert(screen_prog = (char *) calloc(base_area_length + strlen(screen_name), sizeof (char)));
 strncpy(screen_prog, MF_base_default+1, base_area_length-1);
 strcpy(strrchr(screen_prog, '/') + 1, screen_name);
-@z
-
-@x
-@ Appendix: Replacement of the string pool file.
-@y
-@ @<Set close-on-exec flag@>= {
-  int fd, flags;
-  assert((fd = fileno(f->f)) != -1);
-  assert((flags = fcntl(fd, F_GETFD)) != -1);
-  assert(fcntl(fd, F_SETFD, flags | FD_CLOEXEC) == 0);
-}
-
-@ Appendix: Replacement of the string pool file.
+// TODO: see where screen_width, screen_height, row_transution are used by deleting their declaration and looking compiler warnings and decide if screen_width, screen_height need to be initialized and row_transition set is screen_size is not set
 @z

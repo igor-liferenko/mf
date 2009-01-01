@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # requires python3-pyqt5 package
+# TODO: see git log -p screen.ch when communication was done via pipes and find out how to do update in pyqt so that game of life will work
 import sys
 import mmap
 import os
@@ -29,6 +30,6 @@ pixmap01 = QPixmap.fromImage(qImg)
 pixmap_image = QPixmap(pixmap01)
 label_imageDisplay = QLabel()
 label_imageDisplay.setPixmap(pixmap_image)
-#print(app.primaryScreen().availableGeometry())
+#label_imageDisplay.setAlignment(Qt.AlignCenter)
 label_imageDisplay.showMaximized()
 sys.exit(app.exec_())
