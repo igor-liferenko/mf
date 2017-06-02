@@ -14,3 +14,4 @@ all:
 	ranlib libmf.a
 	make -C window
 	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lXt -lSM -lICE -lXext -lX11 -lm
+	mv -f mf /usr/local/bin/
