@@ -13,5 +13,5 @@ all:
 	ar cruU libmf.a mfini.o mf0.o mf-pool.o
 	ranlib libmf.a
 	make -C window
-	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lXt -lSM -lICE -lXext -lX11 -lm
+	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lSM -lICE -lXext -lX11 -lm -lXt # this place must be changed for wayland
 	mv -f mf /usr/local/bin/
