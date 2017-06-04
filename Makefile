@@ -1,4 +1,9 @@
-all:
+all: libmf.a
+	make -C window
+	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lSM -lICE -lXext -lX11 -lm -lXt # this place must be changed for wayland
+	mv -f mf /usr/local/bin/
+
+libmf.a:
 	make -C lib
 	make -C web2c
 	tie -c mf-final.ch mf.web mf.ch mf-binpool.ch
@@ -12,6 +17,3 @@ all:
 	rm -f libmf.a
 	ar cruU libmf.a mfini.o mf0.o mf-pool.o
 	ranlib libmf.a
-	make -C window
-	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lSM -lICE -lXext -lX11 -lm -lXt # this place must be changed for wayland
-	mv -f mf /usr/local/bin/
