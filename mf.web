@@ -355,7 +355,7 @@ in production versions of \MF.
   error messages; should be between 30 and |error_line-15|}
 @!max_print_line=79; {width of longest text lines output; should be at least 60}
 @!screen_width=768; {number of pixels in each row of screen display}
-@!screen_depth=1366; {number of pixels in each column of screen display}
+@!screen_depth=1024; {number of pixels in each column of screen display}
 @!stack_size=30; {maximum number of simultaneous input sources}
 @!max_strings=2000; {maximum number of strings; must not exceed |max_halfword|}
 @!string_vacancies=8000; {the minimum number of characters that should be

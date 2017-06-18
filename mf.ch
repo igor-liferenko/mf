@@ -1867,7 +1867,7 @@ undump_int(x);@+if x<>69069 then goto off_base
   setup_bound_var (50)('half_error_line')(half_error_line);
   setup_bound_var (79)('max_print_line')(max_print_line);
   setup_bound_var (768)('screen_width')(screen_width);
-  setup_bound_var (1024)('screen_depth')(screen_depth);
+  setup_bound_var (1366)('screen_depth')(screen_depth);
   setup_bound_var (16384)('gf_buf_size')(gf_buf_size);
   if error_line > ssup_error_line then error_line := ssup_error_line;
   if screen_width > ssup_screen_width then screen_width := ssup_screen_width;
