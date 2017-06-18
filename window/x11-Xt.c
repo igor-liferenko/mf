@@ -13,8 +13,10 @@
 int
 mf_x11_initscreen (void)
 {
-  if (access("/tmp/mf-wayland.pid", F_OK) != -1)
+  if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
     system("kill -2 `cat /tmp/mf-wayland.pid`");
+    while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
+  }
   int n;
   FILE *fp=fopen("/tmp/mf-wayland.bin","w");
   for (n =0; n < WIDTH*HEIGHT; n++) { /* create blank file */
@@ -29,6 +31,7 @@ mf_x11_updatescreen (void)
 {
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
     system("kill -2 `cat /tmp/mf-wayland.pid`");
+    while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
     if (!first) {
       system("/usr/local/way/way &");
       while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
