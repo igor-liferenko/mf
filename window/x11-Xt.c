@@ -7,7 +7,7 @@
 
 /* Return 1 if display opened successfully, else 0.  */
 
-#define WIDTH 1366
+#define WIDTH 1024
 #define HEIGHT 768
 
 int
