@@ -20,7 +20,7 @@ mf_x11_initscreen (void)
   int n;
   FILE *fp=fopen("/tmp/mf-wayland.bin","w");
   for (n =0; n < WIDTH*HEIGHT; n++) { /* create blank file */
-    fprintf(fp,"%c%c%c%c", 255, 255, 255, 0); // white
+    fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white (B,G,R,X)
   }
   fclose(fp);
   return 1;
@@ -55,7 +55,7 @@ mf_x11_blankrectangle(screencol left,
     fseek(fp,WIDTH*r*4,SEEK_SET);
     fseek(fp,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++)
-      fprintf(fp,"%c%c%c%c", 255, 255, 255, 0); // white
+      fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white
   }
   fclose(fp);
 }
@@ -76,7 +76,7 @@ mf_x11_paintrow(screenrow row,
   do {
       k++;
       do {
-           if (init_color==0) fprintf(fp,"%c%c%c%c", 255, 255, 255, 0); // white
+           if (init_color==0) fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white
            else fprintf(fp,"%c%c%c%c", 0, 0, 0, 0); // black
            c++;
       } while (c!=*(tvect+k));
