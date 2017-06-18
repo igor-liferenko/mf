@@ -7,8 +7,8 @@
 
 /* Return 1 if display opened successfully, else 0.  */
 
-#define WIDTH 1280
-#define HEIGHT 1024
+#define WIDTH 1366
+#define HEIGHT 768
 
 int
 mf_x11_initscreen (void)
