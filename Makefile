@@ -8,7 +8,7 @@ all: libmf.a
 	@mv mf.base /usr/local/share/texmf/web2c/metafont/
 	@texhash /usr/local/share/texmf >/dev/null
 
-libmf.a: mf.ch
+libmf.a:
 	make -C lib
 	make -C web2c
 	tie -c mf-final.ch mf.web mf.ch mf-binpool.ch
