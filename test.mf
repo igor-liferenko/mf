@@ -1,5 +1,0 @@
-% TODO: understand why if we do three different colors (e.g., red green and blue) instead of white
-% in x11-Xt.c
-% and run this example, it gives different results depending on whether the first showit is used or not
-drawdot(10,10)            % showit;
-drawdot(100,100); showit;
