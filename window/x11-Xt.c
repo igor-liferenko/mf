@@ -92,6 +92,7 @@ static void mf_repaint(Widget w, XtPointer data, XEvent *ev);
 int
 mf_x11_initscreen (void)
 {
+  printf("\ninitscreen called\n");
   XSetWindowAttributes xwa;
   Widget mf_toplevel;
   Widget mf_canvas;
@@ -173,6 +174,7 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
+  printf("\nupdatescreen called\n");
   XEvent event;
 
   mf_events ();
@@ -197,6 +199,7 @@ mf_x11_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
+  printf("\nblankrectangle called\n");
   XFillRectangle (mf_display, mf_pixmap, mf_egc, (int) left, (int) top,
 		  (int) (right - left + 1), (int) (bottom - top + 1));
   mf_events ();
