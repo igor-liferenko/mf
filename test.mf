@@ -1,0 +1,2 @@
+% example from page 31 of MetaFontBook:
+drawdot(35,70); showit;
