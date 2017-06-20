@@ -27,7 +27,11 @@ mf_x11_initscreen (void)
   return 1;
 }
 
-int first = 1;
+int first = 1; /* whether "showit" is used the first time in this "mf" run */
+/* there is a difference between when "showit" is called for the first time and
+   when it is called subsequently - because only necessary stuff needs to be drawn
+   on the first run, whereas the whole width of the image must be redrawn on changed
+   region on subsequent runs, because stuff may already exist there from previous "showit" run */
 
 void
 mf_x11_updatescreen (void)
@@ -53,7 +57,6 @@ to kill the process, but when I will find out how to solve issues 1) and 2) abov
 other mechanism will be needed to control an opened wayland window which is run by a process,
 separate from metafont itself - it cannot be part of metafont, because graphics window needs
 endless loop).
-Answer: it seems like new instance of this module is started each time when a "beginchar" is called.
 
      Besides, the window is killed in this function in Xt driver also.
      An interesting fact: in Xt driver, window is closed when metafont
@@ -61,6 +64,7 @@ Answer: it seems like new instance of this module is started each time when a "b
      When I will understand this and implement this, then keyboard support may be removed
      from way.w (i.e., revert commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
      mf_x11_initscreen() may be removed.
+     gives different results depending on whether the first showit is used or not
   */
 
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
