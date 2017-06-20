@@ -50,7 +50,8 @@ mf_x11_updatescreen (void)
      An interesting fact: in Xt driver, window is closed when metafont
      exits on "bye" - through which mechanism this feature is implemented?
      When I will understand this and implement this, then keyboard support may be removed
-     from way.w and the kill() in mf_x11_initscreen() may be removed.
+     from way.w (commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
+     mf_x11_initscreen() may be removed.
   */
 
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
