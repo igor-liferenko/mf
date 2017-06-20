@@ -46,11 +46,17 @@ mf_x11_updatescreen (void)
      parts of the window - instead the whole window is redrawed each time, but this does not
      influence the resulting image.
 
+Also it is not clear how to give a signal to wayland window from metafont (now pid file is used
+to kill the process, but when I will find out how to solve issues 1) and 2) above, some
+other mechanism will be needed to control an opened wayland window which is run by a process,
+separate from metafont itself - it cannot be part of metafont, because graphics window needs
+endless loop).
+
      Besides, the window is killed in this function in Xt driver also.
      An interesting fact: in Xt driver, window is closed when metafont
      exits on "bye" - through which mechanism this feature is implemented?
      When I will understand this and implement this, then keyboard support may be removed
-     from way.w (commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
+     from way.w (i.e., revert commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
      mf_x11_initscreen() may be removed.
   */
 
