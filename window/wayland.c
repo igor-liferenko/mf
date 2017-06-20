@@ -26,7 +26,9 @@ mf_x11_initscreen (void)
   fclose(fp);
   return 1;
 }
+
 int first = 1;
+
 void
 mf_x11_updatescreen (void)
 {
@@ -51,6 +53,7 @@ to kill the process, but when I will find out how to solve issues 1) and 2) abov
 other mechanism will be needed to control an opened wayland window which is run by a process,
 separate from metafont itself - it cannot be part of metafont, because graphics window needs
 endless loop).
+Answer: it seems like new instance of this module is started each time when a "beginchar" is called.
 
      Besides, the window is killed in this function in Xt driver also.
      An interesting fact: in Xt driver, window is closed when metafont
@@ -61,7 +64,7 @@ endless loop).
   */
 
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
-    //printf("\nkilling on updatescreen");
+    //printf("\nkilling on updatescreen, %s",first?"new":"existing");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
     if (!first) {
