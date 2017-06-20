@@ -13,8 +13,9 @@
 int
 mf_x11_initscreen (void)
 {
+  //printf("\ninitscreen called\n");
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
-    //printf("\nkilling on initscreen");
+    //printf("\nkilling on initscreen\n");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
   }
@@ -27,15 +28,11 @@ mf_x11_initscreen (void)
   return 1;
 }
 
-int first = 1; /* whether "showit" is used the first time in this "mf" run */
-/* there is a difference between when "showit" is called for the first time and
-   when it is called subsequently - because only necessary stuff needs to be drawn
-   on the first run, whereas the whole width of the image must be redrawn on changed
-   region on subsequent runs, because stuff may already exist there from previous "showit" run */
-
 void
 mf_x11_updatescreen (void)
 {
+  //printf("updatescreen called\n");
+
   /*
      In this function must be done two things:
 
@@ -64,21 +61,15 @@ endless loop).
      When I will understand this and implement this, then keyboard support may be removed
      from way.w (i.e., revert commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
      mf_x11_initscreen() may be removed.
-     gives different results depending on whether the first showit is used or not
   */
 
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
-    //printf("\nkilling on updatescreen, %s",first?"new":"existing");
+    //printf("\nkilling on updatescreen\n");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
-    system("/usr/local/way/way &");
-    while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
   }
-  if (first) {
-    first = 0;
-    system("/usr/local/way/way &");
-    while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
-  }
+  system("/usr/local/way/way &");
+      while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
 }
 
 void
