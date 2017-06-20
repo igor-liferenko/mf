@@ -14,6 +14,7 @@ int
 mf_x11_initscreen (void)
 {
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
+    //printf("\nkilling on initscreen");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
   }
@@ -29,7 +30,31 @@ int first = 1;
 void
 mf_x11_updatescreen (void)
 {
+  /*
+     In this function must be done two things:
+
+     1) update an opened window with new data from file ("damage" functions seem to
+        be appropriate for this in wayland) - I do not know how to do this yet
+     2) bring the graphics window to the top - I do not know how to do this yet
+
+     So, I use a dirty hack to kill the window and open it again.
+     This does 1) and 2) at once. Here it is used the fact that a wayland window is automatically
+     brought to top when it is opened anew (we can do this, because the data is not stored in
+     the window - it is stored in a separate file buffer, which is not touched by killing the
+     graphics window). And here it is not used the facility to redraw
+     only the necessary
+     parts of the window - instead the whole window is redrawed each time, but this does not
+     influence the resulting image.
+
+     Besides, the window is killed in this function in Xt driver also.
+     An interesting fact: in Xt driver, window is closed when metafont
+     exits on "bye" - through which mechanism this feature is implemented?
+     When I will understand this and implement this, then keyboard support may be removed
+     from way.w and the kill() in mf_x11_initscreen() may be removed.
+  */
+
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
+    //printf("\nkilling on updatescreen");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
     if (!first) {
