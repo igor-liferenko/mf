@@ -13,7 +13,7 @@
 int
 mf_x11_initscreen (void)
 {
-  if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
+  if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
     //printf("\nkilling on initscreen");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
@@ -67,14 +67,12 @@ endless loop).
      gives different results depending on whether the first showit is used or not
   */
 
-  if (access("/tmp/mf-wayland.pid", F_OK) != -1) {
+  if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
     //printf("\nkilling on updatescreen, %s",first?"new":"existing");
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
-    if (!first) {
-      system("/usr/local/way/way &");
-      while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
-    }
+    system("/usr/local/way/way &");
+    while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
   }
   if (first) {
     first = 0;
