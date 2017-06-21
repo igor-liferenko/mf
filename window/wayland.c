@@ -69,6 +69,10 @@ to kill the process, but when I will find out how to solve issues 1) and 2) abov
 other mechanism will be needed to control an opened wayland window which is run by a process,
 separate from metafont itself - it cannot be part of metafont, because graphics window needs
 endless loop).
+This may be the solution:
+https://stackoverflow.com/questions/36234703/
+https://stackoverflow.com/questions/31097058/
+And if it will work, remove code which concerns mf-wayland.pid from this file.
 
      Besides, the window is killed in this function in Xt driver also.
   */
