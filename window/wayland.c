@@ -23,13 +23,11 @@ mf_x11_initscreen (void)
   this_updatescreen_is_tied_to_initscreen = 1;
   //printf("\ninitscreen called\n");
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
-    //printf("\nkilling on initscreen\n");
-    system("kill -2 `cat /tmp/mf-wayland.pid`");
-    while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
+    printf("\nyou cannot have more than one online graphics display windows simultaneously until you find a way to do without .pid file\n");
+    exit(0);
   }
-  int n;
   FILE *fp=fopen("/tmp/mf-wayland.bin","w");
-  for (n =0; n < WIDTH*HEIGHT; n++) /* create blank file */
+  for (int n=0; n < WIDTH*HEIGHT; n++) /* create blank file */
     fprintf(fp,"%c%c%c%c", 0, 0, 0, 0);
       /* it is not said anywhere that output device must have a background of a defined color - all
          coloring operations must be done by MF explicitly, so
@@ -73,11 +71,6 @@ separate from metafont itself - it cannot be part of metafont, because graphics 
 endless loop).
 
      Besides, the window is killed in this function in Xt driver also.
-     An interesting fact: in Xt driver, window is closed when metafont
-     exits on "bye" - through which mechanism this feature is implemented?
-     When I will understand this and implement this, then keyboard support may be removed
-     from way.w (i.e., revert commit 9784a23f18de802a5923f11fea74a4d8089174c2) and the kill() in
-     mf_x11_initscreen() may be removed.
   */
 
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
