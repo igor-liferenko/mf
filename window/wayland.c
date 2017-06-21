@@ -4,7 +4,7 @@
 #include "../mfd.h"
 
 #include <mfdisplay.h>
-
+#include <signal.h>
 /* Return 1 if display opened successfully, else 0.  */
 
 #define WIDTH 1024
@@ -85,8 +85,14 @@ endless loop).
     system("kill -2 `cat /tmp/mf-wayland.pid`");
     while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
   }
-  system("/usr/local/way/way &");
-      while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
+pid_t pid;
+signal(SIGCHLD, SIG_IGN); /* https://stackoverflow.com/questions/9164316/ */
+if((pid = fork()) < 0)
+  fprintf(stderr,"Error with Fork()\n");
+else if(pid > 0)
+  while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
+else
+  execv("/usr/local/way/way",NULL);
 }
 
 void
