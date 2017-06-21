@@ -10,11 +10,17 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-/* color is set in XRGB format, on my CPU the order of bytes is BGRX; FIXME: do this platform-independent */
+/* Color is set in XRGB format, on my CPU the order of bytes is BGRX; X byte is not used for anything.
+
+   FIXME: do this platform-independent
+*/
+
+int this_updatescreen_is_tied_to_initscreen = 0;
 
 int
 mf_x11_initscreen (void)
 {
+  this_updatescreen_is_tied_to_initscreen = 1;
   //printf("\ninitscreen called\n");
   if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
     //printf("\nkilling on initscreen\n");
@@ -38,6 +44,10 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
+  if (this_updatescreen_is_tied_to_initscreen) {
+    this_updatescreen_is_tied_to_initscreen = 0;
+    return;
+  }
   //printf("updatescreen called\n");
 
   /*
