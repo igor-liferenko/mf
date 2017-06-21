@@ -10,9 +10,9 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-/* Color is set in XRGB format, on my CPU the order of bytes is BGRX; X byte is not used for anything.
+/* Color is set in XRGB format (X byte is not used for anything), but the real order of bytes in the file is BGRX.
 
-   FIXME: do this platform-independent
+   FIXME: understand why in file (and thus in memory) bytes must be reversed
 */
 
 int this_updatescreen_is_tied_to_initscreen = 0;
