@@ -28,7 +28,7 @@ mf_x11_initscreen (void)
       /* it is not said anywhere that output device must have a background of a defined color - all
          coloring operations must be done by MF explicitly, so
          we deliberately set the output device background to some non-"white" color;
-         moreover, it should be considered that output device may already have some
+         moreover, theoretically it is possible for some types of output devices to have some
          drawing on it from some other program which might have used it previously - so again,
          no pre-suppositions about background color of the output device must be made */
   fclose(fp);
