@@ -12,7 +12,13 @@
 
 /* Color is set in XRGB format (X byte is not used for anything), but the real order of bytes in the file is BGRX.
 
-   FIXME: understand why in file (and thus in memory) bytes must be reversed
+   TODO: use ntohl() and union to set bytes individually:
+union pixel_t {
+        unsigned char byte[4];
+        uint32_t pixel;
+};
+union pixel_t pixel;
+pixel.byte[0];
 */
 
 int this_updatescreen_is_tied_to_initscreen = 0;
