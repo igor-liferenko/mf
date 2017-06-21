@@ -10,6 +10,8 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
+/* color is set in XRGB format, on my CPU the order of bytes is BGRX; FIXME: do this platform-independent */
+
 int
 mf_x11_initscreen (void)
 {
@@ -21,9 +23,14 @@ mf_x11_initscreen (void)
   }
   int n;
   FILE *fp=fopen("/tmp/mf-wayland.bin","w");
-  for (n =0; n < WIDTH*HEIGHT; n++) { /* create blank file */
-    fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white (B,G,R,X)
-  }
+  for (n =0; n < WIDTH*HEIGHT; n++) /* create blank file */
+    fprintf(fp,"%c%c%c%c", 0, 0, 0, 0);
+      /* it is not said anywhere that output device must have a background of a defined color - all
+         coloring operations must be done by MF explicitly, so
+         we deliberately set the output device background to some non-"white" color;
+         moreover, it should be considered that output device may already have some
+         drawing on it from some other program which might have used it previously - so again,
+         no pre-suppositions about background color of the output device must be made */
   fclose(fp);
   return 1;
 }
@@ -83,7 +90,7 @@ mf_x11_blankrectangle(screencol left,
     fseek(fp,WIDTH*r*4,SEEK_SET);
     fseek(fp,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++)
-      fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white
+      fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // "white"
   }
   fclose(fp);
 }
@@ -104,7 +111,7 @@ mf_x11_paintrow(screenrow row,
   do {
       k++;
       do {
-           if (init_color==0) fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // white
+           if (init_color==0) fprintf(fp,"%c%c%c%c", 113, 253, 255, 0); // "white"
            else fprintf(fp,"%c%c%c%c", 0, 0, 0, 0); // black
            c++;
       } while (c!=*(tvect+k));
