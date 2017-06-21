@@ -68,7 +68,7 @@ mf_x11_updatescreen (void)
      graphics window). And here it is not used the facility to redraw
      only the necessary
      parts of the window - instead the whole window is redrawed each time, but this does not
-     influence the resulting image.
+     influence the end result.
 
 Also it is not clear how to give a signal to wayland window from metafont (now pid file is used
 to kill the process, but when I will find out how to solve issues 1) and 2) above, some
