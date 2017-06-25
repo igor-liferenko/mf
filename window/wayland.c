@@ -19,6 +19,7 @@ union pixel_t {
 };
 union pixel_t pixel;
 pixel.byte[0];
+and use fprintf(fp,"%lu",pixel);
 */
 
 int this_updatescreen_is_tied_to_initscreen = 0;
