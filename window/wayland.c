@@ -10,9 +10,6 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-int
-os_create_anonymous_file(off_t size);
-
 /* Color is set in XRGB format (X byte is not used for anything), but the real order of bytes in the file is BGRX.
 
    TODO: use ntohl() and union to set bytes individually:
@@ -36,8 +33,27 @@ mf_x11_initscreen (void)
     printf("\nyou cannot have more than one online graphics display windows simultaneously until you find a way to do without .pid file\n");
     exit(0);
   }
-  fd = os_create_anonymous_file(WIDTH*HEIGHT*4);
-  for (int n=0; n < WIDTH*HEIGHT; n++) { /* create blank file */
+
+  /*
+   Create a new, unique file of the given size. The file is mmap()'ed
+   the given size at offset zero in child.
+   The file does not have a permanent backing store.
+  */
+  const char template[] = "/wayland-shared-XXXXXX";
+  const char *path;
+  char *name;
+  path = getenv("XDG_RUNTIME_DIR");
+  if (path == NULL) return 0;
+  name = malloc(strlen(path) + sizeof template);
+  if (name == NULL) return 0;
+  strcat(strcpy(name, path), template);
+  fd = mkstemp(name);
+  if (fd >=0)
+    unlink(name); /* delete automatically (do not know if we can close file in wayland right away) */
+  free(name);
+  if (fd < 0) return 0;
+
+  for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
     char pixel[4];
     pixel[0]=rand()%255;
     pixel[1]=rand()%255;
@@ -165,80 +181,4 @@ mf_x11_paintrow(screenrow row,
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
-}
-
-/* Shared memory.
-We will use shared memory to communicate information between client and server.
-Unix/Linux has two primary shared memory APIs: the older Sys V model, with calls such as
-\\{shmget}, \\{shmat}, etc. This has generally fallen out of favour, with the current
-preference being for memory mapped files and devices with |mmap|.
-
-Wayland uses the file-backed shared memory model. There is no expectation that a disk file
-is actually written to, but a file descriptor for a new open file is passed from the client
-to the server. The file is just a temporary file created using a call such as |mkstemp|. Code
-from Weston examples uses the directory |XDG_RUNTIME_DIR|. (XDG stands for the X Desktop Group
-which is now freedesktop.org). That directory is typically \.{/run/user/<user-id>}. The Weston
-examples also `anonymise' the file by unlinking its name after opening it.
-
-*/
-int
-create_tmpfile(char *tmpname)
-{
-        int fd;
-
-        fd = mkstemp(tmpname);
-        if (fd >= 0)
-                unlink(tmpname);
-
-        return fd;
-}
-
-/*
- * Create a new, unique, anonymous file of the given size, and
- * return the file descriptor for it. The file descriptor is set
- * CLOEXEC. The file is immediately suitable for mmap()'ing
- * the given size at offset zero.
- *
- * The file should not have a permanent backing store like a disk,
- * but may have if XDG_RUNTIME_DIR is not properly implemented in OS.
- *
- * The file name is deleted from the file system.
- *
- * The file is suitable for buffer sharing between processes by
- * transmitting the file descriptor over Unix sockets using the
- * SCM_RIGHTS methods.
- */
-int
-os_create_anonymous_file(off_t size)
-{
-        static const char template[] = "/weston-shared-XXXXXX";
-        const char *path;
-        char *name;
-        int fd;
-
-        path = getenv("XDG_RUNTIME_DIR");
-        if (!path) {
-                errno = ENOENT;
-                return -1;
-        }
-
-        name = malloc(strlen(path) + sizeof(template));
-        if (!name)
-                return -1;
-        strcpy(name, path);
-        strcat(name, template);
-
-        fd = create_tmpfile(name);
-
-        free(name);
-
-        if (fd < 0)
-                return -1;
-
-        if (ftruncate(fd, size) < 0) {
-                close(fd);
-                return -1;
-        }
-
-        return fd;
 }
