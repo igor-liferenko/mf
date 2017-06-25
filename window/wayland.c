@@ -35,10 +35,10 @@ mf_x11_initscreen (void)
   }
   FILE *fp=fopen("/tmp/mf-wayland.bin","w");
   for (int n=0; n < WIDTH*HEIGHT; n++) /* create blank file */
-    fprintf(fp,"%c%c%c%c", 0, 0, 0, 0);
+    fprintf(fp,"%c%c%c%c", rand()%255, rand()%255, rand()%255, 0);
       /* it is not said anywhere that output device must have a background of a defined color - all
          coloring operations must be done by MF explicitly, so
-         we deliberately set the output device background to some non-"white" color;
+         we deliberately set the output device background to some random color;
          moreover, theoretically it is possible for some types of output devices to have some
          drawing on it from some other program which might have used it previously - so again,
          no pre-suppositions about background color of the output device must be made */
