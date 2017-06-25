@@ -10,20 +10,15 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-/* Color is set in XRGB format (X byte is not used for anything), but the real order of bytes in the file is BGRX.
+#define color(R,G,B) R << 16 | G << 8 | B
+  /* color is set in XRGB format (X byte is not used for anything) */
 
-   TODO: use ntohl() and union to set bytes individually:
-union pixel_t {
-        unsigned char byte[4];
-        uint32_t pixel;
-};
-union pixel_t pixel;
-pixel.byte[0];
-and use fprintf(fp,"%lu",pixel);
-*/
+uint32_t pixel;
+
+int fd;
 
 int this_updatescreen_is_tied_to_initscreen = 0;
-int fd;
+
 int
 mf_x11_initscreen (void)
 {
@@ -54,11 +49,8 @@ mf_x11_initscreen (void)
   if (fd < 0) return 0;
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
-    char pixel[4];
-    pixel[0]=rand()%255;
-    pixel[1]=rand()%255;
-    pixel[2]=rand()%255;
-    write(fd,pixel, 4);
+    pixel = color(rand()%255,rand()%255,rand()%255);
+    write(fd, &pixel, sizeof pixel);
       /* it is not said anywhere that output device must have a background of a defined color - all
          coloring operations must be done by MF explicitly, so
          we deliberately set the output device background to some random color;
