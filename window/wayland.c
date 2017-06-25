@@ -129,12 +129,8 @@ mf_x11_blankrectangle(screencol left,
     lseek(fd,WIDTH*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
-      char pixel[4];
-      pixel[0]=113;
-      pixel[1]=253;
-      pixel[2]=255;
-        /* "white" */
-      write(fd,pixel, 4);
+      pixel = color(255,253,113); /* "white" */
+      write(fd, &pixel, sizeof pixel);
     }
   }
 }
@@ -155,20 +151,11 @@ mf_x11_paintrow(screenrow row,
   do {
       k++;
       do {
-           char pixel[4];
-           if (init_color==0) {
-             pixel[0]=113;
-             pixel[1]=253;
-             pixel[2]=255;
-               /* "white" */
-           }
-           else {
-             pixel[0]=0;
-             pixel[1]=0;
-             pixel[2]=0;
-               /* black */
-           }
-           write(fd,pixel, 4);
+           if (init_color==0)
+             pixel = color(255, 253, 113); /* "white" */
+           else
+             pixel = color(0,0,0); /* black */
+           write(fd, &pixel, sizeof pixel);
            c++;
       } while (c!=*(tvect+k));
       init_color=!init_color;
