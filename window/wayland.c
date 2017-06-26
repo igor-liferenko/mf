@@ -67,7 +67,7 @@ mf_x11_updatescreen (void)
     return;
   }
 
-  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on "showit;" */
+  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
 
