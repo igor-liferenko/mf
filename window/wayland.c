@@ -67,8 +67,7 @@ mf_x11_updatescreen (void)
     return;
   }
 
-  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on "showit;"
-                                 (Xt driver cannot do this, probably others too) */
+  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on "showit;" */
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
 
