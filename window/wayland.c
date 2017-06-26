@@ -93,32 +93,32 @@ mf_x11_updatescreen (void)
     char d[10];
     snprintf(d,10,"%d",fd);
     //printf("parent descriptor = %s\x0a",d);
-    char d2[10];
-    snprintf(d2,10,"%d",fdpipe[1]);
-    execl("/usr/local/way/way", "/usr/local/way/way", d, d2, NULL);
+    char dpipe[10];
+    snprintf(dpipe,10,"%d",fdpipe[1]);
+    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
   }
   else { /* parent */
     while (close(fdpipe[1])) { /* parent process closes output side of pipe */
-			if (errno == EINTR)
-				continue;
-			fprintf(stderr, "close pipe error\x0a");
-			close(fdpipe[0]);
-                        exit(1);
+      if (errno == EINTR)
+        continue;
+      fprintf(stderr, "close pipe error\x0a");
+      close(fdpipe[0]);
+      exit(1);
     }
     char dummy;
     do { /* waits for a poke from child to ensure that it installed signal handlers */
-			ssize_t res = read(fdpipe[0], &dummy, 1);
-                        if (res == -1) {
-                          if (errno != EINTR) {
-				fprintf(stderr, "read pipe error\x0a");
-	                        close(fdpipe[0]);
-        	                exit(1);
-			  }
-			}
-			else { /* EOF - we have been poked by the child */
-				close(fdpipe[0]);
-                                break;
-			}
+      ssize_t res = read(fdpipe[0], &dummy, 1);
+      if (res == -1) {
+        if (errno != EINTR) {
+          fprintf(stderr, "read pipe error\x0a");
+          close(fdpipe[0]);
+          exit(1);
+        }
+      }
+      else { /* EOF - we have been poked by the child */
+        close(fdpipe[0]);
+        break;
+      }
     } while (1);
   }
 }
