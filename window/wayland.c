@@ -12,7 +12,7 @@
 
 #define WIDTH 1024
 #define HEIGHT 768
-  /* must agree with metafont source and child source */
+  /* must agree with metafont source and child source (FIXME: pass it (and size) as argument to child? */
 
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
