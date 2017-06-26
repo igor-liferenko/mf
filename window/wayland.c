@@ -42,7 +42,7 @@ mf_x11_initscreen (void)
   strcat(strcpy(name, path), template);
   fd = mkstemp(name);
   if (fd >=0)
-    unlink(name); /* delete automatically */
+    unlink(name); /* delete automatically when metafont exits */
   free(name);
   if (fd < 0) return 0;
 
@@ -68,7 +68,8 @@ mf_x11_updatescreen (void)
   }
   //printf("\nupdatescreen descriptor = %d\n",fd);
 
-  if (pid) kill(pid, SIGINT);
+  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on "showit;"
+                                 (Xt driver does not do this, probably others too) */
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
 
