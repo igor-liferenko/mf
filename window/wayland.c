@@ -3,30 +3,29 @@
 #define	EXTERN extern
 #include "../mfd.h"
 
+#ifdef X11WIN                  /* almost whole file */
+
 #undef read
 #undef write
-
-#include <unistd.h>
-
-#include <mfdisplay.h>
 #include <signal.h>
-
-/* Return 1 if display opened successfully, else 0.  */
 
 #define WIDTH 1024
 #define HEIGHT 768
+  /* must agree with metafont source and child source */
 
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
 
-uint32_t pixel;
+static uint32_t pixel;
 
-int fd;
-pid_t pid = 0;
+static int fd;
+static pid_t pid = 0;
 
-int this_updatescreen_is_tied_to_initscreen = 0;
+#include <mfdisplay.h>
 
-int
+static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's misbehavior */
+
+int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
   this_updatescreen_is_tied_to_initscreen = 1;
@@ -166,3 +165,7 @@ mf_x11_paintrow(screenrow row,
       init_color=!init_color;
   } while (k!=vector_size);
 }
+
+#else
+int x11_dummy;
+#endif /* X11WIN */
