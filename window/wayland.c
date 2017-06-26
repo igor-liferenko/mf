@@ -7,8 +7,7 @@
 
 #ifdef X11WIN                  /* almost whole file */
 
-#undef read
-#undef write
+#undef read /* to avoid compilation error */
 #include <signal.h>
 
 #define WIDTH 1024
