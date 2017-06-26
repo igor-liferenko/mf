@@ -66,7 +66,6 @@ mf_x11_updatescreen (void)
     this_updatescreen_is_tied_to_initscreen = 0;
     return;
   }
-  //printf("\nupdatescreen descriptor = %d\n",fd);
 
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on "showit;"
                                  (Xt driver does not do this, probably others too) */
@@ -83,35 +82,20 @@ mf_x11_updatescreen (void)
   if ((pid = fork()) < 0)
     fprintf(stderr, "Error with Fork()\n");
   else if (pid == 0) { /* child */
-    while (close(fdpipe[0])) { /* child closes input side of pipe */
-		if (errno == EINTR)
-			continue;
-		fprintf(stderr,"close input side of pipe error in child\x0a");
-		exit(1);
-    }
-
     char d[10];
     snprintf(d,10,"%d",fd);
-    //printf("parent descriptor = %s\x0a",d);
     char dpipe[10];
     snprintf(dpipe,10,"%d",fdpipe[1]);
     execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
   }
   else { /* parent */
-    while (close(fdpipe[1])) { /* parent process closes output side of pipe */
-      if (errno == EINTR)
-        continue;
-      fprintf(stderr, "close pipe error\x0a");
-      close(fdpipe[0]);
-      exit(1);
-    }
+    close(fdpipe[1]); /* we do not write to child */
     char dummy;
     do { /* waits for a poke from child to ensure that it installed signal handlers */
       ssize_t res = read(fdpipe[0], &dummy, 1);
       if (res == -1) {
         if (errno != EINTR) {
           fprintf(stderr, "read pipe error\x0a");
-          close(fdpipe[0]);
           exit(1);
         }
       }
@@ -129,7 +113,6 @@ mf_x11_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  //printf("\nblank descriptor = %d\n",fd);
   for (screenrow r = top; r < bottom; r++) {
     lseek(fd,WIDTH*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
@@ -146,7 +129,6 @@ mf_x11_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  //printf("\npaintrow descriptor = %d\n", fd);
   int col;
 
   lseek(fd,WIDTH*row*4,SEEK_SET);
