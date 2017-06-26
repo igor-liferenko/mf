@@ -3,8 +3,14 @@
 #define	EXTERN extern
 #include "../mfd.h"
 
+#undef read
+#undef write
+
+#include <unistd.h>
+
 #include <mfdisplay.h>
 #include <signal.h>
+
 /* Return 1 if display opened successfully, else 0.  */
 
 #define WIDTH 1024
@@ -26,11 +32,6 @@ mf_x11_initscreen (void)
   this_updatescreen_is_tied_to_initscreen = 1;
   //printf("\ninitscreen called\n");
 
-  /*
-   Create a new, unique file of the given size. The file is mmap()'ed
-   the given size at offset zero in child.
-   The file does not have a permanent backing store.
-  */
   const char template[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
@@ -67,35 +68,61 @@ mf_x11_updatescreen (void)
   }
   //printf("\nupdatescreen descriptor = %d\n",fd);
 
-  /*
-     In this function must be done two things:
-
-     1) update an opened window with new data from file ("damage" functions seem to
-        be appropriate for this in wayland) - I do not know how to do this yet
-     2) bring the graphics window to the top - I do not know how to do this yet
-
-     So, I use a dirty hack to kill the window and open it again.
-     This does 1) and 2) at once. Here it is used the fact that a wayland window is automatically
-     brought to top when it is opened anew (we can do this, because the data is not stored in
-     the window - it is stored in a separate file buffer, which is not touched by killing the
-     graphics window). And here it is not used the facility to redraw
-     only the necessary
-     parts of the window - instead the whole window is redrawed each time, but this does not
-     influence the end result.
-
-     Besides, the window is killed in this function in Xt driver also.
+/*
+XXXXXXXXXXXXXXXXXXX the window is killed in this function in Xt driver also?
   */
 
   if (pid) kill(pid, SIGINT);
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
+
+  int fdpipe[2];
+  if (pipe(fdpipe) != 0) { /* have the parent pause until the child notifies
+                          that it has installed signal handler, to avoid race condition */
+    fprintf(stderr, "pipe error: %m\n");
+    exit(1);
+  }
+
   if ((pid = fork()) < 0)
-    fprintf(stderr,"Error with Fork()\n");
-  else if (pid == 0) {
+    fprintf(stderr, "Error with Fork()\n");
+  else if (pid == 0) { /* child */
+    while (close(fdpipe[0])) { /* child closes input side of pipe */
+		if (errno == EINTR)
+			continue;
+		fprintf(stderr,"close input side of pipe error in child\x0a");
+		exit(1);
+    }
+
     char d[10];
     snprintf(d,10,"%d",fd);
     //printf("parent descriptor = %s\x0a",d);
-    execl("/usr/local/way/way", "/usr/local/way/way", d, NULL);
+    char d2[10];
+    snprintf(d2,10,"%d",fdpipe[1]);
+    execl("/usr/local/way/way", "/usr/local/way/way", d, d2, NULL);
+  }
+  else { /* parent */
+    while (close(fdpipe[1])) { /* parent process closes output side of pipe */
+			if (errno == EINTR)
+				continue;
+			fprintf(stderr, "close pipe error\x0a");
+			close(fdpipe[0]);
+                        exit(1);
+    }
+    char dummy;
+    do { /* waits for a poke from child to ensure that it installed signal handlers */
+			ssize_t res = read(fdpipe[0], &dummy, 1);
+                        if (res == -1) {
+                          if (errno != EINTR) {
+				fprintf(stderr, "read pipe error\x0a");
+	                        close(fdpipe[0]);
+        	                exit(1);
+			  }
+			}
+			else { /* EOF - we have been poked by the child */
+				close(fdpipe[0]);
+                                break;
+			}
+    } while (1);
   }
 }
 
