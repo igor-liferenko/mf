@@ -16,6 +16,7 @@
 uint32_t pixel;
 
 int fd;
+pid_t pid = 0;
 
 int this_updatescreen_is_tied_to_initscreen = 0;
 
@@ -24,10 +25,6 @@ mf_x11_initscreen (void)
 {
   this_updatescreen_is_tied_to_initscreen = 1;
   //printf("\ninitscreen called\n");
-  if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
-    printf("\nyou cannot have more than one online graphics display windows simultaneously until you find a way to do without .pid file\n");
-    exit(0);
-  }
 
   /*
    Create a new, unique file of the given size. The file is mmap()'ed
@@ -44,7 +41,7 @@ mf_x11_initscreen (void)
   strcat(strcpy(name, path), template);
   fd = mkstemp(name);
   if (fd >=0)
-    unlink(name); /* delete automatically (do not know if we can close file in wayland right away) */
+    unlink(name); /* delete automatically */
   free(name);
   if (fd < 0) return 0;
 
@@ -86,31 +83,15 @@ mf_x11_updatescreen (void)
      parts of the window - instead the whole window is redrawed each time, but this does not
      influence the end result.
 
-Also it is not clear how to give a signal to wayland window from metafont (now pid file is used
-to kill the process, but when I will find out how to solve issues 1) and 2) above, some
-other mechanism will be needed to control an opened wayland window which is run by a process,
-separate from metafont itself - it cannot be part of metafont, because graphics window needs
-endless loop).
-This may be the solution:
-https://stackoverflow.com/questions/36234703/
-https://stackoverflow.com/questions/31097058/
-And if it will work, remove code which concerns mf-wayland.pid from this file.
-
      Besides, the window is killed in this function in Xt driver also.
   */
 
-  if (access("/tmp/mf-wayland.pid", F_OK) != -1) { /* pid file exists */
-    //printf("\nkilling on updatescreen\n");
-    system("kill -2 `cat /tmp/mf-wayland.pid`");
-    while (access("/tmp/mf-wayland.pid", F_OK) != -1); /* wait until it is fully stopped */
-  }
-  pid_t pid;
-  signal(SIGCHLD, SIG_IGN); /* https://stackoverflow.com/questions/9164316/ */
-  if((pid = fork()) < 0)
+  if (pid) kill(pid, SIGINT);
+
+  signal(SIGCHLD, SIG_IGN); /* do not wait child */
+  if ((pid = fork()) < 0)
     fprintf(stderr,"Error with Fork()\n");
-  else if(pid > 0)
-    while (access("/tmp/mf-wayland.pid", F_OK) == -1); /* wait until it is fully started */
-  else {
+  else if (pid == 0) {
     char d[10];
     snprintf(d,10,"%d",fd);
     //printf("parent descriptor = %s\x0a",d);
