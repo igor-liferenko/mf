@@ -1,5 +1,7 @@
 /* Wayland window interface for Metafont. */
 
+/* TODO: check return value from write() calls */
+
 #define	EXTERN extern
 #include "../mfd.h"
 
