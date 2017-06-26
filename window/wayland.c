@@ -68,10 +68,6 @@ mf_x11_updatescreen (void)
   }
   //printf("\nupdatescreen descriptor = %d\n",fd);
 
-/*
-XXXXXXXXXXXXXXXXXXX the window is killed in this function in Xt driver also?
-  */
-
   if (pid) kill(pid, SIGINT);
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
