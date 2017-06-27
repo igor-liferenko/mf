@@ -1,3 +1,4 @@
+@ @c
 /* Wayland window interface for Metafont. */
 
 /* TODO: check return value from write() calls */
@@ -12,7 +13,8 @@
 
 #define WIDTH 1024
 #define HEIGHT 768
-  /* must agree with metafont source and child source (FIXME: pass it (and size) as argument to child? */
+  /* must agree with metafont source and child source (FIXME: pass it (and size) as argument to
+     child? */
 
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
@@ -67,7 +69,8 @@ mf_x11_updatescreen (void)
     return;
   }
 
-  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
+  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
+                (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
   signal(SIGCHLD, SIG_IGN); /* do not wait child */
 

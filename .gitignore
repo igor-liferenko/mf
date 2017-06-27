@@ -10,3 +10,4 @@ mfcoerce.h
 mfd.h
 mfini.c
 test.log
+window/wayland.c
