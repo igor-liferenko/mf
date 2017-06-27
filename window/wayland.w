@@ -91,16 +91,17 @@ mf_x11_updatescreen (void)
     exit(1);
   }
 
-  if ((pid = fork()) < 0)
-    fprintf(stderr, "Error with Fork()\n");
-  else if (pid == 0) { /* child */
-    char d[10];
-    snprintf(d,10,"%d",fd);
-    char dpipe[10];
-    snprintf(dpipe,10,"%d",fdpipe[1]);
-    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
-  }
-  else { /* parent */
+  @<Create child process@>@;
+  @<Code of parent process@>@;
+  @<Code of child process@>@;
+}
+
+@ @<Create child process@>=
+if ((pid = fork()) < 0)
+  fprintf(stderr, "Error with Fork()\n");
+
+@ @<Code of parent process@>=
+else if (pid > 0) {             
     close(fdpipe[1]); /* we do not write to child */
     char dummy;
     do { /* waits for a poke from child to ensure that it installed signal handlers */
@@ -116,9 +117,18 @@ mf_x11_updatescreen (void)
         break;
       }
     } while (1);
-  }
 }
 
+@ @<Code of child process@>=
+else if (pid == 0) {
+    char d[10];
+    snprintf(d,10,"%d",fd);
+    char dpipe[10];
+    snprintf(dpipe,10,"%d",fdpipe[1]);
+    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
+}
+
+@ @c
 void
 mf_x11_blankrectangle(screencol left,
                       screencol right,
