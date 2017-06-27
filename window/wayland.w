@@ -1,3 +1,6 @@
+\let\lheader\rheader
+\datethis
+
 @ We need to run these two processes in parallel, so the method is to use fork() and exec(),
 because the child programm cannot terminate - it is a general rule for all wayland
 applications - they work in endless loop.
