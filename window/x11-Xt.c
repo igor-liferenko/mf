@@ -92,7 +92,7 @@ static void mf_repaint(Widget w, XtPointer data, XEvent *ev);
 int
 mf_x11_initscreen (void)
 {
-  printf("\ninitscreen called\n");
+  //printf("\ninitscreen called\n");
   XSetWindowAttributes xwa;
   Widget mf_toplevel;
   Widget mf_canvas;
@@ -174,7 +174,7 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
-  printf("\nupdatescreen called\n");
+  //printf("\nupdatescreen called\n");
   XEvent event;
 
   mf_events ();
@@ -186,7 +186,7 @@ mf_x11_updatescreen (void)
   mf_redraw ();
 
 #ifdef MF_XT_DEBUG
-  printf ("max_x=%d, min_x=%d, max_y=%d, min_y=%d\n",
+  //printf ("max_x=%d, min_x=%d, max_y=%d, min_y=%d\n",
 	  mf_max_x, mf_min_x,
 	  mf_max_y, mf_min_y);
 #endif
@@ -199,7 +199,7 @@ mf_x11_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  printf("\nblankrectangle called\n");
+  //printf("\nblankrectangle called\n");
   XFillRectangle (mf_display, mf_pixmap, mf_egc, (int) left, (int) top,
 		  (int) (right - left + 1), (int) (bottom - top + 1));
   mf_events ();
