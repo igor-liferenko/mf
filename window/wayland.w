@@ -121,6 +121,15 @@ if (pid > 0) {
     read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in
                                    child; blocks forever if |fdpipe[1]| is not closed above
                                    FIXME: why? */
+
+/* TODO: get return value from |read| and deliberately call |exit| in child without closing
+the file explicitly and check the return value - if it will be zero, it will mean that a file
+descriptor is automatically closed on exit;
+and so, in general case, return value must be chacked and if it is zero, treat it not
+as a ready-signal, but as an
+abnormal condition that child died prematurely (in our case zero condition is OK, because
+the child is unlikely to die without receiving SIGINT) */
+
     close(fdpipe[0]); /* close it too, because |fdpipe[1]| was closed (i.e., we cannot create them
                          in initscreen not to close them at all) */
 }
