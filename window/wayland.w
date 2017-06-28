@@ -38,10 +38,14 @@ static pid_t pid = 0;
 #include <mfdisplay.h>
 
 static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's misbehavior */
+static int fdpipe[2];
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
+  if (pipe(fdpipe) != 0) /* used to determine if the child has started */
+    return 0;
+
   const char template[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
@@ -73,8 +77,6 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
-  int fdpipe[2];
-
   if (this_updatescreen_is_tied_to_initscreen) {
     this_updatescreen_is_tied_to_initscreen = 0;
     return;
@@ -85,19 +87,11 @@ mf_x11_updatescreen (void)
 
   signal(SIGCHLD, SIG_IGN); /* do not block until the child exits; this must be done
                                before |fork| */
-  if (pipe(fdpipe) != 0) /* used to determine if the child has started; must be done
-                            before |fork| */
-    fprintf(stderr, "Failed to create pipe.\x0a");
-  else if ((pid = fork()) != -1) {
+  if ((pid = fork()) != -1) {
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
-  else {
-    fprintf(stderr, "Failed to create child process.\x0a");
-    close(fdpipe[0]);
-    close(fdpipe[1]); /* we cannot create them in initscreen not to close them at all, because
-                         |fdpipe[1]| needs to be closed in |@<Wait until child...@>| */
-  }
+  else fprintf(stderr, "Failed to create child process.\x0a");
 }
 
 @ @<Start child program@>=
@@ -114,30 +108,10 @@ control it.
 
 @<Wait until child program is started@>=
 if (pid > 0) {
-    close(fdpipe[1]); /* if we do not close it, |read| below will block forever
-                         FIXME: why? */
     char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
-    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in
-                                   child; blocks forever if |fdpipe[1]| is not closed above
-                                   FIXME: why? */
-
-/* TODO: get return value from |read| and deliberately call |exit| in child without closing
-the file explicitly and check the return value - if it will be zero, it will mean that a file
-descriptor is automatically closed on exit;
-and so, in general case, return value must be chacked and if it is zero, treat it not
-as a ready-signal, but as an
-abnormal condition that child died prematurely (in our case zero condition is OK, because
-the child is unlikely to die without receiving SIGINT); and then in child use |write|
-instead of |close|. And in such case, can we be sure that parent
-will receive the data if |write| in client happens earlier than |read| in parent?
-
-And I have a thought about that FIXME: maybe |read| blocks until {\it all\/} descriptors are
-closed. And when you do this TODO, check if it will become possible to use |write| instead
-of |close| in child and then you may remove all |close| calls from this file and
-use |pipe| in initscreen instead of in updatescreen to simplify logic */
-
-    close(fdpipe[0]); /* close it too, because |fdpipe[1]| was closed (i.e., we cannot create them
-                         in initscreen not to close them at all) */
+    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to in child */
+    /* NOTE: in our case child cannot die, so do not |close(fdpipe[1])| not to block
+       forever if child dies */
 }
 
 @ @c
