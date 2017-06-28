@@ -69,6 +69,10 @@ mf_x11_initscreen (void)
          drawing on it from some other program which might have used it previously - so again,
          no pre-suppositions about background color of the output device must be made */
   }
+
+  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits; this must be done
+                               before |fork| */
+
   this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
 }
@@ -84,8 +88,6 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
-  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits; this must be done
-                               before |fork| */
   if ((pid = fork()) != -1) {
     @<Start child program@>@;
     @<Wait until child program is started@>@;
@@ -95,7 +97,6 @@ mf_x11_updatescreen (void)
 
 @ @<Start child program@>=
 if (pid == 0) {
-    signal(SIGCHLD, SIG_DFL); /* restore to default */
     char d[10], dpipe[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap */
     snprintf(d, 10, "%d", fd);
     snprintf(dpipe, 10, "%d", fdpipe[1]);
