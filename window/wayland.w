@@ -81,8 +81,8 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
+  signal(SIGCHLD, SIG_IGN); /* do not wait the child to exit; this must be done before |fork| */
   if ((pid = fork()) != -1 && pipe(fdpipe) == 0) {
-    signal(SIGCHLD, SIG_IGN); /* do not wait the child to exit */
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
@@ -91,6 +91,7 @@ mf_x11_updatescreen (void)
 
 @ @<Start child program@>=
 if (pid == 0) {
+    signal(SIGCHLD, SIG_DFL); /* restore to default */
     char d[10];
     snprintf(d, 10, "%d", fd);
     char dpipe[10];
