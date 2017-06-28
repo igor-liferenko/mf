@@ -3,10 +3,8 @@
 
 @ We need to run these two processes in parallel, so the method is to use fork() and exec(),
 because the child programm cannot terminate - it is a general rule for all wayland
-applications - they work in endless loop.
-
-Using fork and exec has another benefit - it is that these two processes are connected with each
-other.
+applications - they work in endless loop. As a side effect, these two processes are automatically
+connected with each other.
 
 @c
 /* Wayland window interface for Metafont. */
@@ -91,17 +89,28 @@ mf_x11_updatescreen (void)
     exit(1);
   }
 
-  @<Create child process@>@;
-  @<Code of parent process@>@;
-  @<Code of child process@>@;
+  if ((pid = fork()) != -1) {
+    @<Start child program@>@;
+    @<Wait until child program is initialized@>@;
+  }
+  else fprintf(stderr, "Failed to create child process.\x0a");
 }
 
-@ @<Create child process@>=
-if ((pid = fork()) < 0)
-  fprintf(stderr, "Error with Fork()\n");
+@ @<Start child program@>=
+if (pid == 0) {
+    char d[10];
+    snprintf(d,10,"%d",fd);
+    char dpipe[10];
+    snprintf(dpipe,10,"%d",fdpipe[1]);
+    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
+}
 
-@ @<Code of parent process@>=
-else if (pid > 0) {             
+@ We automatically get pid of child process from kernel, which is used to
+send signals to make it do what the parent needs (in our case it is to
+update the screen).
+
+@<Wait until child program is initialized@>=
+if (pid > 0) {             
     close(fdpipe[1]); /* we do not write to child */
     char dummy;
     do { /* waits for a poke from child to ensure that it installed signal handlers */
@@ -117,15 +126,6 @@ else if (pid > 0) {
         break;
       }
     } while (1);
-}
-
-@ @<Code of child process@>=
-else if (pid == 0) {
-    char d[10];
-    snprintf(d,10,"%d",fd);
-    char dpipe[10];
-    snprintf(dpipe,10,"%d",fdpipe[1]);
-    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
 }
 
 @ @c
