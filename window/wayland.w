@@ -105,9 +105,8 @@ if (pid == 0) {
     execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
 }
 
-@ We automatically get pid of child process from kernel, which is used to
-send signals to make it do what the parent needs (in our case it is to
-update the screen).
+@ We automatically get pid of child process, which is used to
+control it.
 
 @<Wait until child program is started@>=
 if (pid > 0) {             
