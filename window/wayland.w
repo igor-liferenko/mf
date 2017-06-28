@@ -128,7 +128,14 @@ descriptor is automatically closed on exit;
 and so, in general case, return value must be chacked and if it is zero, treat it not
 as a ready-signal, but as an
 abnormal condition that child died prematurely (in our case zero condition is OK, because
-the child is unlikely to die without receiving SIGINT) */
+the child is unlikely to die without receiving SIGINT); and then in child use |write|
+instead of |close|. And in such case, can we be sure that parent
+will receive the data if |write| in client happens earlier than |read| in parent?
+
+And I have a thought about that FIXME: maybe |read| blocks until {\it all\/} descriptors are
+closed. And when you do this TODO, check if it will become possible to use |write| instead
+of |close| in child and then you may remove all |close| calls from this file and
+use |pipe| in initscreen instead of in updatescreen to simplify logic */
 
     close(fdpipe[0]); /* close it too, because |fdpipe[1]| was closed (i.e., we cannot create them
                          in initscreen not to close them at all) */
