@@ -71,7 +71,7 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
-  int fdpipe[2]; /* used to determine if the child has started */
+  int fdpipe[2];
 
   if (this_updatescreen_is_tied_to_initscreen) {
     this_updatescreen_is_tied_to_initscreen = 0;
@@ -81,12 +81,20 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
-  signal(SIGCHLD, SIG_IGN); /* do not wait the child to exit; this must be done before |fork| */
-  if ((pid = fork()) != -1 && pipe(fdpipe) == 0) {
+  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits; this must be done
+                               before |fork| */
+  if (pipe(fdpipe) != 0) /* used to determine if the child has started; must be done
+                            before |fork| */
+    fprintf(stderr, "Failed to create pipe.\x0a");
+  else if ((pid = fork()) != -1) {
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
-  else fprintf(stderr, "Failed to create child process.\x0a");
+  else {
+    close(fdpipe[0]);
+    close(fdpipe[1]);
+    fprintf(stderr, "Failed to create child process.\x0a");
+  }
 }
 
 @ @<Start child program@>=
