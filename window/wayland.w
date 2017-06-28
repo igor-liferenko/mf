@@ -25,7 +25,8 @@ connected with each other.
 #define HEIGHT 768
   /* must agree with metafont source and child source (FIXME: pass it (and size) as argument to
      child?) */
-
+  /* TODO: see in x11-Xlib.c and/or x11-Xt.c how width and height are read/set from/to .Xresources
+     and find out how to use metafont's settings of width and height here */
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
 
@@ -70,8 +71,7 @@ mf_x11_initscreen (void)
          no pre-suppositions about background color of the output device must be made */
   }
 
-  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits; this must be done
-                               before |fork| */
+  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits */
 
   this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
