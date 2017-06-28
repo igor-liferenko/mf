@@ -2,7 +2,6 @@
 \datethis
 
 @s uint32_t int
-@s template normal
 @f EXTERN extern
 
 @* Wayland window interface for MetaFont.
@@ -46,14 +45,14 @@ mf_x11_initscreen (void)
   if (pipe(fdpipe) != 0) /* used to determine if the child has started */
     return 0;
 
-  const char template[] = "/wayland-shared-XXXXXX";
+  const char tmpl[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
   path = getenv("XDG_RUNTIME_DIR");
   if (path == NULL) return 0;
-  name = malloc(strlen(path) + sizeof template);
+  name = malloc(strlen(path) + sizeof tmpl);
   if (name == NULL) return 0;
-  strcat(strcpy(name, path), template);
+  strcat(strcpy(name, path), tmpl);
   fd = mkstemp(name);
   if (fd >=0)
     unlink(name); /* delete automatically when metafont exits */
