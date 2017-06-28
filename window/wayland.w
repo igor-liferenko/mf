@@ -112,6 +112,11 @@ if (pid > 0) {
     read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to in child */
     /* NOTE: in our case child cannot die, so do not |close(fdpipe[1])| not to block
        forever if child dies */
+
+/* TODO: |close(fdpipe[1])|, get return value from |read| and deliberately call |exit| in child
+without doing |write| and check the return value - if it will be zero, it will mean that a file
+descriptor is automatically closed on exit */
+
 }
 
 @ @c
