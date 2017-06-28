@@ -11,4 +11,9 @@ mfd.h
 mfini.c
 test.log
 window/wayland.c
-way.*
+*.idx
+*.log
+*.tex
+*.scn
+*.dvi
+*.ps
