@@ -71,6 +71,8 @@ mf_x11_initscreen (void)
 void
 mf_x11_updatescreen (void)
 {
+  int fdpipe[2]; /* used to determine if the child has started */
+
   if (this_updatescreen_is_tied_to_initscreen) {
     this_updatescreen_is_tied_to_initscreen = 0;
     return;
@@ -79,14 +81,7 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
-  int fdpipe[2];
-  if (pipe(fdpipe) != 0) { /* have the parent pause until the child notifies
-                          that it has installed signal handler, to avoid race condition */
-    fprintf(stderr, "error creating pipe\x0a");
-    exit(1);
-  }
-
-  if ((pid = fork()) != -1) {
+  if ((pid = fork()) != -1 && pipe(fdpipe) == 0) {
     signal(SIGCHLD, SIG_IGN); /* do not wait the child to exit */
     @<Start child program@>@;
     @<Wait until child program is started@>@;
@@ -97,9 +92,9 @@ mf_x11_updatescreen (void)
 @ @<Start child program@>=
 if (pid == 0) {
     char d[10];
-    snprintf(d,10,"%d",fd);
+    snprintf(d, 10, "%d", fd);
     char dpipe[10];
-    snprintf(dpipe,10,"%d",fdpipe[1]);
+    snprintf(dpipe, 10, "%d", fdpipe[1]);
     execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
 }
 
@@ -107,27 +102,12 @@ if (pid == 0) {
 control it.
 
 @<Wait until child program is started@>=
-if (pid > 0) {             
-    close(fdpipe[1]); /* we do not write to child */
+if (pid > 0) {
+    close(fdpipe[1]); /* until we close it, child will not be able to write to
+                         or close |fdpipe[1]| */
     char dummy;
-    do { /* waits for a poke from child to ensure that it installed signal handlers */
-      ssize_t res = read(fdpipe[0], &dummy, 1);
-      if (res == -1) {
-        if (errno != EINTR) {
-          fprintf(stderr, "read pipe error\x0a");
-          exit(1);
-        }
-      }
-      else { /* EOF - we have been poked by the child */
-/* TODO: deliberately call |exit| in child without closing the file and check if this else will
-be triggered - this will mean that file descriptors are automatically closed on exit;
-and so in general case zero condition must be handled not as a ready-signal, but as an
-abnormal condition that child died prematurely (in our case zero condition is OK, because
-the child is unlikely to die */
-        close(fdpipe[0]);
-        break;
-      }
-    } while (1);
+    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in child */
+    close(fdpipe[0]);
 }
 
 @ @c
