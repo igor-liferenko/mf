@@ -17,3 +17,4 @@ window/wayland.c
 *.scn
 *.dvi
 *.ps
+*.toc
