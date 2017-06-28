@@ -88,6 +88,7 @@ mf_x11_updatescreen (void)
 
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
+  /* TODO: check if child is alive before sending signal to it FIXME: how? */
 
   if ((pid = fork()) != -1) { /* we fork here instead of in initscreen due to above comment */
     @<Start child program@>@;
