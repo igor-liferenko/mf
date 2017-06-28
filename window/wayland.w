@@ -121,6 +121,11 @@ if (pid > 0) {
         }
       }
       else { /* EOF - we have been poked by the child */
+/* TODO: deliberately call |exit| in child without closing the file and check if this else will
+be triggered - this will mean that file descriptors are automatically closed on exit;
+and so in general case zero condition must be handled not as a ready-signal, but as an
+abnormal condition that child died prematurely (in our case zero condition is OK, because
+the child is unlikely to die */
         close(fdpipe[0]);
         break;
       }
