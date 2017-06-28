@@ -118,7 +118,8 @@ if (pid > 0) {
     read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in
                                    child; blocks forever if |fdpipe[1]| is not closed above
                                    FIXME: why? */
-    close(fdpipe[0]);
+    close(fdpipe[0]); /* close it too, because |fdpipe[1]| was closed (i.e., we cannot create them
+                         in initscreen not to close explicitly) */
 }
 
 @ @c
