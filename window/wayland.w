@@ -71,7 +71,8 @@ mf_x11_initscreen (void)
          no pre-suppositions about background color of the output device must be made */
   }
 
-  signal(SIGCHLD, SIG_IGN); /* do not block until the child exits */
+  signal(SIGCHLD, SIG_IGN); /* this is to be able to interact with MetaFont, as the child does
+			       not exit */
 
   this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
@@ -88,7 +89,7 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
-  if ((pid = fork()) != -1) {
+  if ((pid = fork()) != -1) { /* we fork here instead of in initscreen due to above comment */
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
