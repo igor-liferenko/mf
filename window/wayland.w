@@ -1,6 +1,10 @@
 \let\lheader\rheader
 \datethis
 
+@s uint32_t int
+@s template normal
+@f EXTERN extern
+
 @ We need to run these two processes in parallel, so the method is to use fork() and exec(),
 because the child programm cannot terminate - it is a general rule for all wayland
 applications - they work in endless loop. As a side effect, these two processes are automatically
@@ -11,7 +15,7 @@ connected with each other.
 
 /* TODO: check return value from write() calls */
 
-#define	EXTERN extern
+#define	EXTERN extern /* FIXME: do we need this? */
 #include "../mfd.h"
 
 #ifdef X11WIN                  /* almost whole file */
@@ -22,7 +26,7 @@ connected with each other.
 #define WIDTH 1024
 #define HEIGHT 768
   /* must agree with metafont source and child source (FIXME: pass it (and size) as argument to
-     child? */
+     child?) */
 
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
@@ -39,8 +43,6 @@ static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's
 int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
-  this_updatescreen_is_tied_to_initscreen = 1;
-
   const char template[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
@@ -56,7 +58,7 @@ mf_x11_initscreen (void)
   if (fd < 0) return 0;
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
-    pixel = color(rand()%255,rand()%255,rand()%255);
+    pixel = color(rand()%255,rand()%255,rand()%255); /* FIXME: check precedence */
     write(fd, &pixel, sizeof pixel);
       /* it is not said anywhere that output device must have a background of a defined color - all
          coloring operations must be done by MF explicitly, so
@@ -65,6 +67,7 @@ mf_x11_initscreen (void)
          drawing on it from some other program which might have used it previously - so again,
          no pre-suppositions about background color of the output device must be made */
   }
+  this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
 }
 
@@ -91,18 +94,18 @@ mf_x11_updatescreen (void)
     @<Wait until child program is started@>@;
   }
   else {
-    close(fdpipe[0]);
-    close(fdpipe[1]);
     fprintf(stderr, "Failed to create child process.\x0a");
+    close(fdpipe[0]);
+    close(fdpipe[1]); /* we cannot create them in initscreen not to close them at all, because
+                         |fdpipe[1]| needs to be closed in |@<Wait until child...@>| */
   }
 }
 
 @ @<Start child program@>=
 if (pid == 0) {
     signal(SIGCHLD, SIG_DFL); /* restore to default */
-    char d[10];
+    char d[10], dpipe[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap */
     snprintf(d, 10, "%d", fd);
-    char dpipe[10];
     snprintf(dpipe, 10, "%d", fdpipe[1]);
     execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
 }
@@ -114,12 +117,12 @@ control it.
 if (pid > 0) {
     close(fdpipe[1]); /* if we do not close it, |read| below will block forever
                          FIXME: why? */
-    char dummy;
+    char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
     read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in
                                    child; blocks forever if |fdpipe[1]| is not closed above
                                    FIXME: why? */
     close(fdpipe[0]); /* close it too, because |fdpipe[1]| was closed (i.e., we cannot create them
-                         in initscreen not to close explicitly) */
+                         in initscreen not to close them at all) */
 }
 
 @ @c
