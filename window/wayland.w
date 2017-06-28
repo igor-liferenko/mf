@@ -5,17 +5,16 @@
 @s template normal
 @f EXTERN extern
 
-@ We need to run these two processes in parallel, so the method is to use fork() and exec(),
+@* Wayland window interface for MetaFont.
+We need to run these two processes in parallel, so the method is to use fork() and exec(),
 because the child programm cannot terminate - it is a general rule for all wayland
 applications - they work in endless loop. As a side effect, these two processes are automatically
 connected with each other.
 
 @c
-/* Wayland window interface for Metafont. */
-
 /* TODO: check return value from write() calls */
 
-#define	EXTERN extern /* FIXME: do we need this? */
+#define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
 #ifdef X11WIN                  /* almost whole file */
