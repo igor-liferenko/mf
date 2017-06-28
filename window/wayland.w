@@ -112,10 +112,12 @@ control it.
 
 @<Wait until child program is started@>=
 if (pid > 0) {
-    close(fdpipe[1]); /* until we close it, child will not be able to write to
-                         or close |fdpipe[1]| */
+    close(fdpipe[1]); /* if we do not close it, |read| below will block forever
+                         FIXME: why? */
     char dummy;
-    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in child */
+    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to or closed in
+                                   child; blocks forever if |fdpipe[1]| is not closed above
+                                   FIXME: why? */
     close(fdpipe[0]);
 }
 
