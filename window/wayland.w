@@ -40,7 +40,6 @@ int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
   this_updatescreen_is_tied_to_initscreen = 1;
-  //printf("\ninitscreen called\n");
 
   const char template[] = "/wayland-shared-XXXXXX";
   const char *path;
@@ -80,16 +79,15 @@ mf_x11_updatescreen (void)
   if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
 
-  signal(SIGCHLD, SIG_IGN); /* do not wait child */
-
   int fdpipe[2];
   if (pipe(fdpipe) != 0) { /* have the parent pause until the child notifies
                           that it has installed signal handler, to avoid race condition */
-    fprintf(stderr, "pipe error: %m\n");
+    fprintf(stderr, "error creating pipe\x0a");
     exit(1);
   }
 
   if ((pid = fork()) != -1) {
+    signal(SIGCHLD, SIG_IGN); /* do not wait the child to exit */
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
