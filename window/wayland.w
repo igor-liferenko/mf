@@ -91,7 +91,7 @@ mf_x11_updatescreen (void)
 
   if ((pid = fork()) != -1) {
     @<Start child program@>@;
-    @<Wait until child program is initialized@>@;
+    @<Wait until child program is started@>@;
   }
   else fprintf(stderr, "Failed to create child process.\x0a");
 }
@@ -109,7 +109,7 @@ if (pid == 0) {
 send signals to make it do what the parent needs (in our case it is to
 update the screen).
 
-@<Wait until child program is initialized@>=
+@<Wait until child program is started@>=
 if (pid > 0) {             
     close(fdpipe[1]); /* we do not write to child */
     char dummy;
