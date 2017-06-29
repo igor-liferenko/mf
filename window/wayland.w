@@ -20,7 +20,7 @@ connected with each other.
 #ifdef WLWIN                  /* almost whole file */
 
 #undef read /* to avoid compilation error */
-#include <signal.h>
+#include <sys/wait.h>
 
 #define WIDTH 1024
 #define HEIGHT 768
@@ -78,9 +78,6 @@ mf_wl_initscreen (void)
          no pre-suppositions about background color of the output device must be made */
   }
 
-  signal(SIGCHLD, SIG_IGN); /* this is to be able to interact with MetaFont, as the child does
-			       not exit */
-
   this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
 }
@@ -97,9 +94,11 @@ mf_wl_updatescreen (void)
     return;
   }
 
-  if (pid) kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
+  if (pid) {
+    kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
-  /* TODO: check if child is alive before sending signal to it FIXME: how? */
+    wait(NULL);
+  }
 
   if ((pid = fork()) != -1) { /* we fork here instead of in initscreen due to above comment */
     @<Start child program@>@;
