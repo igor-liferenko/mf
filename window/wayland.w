@@ -12,6 +12,7 @@ connected with each other.
 
 @c
 /* TODO: check return value from write() calls */
+/* TODO: merge way/way.w here via \.{@@(mf-win@@>=} */
 
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
@@ -33,18 +34,21 @@ connected with each other.
 static uint32_t pixel;
 
 static int fd;
+static char fdstr[10]; /* to pass |fd| to child via argument list */
 static pid_t pid = 0;
 
 #include <mfdisplay.h>
 
 static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's misbehavior */
 static int pipefd[2];
+static char pipefdstr[10]; /* to pass |pipefd[1]| to child via argument list */
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
   if (pipe(pipefd) != 0) /* used to determine if the child has started */
     return 0;
+  snprintf(pipefdstr, 10, "%d", pipefd[1]);
 
   const char tmpl[] = "/wayland-shared-XXXXXX";
   const char *path;
@@ -59,6 +63,7 @@ mf_x11_initscreen (void)
     unlink(name); /* delete automatically when metafont exits */
   free(name);
   if (fd < 0) return 0;
+  snprintf(fdstr, 10, "%d", fd);
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
     pixel = color(rand()%255,rand()%255,rand()%255); /* FIXME: check precedence */
@@ -102,10 +107,6 @@ mf_x11_updatescreen (void)
 
 @ @<Start child program@>=
 if (pid == 0) {
-    char pipefdstr[10], fdstr[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap
-				      in woven output */
-    snprintf(pipefdstr, 10, "%d", pipefd[1]);
-    snprintf(fdstr, 10, "%d", fd);
     execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
 }
