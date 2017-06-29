@@ -38,12 +38,12 @@ static pid_t pid = 0;
 #include <mfdisplay.h>
 
 static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's misbehavior */
-static int fdpipe[2];
+static int pipefd[2];
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_x11_initscreen (void)
 {
-  if (pipe(fdpipe) != 0) /* used to determine if the child has started */
+  if (pipe(pipefd) != 0) /* used to determine if the child has started */
     return 0;
 
   const char tmpl[] = "/wayland-shared-XXXXXX";
@@ -78,6 +78,10 @@ mf_x11_initscreen (void)
   return 1;
 }
 
+@ We automatically get pid of child process in parent from |fork|.
+We use it to send signals to child.
+
+@c
 void
 mf_x11_updatescreen (void)
 {
@@ -98,10 +102,11 @@ mf_x11_updatescreen (void)
 
 @ @<Start child program@>=
 if (pid == 0) {
-    char d[10], dpipe[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap */
-    snprintf(d, 10, "%d", fd);
-    snprintf(dpipe, 10, "%d", fdpipe[1]);
-    execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
+    char fdstr[10], pipefdstr[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap
+				      in woven output */
+    snprintf(fdstr, 10, "%d", fd);
+    snprintf(pipefdstr, 10, "%d", pipefd[1]);
+    execl("/usr/local/way/way", "/usr/local/way/way", fdstr, pipefdstr, NULL);
     @<Check for errors...@>;
 }
 
@@ -109,24 +114,17 @@ if (pid == 0) {
 |write| to parent so that it will not block forever.
 
 @<Check for errors in |execl|@>=
+char dummy;
 write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
 
-@ We automatically get pid of child process, which is used to
-control it.
+@ @<Wait until child program is started@>=
+char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
+read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
 
-@<Wait until child program is started@>=
-if (pid > 0) {
-    char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
-    read(fdpipe[0], &dummy, 1); /* blocks until |fdpipe[1]| is written to in child */
-    /* NOTE: in our case child cannot die, so do not |close(fdpipe[1])| not to block
-       forever if child dies */
-
-/* TODO: |close(fdpipe[1])|, get return value from |read| and deliberately call |exit| in child
+/* TODO: |close(pipefd[1])|, get return value from |read| and deliberately call |exit| in child
 without doing |write| and check the return value - if it will be zero, it will mean that a file
 descriptor is automatically closed on exit */
-
-}
 
 @ @c
 void
