@@ -94,9 +94,9 @@ mf_wl_updatescreen (void)
     return;
   }
 
-  if (pid) {
-    kill(pid, SIGINT); /* a trick to automatically bring window to front on updatescreen
+  if (pid) { /* a trick to automatically bring window to front on updatescreen
                 (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
+    kill(pid, SIGINT);
     wait(NULL);
   }
 
