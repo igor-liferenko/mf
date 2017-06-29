@@ -94,7 +94,6 @@ mf_x11_updatescreen (void)
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
-  else fprintf(stderr, "Failed to create child process.\x0a");
 }
 
 @ @<Start child program@>=
@@ -103,7 +102,15 @@ if (pid == 0) {
     snprintf(d, 10, "%d", fd);
     snprintf(dpipe, 10, "%d", fdpipe[1]);
     execl("/usr/local/way/way", "/usr/local/way/way", d, dpipe, NULL);
+    @<Check for errors...@>;
 }
+
+@ |execl| returns only if there is an error so we do not check return value.
+|write| to parent so that it will not block forever.
+
+@<Check for errors in |execl|@>=
+write(pipefd[1], &dummy, 1);
+exit(EXIT_FAILURE);
 
 @ We automatically get pid of child process, which is used to
 control it.
