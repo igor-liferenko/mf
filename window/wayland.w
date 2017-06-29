@@ -65,6 +65,8 @@ mf_wl_initscreen (void)
   if (fd < 0) return 0;
   snprintf(fdstr, 10, "%d", fd);
 
+  /* TODO: use |mmap| here? */
+
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
     pixel = color(rand()%255,rand()%255,rand()%255); /* FIXME: check precedence */
     write(fd, &pixel, sizeof pixel);
