@@ -30,6 +30,8 @@ connected with each other.
      and find out how to use metafont's settings of width and height here */
 #define color(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
+#define BLACK color(0,0,0)
+#define WHITE color(255,253,113)
 
 static uint32_t pixel;
 
@@ -68,14 +70,8 @@ mf_wl_initscreen (void)
   /* TODO: use |mmap| here? */
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
-    pixel = color(rand()%255,rand()%255,rand()%255); /* FIXME: check precedence */
+    pixel = WHITE;
     write(fd, &pixel, sizeof pixel);
-      /* it is not said anywhere that output device must have a background of a defined color - all
-         coloring operations must be done by MF explicitly, so
-         we deliberately set the output device background to some random color;
-         moreover, theoretically it is possible for some types of output devices to have some
-         drawing on it from some other program which might have used it previously - so again,
-         no pre-suppositions about background color of the output device must be made */
   }
 
   this_updatescreen_is_tied_to_initscreen = 1;
@@ -94,13 +90,12 @@ mf_wl_updatescreen (void)
     return;
   }
 
-  if (pid) { /* a trick to automatically bring window to front on updatescreen
-                (useful for interactive usage via "showit;", but also is triggered by "endchar;" */
+  if (pid) {
     kill(pid, SIGINT);
     wait(NULL);
   }
 
-  if ((pid = fork()) != -1) { /* we fork here instead of in initscreen due to above comment */
+  if ((pid = fork()) != -1) {
     @<Start child program@>@;
     @<Wait until child program is started@>@;
   }
@@ -139,7 +134,7 @@ mf_wl_blankrectangle(screencol left,
     lseek(fd,WIDTH*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
-      pixel = color(255,253,113); /* "white" */
+      pixel = WHITE;
       write(fd, &pixel, sizeof pixel);
     }
   }
@@ -161,9 +156,9 @@ mf_wl_paintrow(screenrow row,
       k++;
       do {
            if (init_color==0)
-             pixel = color(255, 253, 113); /* "white" */
+             pixel = WHITE;
            else
-             pixel = color(0,0,0); /* black */
+             pixel = BLACK;
            write(fd, &pixel, sizeof pixel);
            c++;
       } while (c!=*(tvect+k));
