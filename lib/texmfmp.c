@@ -3555,6 +3555,7 @@ zmakescaled (integer p, integer q)		/* Approximate 2^16*p/q */
 #undef UNITERMWIN
 #undef WIN32WIN
 #undef X11WIN
+#undef WLWIN
 #endif
 
 /* Prototypes for Metafont display routines: mf_XXX_initscreen,
@@ -3619,6 +3620,10 @@ struct mfwin_sw
 #ifdef X11WIN
   { "xterm", mf_x11_initscreen, mf_x11_updatescreen, 
     mf_x11_blankrectangle, mf_x11_paintrow },
+#endif
+#ifdef WLWIN
+  { "xterm", mf_wl_initscreen, mf_wl_updatescreen,
+    mf_wl_blankrectangle, mf_wl_paintrow },
 #endif
   
   /* Always support this.  */

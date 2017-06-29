@@ -17,7 +17,7 @@ connected with each other.
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
-#ifdef X11WIN                  /* almost whole file */
+#ifdef WLWIN                  /* almost whole file */
 
 #undef read /* to avoid compilation error */
 #include <signal.h>
@@ -44,7 +44,7 @@ static int pipefd[2];
 static char pipefdstr[10]; /* to pass |pipefd[1]| to child via argument list */
 
 int /* Return 1 if display opened successfully, else 0.  */
-mf_x11_initscreen (void)
+mf_wl_initscreen (void)
 {
   if (pipe(pipefd) != 0) /* used to determine if the child has started */
     return 0;
@@ -88,7 +88,7 @@ We use it to send signals to child.
 
 @c
 void
-mf_x11_updatescreen (void)
+mf_wl_updatescreen (void)
 {
   if (this_updatescreen_is_tied_to_initscreen) {
     this_updatescreen_is_tied_to_initscreen = 0;
@@ -129,7 +129,7 @@ descriptor is automatically closed on exit */
 
 @ @c
 void
-mf_x11_blankrectangle(screencol left,
+mf_wl_blankrectangle(screencol left,
                       screencol right,
                       screenrow top,
                       screenrow bottom)
@@ -145,7 +145,7 @@ mf_x11_blankrectangle(screencol left,
 }
 
 void
-mf_x11_paintrow(screenrow row,
+mf_wl_paintrow(screenrow row,
                 pixelcolor init_color,
                 transspec tvect,
                 screencol vector_size)
@@ -171,5 +171,5 @@ mf_x11_paintrow(screenrow row,
 }
 
 #else
-int x11_dummy;
-#endif /* X11WIN */
+int wl_dummy;
+#endif /* WLWIN */
