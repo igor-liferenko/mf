@@ -102,11 +102,11 @@ mf_x11_updatescreen (void)
 
 @ @<Start child program@>=
 if (pid == 0) {
-    char fdstr[10], pipefdstr[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap
+    char pipefdstr[10], fdstr[10]; /* FIXME: see git lg radioclk.w how to remove this extra gap
 				      in woven output */
-    snprintf(fdstr, 10, "%d", fd);
     snprintf(pipefdstr, 10, "%d", pipefd[1]);
-    execl("/usr/local/way/way", "/usr/local/way/way", fdstr, pipefdstr, NULL);
+    snprintf(fdstr, 10, "%d", fd);
+    execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, pdstr, NULL);
     @<Check for errors...@>;
 }
 
