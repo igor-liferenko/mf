@@ -106,7 +106,7 @@ if (pid == 0) {
 				      in woven output */
     snprintf(pipefdstr, 10, "%d", pipefd[1]);
     snprintf(fdstr, 10, "%d", fd);
-    execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, pdstr, NULL);
+    execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
 }
 
