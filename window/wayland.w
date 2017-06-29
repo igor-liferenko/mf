@@ -111,7 +111,7 @@ if (pid == 0) {
 }
 
 @ |execl| returns only if there is an error so we do not check return value.
-|write| to parent so that it will not block forever.
+|write| to parent so that it will not block forever and terminate child.
 
 @<Check for errors in |execl|@>=
 char dummy;
