@@ -30,7 +30,7 @@ connected with each other.
      and find out how to use metafont's settings of width and height here */
 #define COLOR(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
-#define BLACK color(0,0,0)
+#define BLACK COLOR(0,0,0)
 #define WHITE COLOR(255,253,113)
 
 static uint32_t pixel;
