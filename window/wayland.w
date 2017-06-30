@@ -28,10 +28,10 @@ connected with each other.
      child?) */
   /* TODO: see in x11-Xlib.c and/or x11-Xt.c how width and height are read/set from/to .Xresources
      and find out how to use metafont's settings of width and height here */
-#define color(R,G,B) R << 16 | G << 8 | B
+#define COLOR(R,G,B) R << 16 | G << 8 | B
   /* color is set in XRGB format (X byte is not used for anything) */
 #define BLACK color(0,0,0)
-#define WHITE color(255,253,113)
+#define WHITE COLOR(255,253,113)
 
 static uint32_t pixel;
 
