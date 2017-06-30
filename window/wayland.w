@@ -90,18 +90,19 @@ mf_wl_updatescreen (void)
     return;
   }
 
-  if (pid) {
-    kill(pid, SIGINT);
-    wait(NULL);
-  }
+  @<Stop child program if it is already running@>@;
+  @<Start child program@>@;
+  @<Wait until child program is initialized@>@;
+}
 
-  if ((pid = fork()) != -1) {
-    @<Start child program@>@;
-    @<Wait until child program is started@>@;
-  }
+@ @<Stop child...@>=
+if (pid) {
+  kill(pid, SIGINT);
+  wait(NULL);
 }
 
 @ @<Start child program@>=
+pid = fork();
 if (pid == 0) {
     execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
@@ -115,13 +116,15 @@ char dummy;
 write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
 
-@ @<Wait until child program is started@>=
-char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
-read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
+@ @<Wait until child program is initialized@>=
+if (pid != -1) {
+  char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
+  read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
 
 /* TODO: |close(pipefd[1])|, get return value from |read| and deliberately call |exit| in child
 without doing |write| and check the return value - if it will be zero, it will mean that a file
 descriptor is automatically closed on exit */
+}
 
 @ @c
 void
