@@ -120,10 +120,6 @@ exit(EXIT_FAILURE);
 if (pid != -1) {
   char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
   read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
-
-/* TODO: |close(pipefd[1])|, get return value from |read| and deliberately call |exit| in child
-without doing |write| and check the return value - if it will be zero, it will mean that a file
-descriptor is automatically closed on exit */
 }
 
 @ @c
