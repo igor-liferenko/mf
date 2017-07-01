@@ -55,7 +55,8 @@ mf_wl_initscreen (void)
   const char tmpl[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
-  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage device */
+  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
+                                       device */
   if (path == NULL) return 0;
   name = malloc(strlen(path) + sizeof tmpl);
   if (name == NULL) return 0;
