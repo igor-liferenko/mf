@@ -55,7 +55,7 @@ mf_wl_initscreen (void)
   const char tmpl[] = "/wayland-shared-XXXXXX";
   const char *path;
   char *name;
-  path = getenv("XDG_RUNTIME_DIR");
+  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage device */
   if (path == NULL) return 0;
   name = malloc(strlen(path) + sizeof tmpl);
   if (name == NULL) return 0;
@@ -66,8 +66,6 @@ mf_wl_initscreen (void)
   free(name);
   if (fd < 0) return 0;
   snprintf(fdstr, 10, "%d", fd);
-
-  /* TODO: use |mmap| here? */
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
     pixel = WHITE;
