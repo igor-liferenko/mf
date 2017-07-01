@@ -21,6 +21,7 @@ connected with each other.
 
 #undef read /* to avoid compilation error */
 #include <sys/wait.h>
+#include <sys/prctl.h>
 
 #define WIDTH 1024
 #define HEIGHT 768
