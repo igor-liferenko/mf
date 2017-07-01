@@ -103,6 +103,7 @@ if (pid) {
 @ @<Start child program@>=
 pid = fork();
 if (pid == 0) {
+    prctl(PR_SET_PDEATHSIG, SIGINT); /* automatically close screen when metafont exits */
     execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
 }
