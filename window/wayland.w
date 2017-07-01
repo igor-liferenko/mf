@@ -103,7 +103,6 @@ if (pid) {
 @ @<Start child program@>=
 pid = fork();
 if (pid == 0) {
-    setenv("WAYLAND_DEBUG", "1", 1);
     execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
 }
