@@ -38,7 +38,7 @@ static uint32_t pixel;
 
 static int fd;
 static char fdstr[10]; /* to pass |fd| to child via argument list */
-static pid_t pid = 0;
+static pid_t cpid = 0;
 
 #include <mfdisplay.h>
 
@@ -96,15 +96,15 @@ mf_wl_updatescreen (void)
 }
 
 @ @<Stop child...@>=
-if (pid) {
-  kill(pid, SIGINT);
+if (cpid) {
+  kill(cpid, SIGINT);
   wait(NULL);
 }
 
 @ @<Start child program@>=
-pid = fork();
-if (pid == 0) {
-    prctl(PR_SET_PDEATHSIG, SIGINT); /* automatically close screen when metafont exits */
+cpid = fork();
+if (cpid == 0) {
+    prctl(PR_SET_PDEATHSIG, SIGINT); /* automatically close window when metafont exits */
     execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
     @<Check for errors...@>;
 }
@@ -118,7 +118,7 @@ write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
-if (pid != -1) {
+if (cpid != -1) {
   char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
   read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
 }
