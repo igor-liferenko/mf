@@ -105,7 +105,7 @@ if (cpid) {
 cpid = fork();
 if (cpid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGINT); /* automatically close window when metafont exits */
-    execl("/usr/local/way/way", "/usr/local/way/way", pipefdstr, fdstr, NULL);
+    execl("/usr/local/way/way", "way", pipefdstr, fdstr, (char *) NULL);
     @<Check for errors...@>;
 }
 
