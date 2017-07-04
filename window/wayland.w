@@ -102,12 +102,11 @@ if (cpid) {
 }
 
 @ @<Start child program@>=
-pid_t pid = getpid();
 cpid = fork();
 if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     metafont exits */
-      getppid() == pid) /* make sure that parent did not exit just before |prctl| call */
+      getppid() != 1) /* make sure that parent did not exit just before |prctl| call */
       execl("/usr/local/way/way", "way", pipefdstr, fdstr, (char *) NULL);
     @<Terminate if there was an error...@>;
 }
