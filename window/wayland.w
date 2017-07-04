@@ -119,7 +119,7 @@ exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
-  char dummy; /* FIXME: see git lg radioclk.w how to remove this extra gap */
+  char dummy; @+
   read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
 }
 
