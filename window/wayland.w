@@ -113,7 +113,7 @@ if (cpid == 0) {
 |write| to parent so that it will not block forever and terminate child.
 
 @<Check for errors in |execl|@>=
-char dummy;
+char dummy; @+
 write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
 
