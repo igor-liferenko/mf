@@ -102,17 +102,20 @@ if (cpid) {
 }
 
 @ @<Start child program@>=
+pid_t pid = getpid();
 cpid = fork();
 if (cpid == 0) {
-    prctl(PR_SET_PDEATHSIG, SIGINT); /* automatically close window when metafont exits */
-    execl("/usr/local/way/way", "way", pipefdstr, fdstr, (char *) NULL);
-    @<Check for errors...@>;
+    if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
+                                                    metafont exits */
+      getppid() == pid) /* make sure that parent did not exit just before |prctl| call */
+      execl("/usr/local/way/way", "way", pipefdstr, fdstr, (char *) NULL);
+    @<Terminate if there was an error...@>;
 }
 
 @ |execl| returns only if there is an error so we do not check return value.
 |write| to parent so that it will not block forever and terminate child.
 
-@<Check for errors in |execl|@>=
+@<Terminate...@>=
 char dummy; @+
 write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
