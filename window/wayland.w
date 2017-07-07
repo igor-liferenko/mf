@@ -108,13 +108,13 @@ if (cpid == 0) {
                                                     metafont exits */
       getppid() != 1) /* make sure that parent did not exit just before |prctl| call */
       execl("/usr/local/way/way", "way", pipefdstr, fdstr, (char *) NULL);
-    @<Terminate child process if child program was not started@>;
+    @<Abort starting child program@>;
 }
 
 @ |execl| returns only if there is an error so we do not check return value.
-|write| to parent so that it will not block forever and terminate child.
+|write| to parent so that it will not block forever.
 
-@<Terminate...@>=
+@<Abort starting child program@>=
 char dummy; @+
 write(pipefd[1], &dummy, 1);
 exit(EXIT_FAILURE);
