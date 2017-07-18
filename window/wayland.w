@@ -31,8 +31,8 @@ connected with each other.
      and find out how to use metafont's settings of width and height here */
 #define COLOR(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
-#define BLACK @,@, COLOR@t\kern-.85em@>(0,0,0)
-#define WHITE @,@, COLOR@t\kern-.85em@>(255,253,113)
+#define BLACK @,@, COLOR@t\kern-.83em@>(0,0,0)
+#define WHITE @,@, COLOR@t\kern-.83em@>(255,253,113)
 
 static uint32_t pixel;
 
