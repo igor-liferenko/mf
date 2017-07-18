@@ -148,8 +148,6 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  int col;
-
   lseek(fd,WIDTH*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
