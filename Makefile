@@ -1,7 +1,7 @@
 wayland: libmf.a
 	make -C window wayland
 	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lSM -lICE -lXext -lX11 -lm
-	mv -f mf /usr/local/bin/
+	mv mf /usr/local/bin/
 
 libmf.a:
 	make -C lib
