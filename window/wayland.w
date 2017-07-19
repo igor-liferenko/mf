@@ -5,7 +5,7 @@
 @f EXTERN extern
 
 @* Wayland window interface for MetaFont.
-We need to run these two processes in parallel, so the method is to use fork() and exec(),
+We need to run these two processes in parallel, so the method is to use |fork| and |exec|,
 because the child programm cannot terminate - it is a general rule for all wayland
 applications - they work in endless loop. As a side effect, these two processes are automatically
 connected with each other.
