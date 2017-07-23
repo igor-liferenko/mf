@@ -10,8 +10,6 @@ because the child programm cannot terminate - it is a general rule for all wayla
 applications - they work in endless loop. As a side effect, these two processes are automatically
 connected with each other.
 
-TODO: check return value from |write| calls
-
 TODO: merge \.{way/way.w} here via \.{@@(mf-win@@>=}
 
 @d color(R,G,B) (R << 16 | G << 8 | B)
