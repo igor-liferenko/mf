@@ -10,10 +10,16 @@ because the child programm cannot terminate - it is a general rule for all wayla
 applications - they work in endless loop. As a side effect, these two processes are automatically
 connected with each other.
 
-@c
-/* TODO: check return value from write() calls */
-/* TODO: merge way/way.w here via \.{@@(mf-win@@>=} */
+TODO: check return value from |write| calls
 
+TODO: merge \.{way/way.w} here via \.{@@(mf-win@@>=}
+
+@d color(R,G,B) (R << 16 | G << 8 | B)
+  /* color is set in XRGB format (X byte is not used for anything) */
+@d BLACK color(0,0,0)
+@d WHITE color(255,253,113)
+
+@c
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
@@ -29,10 +35,6 @@ connected with each other.
      child?) */
   /* TODO: see in x11-Xlib.c and/or x11-Xt.c how width and height are read/set from/to .Xresources
      and find out how to use metafont's settings of width and height here */
-#define COLOR(R,G,B) (R << 16 | G << 8 | B)
-  /* color is set in XRGB format (X byte is not used for anything) */
-#define BLACK @,@, COLOR@t\kern-.83em@>(0,0,0)
-#define WHITE @,@, COLOR@t\kern-.83em@>(255,253,113)
 
 static uint32_t pixel;
 
