@@ -1,16 +1,12 @@
 *.o
 *.a
-mf-pool.c
 mf
 mf-final.ch
 mf.p
 mf.pool
-mf0.c
 mfcoerce.h
 mfd.h
-mfini.c
-test.log
-window/wayland.c
+*.c
 *.idx
 *.log
 *.tex
