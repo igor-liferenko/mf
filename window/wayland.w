@@ -2,6 +2,7 @@
 \datethis
 
 @s uint32_t int
+@s pid_t int
 @f EXTERN extern
 
 @* Wayland window interface for MetaFont.
