@@ -1,8 +1,8 @@
+mf-final.ch
 *.o
 *.a
-mf-final.ch
-mf.p
-mf.pool
+*.p
+*.pool
 *.h
 *.c
 *.idx
