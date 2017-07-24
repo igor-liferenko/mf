@@ -1,11 +1,9 @@
 *.o
 *.a
-mf
 mf-final.ch
 mf.p
 mf.pool
-mfcoerce.h
-mfd.h
+*.h
 *.c
 *.idx
 *.log
