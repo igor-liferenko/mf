@@ -70,7 +70,7 @@ mf_wl_initscreen (void)
   if (fd < 0) return 0;
   snprintf(fdstr, 10, "%d", fd);
 
-  for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file */
+  for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file (i.e., blank the screen) */
     pixel = WHITE;
     write(fd, &pixel, sizeof pixel);
   }
