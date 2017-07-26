@@ -44,13 +44,13 @@ static pid_t cpid = 0;
 #include <mfdisplay.h>
 
 static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround metafont's misbehavior */
-static int pipefd[2];
+static int pipefd[2]; /* used to determine if the child has started */
 static char pipefdstr[10]; /* to pass |pipefd[1]| to child via argument list */
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
-  if (pipe(pipefd) != 0) /* used to determine if the child has started */
+  if (pipe(pipefd) != 0)
     return 0;
   snprintf(pipefdstr, 10, "%d", pipefd[1]);
 
