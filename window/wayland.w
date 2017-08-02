@@ -102,7 +102,10 @@ if (cpid) {
   wait(NULL);
 }
 
-@ @<Start child program@>=
+@ |prctl| is Linux-specific. The proper way would be to send |SIGINT| to child
+from MetaFont right before exiting.
+
+@<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
