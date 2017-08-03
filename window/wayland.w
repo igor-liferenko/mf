@@ -5,13 +5,16 @@
 @s pid_t int
 @f EXTERN extern
 
-\font\manual=manfnt
+\font\logo=manfnt
 
-@* Wayland window interface for {\manual METAFONT}.
-We need to run these two processes in parallel, so the method is to use |fork| and |exec|,
-because the child programm cannot terminate - it is a general rule for all wayland
-applications - they work in endless loop. As a side effect, these two processes are automatically
-connected with each other.
+@* Wayland window interface for {\logo METAFONT}.
+I wrote this interface because the X11 one does not allow to switch between terminal
+and display window with Alt+Tab.
+
+We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
+because the child programm cannot terminate - it is a general rule for all Wayland
+applications---they work in endless loop. As a side effect, these two processes are automatically
+connected with each other, so we can send signals from {\logo METAFONT} to Wayland process.
 
 TODO: merge \.{way/way.w} here via \.{@@(mf-win@@>=}
 
@@ -32,10 +35,10 @@ TODO: merge \.{way/way.w} here via \.{@@(mf-win@@>=}
 
 #define WIDTH 1024
 #define HEIGHT 768
-  /* must agree with {\manual METAFONT} source and child source (FIXME: pass it (and size) as
+  /* must agree with {\logo METAFONT} source and child source (FIXME: pass it (and size) as
      argument to child?) */
   /* TODO: see in x11-Xlib.c and/or x11-Xt.c how width and height are read/set from/to .Xresources
-     and find out how to use {\manual METAFONT}'s settings of width and height here */
+     and find out how to use {\logo METAFONT}'s settings of width and height here */
 
 static uint32_t pixel;
 
@@ -45,7 +48,7 @@ static pid_t cpid = 0;
 
 #include <mfdisplay.h>
 
-static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround {\manual METAFONT}'s
+static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround {\logo METAFONT}'s
                                                            misbehavior */
 static int pipefd[2]; /* used to determine if the child has started */
 static char pipefdstr[10]; /* to pass |pipefd[1]| to child via argument list */
@@ -68,7 +71,7 @@ mf_wl_initscreen (void)
   strcat(strcpy(name, path), tmpl);
   fd = mkstemp(name);
   if (fd >=0)
-    unlink(name); /* delete automatically when {\manual METAFONT} exits */
+    unlink(name); /* delete automatically when {\logo METAFONT} exits */
   free(name);
   if (fd < 0) return 0;
   snprintf(fdstr, 10, "%d", fd);
@@ -106,14 +109,15 @@ if (cpid) {
 }
 
 @ |prctl| is Linux-specific. The proper way would be to send |SIGINT| to child
-from {\manual METAFONT} right before exiting.
+from {\logo METAFONT} right before exiting. But Wayland itself is Linux-specific
+anyway, so it's OK.
 
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
-                                                    {\manual METAFONT} exits */
-      getppid() != 1) /* make sure that {\manual METAFONT} did not exit just before |prctl| call */
+                                                    {\logo METAFONT} exits */
+      getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
       execl("/home/user/way/way", "way", pipefdstr, fdstr, (char *) NULL);
     @<Abort starting child program@>;
 }
