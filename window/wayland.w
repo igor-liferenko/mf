@@ -8,7 +8,7 @@
 \font\logo=manfnt
 
 @* Wayland window interface for {\logo METAFONT}.
-I wrote this interface because the X11 one does not allow to switch between terminal
+I wrote this interface because X11-Xt one does not allow to switch between terminal
 and display window from GNOME3's application switcher via keyboard.
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
