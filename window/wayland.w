@@ -9,7 +9,8 @@
 
 @* Wayland window interface for {\logo METAFONT}.
 I wrote this interface because X11-Xt one does not allow to switch between terminal
-and display window from GNOME3's application switcher via keyboard.
+and display window from GNOME3's application switcher via keyboard. (X11-Xlib interface
+has a problem---it does not redraw window when switching back frow another window.)
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
 because the child programm cannot terminate - it is a general rule for all Wayland
