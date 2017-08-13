@@ -111,6 +111,7 @@ if (cpid) {
 @ |prctl| is Linux-specific. The proper way would be to send |SIGINT| to child
 from {\logo METAFONT} right before exiting. But Wayland itself is Linux-specific
 anyway, so it's OK.
+@^system dependencies@>
 
 @<Start child program@>=
 cpid = fork();
