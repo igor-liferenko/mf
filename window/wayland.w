@@ -8,8 +8,8 @@
 \font\logo=manfnt
 
 @* Wayland window interface for {\logo METAFONT}.
-I wrote this interface because X11-Xlib and X11-Xt interfaces do not allow to switch between terminal
-and display window from GNOME3's application switcher via keyboard.
+I wrote this interface because both X11 interfaces have a problem that it is not possible
+to switch between terminal and the graphics window using Super+Tab in GNOME 3.
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
 because the child programm cannot terminate - it is a general rule for all Wayland
