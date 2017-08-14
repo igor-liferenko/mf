@@ -16,7 +16,8 @@ because the child programm cannot terminate - it is a general rule for all Wayla
 applications---they work in endless loop. As a side effect, these two processes are automatically
 connected with each other, so we can send signals from {\logo METAFONT} to Wayland process.
 
-TODO: merge \.{way/way.w} here via \.{@@(mf-win@@>=}
+TODO: move \.{way/way.w} directly here instead of |execl| and use |dup2(pipefd[1], STDOUT_FILENO)|
+instead of |pipefdstr|; and use |dup2(pipefd[0], STDIN_FILENO)| instead of |fdstr|
 
 @d color(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
