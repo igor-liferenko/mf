@@ -1,0 +1,4 @@
+libwindow.a
+trap.o
+wayland.c
+wayland.o

@@ -1,4 +1,12 @@
 fixwrites
+fixwrites.o
+kps.o
+libweb2c.a
+main.o
 makecpool
+makecpool.o
 splitup
+splitup.o
 web2c
+web2c-lexer.o
+web2c-parser.o

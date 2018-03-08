@@ -1,0 +1,16 @@
+basechsuffix.o
+chartostring.o
+coredump.o
+eofeoln.o
+fprintreal.o
+input2int.o
+inputint.o
+lib.a
+main.o
+openclose.o
+printversion.o
+setupvar.o
+uexit.o
+usage.o
+version.o
+zround.o
