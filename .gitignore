@@ -1,4 +1,3 @@
-libmf.a
 mf-final.ch
 mf-mfextra.o
 mf-pool.c
@@ -11,3 +10,4 @@ mfcoerce.h
 mfd.h
 mfini.c
 mfini.o
+libmf.a
