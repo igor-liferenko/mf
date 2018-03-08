@@ -1,9 +1,0 @@
-cd
-mkdir mydir && cd mydir
-rsync -a --delete --exclude=.svn --exclude=Work tug.org::tldevsrc/Build/source/ .
-
-for i in `find . -type f|grep -v '\.git'|sed 's@.*/@@'|grep -v Makefile|grep -v config.h|grep -v c-auto.h|grep -v .gitignore|egrep -v 'test.mf|.gitattributes|wayland.w|wayland.ch|main.c|version.c|lib.h'`; do echo ============== $i ==============; diff -u `find . -name $i` `find /media/vint/tex-build/ -name $i`|colordiff; done
-diff /media/vint/tex-build/texk/web2c/lib/main.c lib/main.c
-diff /media/vint/tex-build/texk/web2c/web2c/main.c web2c/main.c
-diff /media/vint/tex-build/texk/web2c/lib/version.c ./lib/version.c
-diff /media/vint/tex-build/texk/web2c/lib/lib.h ./lib/lib.h
