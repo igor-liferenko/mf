@@ -16,9 +16,6 @@ because the child programm cannot terminate - it is a general rule for all Wayla
 applications---they work in endless loop. As a side effect, these two processes are automatically
 connected with each other, so we can send signals from {\logo METAFONT} to Wayland process.
 
-TODO: move \.{way/way.w} directly here instead of |execl| and use |dup2(pipefd[1], STDOUT_FILENO)|
-instead of |pipefdstr|; and use |dup2(pipefd[0], STDIN_FILENO)| instead of |fdstr|
-
 @d color(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
 @d BLACK color(0,0,0)
@@ -44,7 +41,6 @@ instead of |pipefdstr|; and use |dup2(pipefd[0], STDIN_FILENO)| instead of |fdst
 static uint32_t pixel;
 
 static int fd;
-static char fdstr[10]; /* to pass |fd| to child via argument list */
 static pid_t cpid = 0;
 
 #include <mfdisplay.h>
@@ -52,14 +48,12 @@ static pid_t cpid = 0;
 static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround {\logo METAFONT}'s
                                                            misbehavior */
 static int pipefd[2]; /* used to determine if the child has started */
-static char pipefdstr[10]; /* to pass |pipefd[1]| to child via argument list */
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
   if (pipe(pipefd) != 0)
     return 0;
-  snprintf(pipefdstr, 10, "%d", pipefd[1]);
 
   const char tmpl[] = "/wayland-shared-XXXXXX";
   const char *path;
@@ -75,7 +69,6 @@ mf_wl_initscreen (void)
     unlink(name); /* delete automatically when {\logo METAFONT} exits */
   free(name);
   if (fd < 0) return 0;
-  snprintf(fdstr, 10, "%d", fd);
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file (i.e., blank the screen) */
     pixel = WHITE;
@@ -116,10 +109,14 @@ anyway, so it's OK.
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
+    dup2(fd, STDIN_FILENO);
+    close(fd);
+    dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
-      execl("/home/user/way/way", "way", pipefdstr, fdstr, (char *) NULL);
+      execl("/home/user/way/way", "way", (char *) NULL);
     @<Abort starting child program@>;
 }
 
