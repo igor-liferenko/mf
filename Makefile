@@ -2,7 +2,6 @@ wayland: libmf.a
 	make -C window wayland
 	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lSM -lICE -lXext -lX11 -lm
 	mv mf /usr/local/bin/
-	mv window/tcb.dvi way.dvi
 
 libmf.a:
 	make -C lib
@@ -18,3 +17,13 @@ libmf.a:
 	rm -f libmf.a
 	ar cruU libmf.a mfini.o mf0.o mf-pool.o
 	ranlib libmf.a
+
+view:
+	@make --no-print-directory -C window $@
+	@mv window/tcb.dvi way.dvi
+	@echo use \"dvi way\" to view the document
+
+print:
+	@make --no-print-directory -C window $@
+	@mv window/tcb.dvi way.dvi
+	@echo use \"prt way\" to print the document
