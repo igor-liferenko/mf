@@ -116,7 +116,7 @@ if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
-      execl("/home/user/way/way", "way", (char *) NULL);
+      execl("/home/user/mf/window/way", "way", (char *) NULL);
     @<Abort starting child program@>;
 }
 

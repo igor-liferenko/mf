@@ -1,0 +1,28 @@
+\input cwebmac
+\let\INPUT=\input
+\def\input#1 {\def\next{#1}\ifx\next\cwebmac\else\INPUT #1\fi}
+\def\cwebmac{cwebmac}
+\def\inx{}
+\def\fin{}
+\def\con{\output{\setbox0=\box255
+                \global\output{\normaloutput\page\lheader\rheader}}\eject}
+\outer\def\N#1#2#3.{% beginning of starred section
+  \gdepth=#1\gtitle={#3}\MN{#2}%
+  \ifon\ifnum#1<\secpagedepth \vfil\eject % force page break if depth is small
+    \else\vfil\penalty-100\vfilneg\vskip\intersecskip\fi\fi
+  \message{*\secno} % progress report
+  \def\stripprefix##1>{}\def\gtitletoks{#3}%
+  \edef\gtitletoks{\expandafter\stripprefix\meaning\gtitletoks}%
+ % omit output to contents file
+  \ifon\startsection{\bf#3.\quad}\ignorespaces}
+
+\def\datethis{\def\startsection{\centerline{\bf Program 1}\bigskip
+  \let\startsection=\stsec\stsec}}
+\input wayland.tex
+\def\datethis{\def\startsection{\centerline{\bf Program 2}\bigskip
+  \let\startsection=\stsec\stsec}}
+\input way.tex
+\deadcycles=0
+\end
+
+
