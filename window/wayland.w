@@ -126,7 +126,7 @@ if (cpid == 0) {
 
 @<Abort starting child program@>=
 char dummy; @+
-write(pipefd[1], &dummy, 1);
+write(STDOUT_FILENO, &dummy, 1);
 exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
