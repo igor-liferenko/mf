@@ -3,7 +3,6 @@ trap.o
 wayland.c
 wayland.o
 way.c
-way
 way.idx
 way.scn
 way.tex
