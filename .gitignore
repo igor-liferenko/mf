@@ -11,3 +11,5 @@ mfd.h
 mfini.c
 mfini.o
 libmf.a
+way.dvi
+way.ps
