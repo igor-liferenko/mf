@@ -13,9 +13,7 @@ way:
 view:
 	@cweave wayland >/dev/null
 	@cweave way >/dev/null
-	@tex tcb >/dev/null
 
 print:
 	@cweave wayland wayland >/dev/null
 	@cweave way wayland >/dev/null
-	@tex tcb >/dev/null

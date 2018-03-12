@@ -20,10 +20,10 @@ libmf.a:
 
 view:
 	@make --no-print-directory -C window $@
-	@mv window/tcb.dvi way.dvi
+	@tex way >/dev/null
 	@echo use \"dvi way\" to view the document
 
 print:
 	@make --no-print-directory -C window $@
-	@mv window/tcb.dvi way.dvi
+	@tex way >/dev/null
 	@echo use \"prt way\" to print the document
