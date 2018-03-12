@@ -13,8 +13,8 @@ to switch between terminal and the graphics window using Super+Tab in GNOME 3.
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
 because the child programm cannot terminate - it is a general rule for all Wayland
-applications---they work in endless loop. As a side effect, these two processes are automatically
-connected with each other, so we can send signals from {\logo METAFONT} to Wayland process.
+applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
+automatically has the pid of Wayland process, which is used to send signals to it.
 
 @d color(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
