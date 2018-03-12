@@ -1,2 +1,0 @@
-make so that "make doc" will create .dvi file from wayland.w and way.w as in cwebtest/tcb.tex (+see tcb.tex in test-cwebmac.sh)
-maybe move way.w directly to window/
