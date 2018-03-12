@@ -52,7 +52,7 @@ static int pipefd[2]; /* used to determine if the child has started */
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
-  if (pipe(pipefd) != 0)
+  if (pipe(pipefd) == -1)
     return 0;
 
   const char tmpl[] = "/wayland-shared-XXXXXX";
