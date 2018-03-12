@@ -12,7 +12,7 @@ I wrote this interface because both X11 interfaces have a problem that it is not
 to switch between terminal and the graphics window using Super+Tab in GNOME 3.
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
-because the child programm cannot terminate - it is a general rule for all Wayland
+because the child programm cannot terminate---it is a general rule for all Wayland
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
@@ -65,10 +65,10 @@ mf_wl_initscreen (void)
   if (name == NULL) return 0;
   strcat(strcpy(name, path), tmpl);
   fd = mkstemp(name);
-  if (fd >=0)
-    unlink(name); /* delete automatically when {\logo METAFONT} exits */
+  if (fd != -1)
+    unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
   free(name);
-  if (fd < 0) return 0;
+  if (fd == -1) return 0;
 
   for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file (i.e., blank the screen) */
     pixel = WHITE;
