@@ -103,7 +103,8 @@ if (cpid) {
 }
 
 @ |prctl| is Linux-specific. The proper way would be to send |SIGINT| to child
-from {\logo METAFONT} right before exiting. But Wayland itself is Linux-specific
+from {\logo METAFONT} right before exiting (it is not evident to me how
+to do it). But Wayland itself is Linux-specific
 anyway, so it's OK.
 
 @<Start child program@>=
