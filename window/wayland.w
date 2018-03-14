@@ -86,10 +86,7 @@ We use it to send signals to child.
 void
 mf_wl_updatescreen (void)
 {
-  if (this_updatescreen_is_tied_to_initscreen) {
-    this_updatescreen_is_tied_to_initscreen = 0;
-    return;
-  }
+  @<Work around METAFONT's misbehavior@>@;
 
   @<Stop child program if it is already running@>@;
   @<Start child program@>@;
@@ -179,3 +176,69 @@ mf_wl_paintrow(screenrow row,
 #else
 int wl_dummy;
 #endif /* WLWIN */
+
+@ Using semicolon after "showit" causes an
+extra call to |blankrectangle| and |updatescreen| functions from
+online display driver.
+
+\smallskip
+
+\.{\$ mf '\\showit'}
+
+\noindent outputs:
+
+\.{initscreen called}\par
+\.{blankrectangle called}\par
+\.{updatescreen called}
+
+\bigskip
+
+\.{\$ mf '\\showit;'}
+
+\noindent outputs:
+
+\.{initscreen called}\par
+\.{blankrectangle called}\par
+\.{updatescreen called}\par
+\.{blankrectangle called}\par
+\.{updatescreen called}
+
+\bigskip
+
+In the second output we see redundant calls to |blankrectangle| and |updatescreen|.
+
+Except these duplicate calls being useless, they also cause undesirable
+small initial blinking effect in Wayland online display driver.
+
+These duplicate calls are strange and cause a question for
+what they are needed.
+
+In a nutshell, this is a workaround that is used here:
+\medskip
+\begingroup
+\obeyspaces
+\obeylines
+\catcode`_11
+\catcode`{11
+\catcode`}11
+\tt
++int this_updatescreen_is_tied_to_initscreen = 0;
+ int
+ mf_x11_initscreen (void)
+ {
++  this_updatescreen_is_tied_to_initscreen = 1;
+
+ void
+ mf_x11_updatescreen (void)
+ {
++  if (this_updatescreen_is_tied_to_initscreen) {
++    this_updatescreen_is_tied_to_initscreen = 0;
++    return;
++  }
+\endgroup
+
+@<Work around METAFONT's misbehavior@>=
+if (this_updatescreen_is_tied_to_initscreen) {
+  this_updatescreen_is_tied_to_initscreen = 0;
+  return;
+}
