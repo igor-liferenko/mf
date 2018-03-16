@@ -1,11 +1,11 @@
 libwindow.a
 trap.o
-wayland.c
-wayland.o
+wl.c
+wl.o
+wl.idx
+wl.scn
+wl.tex
 way.c
 way.idx
 way.scn
 way.tex
-wayland.idx
-wayland.scn
-wayland.tex
