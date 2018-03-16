@@ -2,6 +2,7 @@
 \datethis
 
 @s int32_t int
+@s uint32_t int
 
 \font\logo=manfnt
 
