@@ -213,7 +213,7 @@ small initial blinking effect in Wayland online display driver.
 These duplicate calls are strange and cause a question for
 what they are needed.
 
-This is the workaround that is used here:
+This is an overview of the workaround:
 \medskip
 \begingroup
 \obeyspaces
