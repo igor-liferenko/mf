@@ -1,1 +1,3 @@
 pass screen width and depth as argument to child as was done before for fdstr and pipefdstr
+
+find out "make view" does not have "overview of the workaround"
