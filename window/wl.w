@@ -221,14 +221,13 @@ in updatescreen function must be done two things:
 +     parts of the window - instead the whole window is redrawed each time, but this does not
 +     influence the resulting image.
 
+HINT: In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and
+see that this example gives different results depending on whether the first
+showit is used or not.
+There is a difference between when "showit" is called for the first time and
+when it is called subsequently - because only necessary stuff needs to be drawn
+on the first run, whereas the whole width of the image must be redrawn on changed
+region on subsequent runs, because stuff may already exist there from previous "showit" run.
+Maybe this may be used as a criteria for the additional calls to solving this mystery.
 drawdot(10,100);            % showit;
 drawdot(100,100); showit;
-
-% In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and
-% see that this example gives different results depending on whether the first
-% showit is used or not.
-% There is a difference between when "showit" is called for the first time and
-% when it is called subsequently - because only necessary stuff needs to be drawn
-% on the first run, whereas the whole width of the image must be redrawn on changed
-% region on subsequent runs, because stuff may already exist there from previous "showit" run.
-% Maybe this may be used as a hint to solving this mystery.
