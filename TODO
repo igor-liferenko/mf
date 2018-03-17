@@ -1,1 +1,1 @@
-pass it (and size) as argument to child
+pass screen width and depth as argument to child as was done before for fdstr and pipefdstr
