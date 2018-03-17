@@ -88,7 +88,11 @@ mf_wl_initscreen (void)
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
-Only pop-up if the image changed after previous pop-up.
+Only pop-up (i.e., kill child) if the image changed after previous pop-up.
+For this is used md5.
+TODO: determine if it is not on foreground and pop-up (i.e., kill child) only in this case - if
+it is in foreground, just redraw the whole opened window with data from file
+("damage" functions seem to be appropriate for this in wayland)
 
 @c
 void
@@ -204,66 +208,3 @@ mf_wl_paintrow(screenrow row,
 #else
 int wl_dummy;
 #endif /* WLWIN */
-
-@ Using semicolon after "showit" causes an
-extra call to |blankrectangle| and |updatescreen| functions from
-online display driver.
-
-\smallskip
-
-\.{\$ mf '\\showit'}
-
-\noindent outputs:
-
-\.{initscreen called}\par
-\.{blankrectangle called}\par
-\.{updatescreen called}
-
-\bigskip
-
-\.{\$ mf '\\showit;'}
-
-\noindent outputs:
-
-\.{initscreen called}\par
-\.{blankrectangle called}\par
-\.{updatescreen called}\par
-\.{blankrectangle called}\par
-\.{updatescreen called}
-
-\bigskip
-
-In the second output we see additional calls to |blankrectangle| and |updatescreen|.
-These calls cause undesirable
-small initial blinking effect in Wayland online display driver.
-
-TODO: Read Volume D and understand in which circumstances these additional
-calls are done. Most of all, understand how differ show it with and without trailing
-semicolon (see examples above).
-@^TODO@>
-
-in updatescreen function must be done two things:
-+
-+     1) update an opened window with new data from file ("damage" functions seem to
-+        be appropriate for this in wayland) - I do not know how to do this yet
-+     2) bring the graphics window to the top - I do not know how to do this yet
-+
-+     So, I use a dirty hack to kill the window and open it again.
-+     This does 1) and 2) at once. Here it is used the fact that a wayland window is automatically
-+     brought to top when it is opened anew (we can do this, because the data is not stored in
-+     the window - it is stored in a separate file buffer, which is not touched by killing the
-+     graphics window). And here it is not used the facility to redraw
-+     only the necessary
-+     parts of the window - instead the whole window is redrawed each time, but this does not
-+     influence the resulting image.
-
-HINT: In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and
-see that this example gives different results depending on whether the first
-showit is used or not.
-There is a difference between when "showit" is called for the first time and
-when it is called subsequently - because only necessary stuff needs to be drawn
-on the first run, whereas the whole width of the image must be redrawn on changed
-region on subsequent runs, because stuff may already exist there from previous "showit" run.
-Maybe this may be used as a criteria for the additional calls to solving this mystery.
-drawdot(10,100);            % showit;
-drawdot(100,100); showit;
