@@ -205,3 +205,30 @@ small initial blinking effect in Wayland online display driver.
 TODO: Read Volume D and understand for what these additional calls are needed, and
 how to prevent blinking.
 @^TODO@>
+
+in updatescreen function must be done two things:
++
++     1) update an opened window with new data from file ("damage" functions seem to
++        be appropriate for this in wayland) - I do not know how to do this yet
++     2) bring the graphics window to the top - I do not know how to do this yet
++
++     So, I use a dirty hack to kill the window and open it again.
++     This does 1) and 2) at once. Here it is used the fact that a wayland window is automatically
++     brought to top when it is opened anew (we can do this, because the data is not stored in
++     the window - it is stored in a separate file buffer, which is not touched by killing the
++     graphics window). And here it is not used the facility to redraw
++     only the necessary
++     parts of the window - instead the whole window is redrawed each time, but this does not
++     influence the resulting image.
+
+drawdot(10,100);            % showit;
+drawdot(100,100); showit;
+
+% In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and
+% see that this example gives different results depending on whether the first
+% showit is used or not.
+% There is a difference between when "showit" is called for the first time and
+% when it is called subsequently - because only necessary stuff needs to be drawn
+% on the first run, whereas the whole width of the image must be redrawn on changed
+% region on subsequent runs, because stuff may already exist there from previous "showit" run.
+% Maybe this may be used as a hint to solving this mystery.
