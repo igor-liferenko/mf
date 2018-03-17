@@ -88,6 +88,8 @@ mf_wl_initscreen (void)
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
+Only pop-up if the image changed after previous pop-up.
+
 @c
 void
 mf_wl_updatescreen (void)
