@@ -1,6 +1,0 @@
-drawdot(10,100);            % showit;
-drawdot(100,100); showit;
-
-% In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and understand
-% what's going on in this example - why it gives different results depending on whether the first
-% showit is used or not.
