@@ -1,16 +1,6 @@
-% TODO: understand why if we do three different colors (e.g., red green and blue) instead of white
-% in x11-Xt.c
-% and run this example, it gives different results depending on whether the first showit is used or not
-drawdot(10,10);            % showit;
+drawdot(10,100);            % showit;
 drawdot(100,100); showit;
 
-% in wl.w use different colors everywhere, and different color when this_updatescreen_is_tied_to_initscreen is true to understand what's going on there
-
-% In mf_wl_initscreen this_updatescreen_is_tied_to_initscreen may be connected with this:
-%      /* it is not said anywhere that output device must have a background of a defined color - all
-%         coloring operations must be done by MF explicitly, so
-%         we deliberately set the output device background to some random color;
-%         moreover, theoretically it is possible for some types of output devices to have some
-%         drawing on it from some other program which might have used it previously - so again,
-%         no pre-suppositions about background color of the output device must be made */
-%//    pixel = color(rand()%255,rand()%255,rand()%255);
+% In wl.w use color(255,0,0) and color(0,255,0) in second and third "pixel = ", and understand
+% what's going on in this example - why it gives different results depending on whether the first
+% showit is used or not.
