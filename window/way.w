@@ -9,9 +9,6 @@
 @ FIXME: how |mmap| is supposed to fit in example
 from \hfil\break \.{https://jan.newmarch.name/Wayland/SharedMemory/} ?
 
-@d WIDTH 1024
-@d HEIGHT 768
-
 @c
 @<Header files@>;
 typedef uint32_t pixel_t;
@@ -24,7 +21,7 @@ void terminate(int signum) {
 @<Keep-alive@>;
 @<Get registry@>;
 
-int main(void)
+int main(int argc, char *argv[])
 {
     @<Install signal handler@>;
 
@@ -233,11 +230,21 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-pool = wl_shm_create_pool(shm, STDIN_FILENO, WIDTH*HEIGHT*sizeof(pixel_t));
+@<Get screen resolution@>@;
+pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
-  0, WIDTH, HEIGHT,
-  WIDTH*sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+  0, screenwidth, screenheight,
+  screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
 wl_shm_pool_destroy(pool);
+
+@ FIXME: is cleanup necessary before |exit|?
+@^FIXME@>
+
+@<Get screen resolution@>=
+int32_t screenwidth, screenheight;
+if (argc != 3) exit(EXIT_FAILURE);
+if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
+if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
 
 @ @<Head...@>=
 #include <stdio.h>

@@ -101,6 +101,10 @@ anyway, so it's OK.
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
+    char screenwidth_str[5];
+    char screendepth_str[5];
+    snprintf(screenwidth_str, 5, "%d", screenwidth);
+    snprintf(screendepth_str, 5, "%d", screendepth);
     dup2(fd, STDIN_FILENO);
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
@@ -108,7 +112,7 @@ if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
-      execl("/usr/local/bin/way", "way", (char *) NULL);
+      execl("/usr/local/bin/way", "way", screenwidth_str, screendepth_str, (char *) NULL);
     @<Abort starting child program@>;
 }
 
