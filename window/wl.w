@@ -202,8 +202,9 @@ In the second output we see additional calls to |blankrectangle| and |updatescre
 These calls cause undesirable
 small initial blinking effect in Wayland online display driver.
 
-TODO: Read Volume D and understand for what these additional calls are needed, and
-how to prevent blinking.
+TODO: Read Volume D and understand in which circumstances these additional
+calls are done. Most of all, understand how differ show it with and without trailing
+semicolon (see examples above).
 @^TODO@>
 
 in updatescreen function must be done two things:
