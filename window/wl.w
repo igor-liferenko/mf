@@ -31,13 +31,6 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #include <sys/wait.h>
 #include <sys/prctl.h>
 
-#define WIDTH 1024
-#define HEIGHT 768
-  /* must agree with {\logo METAFONT} source and child source (FIXME: pass it (and size) as
-     argument to child?) */
-  /* TODO: see in x11-Xlib.c and/or x11-Xt.c how width and height are read/set from/to .Xresources
-     and find out how to use {\logo METAFONT}'s settings of width and height here */
-
 static uint32_t pixel;
 
 static int fd;
@@ -70,7 +63,8 @@ mf_wl_initscreen (void)
   free(name);
   if (fd == -1) return 0;
 
-  for (int n = 0; n < WIDTH*HEIGHT; n++) { /* create blank file (i.e., blank the screen) */
+  for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
+                                                         (i.e., blank the screen) */
     pixel = WHITE;
     write(fd, &pixel, sizeof pixel);
   }
@@ -140,7 +134,7 @@ mf_wl_blankrectangle(screencol left,
                       screenrow bottom)
 {
   for (screenrow r = top; r < bottom; r++) {
-    lseek(fd,WIDTH*r*4,SEEK_SET);
+    lseek(fd,screenwidth*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
       pixel = WHITE;
@@ -155,7 +149,7 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  lseek(fd,WIDTH*row*4,SEEK_SET);
+  lseek(fd,screenwidth*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
   screencol c = *tvect;
