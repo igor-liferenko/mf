@@ -72,7 +72,8 @@ mf_wl_initscreen (void)
          moreover, theoretically it is possible for some types of output devices to have some
          drawing on it from some other program which might have used it previously - so again,
          no pre-suppositions about background color of the output device must be made */
-
+//    pixel = color(rand()%255,rand()%255,rand()%255);
+TODO: this_updatescreen_is_tied_to_initscreen may be connected with this
 
     pixel = WHITE;
     write(fd, &pixel, sizeof pixel);
