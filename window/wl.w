@@ -38,8 +38,6 @@ static pid_t cpid = 0;
 
 #include <mfdisplay.h>
 
-static int this_updatescreen_is_tied_to_initscreen = 0; /* workaround {\logo METAFONT}'s
-                                                           misbehavior */
 static int pipefd[2]; /* used to determine if the child has started */
 
 int /* Return 1 if display opened successfully, else 0.  */
@@ -69,7 +67,6 @@ mf_wl_initscreen (void)
     write(fd, &pixel, sizeof pixel);
   }
 
-  this_updatescreen_is_tied_to_initscreen = 1;
   return 1;
 }
 
@@ -80,8 +77,6 @@ We use it to send signals to child.
 void
 mf_wl_updatescreen (void)
 {
-  @<Work around METAFONT's misbehavior@>@;
-
   @<Stop child program if it is already running@>@;
   @<Start child program@>@;
   @<Wait until child program is initialized@>@;
@@ -203,40 +198,10 @@ online display driver.
 
 \bigskip
 
-In the second output we see redundant calls to |blankrectangle| and |updatescreen|.
-
-Except these duplicate calls being useless, they also cause undesirable
+In the second output we see additional calls to |blankrectangle| and |updatescreen|.
+These calls cause undesirable
 small initial blinking effect in Wayland online display driver.
 
-These duplicate calls are strange and cause a question for
-what they are needed.
-
-This is an overview of the workaround:
-\medskip
-\begingroup
-\obeyspaces
-\obeylines
-\catcode`_11
-\catcode`{11
-\catcode`}11
-\tt
-+int this_updatescreen_is_tied_to_initscreen = 0;
- int
- mf_x11_initscreen (void)
- {
-+  this_updatescreen_is_tied_to_initscreen = 1;
-
- void
- mf_x11_updatescreen (void)
- {
-+  if (this_updatescreen_is_tied_to_initscreen) {
-+    this_updatescreen_is_tied_to_initscreen = 0;
-+    return;
-+  }
-\endgroup
-
-@<Work around METAFONT's misbehavior@>=
-if (this_updatescreen_is_tied_to_initscreen) {
-  this_updatescreen_is_tied_to_initscreen = 0;
-  return;
-}
+TODO: Read Volume D and understand for what these additional calls are needed, and
+how to prevent blinking.
+@^TODO@>
