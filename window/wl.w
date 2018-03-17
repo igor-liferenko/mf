@@ -27,14 +27,17 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 #ifdef WLWIN                  /* almost whole file */
 
-#undef read /* to avoid compilation error */
+#undef read
 #include <sys/wait.h>
 #include <sys/prctl.h>
+#include <mhash.h>
 
 static uint32_t pixel;
 
 static int fd;
 static pid_t cpid = 0;
+
+unsigned char prev_hash[16];
 
 #include <mfdisplay.h>
 
@@ -67,6 +70,18 @@ mf_wl_initscreen (void)
     write(fd, &pixel, sizeof pixel);
   }
 
+  MHASH td;
+  unsigned char byte;
+  unsigned char hash[16]; /* enough size for MD5 */
+  td = mhash_init(MHASH_MD5);
+  if (td == MHASH_FAILED) exit(1);
+  lseek(fd,0,SEEK_SET);
+  while (read(fd, &byte, 1) == 1)
+    mhash(td, &byte, 1);
+  mhash_deinit(td, hash);
+  for (int i = 0; i < mhash_get_block_size(MHASH_MD5); i++)
+    prev_hash[i] = hash[i];
+
   return 1;
 }
 
@@ -77,9 +92,27 @@ We use it to send signals to child.
 void
 mf_wl_updatescreen (void)
 {
-  @<Stop child program if it is already running@>@;
-  @<Start child program@>@;
-  @<Wait until child program is initialized@>@;
+  MHASH td;
+  unsigned char byte;
+  unsigned char hash[16]; /* enough size for MD5 */
+  td = mhash_init(MHASH_MD5);
+  if (td == MHASH_FAILED) exit(1);
+  lseek(fd,0,SEEK_SET);
+  while (read(fd, &byte, 1) == 1)
+    mhash(td, &byte, 1);
+  mhash_deinit(td, hash);
+  int hash_changed = 0;
+  for (int i = 0; i < mhash_get_block_size(MHASH_MD5); i++) {
+    if (hash[i] != prev_hash[i])
+      hash_changed = 1;
+    if (hash_changed)
+      prev_hash[i] = hash[i];
+  }
+  if (hash_changed) {
+    @<Stop child program if it is already running@>@;
+    @<Start child program@>@;
+    @<Wait until child program is initialized@>@;
+  }
 }
 
 @ @<Stop child...@>=
