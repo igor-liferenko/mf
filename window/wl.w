@@ -38,7 +38,7 @@ static pid_t cpid = 0;
 
 #include <mfdisplay.h>
 
-static int pipefd[2]; /* used to determine if the child has started */
+static int pipefd[2]; /* used to determine if the child has started and get on-top status */
 
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
@@ -120,8 +120,6 @@ if (cpid == 0) {
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
-    dup2(pipefd[0], STDERR_FILENO);
-    close(pipefd[0]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */

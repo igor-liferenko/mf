@@ -23,6 +23,10 @@ void terminate(int signum) {
 
 volatile int redraw = 0;
 
+int on_top = 0;
+
+//use SA RESTART
+
 @<Signal handler@>@;
 
 int main(int argc, char *argv[])
@@ -43,6 +47,10 @@ int main(int argc, char *argv[])
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
 	;
+        FILE *fp = fopen("/tmp/my","a");
+        fprintf(fp,"%d\n",on_top);
+        fclose(fp);
+        on_top++;
     }
 
     return EXIT_SUCCESS;
@@ -51,6 +59,10 @@ int main(int argc, char *argv[])
 @ @<Signal handler@>=
 void signal_handler(int signum)
 {
+  char dummy;
+  if (on_top) dummy = 0;
+  else dummy = 1;
+  write(STDOUT_FILENO, &dummy, 1);
 }
 
 @ @<Get screen resolution@>=
