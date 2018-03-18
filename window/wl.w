@@ -73,17 +73,13 @@ mf_wl_initscreen (void)
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
-Only pop-up (i.e., kill child) if the image changed after previous pop-up.
-For this is used md5.
-TODO: determine if it is not on foreground and pop-up (i.e., kill child) only in this case - if
-it is in foreground, just redraw the whole opened window with data from file
-("damage" functions seem to be appropriate for this in wayland)
-
 Using \.{strace} I found out that child sits on \\{poll} syscall. (I decreased
 resolution in texmf.cnf to see `\.{strace -p}' terminal window below graphics window.)
 
-Parent writes to pipe and sends |SIGUSR1|. On receiving this signal, child is interrupted
-and reads the pipe. Child checks if it is in foreground, it redraws screen and writes 0,
+Parent sends |SIGUSR1|. On receiving this signal, child
+checks if it is in foreground. If yes, it redraws screen
+(redraw the whole opened window with data from file
+("damage" functions seem to be appropriate for this in wayland)) and writes 0 to pipe,
 and if it is in background, it writes 1.
 If parent reads 1, it makes graphics window to pop-up by restarting child.
 
@@ -93,8 +89,7 @@ The same pipe is used which is used to determine if child has started.
 void
 mf_wl_updatescreen (void)
 {
-  char dummy;
-  write(pipefd[1], &dummy, 1);
+  char dummy; @+
   read(pipefd[0], &dummy, 1);
   if (dummy == 1) {
     @<Stop child program if it is already running@>@;

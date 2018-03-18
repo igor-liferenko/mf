@@ -21,6 +21,10 @@ void terminate(int signum) {
 @<Keep-alive@>;
 @<Get registry@>;
 
+volatile int redraw = 0;
+
+@<Signal handler@>@;
+
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
@@ -42,6 +46,11 @@ int main(int argc, char *argv[])
     }
 
     return EXIT_SUCCESS;
+}
+
+@ @<Signal handler@>=
+void signal_handler(int signum)
+{
 }
 
 @ @<Get screen resolution@>=
