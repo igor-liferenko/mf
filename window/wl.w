@@ -79,9 +79,9 @@ resolution in texmf.cnf to see `\.{strace -p}' terminal window below graphics wi
 Parent sends |SIGUSR1|. On receiving this signal, child
 checks if it is in foreground. If yes, it redraws screen
 (redraw the whole opened window with data from file
-("damage" functions seem to be appropriate for this in wayland)) and writes 0 to pipe,
-and if it is in background, it writes 1.
-If parent reads 1, it makes graphics window to pop-up by restarting child.
+("damage" functions seem to be appropriate for this in wayland)) and writes 1 to pipe,
+and if it is in background, it writes 0.
+If parent reads 0, it makes graphics window to pop-up by restarting child.
 
 The same pipe is used which is used to determine if child has started.
 
