@@ -23,6 +23,8 @@ void terminate(int signum) {
 
 int main(int argc, char *argv[])
 {
+    @<Get screen resolution@>@;
+
     @<Install signal handler@>;
 
     @<Setup wayland@>;
@@ -41,6 +43,12 @@ int main(int argc, char *argv[])
 
     return EXIT_SUCCESS;
 }
+
+@ @<Get screen resolution@>=
+int32_t screenwidth, screenheight;
+if (argc != 3) exit(EXIT_FAILURE);
+if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
+if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
 
 @ @<Install signal...@>=
 struct sigaction sa;
@@ -230,21 +238,11 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-@<Get screen resolution@>@;
 pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screenheight,
   screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
 wl_shm_pool_destroy(pool);
-
-@ FIXME: is cleanup necessary before |exit|?
-@^FIXME@>
-
-@<Get screen resolution@>=
-int32_t screenwidth, screenheight;
-if (argc != 3) exit(EXIT_FAILURE);
-if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
-if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
 
 @ @<Head...@>=
 #include <stdio.h>
