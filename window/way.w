@@ -32,11 +32,11 @@ void update(int signum)
   char dummy;
   if (on_top%2) {
     dummy = 0;
-    redraw = 1;
+    redraw = 0;
   }
   else {
     dummy = 1;
-    redraw = 0;
+    redraw = 1;
   }
   write(STDOUT_FILENO, &dummy, 1);
 }
