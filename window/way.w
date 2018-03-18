@@ -22,16 +22,22 @@ void terminate(int signum)
 @<Keep-alive@>;
 @<Get registry@>;
 
-volatile int redraw = 0;
+volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
 
-int on_top = 0;
+volatile int on_top = 0;
 
 void update(int signum)
 {
   (void) signum;
   char dummy;
-  if (on_top%2) dummy = 0;
-  else dummy = 1;
+  if (on_top%2) {
+    dummy = 0;
+    redraw = 1;
+  }
+  else {
+    dummy = 1;
+    redraw = 0;
+  }
   write(STDOUT_FILENO, &dummy, 1);
 }
 
