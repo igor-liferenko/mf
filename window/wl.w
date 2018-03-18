@@ -79,11 +79,24 @@ TODO: determine if it is not on foreground and pop-up (i.e., kill child) only in
 it is in foreground, just redraw the whole opened window with data from file
 ("damage" functions seem to be appropriate for this in wayland)
 
+Using \.{strace} I found out that child sits on \\{poll} syscall. (I decreased
+resolution in texmf.cnf to see `\.{strace -p}' terminal window below graphics window.)
+
+Parent writes to pipe and sends |SIGUSR1|. On receiving this signal, child is interrupted
+and reads the pipe. Child checks if it is in foreground, it redraws screen and writes 0,
+and if it is in background, it writes 1.
+If parent reads 1, it makes graphics window to pop-up by restarting child.
+
+The same pipe is used which is used to determine if child has started.
+
 @c
 void
 mf_wl_updatescreen (void)
 {
-  if (screen_not_on_top) {
+  char dummy;
+  write(pipefd[1], &dummy, 1);
+  read(pipefd[0], &dummy, 1);
+  if (dummy == 1) {
     @<Stop child program if it is already running@>@;
     @<Start child program@>@;
     @<Wait until child program is initialized@>@;
@@ -112,6 +125,8 @@ if (cpid == 0) {
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
+    dup2(pipefd[0], STDERR_FILENO);
+    close(pipefd[0]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
@@ -130,7 +145,7 @@ exit(EXIT_FAILURE);
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
   char dummy; @+
-  read(pipefd[0], &dummy, 1); /* blocks until |pipefd[1]| is written to in child */
+  read(pipefd[0], &dummy, 1); /* blocks until |STDOUT_FILENO| is written to in child */
 }
 
 @ @c
