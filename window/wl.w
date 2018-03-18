@@ -30,14 +30,11 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #undef read
 #include <sys/wait.h>
 #include <sys/prctl.h>
-#include <mhash.h>
 
 static uint32_t pixel;
 
 static int fd;
 static pid_t cpid = 0;
-
-unsigned char prev_hash[16];
 
 #include <mfdisplay.h>
 
@@ -70,18 +67,6 @@ mf_wl_initscreen (void)
     write(fd, &pixel, sizeof pixel);
   }
 
-  MHASH td;
-  unsigned char byte;
-  unsigned char hash[16]; /* enough size for MD5 */
-  td = mhash_init(MHASH_MD5);
-  if (td == MHASH_FAILED) exit(1);
-  lseek(fd,0,SEEK_SET);
-  while (read(fd, &byte, 1) == 1)
-    mhash(td, &byte, 1);
-  mhash_deinit(td, hash);
-  for (int i = 0; i < mhash_get_block_size(MHASH_MD5); i++)
-    prev_hash[i] = hash[i];
-
   return 1;
 }
 
@@ -98,23 +83,7 @@ it is in foreground, just redraw the whole opened window with data from file
 void
 mf_wl_updatescreen (void)
 {
-  MHASH td;
-  unsigned char byte;
-  unsigned char hash[16]; /* enough size for MD5 */
-  td = mhash_init(MHASH_MD5);
-  if (td == MHASH_FAILED) exit(1);
-  lseek(fd,0,SEEK_SET);
-  while (read(fd, &byte, 1) == 1)
-    mhash(td, &byte, 1);
-  mhash_deinit(td, hash);
-  int hash_changed = 0;
-  for (int i = 0; i < mhash_get_block_size(MHASH_MD5); i++) {
-    if (hash[i] != prev_hash[i])
-      hash_changed = 1;
-    if (hash_changed)
-      prev_hash[i] = hash[i];
-  }
-  if (hash_changed) {
+  if (screen_not_on_top) {
     @<Stop child program if it is already running@>@;
     @<Start child program@>@;
     @<Wait until child program is initialized@>@;
@@ -135,10 +104,10 @@ anyway, so it's OK.
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
-    char screenwidth_str[5];
-    char screendepth_str[5];
-    snprintf(screenwidth_str, 5, "%d", screenwidth);
-    snprintf(screendepth_str, 5, "%d", screendepth);
+    char arg1[5];
+    char arg2[5];
+    snprintf(arg1, 5, "%d", screenwidth);
+    snprintf(arg2, 5, "%d", screendepth);
     dup2(fd, STDIN_FILENO);
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
@@ -146,7 +115,7 @@ if (cpid == 0) {
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
                                                     {\logo METAFONT} exits */
       getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
-      execl("/usr/local/bin/way", "way", screenwidth_str, screendepth_str, (char *) NULL);
+      execl("/usr/local/bin/way", "way", arg1, arg2, (char *) NULL);
     @<Abort starting child program@>;
 }
 
