@@ -30,7 +30,7 @@ void update(int signum)
 {
   (void) signum;
   char dummy;
-  if (on_top) dummy = 0;
+  if (on_top%2) dummy = 0;
   else dummy = 1;
   write(STDOUT_FILENO, &dummy, 1);
 }
@@ -53,10 +53,6 @@ int main(int argc, char *argv[])
 
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
-	;
-        FILE *fp = fopen("/tmp/my","a");
-        fprintf(fp,"%d\n",on_top);
-        fclose(fp);
         on_top++;
     }
 
