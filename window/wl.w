@@ -89,7 +89,8 @@ The same pipe is used which is used to determine if child has started.
 void
 mf_wl_updatescreen (void)
 {
-  char dummy; @+
+  char dummy;
+  if (cpid) kill(cpid, SIGUSR1);
   read(pipefd[0], &dummy, 1);
   if (dummy == 1) {
     @<Stop child program if it is already running@>@;

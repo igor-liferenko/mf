@@ -13,7 +13,8 @@ from \hfil\break \.{https://jan.newmarch.name/Wayland/SharedMemory/} ?
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
-void terminate(int signum) {
+void terminate(int signum)
+{
   (void) signum;
   wl_display_disconnect(display);
   exit(0);
@@ -25,15 +26,21 @@ volatile int redraw = 0;
 
 int on_top = 0;
 
-//use SA RESTART
-
-@<Signal handler@>@;
+void update(int signum)
+{
+  (void) signum;
+  char dummy;
+  if (on_top) dummy = 0;
+  else dummy = 1;
+  write(STDOUT_FILENO, &dummy, 1);
+}
 
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
 
-    @<Install signal handler@>;
+    @<Install terminate signal handler@>;
+    @<Install update signal handler@>;
 
     @<Setup wayland@>;
     @<Create surface@>;
@@ -56,27 +63,27 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-@ @<Signal handler@>=
-void signal_handler(int signum)
-{
-  char dummy;
-  if (on_top) dummy = 0;
-  else dummy = 1;
-  write(STDOUT_FILENO, &dummy, 1);
-}
-
 @ @<Get screen resolution@>=
 int32_t screenwidth, screenheight;
 if (argc != 3) exit(EXIT_FAILURE);
 if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
 if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
 
-@ @<Install signal...@>=
-struct sigaction sa;
-sa.sa_handler = terminate;
-sa.sa_flags = 0;
-sigemptyset(&sa.sa_mask);
-sigaction(SIGINT, &sa, NULL);
+@ @<Install terminate signal...@>= {
+  struct sigaction sa;
+  sa.sa_handler = terminate;
+  sa.sa_flags = 0;
+  sigemptyset(&sa.sa_mask);
+  sigaction(SIGINT, &sa, NULL);
+}
+
+@ @<Install update signal...@>= {
+  struct sigaction sa;
+  sa.sa_handler = update;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_RESTART;
+  sigaction(SIGUSR1, &sa, NULL);
+}
 
 @ Allow {\logo METAFONT} to proceed.
 This must be done when signal handler is installed {\it and\/} when wayland is fully initialized,
