@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
 
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
+        FILE *fp = fopen("/tmp/x","a");
+        fprintf(fp,"%d\n",on_top);
+        fclose(fp);
         on_top++;
     }
 

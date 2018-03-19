@@ -85,6 +85,18 @@ If parent reads 0, it makes graphics window to pop-up by restarting child.
 
 The same pipe is used which is used to determine if child has started.
 
+Decrease resolution in \.{texmf.cnf} so that terminal window will be visible,
+run `\.{tail -n0 -f /tmp/x}' in it, inside \&{while} in \.{wayland.w} do this:
+
+\.{on\_top++;}
+\.{FILE *fp = fopen("/tmp/x","a");}\par
+\.{fprintf("%d\\n",on\_top);}\par
+\.{fclose(fp);}\par
+
+then run `\.{sleep 10; kill -SIGUSR1 `pgrep -x wayland`} in terminal
+window which must be visible below graphics screen, and then run `\.{mf test}'
+and ensure that \.{tail}'s output will not change when \.{SIGUSR1} is sent.
+
 @c
 void
 mf_wl_updatescreen (void)
