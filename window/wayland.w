@@ -31,6 +31,10 @@ with Super+Tab; this can be checked using the same test as is described with
 ``kill -SIGUSR1'' in wl.w, but not using this kill and using Super+Tab to see \.{tail}'s
 output */
 
+/* also, to check if |on_top| works correctly, add "printf(initscreen, paintrow,
+blankrectangle, updatescreen: dummy in wl.w and run "mf test" (with the same low
+resolution) */
+
 void update(int signum)
 {
   (void) signum;
@@ -64,9 +68,6 @@ int main(int argc, char *argv[])
 
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
-        FILE *fp = fopen("/tmp/x","a");
-        fprintf(fp,"%d\n",on_top);
-        fclose(fp);
         on_top++;
     }
 
