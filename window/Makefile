@@ -1,4 +1,4 @@
-wl: way
+wl: wayland
 	ctangle wl
 	gcc -DHAVE_CONFIG_H -I. -I../w2c -I.. -Wimplicit -Wreturn-type -g -O2 -c -o trap.o trap.c
 	gcc -DHAVE_CONFIG_H -I. -I../w2c -I.. -Wimplicit -Wreturn-type -g -O2 -c -o wl.o wl.c
@@ -6,14 +6,14 @@ wl: way
 	ar cruU libwindow.a trap.o wl.o
 	ranlib libwindow.a
 
-way:
-	ctangle way
-	clang -o /usr/local/bin/way way.c -lwayland-client
+wayland:
+	ctangle wayland
+	clang -o /usr/local/bin/wayland wayland.c -lwayland-client
 
 view:
 	@cweave wl >/dev/null
-	@cweave way >/dev/null
+	@cweave wayland >/dev/null
 
 print:
 	@cweave wl wayland >/dev/null
-	@cweave way wayland >/dev/null
+	@cweave wayland wayland >/dev/null
