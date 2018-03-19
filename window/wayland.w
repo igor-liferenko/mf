@@ -26,15 +26,29 @@ volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
 
 volatile int on_top = 0;
 
-/* |on_top| counter increases by one each time graphics window is switched to/from
+@ |on_top| counter increases by one each time graphics window is switched to/from
 with Super+Tab; this can be checked using the same test as is described with
 ``kill -SIGUSR1'' in wl.w, but not using this kill and using Super+Tab to see \.{tail}'s
-output */
+output
 
-/* also, to check if |on_top| works correctly, add "printf(initscreen, paintrow,
+also, to check if |on_top| works correctly, add "printf(initscreen, paintrow,
 blankrectangle, updatescreen: dummy in wl.w and run "mf test" (with the same low
-resolution) */
+resolution)
 
+Instead of using |on_top| variable try to google "how to determine if
+window is in foreground in wayland" - maybe there is an API
+
+If you use signal handler to redraw window, decrease |on_top| in it, because
+|wl_display_dispatch| will most likely be terminated, which will change
+|on_top| although window focus was not changed
+
+instead of setting |redraw| in signal handler, send SIGUSR2 from wl.w
+in "else" after reading pipe in |mf_wl_updatescreen| and redraw in
+signal handler
+
+
+
+@c
 void update(int signum)
 {
   (void) signum;
