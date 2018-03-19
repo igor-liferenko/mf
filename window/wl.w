@@ -97,6 +97,13 @@ then run `\.{sleep 10; kill -SIGUSR1 `pgrep -x wayland`} in terminal
 window which must be visible below graphics screen, and then run `\.{mf test}'
 and ensure that \.{tail}'s output will not change when \.{SIGUSR1} is sent.
 
+Pop-up (i.e., bringing the graphics window to the top) is done
+by a dirty hack to kill the window and open it again.
+Here it is used the fact that a wayland window is automatically
+brought to top when it is opened anew (we can do this, because the data is not stored in
+the window - it is stored in a separate file buffer, which is not touched by killing the
+graphics window).
+
 @c
 void
 mf_wl_updatescreen (void)
