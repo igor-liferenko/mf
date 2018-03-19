@@ -5,7 +5,7 @@ wl.o
 wl.idx
 wl.scn
 wl.tex
-way.c
-way.idx
-way.scn
-way.tex
+wayland.c
+wayland.idx
+wayland.scn
+wayland.tex
