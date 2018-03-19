@@ -26,6 +26,11 @@ volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
 
 volatile int on_top = 0;
 
+/* |on_top| counter increases by one each time graphics window is switched to/from
+with Super+Tab; this can be checked using the same test as is described with
+``kill -SIGUSR1'' in wl.w, but not using this kill and using Super+Tab to see \.{tail}'s
+output */
+
 void update(int signum)
 {
   (void) signum;
