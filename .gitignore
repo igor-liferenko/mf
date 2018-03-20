@@ -11,8 +11,8 @@ mfd.h
 mfini.c
 mfini.o
 libmf.a
-wl.dvi
-wl.ps
-wl.log
-wl.toc
+mf-wl.dvi
+mf-wl.ps
+mf-wl.log
+mf-wl.toc
 test.log
