@@ -64,32 +64,44 @@ void update(int signum)
   write(STDOUT_FILENO, &dummy, 1);
 }
 
+@ @c
+void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
+{
+    if (!redraw) return;
+    redraw = 0;
+    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+    wl_surface_commit(surface);
+}
+
+const struct wl_callback_listener frame_listener = {
+    do_redraw
+};
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
-
+    @#
     @<Install terminate signal handler@>;
     @<Install update signal handler@>;
-
+    @#
     @<Setup wayland@>;
-    @<Create surface@>;
     @<Create buffer@>;
-
-    wl_surface_attach(surface, buffer, 0, 0);
-    wl_surface_commit(surface);
-
+    @<Create surface@>;
+    @<Create callback@>@;
+    @#
+    @<Attach buffer to surface@>@;
+    @<Commit surface@>@;
+    @#
     @<Notify parent@>;
-
+    @#
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
         on_top++;
     }
-
+    @#
     return EXIT_SUCCESS;
 }
 
 @ @<Get screen resolution@>=
-int32_t screenwidth, screenheight;
 if (argc != 3) exit(EXIT_FAILURE);
 if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
 if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
@@ -173,6 +185,8 @@ struct wl_buffer *buffer;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
+struct wl_callback *frame_callback;
+int32_t screenwidth, screenheight;
 
 @ |wl_display_connect| connects to wayland server.
 
@@ -252,29 +266,9 @@ the server. In our example, we do not create an empty buffer, instead we rely on
 fact that the memory pool was previously filled with data and just pass the image
 dimensions as a parameter.
 
-@ Objects representing visible elements are called surfaces. Surfaces are rectangular
-areas, having position and size. Surface contents are filled by using buffer objects.
-During the lifetime of a surface, a couple of buffers will be attached as the surface
-contents and the server will be requested to redraw the surfaces. In this program, the
-surface object is of type |wl_shell_surface|, which is used for creating top level windows.
+@ A buffer is what your client draws into.
 
-@<Create surface@>=
-surface = wl_compositor_create_surface(compositor);
-if (surface == NULL) {
-        @<Notify parent@>;
-	exit(1);
-}
-shell_surface = wl_shell_get_shell_surface(shell, surface);
-if (shell_surface == NULL) {
-        @<Notify parent@>;
-	exit(1);
-}
-wl_shell_surface_set_fullscreen(shell_surface,
-  WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
-wl_shell_surface_add_listener(shell_surface,
-  &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
-
-@ To make the buffer visible we need to bind buffer data to a surface, that is, we
+To make the buffer visible we need to bind buffer data to a surface, that is, we
 set the surface contents to the buffer data. The bind operation also commits the
 surface to the server. In wayland there's an idea of surface ownership: either the client
 owns the surface, so that it can be drawn (and the server keeps an old copy of it), or
@@ -296,6 +290,46 @@ buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screenheight,
   screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
 wl_shm_pool_destroy(pool);
+
+@ A surface is what the compositor displays your buffer on.
+
+Objects representing visible elements are called surfaces. Surfaces are rectangular
+areas, having position and size. Surface contents are filled by using buffer objects.
+During the lifetime of a surface, a couple of buffers will be attached as the surface
+contents and the server will be requested to redraw the surfaces. In this program, the
+surface object is of type |wl_shell_surface|, which is used for creating top level windows.
+
+@<Create surface@>=
+surface = wl_compositor_create_surface(compositor);
+if (surface == NULL) {
+        @<Notify parent@>;
+	exit(1);
+}
+shell_surface = wl_shell_get_shell_surface(shell, surface);
+if (shell_surface == NULL) {
+        @<Notify parent@>;
+	exit(1);
+}
+wl_shell_surface_set_fullscreen(shell_surface,
+  WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
+wl_shell_surface_add_listener(shell_surface,
+  &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
+
+@ @<Attach buffer to surface@>=
+wl_surface_attach(surface, buffer, 0, 0);
+
+@ The commit operation tells the compositor it's time to atomically
+perform all the surface operations you've been sending it.
+Any surface requests prior to the commit have been buffered, and could have
+been requested in any order (the compositor performs them in the appropriate order during
+the commit).
+
+@<Commit surface@>=
+wl_surface_commit(surface);
+
+@ @<Create callback@>=
+frame_callback = wl_surface_frame(surface);
+wl_callback_add_listener(frame_callback, &frame_listener, NULL);
 
 @ @<Head...@>=
 #include <stdio.h>
