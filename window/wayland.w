@@ -1,15 +1,9 @@
 \let\lheader\rheader
 \datethis
 
-@s int32_t int
-@s uint32_t int
-
 \font\logo=manfnt
 
-@ FIXME: how |mmap| is supposed to fit in example
-from \hfil\break \.{https://jan.newmarch.name/Wayland/SharedMemory/} ?
-
-@c
+@ @c
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
@@ -53,24 +47,49 @@ void update(int signum)
 {
   (void) signum;
   char dummy;
-  if (on_top%2) {
+  if (on_top%2)
     dummy = 0;
-    redraw = 0;
-  }
   else {
     dummy = 1;
     redraw = 1;
   }
+  redraw=1;/*debug*/
+  dummy=1;/*debug*/
   write(STDOUT_FILENO, &dummy, 1);
 }
-
+FILE *fp;
 @ @c
+const struct wl_callback_listener frame_listener;
+int cycle=1;
 void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
-    if (!redraw) return;
-    redraw = 0;
-    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+    fprintf(fp,"x\n");
+    if (cycle == 1) {
+      bufferB = wl_shm_pool_create_buffer(pool,
+        0, screenwidth, screenheight,
+        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+        wl_surface_attach(surface, bufferB, 0, 0);
+    }
+    else if (cycle == 2) {
+      bufferC = wl_shm_pool_create_buffer(pool,
+        0, screenwidth, screenheight,
+        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+        wl_surface_attach(surface, bufferC, 0, 0);
+    }
+    else {
+      bufferC = wl_shm_pool_create_buffer(pool,
+        0, screenwidth, screenheight,
+        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+        wl_surface_attach(surface, bufferC, 0, 0);
+    }
+    cycle++;
+    cycle %= 3;
+    fprintf(stderr, "%d\n",cycle);
+    wl_callback_destroy(frame_callback);
+    frame_callback = wl_surface_frame(surface);
+    wl_callback_add_listener(frame_callback, &frame_listener, NULL);
     wl_surface_commit(surface);
+    wl_display_flush(display);
 }
 
 const struct wl_callback_listener frame_listener = {
@@ -78,6 +97,8 @@ const struct wl_callback_listener frame_listener = {
 };
 int main(int argc, char *argv[])
 {
+    fp=fopen("/tmp/x","a");
+    setbuf(fp,NULL);
     @<Get screen resolution@>@;
     @#
     @<Install terminate signal handler@>;
@@ -98,6 +119,7 @@ int main(int argc, char *argv[])
         on_top++;
     }
     @#
+    fclose(fp);
     return EXIT_SUCCESS;
 }
 
@@ -181,7 +203,7 @@ struct wl_compositor *compositor;
 struct wl_shell *shell;
 struct wl_shm *shm;
 struct wl_display *display;
-struct wl_buffer *buffer;
+struct wl_buffer *bufferA, *bufferB, *bufferC;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
@@ -286,10 +308,9 @@ Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
 pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
-buffer = wl_shm_pool_create_buffer(pool,
+bufferA = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screenheight,
   screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
-wl_shm_pool_destroy(pool);
 
 @ A surface is what the compositor displays your buffer on.
 
@@ -316,7 +337,7 @@ wl_shell_surface_add_listener(shell_surface,
   &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
 
 @ @<Attach buffer to surface@>=
-wl_surface_attach(surface, buffer, 0, 0);
+wl_surface_attach(surface, bufferA, 0, 0);
 
 @ The commit operation tells the compositor it's time to atomically
 perform all the surface operations you've been sending it.
@@ -326,6 +347,7 @@ the commit).
 
 @<Commit surface@>=
 wl_surface_commit(surface);
+wl_display_flush(display);
 
 @ @<Create callback@>=
 frame_callback = wl_surface_frame(surface);
