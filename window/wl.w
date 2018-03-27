@@ -73,29 +73,15 @@ mf_wl_initscreen (void)
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
-Using \.{strace} I found out that child sits on \\{poll} syscall. (I decreased
-resolution in texmf.cnf to see `\.{strace -p}' terminal window below graphics window.)
-
 Parent sends |SIGUSR1|. On receiving this signal, child
-checks if it is in foreground. If yes, it redraws screen
-(redraw the whole opened window with data from file
-("damage" functions seem to be appropriate for this in wayland)) and writes 1 to pipe,
+checks if it is in foreground. If yes, it writes 1 to pipe,
 and if it is in background, it writes 0.
 If parent reads 0, it makes graphics window to pop-up by restarting child.
 
 The same pipe is used which is used to determine if child has started.
 
-Decrease resolution in \.{texmf.cnf} so that terminal window will be visible,
-run `\.{tail -n0 -f /tmp/x}' in it, inside \&{while} in \.{wayland.w} do this:
-
-\.{on\_top++;}\par
-\.{FILE *fp = fopen("/tmp/x","a");}\par
-\.{fprintf("\%d\\n",on\_top);}\par
-\.{fclose(fp);}
-
-then run `\.{sleep 10; kill -SIGUSR1 `pgrep -x wayland`} in terminal
-window which must be visible below graphics screen, and then run `\.{mf test}'
-and ensure that \.{tail}'s output will not change when \.{SIGUSR1} is sent.
+Using \.{strace} I found out that child sits on \\{poll} syscall, 
+which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 
 Pop-up (i.e., bringing the graphics window to the top) is done
 by a dirty hack to kill the window and open it again.
