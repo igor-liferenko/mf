@@ -15,48 +15,17 @@ void terminate(int signum)
   exit(0);
 }
 @<Keep-alive@>;
+@<On-top detection@>@;
 @<Get registry@>;
 @<Get notified when compositor can draw@>@;
 
-volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
+volatile char on_top = 1;
 
-volatile int on_top = 0;
-
-@ |on_top| counter increases by one each time graphics window is switched to/from
-with Super+Tab; this can be checked using the same test as is described with
-``kill -SIGUSR1'' in wl.w, but not using this kill and using Super+Tab to see \.{tail}'s
-output
-
-also, to check if |on_top| works correctly, add "printf(initscreen, paintrow,
-blankrectangle, updatescreen: dummy in wl.w and run "mf test" (with the same low
-resolution)
-
-Instead of using |on_top| variable try to google "how to determine if
-window is in foreground in wayland" - maybe there is an API
-
-If you use signal handler to redraw window, decrease |on_top| in it, because
-|wl_display_dispatch| will most likely be terminated, which will change
-|on_top| although window focus was not changed
-
-instead of setting |redraw| in signal handler, send SIGUSR2 from wl.w
-in "else" after reading pipe in |mf_wl_updatescreen| and redraw in
-signal handler
-
-
-
-@c
+@ @c
 void update(int signum)
 {
   (void) signum;
-  char dummy;
-  if (on_top%2)
-    dummy = 0;
-  else {
-    dummy = 1;
-    redraw = 1;
-  }
-  redraw=1;/*debug*/
-  dummy=1;/*debug*/
+  char dummy = on_top;
   write(STDOUT_FILENO, &dummy, 1);
 }
 
@@ -74,7 +43,6 @@ int main(int argc, char *argv[])
     @<Notify parent@>;
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
-        on_top++;
     }
     return EXIT_SUCCESS;
 }
@@ -163,6 +131,7 @@ struct wl_buffer *buffer;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
+struct wl_seat *seat = NULL;
 int32_t screenwidth, screenheight;
 
 @ |wl_display_connect| connects to wayland server.
@@ -202,7 +171,7 @@ void registry_global(void *data,
     (void) data;
     (void) version;
     if (strcmp(interface, "wl_compositor") == 0)
-        compositor = wl_registry_bind(registry, 
+        compositor = wl_registry_bind(registry,
 				      id, 
 				      &wl_compositor_interface, 
 				      1);
@@ -212,6 +181,10 @@ void registry_global(void *data,
     else if (strcmp(interface, "wl_shm") == 0)
         shm = wl_registry_bind(registry, id,
                                  &wl_shm_interface, 1);
+    else if (strcmp(interface,"wl_seat") == 0) {
+        seat = wl_registry_bind (registry, id, &wl_seat_interface, 1);
+        wl_seat_add_listener(seat, &seat_listener, NULL);
+    }
 }
 
 static const struct wl_registry_listener registry_listener = {
@@ -221,7 +194,18 @@ static const struct wl_registry_listener registry_listener = {
 
 @ @<Get notified when compositor can draw@>=
 const struct wl_callback_listener frame_listener = {
-    do_redraw
+    redraw
+};
+
+@ @<On-top...@>=
+struct wl_seat_listener seat_listener = {&seat_capabilities, NULL};
+struct wl_keyboard_listener keyboard_listener = {
+  &keyboard_keymap,
+  &keyboard_enter,
+  &keyboard_leave,
+  &keyboard_key,
+  &keyboard_modifiers,
+  NULL
 };
 
 @ A main design philosophy of wayland is efficiency when dealing with graphics. Wayland
@@ -310,9 +294,9 @@ wl_display_flush(display); // ?
 wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
 
 @ @<Function prototypes@>=
-void do_redraw(void *data, struct wl_callback *callback, uint32_t time);
+void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
-void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
+void redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
     (void) data;
     wl_callback_destroy(callback);
@@ -320,6 +304,86 @@ void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
     wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
+}
+
+@ @<Function prototypes@>=
+void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
+  struct wl_surface *surface, struct wl_array *keys);
+@ @c
+void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
+  struct wl_surface *surface, struct wl_array *keys) {
+  (void) data;
+  (void) keyboard;
+  (void) serial;
+  (void) surface;
+  (void) keys;
+  on_top=1;
+}
+
+@ @<Function prototypes@>=
+void keyboard_leave(void *data, struct wl_keyboard *keyboard, 
+  uint32_t serial, struct wl_surface *surface);
+@ @c
+void keyboard_leave(void *data, struct wl_keyboard *keyboard,
+  uint32_t serial, struct wl_surface *surface) {
+  (void) data;
+  (void) keyboard;
+  (void) serial;
+  (void) surface;
+  on_top=0;
+}
+
+@ @<Function prototypes@>=
+void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities);
+@ @c
+void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities) {
+  (void) data;
+        if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD) {
+                struct wl_keyboard *keyboard = wl_seat_get_keyboard (seat);
+                wl_keyboard_add_listener (keyboard, &keyboard_listener, NULL);
+        }
+}
+
+@ @<Function prototypes@>=
+void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
+mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group);
+@ @c
+void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
+mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group) {
+  (void) data;
+  (void) keyboard;
+  (void) serial;
+  (void) mods_depressed;
+  (void) mods_latched;
+  (void) mods_locked;
+  (void) group;
+}
+
+@ @<Function prototypes@>=
+void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
+uint32_t size);
+@ @c
+void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
+uint32_t size) {
+  (void) data;
+  (void) keyboard;
+  (void) format;
+  (void) fd;
+  (void) size;
+}
+
+@ @<Function prototypes@>=
+void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
+uint32_t key, uint32_t state);
+@ @c
+void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
+uint32_t key, uint32_t state) {
+  (void) data;
+  (void) keyboard;
+  (void) serial;
+  (void) time;
+  (void) key;
+  (void) state;
 }
 
 @ @<Head...@>=
