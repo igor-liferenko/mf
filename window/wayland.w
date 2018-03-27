@@ -172,8 +172,8 @@ void registry_global(void *data,
     (void) version;
     if (strcmp(interface, "wl_compositor") == 0)
         compositor = wl_registry_bind(registry,
-				      id, 
-				      &wl_compositor_interface, 
+				      id,
+				      &wl_compositor_interface,
 				      1);
     else if (strcmp(interface, "wl_shell") == 0)
         shell = wl_registry_bind(registry, id,
@@ -321,7 +321,7 @@ void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
 }
 
 @ @<Function prototypes@>=
-void keyboard_leave(void *data, struct wl_keyboard *keyboard, 
+void keyboard_leave(void *data, struct wl_keyboard *keyboard,
   uint32_t serial, struct wl_surface *surface);
 @ @c
 void keyboard_leave(void *data, struct wl_keyboard *keyboard,
