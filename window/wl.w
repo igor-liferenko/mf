@@ -34,6 +34,7 @@ automatically has the pid of Wayland process, which is used to send signals to i
 static uint32_t pixel;
 
 static int fd;
+static FILE *fp;
 static pid_t cpid = 0;
 
 #include <mfdisplay.h>
@@ -60,12 +61,13 @@ mf_wl_initscreen (void)
     unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
   free(name);
   if (fd == -1) return 0;
-
+  fp = fdopen(fd, "w");
   for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
                                                          (i.e., blank the screen) */
     pixel = WHITE;
-    write(fd, &pixel, sizeof pixel);
+    fwrite(&pixel, sizeof pixel, 1, fp);
   }
+  fflush(fp);
 
   return 1;
 }
@@ -125,7 +127,7 @@ if (cpid == 0) {
     snprintf(arg1, 5, "%d", screenwidth);
     snprintf(arg2, 5, "%d", screendepth);
     dup2(fd, STDIN_FILENO);
-    close(fd);
+    fclose(fp);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
@@ -161,8 +163,9 @@ mf_wl_blankrectangle(screencol left,
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
       pixel = WHITE;
-      write(fd, &pixel, sizeof pixel);
+      fwrite(&pixel, sizeof pixel, 1, fp);
     }
+    fflush(fp);
   }
 }
 
@@ -183,11 +186,12 @@ mf_wl_paintrow(screenrow row,
              pixel = WHITE;
            else
              pixel = BLACK;
-           write(fd, &pixel, sizeof pixel);
+           fwrite(&pixel, sizeof pixel, 1, fp);
            c++;
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
+  fflush(fp);
 }
 
 #else
