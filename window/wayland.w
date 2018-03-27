@@ -68,8 +68,8 @@ int main(int argc, char *argv[])
     @<Setup wayland@>;
     @<Create surface@>;
     @<Create buffer@>;
-    @<Request ``compositor free'' notification@>@;
     @<Attach buffer to surface@>@;
+    @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
     @<Notify parent@>;
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
@@ -248,34 +248,7 @@ the server. In our example, we do not create an empty buffer, instead we rely on
 fact that the memory pool was previously filled with data and just pass the image
 dimensions as a parameter.
 
-@ A buffer is what your client draws into.
-
-To make the buffer visible we need to bind buffer data to a surface, that is, we
-set the surface contents to the buffer data. The bind operation also commits the
-surface to the server. In wayland there's an idea of surface ownership: either the client
-owns the surface, so that it can be drawn (and the server keeps an old copy of it), or
-the server owns the surface, when the client can't change it because the server is
-drawing it on the screen. For transfering the ownership to the server, there's the
-commit request and for sending the ownership back to the client, the server sends a
-release event. In a generic application, the surface will be moved back and forth, but
-in this program it's enough to commit only once, as part of the bind operation.
-
-In the Wayland shared memory model, an area of shared memory is created using the
-file descriptor for a file. This memory is then mapped into a Wayland structure
-called a pool, which represents a block of data of some kind, linked to the
-global Wayland shared memory object. This is then used to create a
-Wayland buffer, which is used for most of the window operations later.
-
-@<Create buffer@>=
-pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
-buffer = wl_shm_pool_create_buffer(pool,
-        0, screenwidth, screenheight,
-        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
-wl_shm_pool_destroy(pool);
-
-@ A surface is what the compositor displays your buffer on.
-
-Objects representing visible elements are called surfaces. Surfaces are rectangular
+@ Objects representing visible elements are called surfaces. Surfaces are rectangular
 areas, having position and size. Surface contents are filled by using buffer objects.
 During the lifetime of a surface, a couple of buffers will be attached as the surface
 contents and the server will be requested to redraw the surfaces. In this program, the
@@ -296,6 +269,29 @@ wl_shell_surface_set_fullscreen(shell_surface,
   WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 wl_shell_surface_add_listener(shell_surface,
   &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
+
+@ To make the buffer visible we need to bind buffer data to a surface, that is, we
+set the surface contents to the buffer data. The bind operation also commits the
+surface to the server. In wayland there's an idea of surface ownership: either the client
+owns the surface, so that it can be drawn (and the server keeps an old copy of it), or
+the server owns the surface, when the client can't change it because the server is
+drawing it on the screen. For transfering the ownership to the server, there's the
+commit request and for sending the ownership back to the client, the server sends a
+release event. In a generic application, the surface will be moved back and forth, but
+in this program it's enough to commit only once, as part of the bind operation.
+
+In the Wayland shared memory model, an area of shared memory is created using the
+file descriptor for a file. This memory is then mapped into a Wayland structure
+called a pool, which represents a block of data of some kind, linked to the
+global Wayland shared memory object. This is then used to create a
+Wayland buffer, which is used for most of the window operations later.
+
+@<Create buffer@>=
+pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
+buffer = wl_shm_pool_create_buffer(pool,
+  0, screenwidth, screenheight,
+  screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+wl_shm_pool_destroy(pool);
 
 @ @<Attach buffer to surface@>=
 wl_surface_attach(surface, buffer, 0, 0);
