@@ -3,7 +3,14 @@
 
 \font\logo=manfnt
 
-@ @c
+@ NOTE: in present code |redraw| is constantly called, even when window is not on top,
+but this is all that I could come up with for now...
+Ideally, |redraw| must be called from |SIGUSR1| handler, and instead of
+|redraw| which is now must be used callback which sets global variable indicating
+that compositor is available for redraw and is SIGUSR1 handler wait until
+compositor is available, and block all other signals in it.
+
+@c
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
