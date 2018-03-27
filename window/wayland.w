@@ -59,33 +59,23 @@ void update(int signum)
   dummy=1;/*debug*/
   write(STDOUT_FILENO, &dummy, 1);
 }
-FILE *fp;
 
 int main(int argc, char *argv[])
 {
-    fp=fopen("/tmp/x","a");
-    setbuf(fp,NULL);
     @<Get screen resolution@>@;
-    @#
     @<Install terminate signal handler@>;
     @<Install update signal handler@>;
-    @#
     @<Setup wayland@>;
-    @<Create buffer@>;
     @<Create surface@>;
+    @<Create buffer@>;
     @<Request ``compositor free'' notification@>@;
-    @#
     @<Attach buffer to surface@>@;
     @<Commit surface@>@;
-    @#
     @<Notify parent@>;
-    @#
     while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
                                                     when window focus is changed */
         on_top++;
     }
-    @#
-    fclose(fp);
     return EXIT_SUCCESS;
 }
 
@@ -328,7 +318,6 @@ void do_redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
 void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
-    fprintf(fp,"x\n");
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
