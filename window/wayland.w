@@ -7,6 +7,7 @@
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
+@<Function prototypes@>@;
 void terminate(int signum)
 {
   (void) signum;
@@ -15,6 +16,7 @@ void terminate(int signum)
 }
 @<Keep-alive@>;
 @<Get registry@>;
+@<Get notified when it is a good time to draw@>@;
 
 volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
 
@@ -58,43 +60,46 @@ void update(int signum)
   write(STDOUT_FILENO, &dummy, 1);
 }
 FILE *fp;
+@ |wl_surface_attach(surf, buf)| +
+|wl_surface_commit(surf)| will display 'buf' for that surface. At that
+point, the compositor owns that buffer, so you should stop drawing on
+it. When the compositor has finished with a buffer, it will send you a
+|wl_buffer.release| event. You can sync your paint clock to the
+compositor's repaint loop with |wl_surface_frame|.
+
+So, the normal workflow is:
+
+  - create surface S, buffer A, buffer B
+
+  - draw first frame into buffer A
+
+  - call wl_surface_frame(S) + wl_surface_attach(S, A) +
+
+wl_surface_commit(S) + wl_display_flush()
+  - go to sleep
+  - receive completion for wl_surface_frame callback
+  - draw second frame into buffer B
+  - call wl_surface_frame(S) + wl_surface_attach(S, B) +
+wl_surface_commit(S) + wl_display_flush()
+  - compositor now owns both buffers, so don't touch any
+  - receive wl_buffer.release event for buffer A - now unused
+  - receive completion for wl_surface_frame callback
+  - draw third frame into buffer A
+  - ...
+
+@<Function prototypes@>=
+void do_redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
-const struct wl_callback_listener frame_listener;
-int cycle=1;
 void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
     fprintf(fp,"x\n");
-    if (cycle == 1) {
-      bufferB = wl_shm_pool_create_buffer(pool,
-        0, screenwidth, screenheight,
-        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
-        wl_surface_attach(surface, bufferB, 0, 0);
-    }
-    else if (cycle == 2) {
-      bufferC = wl_shm_pool_create_buffer(pool,
-        0, screenwidth, screenheight,
-        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
-        wl_surface_attach(surface, bufferC, 0, 0);
-    }
-    else {
-      bufferC = wl_shm_pool_create_buffer(pool,
-        0, screenwidth, screenheight,
-        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
-        wl_surface_attach(surface, bufferC, 0, 0);
-    }
-    cycle++;
-    cycle %= 3;
-    fprintf(stderr, "%d\n",cycle);
-    wl_callback_destroy(frame_callback);
-    frame_callback = wl_surface_frame(surface);
-    wl_callback_add_listener(frame_callback, &frame_listener, NULL);
+    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+    wl_callback_destroy(callback);
+    wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
     wl_surface_commit(surface);
-    wl_display_flush(display);
+    wl_display_flush(display); // ?
 }
 
-const struct wl_callback_listener frame_listener = {
-    do_redraw
-};
 int main(int argc, char *argv[])
 {
     fp=fopen("/tmp/x","a");
@@ -203,11 +208,10 @@ struct wl_compositor *compositor;
 struct wl_shell *shell;
 struct wl_shm *shm;
 struct wl_display *display;
-struct wl_buffer *bufferA, *bufferB, *bufferC;
+struct wl_buffer *buffer;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
-struct wl_callback *frame_callback;
 int32_t screenwidth, screenheight;
 
 @ |wl_display_connect| connects to wayland server.
@@ -264,6 +268,11 @@ static const struct wl_registry_listener registry_listener = {
     NULL
 };
 
+@ @<Get notified when it is a good time to draw@>=
+const struct wl_callback_listener frame_listener = {
+    do_redraw
+};
+
 @ A main design philosophy of wayland is efficiency when dealing with graphics. Wayland
 accomplishes that by sharing memory areas between the client applications and the display
 server, so that no copies are involved. The essential element that is shared between client
@@ -308,9 +317,10 @@ Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
 pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
-bufferA = wl_shm_pool_create_buffer(pool,
-  0, screenwidth, screenheight,
-  screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+buffer = wl_shm_pool_create_buffer(pool,
+        0, screenwidth, screenheight,
+        screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+wl_shm_pool_destroy(pool);
 
 @ A surface is what the compositor displays your buffer on.
 
@@ -337,7 +347,7 @@ wl_shell_surface_add_listener(shell_surface,
   &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
 
 @ @<Attach buffer to surface@>=
-wl_surface_attach(surface, bufferA, 0, 0);
+wl_surface_attach(surface, buffer, 0, 0);
 
 @ The commit operation tells the compositor it's time to atomically
 perform all the surface operations you've been sending it.
@@ -350,8 +360,7 @@ wl_surface_commit(surface);
 wl_display_flush(display);
 
 @ @<Create callback@>=
-frame_callback = wl_surface_frame(surface);
-wl_callback_add_listener(frame_callback, &frame_listener, NULL);
+wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
 
 @ @<Head...@>=
 #include <stdio.h>
