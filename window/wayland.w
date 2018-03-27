@@ -16,7 +16,7 @@ void terminate(int signum)
 }
 @<Keep-alive@>;
 @<Get registry@>;
-@<Get notified when it is a good time to draw@>@;
+@<Get notified when compositor can draw@>@;
 
 volatile int redraw = 0; /* TODO: redraw screen (see "damage" in wl.w) */
 
@@ -60,45 +60,6 @@ void update(int signum)
   write(STDOUT_FILENO, &dummy, 1);
 }
 FILE *fp;
-@ |wl_surface_attach(surf, buf)| +
-|wl_surface_commit(surf)| will display 'buf' for that surface. At that
-point, the compositor owns that buffer, so you should stop drawing on
-it. When the compositor has finished with a buffer, it will send you a
-|wl_buffer.release| event. You can sync your paint clock to the
-compositor's repaint loop with |wl_surface_frame|.
-
-So, the normal workflow is:
-
-  - create surface S, buffer A, buffer B
-
-  - draw first frame into buffer A
-
-  - call wl_surface_frame(S) + wl_surface_attach(S, A) +
-
-wl_surface_commit(S) + wl_display_flush()
-  - go to sleep
-  - receive completion for wl_surface_frame callback
-  - draw second frame into buffer B
-  - call wl_surface_frame(S) + wl_surface_attach(S, B) +
-wl_surface_commit(S) + wl_display_flush()
-  - compositor now owns both buffers, so don't touch any
-  - receive wl_buffer.release event for buffer A - now unused
-  - receive completion for wl_surface_frame callback
-  - draw third frame into buffer A
-  - ...
-
-@<Function prototypes@>=
-void do_redraw(void *data, struct wl_callback *callback, uint32_t time);
-@ @c
-void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
-{
-    fprintf(fp,"x\n");
-    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
-    wl_callback_destroy(callback);
-    wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
-    wl_surface_commit(surface);
-    wl_display_flush(display); // ?
-}
 
 int main(int argc, char *argv[])
 {
@@ -112,7 +73,7 @@ int main(int argc, char *argv[])
     @<Setup wayland@>;
     @<Create buffer@>;
     @<Create surface@>;
-    @<Create callback@>@;
+    @<Request ``compositor free'' notification@>@;
     @#
     @<Attach buffer to surface@>@;
     @<Commit surface@>@;
@@ -268,7 +229,7 @@ static const struct wl_registry_listener registry_listener = {
     NULL
 };
 
-@ @<Get notified when it is a good time to draw@>=
+@ @<Get notified when compositor can draw@>=
 const struct wl_callback_listener frame_listener = {
     do_redraw
 };
@@ -357,10 +318,24 @@ the commit).
 
 @<Commit surface@>=
 wl_surface_commit(surface);
-wl_display_flush(display);
+wl_display_flush(display); // ?
 
-@ @<Create callback@>=
+@ @<Request ``compositor free'' notification@>=
 wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
+
+@ @<Function prototypes@>=
+void do_redraw(void *data, struct wl_callback *callback, uint32_t time);
+@ @c
+void do_redraw(void *data, struct wl_callback *callback, uint32_t time)
+{
+    fprintf(fp,"x\n");
+    (void) data;
+    wl_callback_destroy(callback);
+    (void) time;
+    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+    @<Request ``compositor free'' notification@>@;
+    @<Commit surface@>@;
+}
 
 @ @<Head...@>=
 #include <stdio.h>
