@@ -67,7 +67,6 @@ mf_wl_initscreen (void)
     pixel = WHITE;
     fwrite(&pixel, sizeof pixel, 1, fp);
   }
-  fflush(fp);
 
   return 1;
 }
@@ -91,6 +90,7 @@ which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 void
 mf_wl_updatescreen (void)
 {
+  fflush(fp);
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -160,7 +160,6 @@ mf_wl_blankrectangle(screencol left,
       pixel = WHITE;
       fwrite(&pixel, sizeof pixel, 1, fp);
     }
-    fflush(fp);
   }
 }
 
@@ -186,7 +185,6 @@ mf_wl_paintrow(screenrow row,
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
-  fflush(fp);
 }
 
 #else
