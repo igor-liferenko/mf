@@ -54,7 +54,7 @@ static int pipefd[2]; /* used to determine if the child has started and get on-t
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
-  mytime(initscreen);
+  /* mytime(initscreen); */ /* FIXME */
   if (pipe(pipefd) == -1)
     return 0;
 
@@ -78,6 +78,7 @@ mf_wl_initscreen (void)
     pixel = WHITE;
     fwrite(&pixel, sizeof pixel, 1, fp);
   }
+  fflush(fp); /* FIXME */
 
   return 1;
 }
@@ -102,7 +103,7 @@ void
 mf_wl_updatescreen (void)
 {
   fflush(fp);
-  mytime(fflush);
+  /* mytime(fflush); */ /* FIXME */
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -165,7 +166,7 @@ mf_wl_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  mytime(blankrect);
+  /* mytime(blankrect); */ /* FIXME */
   for (screenrow r = top; r < bottom; r++) {
     lseek(fd,screenwidth*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
@@ -174,7 +175,7 @@ mf_wl_blankrectangle(screencol left,
       fwrite(&pixel, sizeof pixel, 1, fp);
     }
   }
-//  fflush(fp);
+  fflush(fp); /* FIXME */
 }
 
 void
@@ -183,7 +184,7 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  mytime(paintrow);
+  /* mytime(paintrow); */ /* FIXME */
   lseek(fd,screenwidth*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
@@ -200,7 +201,7 @@ mf_wl_paintrow(screenrow row,
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
-//  fflush(fp);
+  fflush(fp); /* FIXME */
 }
 
 #else

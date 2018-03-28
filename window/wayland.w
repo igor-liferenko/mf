@@ -37,7 +37,7 @@ void update(int signum)
   mf_update = 1;
   char dummy = on_top;
   write(STDOUT_FILENO, &dummy, 1);
-  mytime(update);
+  /* mytime(update); */ /* FIXME */
 }
 sigset_t update_signal;
 int main(int argc, char *argv[])
@@ -307,19 +307,25 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
 void redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
+#if 1==0
   FILE *fp=fopen("/tmp/x","a");
   fprintf(fp,"x\n");
   fclose(fp);
+#endif
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
+#if 1==0
     if (mf_update) {
+#endif
       wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+#if 1==0
       sigprocmask(SIG_BLOCK, &update_signal, NULL);
-      mytime(redraw);
+      /* mytime(redraw); */ /* FIXME */
       mf_update=0;
       sigprocmask(SIG_UNBLOCK, &update_signal, NULL);
     }
+#endif
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
 }
