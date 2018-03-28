@@ -64,7 +64,7 @@ mf_wl_initscreen (void)
     unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
   free(name);
   if (fd == -1) return 0;
-//  fp = fdopen(fd, "w");
+
   for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
                                                          (i.e., blank the screen) */
     pixel = WHITE;

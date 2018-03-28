@@ -281,7 +281,7 @@ if (shm_data == MAP_FAILED) {
   close(fd);
   exit(1);
 }
-lseek(STDIN_FILENO, 0, SEEK_SET); // ?
+lseek(STDIN_FILENO, 0, SEEK_SET);
 pixel_t *pixel = shm_data;
 for (int n = 0; n < screenwidth * screendepth; n++) {
   read(STDIN_FILENO, pixel, 4);
@@ -304,7 +304,6 @@ the commit).
 
 @<Commit surface@>=
 wl_surface_commit(surface);
-wl_display_flush(display); // ?
 
 @ The notification will only be posted for one frame unless requested again.
 The object returned by this request will be destroyed by the compositor after
@@ -329,7 +328,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) time;
     if (mf_update) {
       mf_update=0;
-      lseek(STDIN_FILENO,0,SEEK_SET); // ?
+      lseek(STDIN_FILENO,0,SEEK_SET);
       pixel_t *pixel = shm_data;
       for (int n = 0; n < screenwidth * screendepth; n++) {
         read(STDIN_FILENO, pixel, 4);
