@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 @ @<Get screen resolution@>=
 if (argc != 3) exit(EXIT_FAILURE);
 if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
-if (sscanf(argv[2], "%d", &screenheight) != 1) exit(EXIT_FAILURE);
+if (sscanf(argv[2], "%d", &screendepth) != 1) exit(EXIT_FAILURE);
 
 @ @<Install terminate signal...@>= {
   struct sigaction sa;
@@ -138,7 +138,7 @@ void *shm_data;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
-int32_t screenwidth, screenheight;
+int32_t screenwidth, screendepth;
 
 @ |wl_display_connect| connects to wayland server.
 
@@ -269,12 +269,12 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-int fd = os_create_anonymous_file(screenwidth*screenheight*(int32_t)sizeof(pixel_t));
+int fd = os_create_anonymous_file(screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 if (fd < 0) {
   fprintf(stderr, "creating a buffer file failed: %m\n");
   exit(1);
 }
-shm_data = mmap(NULL, (size_t)(screenwidth*screenheight)*sizeof(pixel_t),
+shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
   PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   fprintf(stderr, "mmap failed: %m\n");
@@ -283,13 +283,13 @@ if (shm_data == MAP_FAILED) {
 }
 lseek(STDIN_FILENO, 0, SEEK_SET); // ?
 pixel_t *pixel = shm_data;
-for (int n = 0; n < screenwidth * screenheight; n++) {
+for (int n = 0; n < screenwidth * screendepth; n++) {
   read(STDIN_FILENO, pixel, 4);
   pixel++;
 }
-pool = wl_shm_create_pool(shm, fd, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
+pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
-  0, screenwidth, screenheight,
+  0, screenwidth, screendepth,
   screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
 wl_shm_pool_destroy(pool);
 
@@ -331,11 +331,11 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
       mf_update=0;
       lseek(STDIN_FILENO,0,SEEK_SET); // ?
       pixel_t *pixel = shm_data;
-      for (int n = 0; n < screenwidth * screenheight; n++) {
+      for (int n = 0; n < screenwidth * screendepth; n++) {
         read(STDIN_FILENO, pixel, 4);
         pixel++;
       }
-      wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+      wl_surface_damage(surface, 0, 0, screenwidth, screendepth);
       char dummy = 1;
       write(STDOUT_FILENO, &dummy, 1);
     }
