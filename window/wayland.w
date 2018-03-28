@@ -173,7 +173,9 @@ if (compositor == NULL) {
 	exit(1);
 }
 
-@ Binding is done via |wl_registry_add_listener| in another section.
+@ Whenever something is added to the registry our program will be notified by wayland
+running this callback.
+This callback is assigned via |wl_registry_add_listener| in another section.
 
 @<Get registry@>=
 void registry_global(void *data,
@@ -193,10 +195,7 @@ void registry_global(void *data,
     else if (strcmp(interface, "wl_shm") == 0)
         shm = wl_registry_bind(registry, id,
                                  &wl_shm_interface, 1);
-    else if (strcmp(interface,"wl_seat") == 0) {
-        seat = wl_registry_bind (registry, id, &wl_seat_interface, 1);
-        wl_seat_add_listener(seat, &seat_listener, NULL);
-    }
+    @<Get seat from the registry@>@;
 }
 
 static const struct wl_registry_listener registry_listener = {
@@ -330,8 +329,14 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 @ @<Global...@>=
 struct wl_seat *seat = NULL;
 
+@ @<Get seat from the registry@>=
+else if (strcmp(interface,"wl_seat") == 0) {
+  seat = wl_registry_bind (registry, id, &wl_seat_interface, 1);
+  wl_seat_add_listener(seat, &seat_listener, NULL);
+}
+
 @ @<On-top...@>=
-struct wl_seat_listener seat_listener = {&seat_capabilities, NULL};
+struct wl_seat_listener seat_listener = { &seat_capabilities, NULL };
 struct wl_keyboard_listener keyboard_listener = {
   &keyboard_keymap,
   &keyboard_enter,
