@@ -18,8 +18,8 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 @d color(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
-@d BLACK color(0,0,0)       /* 0x0 */         /* use black and white */
-@d WHITE color(255,253,113) /* 0xffffffff */  /* and make it independent of byte order */
+@d BLACK color(0,0,0)       /* 0x0 */
+@d WHITE color(255,253,113) /* 0xff00 */
 
 @c
 #define	EXTERN extern /* needed for \.{mfd.h} */
@@ -31,20 +31,9 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #include <sys/wait.h>
 #include <sys/prctl.h>
 
-#include <time.h>
-#define mytime(x)   struct timespec tms; \
-  if (timespec_get(&tms, TIME_UTC)) { \
-    int64_t micros = tms.tv_sec * 1000000; \
-    micros += tms.tv_nsec/1000; \
-    if (tms.tv_nsec % 1000 >= 500) ++micros; \
-    fprintf(stderr, "\n==" #x ":\t%"PRId64"\n", micros); \
-  }
-
-
 static uint32_t pixel;
 
 static int fd;
-static FILE *fp;
 static pid_t cpid = 0;
 
 #include <mfdisplay.h>
@@ -54,7 +43,6 @@ static int pipefd[2]; /* used to determine if the child has started and get on-t
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
-  /* mytime(initscreen); */ /* FIXME */
   if (pipe(pipefd) == -1)
     return 0;
 
@@ -72,13 +60,12 @@ mf_wl_initscreen (void)
     unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
   free(name);
   if (fd == -1) return 0;
-  fp = fdopen(fd, "w");
+//  fp = fdopen(fd, "w");
   for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
                                                          (i.e., blank the screen) */
     pixel = WHITE;
-    fwrite(&pixel, sizeof pixel, 1, fp);
+    write(fd, &pixel, sizeof pixel);
   }
-  fflush(fp); /* FIXME */
 
   return 1;
 }
@@ -102,8 +89,6 @@ which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 void
 mf_wl_updatescreen (void)
 {
-  fflush(fp);
-  /* mytime(fflush); */ /* FIXME */
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -135,7 +120,7 @@ if (cpid == 0) {
     snprintf(arg1, 5, "%d", screenwidth);
     snprintf(arg2, 5, "%d", screendepth);
     dup2(fd, STDIN_FILENO);
-    fclose(fp);
+    close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
@@ -166,16 +151,13 @@ mf_wl_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  /* mytime(blankrect); */ /* FIXME */
   for (screenrow r = top; r < bottom; r++) {
     lseek(fd,screenwidth*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
       pixel = WHITE;
-      fwrite(&pixel, sizeof pixel, 1, fp);
+      write(fd, &pixel, sizeof pixel);
     }
-    fflush(fp); /* FIXME (and why if we put it after outermost "for" instead, screen
-      becomes broken when we run "mf cmr10"?) */
   }
 }
 
@@ -185,7 +167,6 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  /* mytime(paintrow); */ /* FIXME */
   lseek(fd,screenwidth*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
@@ -197,12 +178,11 @@ mf_wl_paintrow(screenrow row,
              pixel = WHITE;
            else
              pixel = BLACK;
-           fwrite(&pixel, sizeof pixel, 1, fp);
+             write(fd, &pixel, sizeof pixel);
            c++;
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
-  fflush(fp); /* FIXME */
 }
 
 #else

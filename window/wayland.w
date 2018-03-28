@@ -5,14 +5,6 @@
 
 @ @c
 @<Header files@>;
-#define mytime(x)   struct timespec tms; \
-  if (timespec_get(&tms, TIME_UTC)) { \
-    int64_t micros = tms.tv_sec * 1000000; \
-    micros += tms.tv_nsec/1000; \
-    if (tms.tv_nsec % 1000 >= 500) ++micros; \
-    fprintf(stderr, #x ": %"PRId64"\n", micros); \
-  }
-
 typedef uint32_t pixel_t;
 @<Global...@>;
 @<Function prototypes@>@;
@@ -35,9 +27,10 @@ void update(int signum)
 {
   (void) signum;
   mf_update = 1;
-  char dummy = on_top;
-  write(STDOUT_FILENO, &dummy, 1);
-  /* mytime(update); */ /* FIXME */
+  if (on_top == 0) {
+    char dummy = on_top;
+    write(STDOUT_FILENO, &dummy, 1);
+  }
 }
 sigset_t update_signal;
 int main(int argc, char *argv[])
@@ -315,17 +308,15 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
-#if 1==0
     if (mf_update) {
-#endif
-      wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
-#if 1==0
-      sigprocmask(SIG_BLOCK, &update_signal, NULL);
-      /* mytime(redraw); */ /* FIXME */
       mf_update=0;
-      sigprocmask(SIG_UNBLOCK, &update_signal, NULL);
+      wl_buffer_destroy(buffer);
+      lseek(STDIN_FILENO,0,SEEK_SET);
+      @<Create buffer@>@;
+      @<Attach...@>@;
+      char dummy = 1;
+      write(STDOUT_FILENO, &dummy, 1);
     }
-#endif
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
 }
