@@ -16,10 +16,10 @@ because the child programm cannot terminate---it is a general rule for all Wayla
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-@d color(X,R,G,B) (X << 24 | R << 16 | G << 8 | B)
+@d color(R,G,B) (R << 16 | G << 8 | B)
   /* color is set in XRGB format (X byte is not used for anything) */
-@d BLACK color(0,0,0,0)
-@d WHITE color(255,255,255,255)
+@d BLACK color(0,0,0)       /* 0x0 */         /* use black and white */
+@d WHITE color(255,253,113) /* 0xffffffff */  /* and make it independent of byte order */
 
 @c
 #define	EXTERN extern /* needed for \.{mfd.h} */
