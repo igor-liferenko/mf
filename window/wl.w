@@ -78,19 +78,14 @@ We use it to send signals to child.
 Parent sends |SIGUSR1|. On receiving this signal, child
 checks if it is in foreground. If yes, it writes 1 to pipe,
 and if it is in background, it writes 0.
-If parent reads 0, it makes graphics window to pop-up by restarting child.
+If parent reads 0, it makes graphics window to pop-up by restarting child
+(we can do this, because the data is not stored in
+the window --- it is stored in a separate file buffer).
 
 The same pipe is used which is used to determine if child has started.
 
 Using \.{strace} I found out that child sits on \\{poll} syscall, 
 which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
-
-Pop-up (i.e., bringing the graphics window to the top) is done
-by a dirty hack to kill the window and open it again.
-Here it is used the fact that a wayland window is automatically
-brought to top when it is opened anew (we can do this, because the data is not stored in
-the window - it is stored in a separate file buffer, which is not touched by killing the
-graphics window).
 
 @c
 void
