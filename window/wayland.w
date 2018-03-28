@@ -3,14 +3,7 @@
 
 \font\logo=manfnt
 
-@ NOTE: in present code |redraw| is constantly called, even when window is not on top,
-but this is all that I could come up with for now...
-Ideally, |redraw| must be called from |SIGUSR1| handler, and instead of
-|redraw| which is now must be used callback which sets global variable indicating
-that compositor is available for redraw and is SIGUSR1 handler wait until
-compositor is available, and block all other signals in it.
-
-@c
+@ @c
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
@@ -27,18 +20,22 @@ void terminate(int signum)
 @<Get notified when compositor can draw@>@;
 
 volatile char on_top = 1;
+volatile char mf_update = 0;
 
 @ @c
 void update(int signum)
 {
   (void) signum;
+  mf_update = 1;
   char dummy = on_top;
   write(STDOUT_FILENO, &dummy, 1);
 }
-
+sigset_t update_signal;
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
+    sigemptyset(&update_signal);
+    sigaddset(&update_signal, SIGUSR1);
     @<Install terminate signal handler@>;
     @<Install update signal handler@>;
     @<Setup wayland@>;
@@ -301,10 +298,15 @@ the commit).
 wl_surface_commit(surface);
 wl_display_flush(display); // ?
 
-@ @<Request ``compositor free'' notification@>=
+@ The notification will only be posted for one frame unless requested again.
+The object returned by this request will be destroyed by the compositor after
+the callback is fired and as such the client must not attempt to use it after that point.
+
+@<Request ``compositor free'' notification@>=
 wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
 
-@ @<Function prototypes@>=
+@ Damage only after update.
+@<Function prototypes@>=
 void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
 void redraw(void *data, struct wl_callback *callback, uint32_t time)
@@ -312,7 +314,12 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
-    wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+    if (mf_update) {
+      wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
+      sigprocmask(SIG_BLOCK, &update_signal, NULL);
+      mf_update=0;
+      sigprocmask(SIG_UNBLOCK, &update_signal, NULL);
+    }
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
 }
