@@ -174,8 +174,9 @@ mf_wl_blankrectangle(screencol left,
       pixel = WHITE;
       fwrite(&pixel, sizeof pixel, 1, fp);
     }
+    fflush(fp); /* FIXME (and why if we put it after outermost "for" instead, screen
+      becomes broken when we run "mf cmr10"?) */
   }
-  fflush(fp); /* FIXME */
 }
 
 void
