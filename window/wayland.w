@@ -3,6 +3,9 @@
 
 \font\logo=manfnt
 
+% NOTE: the same principle is used here as in way/surface.c, but the shm_data is
+% taken from STDIN_FILENO
+
 @ @c
 @<Header files@>;
 typedef uint32_t pixel_t;
@@ -281,12 +284,7 @@ if (shm_data == MAP_FAILED) {
   close(fd);
   exit(1);
 }
-lseek(STDIN_FILENO, 0, SEEK_SET);
-pixel_t *pixel = shm_data;
-for (int n = 0; n < screenwidth * screendepth; n++) {
-  read(STDIN_FILENO, pixel, 4);
-  pixel++;
-}
+@<Fill |shm_data|@>@;
 pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screendepth,
@@ -328,18 +326,21 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) time;
     if (mf_update) {
       mf_update=0;
-      lseek(STDIN_FILENO,0,SEEK_SET);
-      pixel_t *pixel = shm_data;
-      for (int n = 0; n < screenwidth * screendepth; n++) {
-        read(STDIN_FILENO, pixel, 4);
-        pixel++;
-      }
+      @<Fill...@>@;
       wl_surface_damage(surface, 0, 0, screenwidth, screendepth);
       char dummy = 1;
       write(STDOUT_FILENO, &dummy, 1);
     }
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
+}
+
+@ @<Fill...@>=
+lseek(STDIN_FILENO,0,SEEK_SET);
+pixel_t *pixel = shm_data;
+for (int n = 0; n < screenwidth * screendepth; n++) {
+  read(STDIN_FILENO, pixel, 4);
+  pixel++;
 }
 
 @* Active window detection.
