@@ -16,10 +16,14 @@ because the child programm cannot terminate---it is a general rule for all Wayla
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-@d color(R,G,B) (R << 16 | G << 8 | B)
-  /* color is set in XRGB format (X byte is not used for anything) */
-@d BLACK color(0,0,0)       /* 0x0 */
-@d WHITE color(255,253,113) /* 0xff00 */
+FIXME: order of colors is changed for some reason when \\{wl\_surface\_damage} is used,
+so on first screen initial background and figure colors are different from subsequent
+screens; don't know why it happens, but if black and white colors are used, this change
+does not manifest itself
+@^FIXME@>
+
+@d BLACK 0x0
+@d WHITE 0xffffff
 
 @c
 #define	EXTERN extern /* needed for \.{mfd.h} */

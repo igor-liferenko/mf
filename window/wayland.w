@@ -134,6 +134,7 @@ struct wl_shell *shell;
 struct wl_shm *shm;
 struct wl_display *display;
 struct wl_buffer *buffer;
+void *shm_data;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
@@ -268,7 +269,25 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-pool = wl_shm_create_pool(shm, STDIN_FILENO, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
+int fd = os_create_anonymous_file(screenwidth*screenheight*(int32_t)sizeof(pixel_t));
+if (fd < 0) {
+  fprintf(stderr, "creating a buffer file failed: %m\n");
+  exit(1);
+}
+shm_data = mmap(NULL, (size_t)(screenwidth*screenheight)*sizeof(pixel_t),
+  PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+if (shm_data == MAP_FAILED) {
+  fprintf(stderr, "mmap failed: %m\n");
+  close(fd);
+  exit(1);
+}
+lseek(STDIN_FILENO, 0, SEEK_SET); // ?
+pixel_t *pixel = shm_data;
+for (int n = 0; n < screenwidth * screenheight; n++) {
+  read(STDIN_FILENO, pixel, 4);
+  pixel++;
+}
+pool = wl_shm_create_pool(shm, fd, screenwidth*screenheight*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screenheight,
   screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
@@ -310,10 +329,13 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) time;
     if (mf_update) {
       mf_update=0;
-      wl_buffer_destroy(buffer);
-      lseek(STDIN_FILENO,0,SEEK_SET);
-      @<Create buffer@>@;
-      @<Attach...@>@;
+      lseek(STDIN_FILENO,0,SEEK_SET); // ?
+      pixel_t *pixel = shm_data;
+      for (int n = 0; n < screenwidth * screenheight; n++) {
+        read(STDIN_FILENO, pixel, 4);
+        pixel++;
+      }
+      wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
       char dummy = 1;
       write(STDOUT_FILENO, &dummy, 1);
     }
@@ -421,6 +443,93 @@ uint32_t key, uint32_t state) {
   (void) time;
   (void) key;
   (void) state;
+}
+
+@* Anonymous file.
+TODO: do via sections instead of functions
+@^TODO@>
+
+@ @<Func...@>=
+int set_cloexec_or_close(int fd);
+@ @c
+int set_cloexec_or_close(int fd)
+{
+        long flags;
+
+        if (fd == -1)
+                return -1;
+
+        flags = fcntl(fd, F_GETFD);
+        if (flags == -1)
+                goto err;
+
+        if (fcntl(fd, F_SETFD, flags | FD_CLOEXEC) == -1)
+                goto err;
+
+        return fd;
+
+err:
+        close(fd);
+        return -1;
+}
+
+@ @<Func...@>=
+int create_tmpfile_cloexec(char *tmpname);
+@ @c
+int create_tmpfile_cloexec(char *tmpname)
+{
+        int fd;
+
+#ifdef HAVE_MKOSTEMP
+        fd = mkostemp(tmpname, O_CLOEXEC);
+        if (fd >= 0)
+                unlink(tmpname);
+#else
+        fd = mkstemp(tmpname);
+        if (fd >= 0) {
+                fd = set_cloexec_or_close(fd);
+                unlink(tmpname);
+        }
+#endif
+
+        return fd;
+}
+
+@ @<Func...@>=
+int os_create_anonymous_file(off_t size);
+@ @c
+int os_create_anonymous_file(off_t size)
+{
+        static const char template[] = "/weston-shared-XXXXXX";
+        const char *path;
+        char *name;
+        int fd;
+
+        path = getenv("XDG_RUNTIME_DIR");
+        if (!path) {
+                errno = ENOENT;
+                return -1;
+        }
+
+        name = malloc(strlen(path) + sizeof(template));
+        if (!name)
+                return -1;
+        strcpy(name, path);
+        strcat(name, template);
+
+        fd = create_tmpfile_cloexec(name);
+
+        free(name);
+
+        if (fd < 0)
+                return -1;
+
+        if (ftruncate(fd, size) < 0) {
+                close(fd);
+                return -1;
+        }
+
+        return fd;
 }
 
 @ @<Head...@>=
