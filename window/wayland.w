@@ -144,7 +144,6 @@ struct wl_buffer *buffer;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
-struct wl_seat *seat = NULL;
 int32_t screenwidth, screenheight;
 
 @ |wl_display_connect| connects to wayland server.
@@ -208,17 +207,6 @@ static const struct wl_registry_listener registry_listener = {
 @ @<Get notified when compositor can draw@>=
 const struct wl_callback_listener frame_listener = {
     redraw
-};
-
-@ @<On-top...@>=
-struct wl_seat_listener seat_listener = {&seat_capabilities, NULL};
-struct wl_keyboard_listener keyboard_listener = {
-  &keyboard_keymap,
-  &keyboard_enter,
-  &keyboard_leave,
-  &keyboard_key,
-  &keyboard_modifiers,
-  NULL
 };
 
 @ A main design philosophy of wayland is efficiency when dealing with graphics. Wayland
@@ -336,6 +324,22 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
 }
+
+@* Active window detection.
+
+@ @<Global...@>=
+struct wl_seat *seat = NULL;
+
+@ @<On-top...@>=
+struct wl_seat_listener seat_listener = {&seat_capabilities, NULL};
+struct wl_keyboard_listener keyboard_listener = {
+  &keyboard_keymap,
+  &keyboard_enter,
+  &keyboard_leave,
+  &keyboard_key,
+  &keyboard_modifiers,
+  NULL
+};
 
 @ @<Function prototypes@>=
 void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
