@@ -1,8 +1,6 @@
 \let\lheader\rheader
 \datethis
 
-@s uint32_t int
-@s pid_t int
 @f EXTERN extern
 
 \font\logo=manfnt
@@ -34,10 +32,14 @@ does not manifest itself
 #undef read
 #include <sys/wait.h>
 #include <sys/prctl.h>
+#include <sys/mman.h>
 
-static uint32_t pixel;
+@<Function prototypes@>@;
+
+typedef uint32_t pixel_t;
 
 static int fd;
+void *shm_data;
 static pid_t cpid = 0;
 
 #include <mfdisplay.h>
@@ -50,26 +52,14 @@ mf_wl_initscreen (void)
   if (pipe(pipefd) == -1)
     return 0;
 
-  const char tmpl[] = "/wayland-shared-XXXXXX";
-  const char *path;
-  char *name;
-  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
-                                       device */
-  if (path == NULL) return 0;
-  name = malloc(strlen(path) + sizeof tmpl);
-  if (name == NULL) return 0;
-  strcat(strcpy(name, path), tmpl);
-  fd = mkstemp(name);
-  if (fd != -1)
-    unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
-  free(name);
-  if (fd == -1) return 0;
+  fd = os_create_anonymous_file(screenwidth*screendepth*(int32_t)sizeof(pixel_t));
+  if (fd < 0) return 0;
+  shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
+    PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  if (shm_data == MAP_FAILED) return 0;
 
-  for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
-                                                         (i.e., blank the screen) */
-    pixel = WHITE;
-    write(fd, &pixel, sizeof pixel);
-  }
+  pixel_t *pixel = shm_data;
+  for (int n = 0; n < screenwidth*screendepth; n++) *pixel++ = WHITE;
 
   return 1;
 }
@@ -159,7 +149,7 @@ mf_wl_blankrectangle(screencol left,
     lseek(fd,screenwidth*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
     for (screencol c = left; c < right; c++) {
-      pixel = WHITE;
+      pixel_t pixel = WHITE;
       write(fd, &pixel, sizeof pixel);
     }
   }
@@ -171,6 +161,7 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
+  pixel_t pixel;
   lseek(fd,screenwidth*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
@@ -192,3 +183,5 @@ mf_wl_paintrow(screenrow row,
 #else
 int wl_dummy;
 #endif /* WLWIN */
+
+@i anonymous-file.w
