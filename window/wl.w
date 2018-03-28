@@ -31,6 +31,16 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #include <sys/wait.h>
 #include <sys/prctl.h>
 
+#include <time.h>
+#define mytime(x)   struct timespec tms; \
+  if (timespec_get(&tms, TIME_UTC)) { \
+    int64_t micros = tms.tv_sec * 1000000; \
+    micros += tms.tv_nsec/1000; \
+    if (tms.tv_nsec % 1000 >= 500) ++micros; \
+    fprintf(stderr, "\n==" #x ":\t%"PRId64"\n", micros); \
+  }
+
+
 static uint32_t pixel;
 
 static int fd;
@@ -44,6 +54,7 @@ static int pipefd[2]; /* used to determine if the child has started and get on-t
 int /* Return 1 if display opened successfully, else 0.  */
 mf_wl_initscreen (void)
 {
+  mytime(initscreen);
   if (pipe(pipefd) == -1)
     return 0;
 
@@ -91,6 +102,7 @@ void
 mf_wl_updatescreen (void)
 {
   fflush(fp);
+  mytime(fflush);
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -153,6 +165,7 @@ mf_wl_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
+  mytime(blankrect);
   for (screenrow r = top; r < bottom; r++) {
     lseek(fd,screenwidth*r*4,SEEK_SET);
     lseek(fd,(left-1)*4,SEEK_CUR);
@@ -161,6 +174,7 @@ mf_wl_blankrectangle(screencol left,
       fwrite(&pixel, sizeof pixel, 1, fp);
     }
   }
+//  fflush(fp);
 }
 
 void
@@ -169,6 +183,7 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
+  mytime(paintrow);
   lseek(fd,screenwidth*row*4,SEEK_SET);
   lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
@@ -185,6 +200,7 @@ mf_wl_paintrow(screenrow row,
       } while (c!=*(tvect+k));
       init_color=!init_color;
   } while (k!=vector_size);
+//  fflush(fp);
 }
 
 #else

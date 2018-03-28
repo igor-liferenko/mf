@@ -5,6 +5,14 @@
 
 @ @c
 @<Header files@>;
+#define mytime(x)   struct timespec tms; \
+  if (timespec_get(&tms, TIME_UTC)) { \
+    int64_t micros = tms.tv_sec * 1000000; \
+    micros += tms.tv_nsec/1000; \
+    if (tms.tv_nsec % 1000 >= 500) ++micros; \
+    fprintf(stderr, #x ": %"PRId64"\n", micros); \
+  }
+
 typedef uint32_t pixel_t;
 @<Global...@>;
 @<Function prototypes@>@;
@@ -29,6 +37,7 @@ void update(int signum)
   mf_update = 1;
   char dummy = on_top;
   write(STDOUT_FILENO, &dummy, 1);
+  mytime(update);
 }
 sigset_t update_signal;
 int main(int argc, char *argv[])
@@ -311,12 +320,16 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
 void redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
+  FILE *fp=fopen("/tmp/x","a");
+  fprintf(fp,"x\n");
+  fclose(fp);
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
     if (mf_update) {
       wl_surface_damage(surface, 0, 0, screenwidth, screenheight);
       sigprocmask(SIG_BLOCK, &update_signal, NULL);
+      mytime(redraw);
       mf_update=0;
       sigprocmask(SIG_UNBLOCK, &update_signal, NULL);
     }
@@ -406,6 +419,7 @@ uint32_t key, uint32_t state) {
 
 @ @<Head...@>=
 #include <stdio.h>
+#include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
