@@ -14,10 +14,11 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-FIXME: order of RGB components is changed for some reason when \\{wl\_surface\_damage} is used,
+FIXME: R and B in RGB components are swapped for some reason when \\{wl\_surface\_damage} is used,
 so on first screen initial background and figure colors are different from subsequent
 screens; don't know why it happens, but if black and white colors are used, this change
-does not manifest itself
+does not manifest itself; to see this, use |sleep(1);| at the beginning of
+|mf_wl_updatescreen| and 0xff0000 and 0x0000ff for BLACK and WHITE here
 @^FIXME@>
 
 @d BLACK 0x0
