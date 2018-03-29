@@ -274,7 +274,7 @@ Wayland buffer, which is used for most of the window operations later.
 @<Create buffer@>=
 int fd;
 @<Create anonymous file@>@;
-shm_data = mmap(NULL, (size_t) shm_size, PROT_READ, MAP_SHARED, fd, 0);
+shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   @<Notify parent@>@;
   exit(1);
