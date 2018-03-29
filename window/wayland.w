@@ -3,7 +3,7 @@
 
 \font\logo=manfnt
 
-% NOTE: the same principle is used here as in way/surface.c, but the shm_data is
+% NOTE: the same principle is used here as in way/surface.c, but the buffer_data is
 % taken from STDIN_FILENO
 
 @ @c
@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     sigaddset(&update_signal, SIGUSR1);
     @<Install terminate signal handler@>;
     @<Install update signal handler@>;
+    @<Get shared memory address@>@;
     @<Setup wayland@>;
     @<Create surface@>;
     @<Create buffer@>;
@@ -137,7 +138,8 @@ struct wl_shell *shell;
 struct wl_shm *shm;
 struct wl_display *display;
 struct wl_buffer *buffer;
-void *shm_data;
+void *buffer_data, *shm_data;
+int shm_size;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
@@ -272,7 +274,6 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-int shm_size = screenwidth * screendepth * sizeof (pixel_t);
 int fd = memfd_create("shm", 0);
 if (fd == -1) {
   @<Notify parent@>@;
@@ -282,12 +283,12 @@ if (ftruncate(fd, shm_size) == -1) {
   @<Notify parent@>@;
   exit(1);
 }
-shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-if (shm_data == MAP_FAILED) {
+buffer_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+if (buffer_data == MAP_FAILED) {
   @<Notify parent@>@;
   exit(1);
 }
-@<Fill |shm_data|@>@;
+@<Fill buffer@>@;
 pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screendepth,
@@ -339,11 +340,14 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 }
 
 @ @<Fill...@>=
-lseek(STDIN_FILENO,0,SEEK_SET);
-pixel_t *pixel = shm_data;
-for (int n = 0; n < screenwidth * screendepth; n++) {
-  read(STDIN_FILENO, pixel, 4);
-  pixel++;
+memcpy(buffer_data, shm_data, shm_size);
+
+@ @<Get shared...@>=
+shm_size = screenwidth * screendepth * sizeof (pixel_t);
+shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
+if (shm_data == MAP_FAILED) {
+  @<Notify parent@>@;
+  return 0;
 }
 
 @* Active window detection.
