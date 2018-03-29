@@ -288,7 +288,7 @@ if (buffer_data == MAP_FAILED) {
   @<Notify parent@>@;
   exit(1);
 }
-@<Fill buffer@>@;
+memcpy(buffer_data, shm_data, shm_size);
 pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screenwidth, screendepth,
@@ -330,7 +330,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     (void) time;
     if (mf_update) {
       mf_update=0;
-      @<Fill...@>@;
+      memcpy(buffer_data, shm_data, shm_size);
       wl_surface_damage(surface, 0, 0, screenwidth, screendepth);
       char dummy = 1;
       write(STDOUT_FILENO, &dummy, 1);
@@ -338,9 +338,6 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
 }
-
-@ @<Fill...@>=
-memcpy(buffer_data, shm_data, shm_size);
 
 @ @<Get shared...@>=
 shm_size = screenwidth * screendepth * sizeof (pixel_t);
