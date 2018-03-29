@@ -272,16 +272,12 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-int fd = os_create_anonymous_file(screenwidth*screendepth*(int32_t)sizeof(pixel_t));
-if (fd < 0) {
-  fprintf(stderr, "creating a buffer file failed: %m\n");
-  exit(1);
-}
+int fd;
+@<Create anonymous file@>@;
 shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
   PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
-  fprintf(stderr, "mmap failed: %m\n");
-  close(fd);
+  @<Notify parent@>;
   exit(1);
 }
 @<Fill |shm_data|@>@;
@@ -342,6 +338,35 @@ for (int n = 0; n < screenwidth * screendepth; n++) {
   read(STDIN_FILENO, pixel, 4);
   pixel++;
 }
+
+@ @<Create anonymous file@>=
+  const char tmpl[] = "/wayland-shared-XXXXXX";
+  const char *path;
+  char *name;
+  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
+                                       device */
+  if (path == NULL) {
+    @<Notify parent@>;
+    exit(1);
+  }
+  name = malloc(strlen(path) + sizeof tmpl);
+  if (name == NULL) {
+    @<Notify parent@>;
+    exit(1);
+  }
+  strcat(strcpy(name, path), tmpl);
+  fd = mkstemp(name);
+  if (fd != -1)
+    unlink(name); /* will be deleted automatically when this program exits */
+  free(name);
+  if (fd == -1) {
+    @<Notify parent@>;
+    exit(1);
+  }
+  if (ftruncate(fd, (size_t)(screenwidth*screendepth)*sizeof(pixel_t)) == -1) {
+    @<Notify parent@>;
+    exit(1);
+  }
 
 @* Active window detection.
 
@@ -444,8 +469,6 @@ uint32_t key, uint32_t state) {
   (void) key;
   (void) state;
 }
-
-@i anonymous-file.w
 
 @ @<Head...@>=
 #include <stdio.h>
