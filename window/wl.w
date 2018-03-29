@@ -123,16 +123,16 @@ if (cpid) {
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
-    char arg1[5];
-    char arg2[5];
-    snprintf(arg1, 5, "%d", screenwidth);
-    snprintf(arg2, 5, "%d", screendepth);
+    char screen_width[5];
+    char screen_depth[5];
+    snprintf(screen_width, 5, "%d", screenwidth);
+    snprintf(screen_depth, 5, "%d", screendepth);
     dup2(fd, STDIN_FILENO);
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
     if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && getppid() != 1)
-      execl("/usr/local/bin/wayland", "wayland", arg1, arg2, (char *) NULL);
+      execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
     @<Abort starting child program@>;
 }
 
