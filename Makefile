@@ -1,6 +1,6 @@
 mf: libmf.a
 	make -C window wl
-	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a -lrt
+	gcc -Wimplicit -Wreturn-type -g -O2 -o mf mf-mfextra.o libmf.a lib/lib.a -lkpathsea window/libwindow.a
 	mv mf /usr/local/bin/
 
 libmf.a:
