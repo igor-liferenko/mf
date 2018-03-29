@@ -10,11 +10,11 @@ I wrote this interface because both X11 interfaces have a problem that it is not
 to switch between terminal and the graphics window using Super+Tab in GNOME 3.
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
-because the child programm cannot terminate---it is a general rule for all Wayland
+because the wayland program cannot terminate---it is a general rule for all Wayland
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-FIXME: order of colors is changed for some reason when \\{wl\_surface\_damage} is used,
+FIXME: order of RGB components is changed for some reason when \\{wl\_surface\_damage} is used,
 so on first screen initial background and figure colors are different from subsequent
 screens; don't know why it happens, but if black and white colors are used, this change
 does not manifest itself
@@ -38,7 +38,7 @@ does not manifest itself
 
 static inline int memfd_create(const char *name, unsigned int flags) {
     return syscall(__NR_memfd_create, name, flags);
-} /* no glibc wrappers exist for memfd_create(2), so provide our own */
+} /* no glibc wrappers exist for |memfd_create|, so provide our own */
 
 typedef uint32_t pixel_t;
 
@@ -48,54 +48,58 @@ static pid_t cpid = 0;
 
 #include <mfdisplay.h>
 
-static int pipefd[2]; /* used to determine if the child has started and get on-top status */
+static int pipefd[2]; /* used to determine if the child has started, to get on-top status
+  and for synchronization */
 
-int /* Return 1 if display opened successfully, else 0.  */
-mf_wl_initscreen (void)
+@ |mf_wl_initscreen| returns 1 if display opened successfully, else 0.
+@c
+int mf_wl_initscreen(void)
 {
   if (pipe(pipefd) == -1)
     return 0;
 
-  int shm_size = screenwidth * screendepth * sizeof (pixel_t);
-  fd = memfd_create("shm", 0);
-  if (fd == -1) return 0;
-  if (ftruncate(fd, shm_size) == -1) {
-    close(fd);
-    return 0;
-  }
-  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-  if (shm_data == MAP_FAILED) {
-    close(fd);
-    return 0;
-  }
+  @<Allocate shared memory@>@;
+  @<Get address of allocated memory@>@;
 
   pixel_t *pixel = shm_data;
-  for (int n = 0; n < screenwidth*screendepth; n++)
+  for (int n = 0; n < screenwidth * screendepth; n++)
     *pixel++ = WHITE;
 
   return 1;
+}
+
+@ Data is communicated to wayland process via memory.
+@<Allocate shared memory@>=
+int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+fd = memfd_create("shm", 0);
+if (fd == -1) return 0;
+if (ftruncate(fd, shm_size) == -1) {
+  close(fd);
+  return 0;
+}
+
+@ @<Get address of allocated memory@>=
+shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+if (shm_data == MAP_FAILED) {
+  close(fd);
+  return 0;
 }
 
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
 Parent sends |SIGUSR1|. On receiving this signal, child
-checks if it is in foreground. If yes, it writes 1 to pipe,
-and if it is in background, it writes 0.
-If parent reads 0, it makes graphics window to pop-up by restarting child
-(we can do this, because the data is not stored in
-the window --- it is stored in a separate file buffer).
-
-The same pipe is used which is used to determine if child has started.
+checks if it is in foreground. If no, it writes 0 to pipe.
+If child is in foreground, it marks for update and on subsequent
+callback it updates the screen and writes 1 to pipe.
+If parent reads 0, it makes graphics window to pop-up by restarting child.
 
 Using \.{strace} I found out that child sits on \\{poll} syscall, 
 which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 
 @c
-void
-mf_wl_updatescreen (void)
+void mf_wl_updatescreen(void)
 {
-  msync(shm_data, (size_t)(screenwidth*screendepth)*sizeof(pixel_t), MS_SYNC);
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -114,11 +118,8 @@ if (cpid) {
   wait(NULL);
 }
 
-@ |prctl| is Linux-specific. The proper way would be to send |SIGINT| to child
-from {\logo METAFONT} right before exiting (it is not evident to me how
-to do it). But Wayland itself is Linux-specific
-anyway, so it's OK.
-
+@ |prctl| is used to automatically close window when {\logo METAFONT} exits.
+|getppid| is used to make sure that {\logo METAFONT} did not exit just before |prctl| call.
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
@@ -130,16 +131,13 @@ if (cpid == 0) {
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
-    if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && /* automatically close window when
-                                                    {\logo METAFONT} exits */
-      getppid() != 1) /* make sure that {\logo METAFONT} did not exit just before |prctl| call */
+    if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && getppid() != 1)
       execl("/usr/local/bin/wayland", "wayland", arg1, arg2, (char *) NULL);
     @<Abort starting child program@>;
 }
 
 @ |execl| returns only if there is an error so we do not check return value.
 |write| to parent so that it will not block forever.
-
 @<Abort starting child program@>=
 char dummy; @+
 write(STDOUT_FILENO, &dummy, 1);
@@ -152,45 +150,40 @@ if (cpid != -1) {
 }
 
 @ @c
-void
-mf_wl_blankrectangle(screencol left,
-                      screencol right,
-                      screenrow top,
-                      screenrow bottom)
+void mf_wl_blankrectangle(screencol left,
+                          screencol right,
+                          screenrow top,
+                          screenrow bottom)
 {
   pixel_t *pixel;
   for (screenrow r = top; r <= bottom; r++) {
     pixel = shm_data;
-    pixel += screenwidth*r;
-    pixel += left;
-    for (screencol c = left; c <= right; c++) {
+    pixel += screenwidth*r + left;
+    for (screencol c = left; c <= right; c++)
       *pixel++ = WHITE;
-    }
   }
 }
 
-void
-mf_wl_paintrow(screenrow row,
-                pixelcolor init_color,
-                transspec tvect,
-                screencol vector_size)
+void mf_wl_paintrow(screenrow row,
+                    pixelcolor init_color,
+                    transspec tvect,
+                    screencol vector_size)
 {
   pixel_t *pixel = shm_data;
-  pixel += screenwidth*row;
-  pixel += *tvect-1;
+  pixel += screenwidth*row + *tvect;
   screencol k = 0;
   screencol c = *tvect;
   do {
       k++;
       do {
-           if (init_color==0)
+           if (init_color == 0)
              *pixel++ = WHITE;
            else
              *pixel++ = BLACK;
            c++;
-      } while (c!=*(tvect+k));
-      init_color=!init_color;
-  } while (k!=vector_size);
+      } while (c != *(tvect+k));
+      init_color = !init_color;
+  } while (k != vector_size);
 }
 
 #else
