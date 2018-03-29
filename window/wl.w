@@ -34,10 +34,9 @@ does not manifest itself
 #include <sys/prctl.h>
 #include <sys/mman.h>
 
-typedef uint32_t pixel_t;
+static uint32_t pixel;
 
 static int fd;
-void *shm_data;
 static pid_t cpid = 0;
 
 #include <mfdisplay.h>
@@ -50,33 +49,16 @@ mf_wl_initscreen (void)
   if (pipe(pipefd) == -1)
     return 0;
 
-  const char tmpl[] = "/wayland-shared-XXXXXX";
-  const char *path;
-  char *name;
-  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
-                                       device */
-  if (path == NULL) return 0;
-  name = malloc(strlen(path) + sizeof tmpl);
-  if (name == NULL) return 0;
-  strcat(strcpy(name, path), tmpl);
-  fd = mkstemp(name);
-  if (fd != -1)
-    unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
-  free(name);
+  fd = shm_open("/shm-example", O_CREAT | O_RDWR, 0666);
   if (fd == -1) return 0;
+  shm_unlink("/shm-example");
 
-  if (ftruncate(fd, (size_t)(screenwidth*screendepth)*sizeof(pixel_t)) < 0) {
-                close(fd);
-                return 0;
-        }
+  for (int n = 0; n < screenwidth*screendepth; n++) { /* create blank file
+                                                         (i.e., blank the screen) */
+    pixel = WHITE;
+    write(fd, &pixel, sizeof pixel);
+  }
 
-  shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
-    PROT_WRITE, MAP_SHARED, fd, 0);
-  if (shm_data == MAP_FAILED) return 0;
-/*
-  pixel_t *pixel = shm_data;
-  for (int n = 0; n < screenwidth*screendepth; n++) *pixel++ = WHITE;
-*/
   return 1;
 }
 
@@ -99,7 +81,6 @@ which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 void
 mf_wl_updatescreen (void)
 {
-  msync(shm_data, (size_t)(screenwidth*screendepth)*sizeof(pixel_t), MS_SYNC);
   char dummy = 0;
   if (cpid) {
     kill(cpid, SIGUSR1);
@@ -162,12 +143,13 @@ mf_wl_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  pixel_t *pixel;
   for (screenrow r = top; r < bottom; r++) {
-    pixel = shm_data + screenwidth*r;
-    pixel += left - 1;
-    for (screencol c = left; c < right; c++)
-      *pixel++ = WHITE;
+    lseek(fd,screenwidth*r*4,SEEK_SET);
+    lseek(fd,(left-1)*4,SEEK_CUR);
+    for (screencol c = left; c < right; c++) {
+      pixel = WHITE;
+      write(fd, &pixel, sizeof pixel);
+    }
   }
 }
 
@@ -177,18 +159,18 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  pixel_t *pixel;
-  pixel = shm_data + screenwidth*row;
-  pixel += *tvect-1;
+  lseek(fd,screenwidth*row*4,SEEK_SET);
+  lseek(fd,(*tvect-1)*4,SEEK_CUR);
   screencol k = 0;
   screencol c = *tvect;
   do {
       k++;
       do {
            if (init_color==0)
-             *pixel++ = WHITE;
+             pixel = WHITE;
            else
-             *pixel++ = BLACK;
+             pixel = BLACK;
+             write(fd, &pixel, sizeof pixel);
            c++;
       } while (c!=*(tvect+k));
       init_color=!init_color;
