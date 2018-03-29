@@ -73,10 +73,10 @@ mf_wl_initscreen (void)
   shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
     PROT_WRITE, MAP_SHARED, fd, 0);
   if (shm_data == MAP_FAILED) return 0;
-/*
+
   pixel_t *pixel = shm_data;
   for (int n = 0; n < screenwidth*screendepth; n++) *pixel++ = WHITE;
-*/
+
   return 1;
 }
 
@@ -162,13 +162,13 @@ mf_wl_blankrectangle(screencol left,
                       screenrow top,
                       screenrow bottom)
 {
-  uint32_t *pixelp;
+  pixel_t *pixel;
   for (screenrow r = top; r <= bottom; r++) {
-    pixelp = shm_data;
-    pixelp += screenwidth*r;
-    pixelp += left;
+    pixel = shm_data;
+    pixel += screenwidth*r;
+    pixel += left;
     for (screencol c = left; c <= right; c++) {
-      *pixelp++ = WHITE;
+      *pixel++ = WHITE;
     }
   }
 }
@@ -179,18 +179,18 @@ mf_wl_paintrow(screenrow row,
                 transspec tvect,
                 screencol vector_size)
 {
-  uint32_t *pixelp = shm_data;
-  pixelp += screenwidth*row;
-  pixelp += *tvect-1;
+  pixel_t *pixel = shm_data;
+  pixel += screenwidth*row;
+  pixel += *tvect-1;
   screencol k = 0;
   screencol c = *tvect;
   do {
       k++;
       do {
            if (init_color==0)
-             *pixelp++ = WHITE;
+             *pixel++ = WHITE;
            else
-             *pixelp++ = BLACK;
+             *pixel++ = BLACK;
            c++;
       } while (c!=*(tvect+k));
       init_color=!init_color;
