@@ -3,8 +3,8 @@
 
 \font\logo=manfnt
 
-% NOTE: the same principle is used here as in way/surface.c, but the buffer_data is
-% taken from STDIN_FILENO
+% NOTE: the same principle is used here as in surface.c from
+% https://jan.newmarch.name/Wayland/WhenCanIDraw/
 
 @ @c
 @<Header files@>;
@@ -320,11 +320,6 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
 void redraw(void *data, struct wl_callback *callback, uint32_t time)
 {
-#if 1==0
-  FILE *fp=fopen("/tmp/x","a");
-  fprintf(fp,"x\n");
-  fclose(fp);
-#endif
     (void) data;
     wl_callback_destroy(callback);
     (void) time;
@@ -470,5 +465,3 @@ uint32_t key, uint32_t state) {
 static inline int memfd_create(const char *name, unsigned int flags) {
     return syscall(__NR_memfd_create, name, flags);
 } /* no glibc wrappers exist for memfd_create(2), so provide our own */
-
-@* Index.
