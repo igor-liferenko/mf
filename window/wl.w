@@ -32,7 +32,13 @@ does not manifest itself
 #undef read
 #include <sys/wait.h>
 #include <sys/prctl.h>
+#include <sys/syscall.h>
+#include <linux/memfd.h>
 #include <sys/mman.h>
+
+static inline int memfd_create(const char *name, unsigned int flags) {
+    return syscall(__NR_memfd_create, name, flags);
+} /* no glibc wrappers exist for memfd_create(2), so provide our own */
 
 typedef uint32_t pixel_t;
 
@@ -50,32 +56,21 @@ mf_wl_initscreen (void)
   if (pipe(pipefd) == -1)
     return 0;
 
-  const char tmpl[] = "/wayland-shared-XXXXXX";
-  const char *path;
-  char *name;
-  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
-                                       device */
-  if (path == NULL) return 0;
-  name = malloc(strlen(path) + sizeof tmpl);
-  if (name == NULL) return 0;
-  strcat(strcpy(name, path), tmpl);
-  fd = mkstemp(name);
-  if (fd != -1)
-    unlink(name); /* will be deleted automatically when {\logo METAFONT} exits */
-  free(name);
-  if (fd == -1) return 0;
-
-  if (ftruncate(fd, (size_t)(screenwidth*screendepth)*sizeof(pixel_t)) < 0) {
-                close(fd);
-                return 0;
-        }
-
-  shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
-    PROT_WRITE, MAP_SHARED, fd, 0);
-  if (shm_data == MAP_FAILED) return 0;
+  int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+  fd = memfd_create("shm", 0);
+  if (ftruncate(fd, shm_size) == -1) {
+    close(fd);
+    return 0;
+  }
+  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+  if (shm_data == MAP_FAILED) {
+    close(fd);
+    return 0;
+  }
 
   pixel_t *pixel = shm_data;
-  for (int n = 0; n < screenwidth*screendepth; n++) *pixel++ = WHITE;
+  for (int n = 0; n < screenwidth*screendepth; n++)
+    *pixel++ = WHITE;
 
   return 1;
 }
