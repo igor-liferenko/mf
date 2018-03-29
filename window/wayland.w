@@ -272,8 +272,16 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-int fd;
-@<Create anonymous file@>@;
+int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+int fd = memfd_create("shm", 0);
+if (fd == -1) {
+  @<Notify parent@>@;
+  exit(1);
+}
+if (ftruncate(fd, shm_size) == -1) {
+  @<Notify parent@>@;
+  exit(1);
+}
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   @<Notify parent@>@;
@@ -336,18 +344,6 @@ pixel_t *pixel = shm_data;
 for (int n = 0; n < screenwidth * screendepth; n++) {
   read(STDIN_FILENO, pixel, 4);
   pixel++;
-}
-
-@ @<Create anonymous file@>=
-int shm_size = screenwidth * screendepth * sizeof (pixel_t);
-fd = memfd_create("shm", 0);
-if (fd == -1) {
-  @<Notify parent@>@;
-  exit(1);
-}
-if (ftruncate(fd, shm_size) == -1) {
-  @<Notify parent@>@;
-  exit(1);
 }
 
 @* Active window detection.
