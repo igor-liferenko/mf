@@ -363,7 +363,7 @@ for (int n = 0; n < screenwidth * screendepth; n++) {
     @<Notify parent@>;
     exit(1);
   }
-  if (ftruncate(fd, (size_t)(screenwidth*screendepth)*sizeof(pixel_t)) == -1) {
+  if (ftruncate(fd, screenwidth*screendepth*(ssize_t)sizeof(pixel_t)) == -1) {
     @<Notify parent@>;
     exit(1);
   }
