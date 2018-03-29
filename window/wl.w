@@ -58,6 +58,7 @@ mf_wl_initscreen (void)
 
   int shm_size = screenwidth * screendepth * sizeof (pixel_t);
   fd = memfd_create("shm", 0);
+  if (fd == -1) return 0;
   if (ftruncate(fd, shm_size) == -1) {
     close(fd);
     return 0;

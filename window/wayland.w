@@ -274,10 +274,9 @@ Wayland buffer, which is used for most of the window operations later.
 @<Create buffer@>=
 int fd;
 @<Create anonymous file@>@;
-shm_data = mmap(NULL, (size_t)(screenwidth*screendepth)*sizeof(pixel_t),
-  PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+shm_data = mmap(NULL, (size_t) shm_size, PROT_READ, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
-  @<Notify parent@>;
+  @<Notify parent@>@;
   exit(1);
 }
 @<Fill |shm_data|@>@;
@@ -340,33 +339,16 @@ for (int n = 0; n < screenwidth * screendepth; n++) {
 }
 
 @ @<Create anonymous file@>=
-  const char tmpl[] = "/wayland-shared-XXXXXX";
-  const char *path;
-  char *name;
-  path = getenv("XDG_RUNTIME_DIR"); /* stored in volatile memory instead of a persistent storage
-                                       device */
-  if (path == NULL) {
-    @<Notify parent@>;
-    exit(1);
-  }
-  name = malloc(strlen(path) + sizeof tmpl);
-  if (name == NULL) {
-    @<Notify parent@>;
-    exit(1);
-  }
-  strcat(strcpy(name, path), tmpl);
-  fd = mkstemp(name);
-  if (fd != -1)
-    unlink(name); /* will be deleted automatically when this program exits */
-  free(name);
-  if (fd == -1) {
-    @<Notify parent@>;
-    exit(1);
-  }
-  if (ftruncate(fd, screenwidth*screendepth*(ssize_t)sizeof(pixel_t)) == -1) {
-    @<Notify parent@>;
-    exit(1);
-  }
+int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+fd = memfd_create("shm", 0);
+if (fd == -1) {
+  @<Notify parent@>@;
+  exit(1);
+}
+if (ftruncate(fd, shm_size) == -1) {
+  @<Notify parent@>@;
+  exit(1);
+}
 
 @* Active window detection.
 
@@ -475,7 +457,6 @@ uint32_t key, uint32_t state) {
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -485,5 +466,12 @@ uint32_t key, uint32_t state) {
 #include <wayland-client.h>
 #include <errno.h>
 #include <signal.h>
+#include <sys/syscall.h>
+#include <linux/memfd.h>
+#include <sys/mman.h>
+
+static inline int memfd_create(const char *name, unsigned int flags) {
+    return syscall(__NR_memfd_create, name, flags);
+} /* no glibc wrappers exist for memfd_create(2), so provide our own */
 
 @* Index.
