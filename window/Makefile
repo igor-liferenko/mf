@@ -8,7 +8,7 @@ wl: wayland
 
 wayland:
 	ctangle wayland
-	gcc -o /usr/local/bin/wayland wayland.c -lwayland-client
+	gcc -o /usr/local/bin/wayland wayland.c -lwayland-client -lxkbcommon
 
 view:
 	@cweave wl >/dev/null

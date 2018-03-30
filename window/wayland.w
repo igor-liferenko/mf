@@ -35,12 +35,10 @@ void update(int signum)
     write(STDOUT_FILENO, &dummy, 1);
   }
 }
-sigset_t update_signal;
+
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
-    sigemptyset(&update_signal);
-    sigaddset(&update_signal, SIGUSR1);
     @<Install terminate signal handler@>;
     @<Install update signal handler@>;
     @<Get shared memory address@>@;
@@ -343,9 +341,10 @@ if (shm_data == MAP_FAILED) {
 }
 
 @* Active window detection.
-
+Here we also bind 'q' key.
 @ @<Global...@>=
 struct wl_seat *seat = NULL;
+struct xkb_state *xkb_state = NULL;
 
 @ @<Get seat from the registry@>=
 else if (strcmp(interface,"wl_seat") == 0) {
@@ -436,12 +435,14 @@ uint32_t key, uint32_t state);
 @ @c
 void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
 uint32_t key, uint32_t state) {
-  (void) data;
-  (void) keyboard;
-  (void) serial;
-  (void) time;
-  (void) key;
-  (void) state;
+        if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
+                xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
+                uint32_t utf32 = xkb_keysym_to_utf32(keysym);
+                if (utf32 == 'q') {
+                  wl_display_disconnect(display);
+                  exit(0);
+                }
+        }
 }
 
 @ @<Head...@>=
@@ -460,3 +461,4 @@ uint32_t key, uint32_t state) {
 #include <signal.h>
 #include <sys/syscall.h>
 #include <sys/mman.h>
+#include <xkbcommon/xkbcommon.h>
