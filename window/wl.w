@@ -40,7 +40,7 @@ typedef uint32_t pixel_t;
 
 static int fd;
 void *shm_data;
-static pid_t cpid = 0;
+static pid_t cpid = -1;
 
 #include <mfdisplay.h>
 
@@ -97,7 +97,7 @@ which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 void mf_wl_updatescreen(void)
 {
   char dummy = 0;
-  if (cpid) {
+  if (cpid != -1) {
     kill(cpid, SIGUSR1);
     read(pipefd[0], &dummy, 1);
   }
@@ -109,9 +109,9 @@ void mf_wl_updatescreen(void)
 }
 
 @ @<Stop child...@>=
-if (cpid) {
+if (cpid != -1) {
   kill(cpid, SIGINT);
-  wait(NULL);
+  waitpid(cpid, NULL, 0);
 }
 
 @ |prctl| is used to automatically close window when {\logo METAFONT} exits.
