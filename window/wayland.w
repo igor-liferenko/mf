@@ -274,7 +274,7 @@ global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
-int fd = memfd_create("shm", 0);
+int fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
 if (fd == -1) {
   @<Notify parent@>@;
   exit(1);
@@ -459,9 +459,4 @@ uint32_t key, uint32_t state) {
 #include <errno.h>
 #include <signal.h>
 #include <sys/syscall.h>
-#include <linux/memfd.h>
 #include <sys/mman.h>
-
-static inline int memfd_create(const char *name, unsigned int flags) {
-    return syscall(__NR_memfd_create, name, flags);
-} /* no glibc wrappers exist for memfd_create(2), so provide our own */

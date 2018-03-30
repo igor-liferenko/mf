@@ -15,7 +15,7 @@ applications---they work in endless loop. As we are using |fork|, {\logo METAFON
 automatically has the pid of Wayland process, which is used to send signals to it.
 
 FIXME: R and B in RGB components are swapped for some reason when \\{wl\_surface\_damage} is used,
-so on first screen initial background and figure colors are different from subsequent
+so on first screen colors are different from subsequent
 screens; don't know why it happens, but if black and white colors are used, this change
 does not manifest itself; to see this, use |sleep(1);| at the beginning of
 |mf_wl_updatescreen| and 0xff0000 and 0x0000ff for BLACK and WHITE here
@@ -34,12 +34,7 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 #include <sys/wait.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
-#include <linux/memfd.h>
 #include <sys/mman.h>
-
-static inline int memfd_create(const char *name, unsigned int flags) {
-    return syscall(__NR_memfd_create, name, flags);
-} /* no glibc wrappers exist for |memfd_create|, so provide our own */
 
 typedef uint32_t pixel_t;
 
@@ -72,7 +67,7 @@ int mf_wl_initscreen(void)
 @ Data is communicated to wayland process via memory.
 @<Allocate shared memory@>=
 int shm_size = screenwidth * screendepth * sizeof (pixel_t);
-fd = memfd_create("shm", 0);
+fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
 if (fd == -1) return 0;
 if (ftruncate(fd, shm_size) == -1) {
   close(fd);
