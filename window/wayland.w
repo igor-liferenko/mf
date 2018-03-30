@@ -341,10 +341,9 @@ if (shm_data == MAP_FAILED) {
 }
 
 @* Active window detection.
-Here we also bind 'q' key.
+
 @ @<Global...@>=
 struct wl_seat *seat = NULL;
-struct xkb_state *xkb_state = NULL;
 
 @ @<Get seat from the registry@>=
 else if (strcmp(interface,"wl_seat") == 0) {
@@ -435,14 +434,15 @@ uint32_t key, uint32_t state);
 @ @c
 void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
 uint32_t key, uint32_t state) {
-        if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
-                xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
-                uint32_t utf32 = xkb_keysym_to_utf32(keysym);
-                if (utf32 == 'q') {
-                  wl_display_disconnect(display);
-                  exit(0);
-                }
-        }
+  struct xkb_state *xkb_state = NULL;
+  if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
+    xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
+    uint32_t utf32 = xkb_keysym_to_utf32(keysym);
+    if (utf32 == 'q') {
+      wl_display_disconnect(display);
+      exit(0);
+    }
+  }
 }
 
 @ @<Head...@>=
