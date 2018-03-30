@@ -51,9 +51,6 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
 @c
 int mf_wl_initscreen(void)
 {
-  if (pipe(pipefd) == -1)
-    return 0;
-
   @<Allocate shared memory@>@;
   @<Get address of allocated memory@>@;
 
@@ -110,6 +107,7 @@ void mf_wl_updatescreen(void)
 
 @ @<Stop child...@>=
 if (cpid != -1) {
+  close(pipefd[0]);
   kill(cpid, SIGINT);
   waitpid(cpid, NULL, 0);
 }
@@ -117,6 +115,7 @@ if (cpid != -1) {
 @ |prctl| is used to automatically close window when {\logo METAFONT} exits.
 |getppid| is used to make sure that {\logo METAFONT} did not exit just before |prctl| call.
 @<Start child program@>=
+if (pipe(pipefd) == -1) return;
 cpid = fork();
 if (cpid == 0) {
     char screen_width[5];
@@ -131,6 +130,7 @@ if (cpid == 0) {
       execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
     @<Abort starting child program@>;
 }
+close(pipefd[1]); /* EOF */
 
 @ |execl| returns only if there is an error so we do not check return value.
 |write| to parent so that it will not block forever.
@@ -144,6 +144,8 @@ if (cpid != -1) {
   char dummy; @+
   read(pipefd[0], &dummy, 1); /* blocks until |STDOUT_FILENO| is written to in child */
 }
+else
+  close(pipefd[0]);
 
 @ @c
 void mf_wl_blankrectangle(screencol left,
