@@ -11,12 +11,6 @@
 typedef uint32_t pixel_t;
 @<Global...@>;
 @<Function prototypes@>@;
-void terminate(int signum)
-{
-  (void) signum;
-  wl_display_disconnect(display);
-  exit(0);
-}
 @<Keep-alive@>;
 @<On-top detection@>@;
 @<Get registry@>;
@@ -40,6 +34,9 @@ int main(int argc, char *argv[])
     }
     return EXIT_SUCCESS;
 }
+
+@ @<Global...@>=
+int32_t screenwidth, screendepth;
 
 @ @<Get screen resolution@>=
 if (argc != 3) exit(EXIT_FAILURE);
@@ -127,7 +124,6 @@ int shm_size;
 struct wl_surface *surface;
 struct wl_shell_surface *shell_surface;
 struct wl_shm_pool *pool;
-int32_t screenwidth, screendepth;
 
 @ |wl_display_connect| connects to wayland server.
 
@@ -292,6 +288,16 @@ shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) {
   @<Notify parent@>@;
   return 0;
+}
+
+@ @<Function...@>=
+void terminate(int signum);
+@ @c
+void terminate(int signum)
+{
+  (void) signum;
+  wl_display_disconnect(display);
+  exit(0);
 }
 
 @* Redraw.
