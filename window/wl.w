@@ -18,6 +18,8 @@ FIXME: if you do not get answer here: https://stackoverflow.com/questions/495674
 do via shmat, passing identifier in argument list
 @^FIXME@>
 
+Color is set in XRGB format (X byte is not used for anything).
+
 FIXME: R and B in RGB components are swapped for some reason when \\{wl\_surface\_damage} is used,
 so on first screen colors are different from subsequent
 screens; don't know why it happens, but if black and white colors are used, this change
