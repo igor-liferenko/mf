@@ -6,7 +6,9 @@
 % NOTE: the same principle is used here as in surface.c from
 % https://jan.newmarch.name/Wayland/WhenCanIDraw/
 
-@ @c
+@* Wayland.
+
+@c
 @<Header files@>;
 typedef uint32_t pixel_t;
 @<Global...@>;
