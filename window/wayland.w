@@ -139,20 +139,14 @@ collection of global objects from the server, filling in proxy variables represe
 @<Setup wayland@>=
 struct wl_registry *registry;
 display = wl_display_connect(NULL);
-if (display == NULL) {
-    @<Notify parent@>;
-    exit(1);
-}
+if (display == NULL) exit(1);
 
 registry = wl_display_get_registry(display);
 wl_registry_add_listener(registry, &registry_listener, NULL); /* see |@<Get registry@>|
                                                                  for explanation */
 wl_display_dispatch(display);
 wl_display_roundtrip(display);
-if (compositor == NULL) {
-        @<Notify parent@>;
-	exit(1);
-}
+if (compositor == NULL)	exit(1);
 
 @ Whenever something is added to the registry our program will be notified by wayland
 running this callback.
@@ -216,15 +210,9 @@ surface object is of type |wl_shell_surface|, which is used for creating top lev
 
 @<Create surface@>=
 surface = wl_compositor_create_surface(compositor);
-if (surface == NULL) {
-        @<Notify parent@>;
-	exit(1);
-}
+if (surface == NULL) exit(1);
 shell_surface = wl_shell_get_shell_surface(shell, surface);
-if (shell_surface == NULL) {
-        @<Notify parent@>;
-	exit(1);
-}
+if (shell_surface == NULL) exit(1);
 #if 1==0
 wl_shell_surface_set_title(shell_surface, "METAFONT"); /* FIXME: this does not work */
 #endif
@@ -252,19 +240,10 @@ Wayland buffer, which is used for most of the window operations later.
 
 @<Create buffer@>=
 int fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
-if (fd == -1) {
-  @<Notify parent@>@;
-  exit(1);
-}
-if (ftruncate(fd, shm_size) == -1) {
-  @<Notify parent@>@;
-  exit(1);
-}
+if (fd == -1) exit(1);
+if (ftruncate(fd, shm_size) == -1) exit(1);
 buffer_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-if (buffer_data == MAP_FAILED) {
-  @<Notify parent@>@;
-  exit(1);
-}
+if (buffer_data == MAP_FAILED) exit(1);
 memcpy(buffer_data, shm_data, shm_size);
 pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
@@ -287,10 +266,7 @@ wl_surface_commit(surface);
 @ @<Get shared...@>=
 shm_size = screenwidth * screendepth * sizeof (pixel_t);
 shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
-if (shm_data == MAP_FAILED) {
-  @<Notify parent@>@;
-  return 0;
-}
+if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Function...@>=
 void terminate(int signum);
