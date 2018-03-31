@@ -22,20 +22,6 @@ void terminate(int signum)
 @<Get registry@>;
 @<Get notified when compositor can draw@>@;
 
-volatile char on_top = 1;
-volatile char mf_update = 0;
-
-@ @c
-void update(int signum)
-{
-  (void) signum;
-  mf_update = 1;
-  if (on_top == 0) {
-    char dummy = on_top;
-    write(STDOUT_FILENO, &dummy, 1);
-  }
-}
-
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
@@ -200,11 +186,6 @@ static const struct wl_registry_listener registry_listener = {
     NULL
 };
 
-@ @<Get notified when compositor can draw@>=
-const struct wl_callback_listener frame_listener = {
-    redraw
-};
-
 @ A main design philosophy of wayland is efficiency when dealing with graphics. Wayland
 accomplishes that by sharing memory areas between the client applications and the display
 server, so that no copies are involved. The essential element that is shared between client
@@ -305,6 +286,21 @@ the commit).
 @<Commit surface@>=
 wl_surface_commit(surface);
 
+@ @<Get shared...@>=
+shm_size = screenwidth * screendepth * sizeof (pixel_t);
+shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
+if (shm_data == MAP_FAILED) {
+  @<Notify parent@>@;
+  return 0;
+}
+
+@* Redraw.
+
+@ @<Get notified when compositor can draw@>=
+const struct wl_callback_listener frame_listener = {
+    redraw
+};
+
 @ The notification will only be posted for one frame unless requested again.
 The object returned by this request will be destroyed by the compositor after
 the callback is fired and as such the client must not attempt to use it after that point.
@@ -312,7 +308,11 @@ the callback is fired and as such the client must not attempt to use it after th
 @<Request ``compositor free'' notification@>=
 wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
 
+@ @<Global...@>=
+volatile char mf_update = 0;
+
 @ Damage only after update.
+
 @<Function prototypes@>=
 void redraw(void *data, struct wl_callback *callback, uint32_t time);
 @ @c
@@ -332,17 +332,23 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Commit surface@>@;
 }
 
-@ @<Get shared...@>=
-shm_size = screenwidth * screendepth * sizeof (pixel_t);
-shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
-if (shm_data == MAP_FAILED) {
-  @<Notify parent@>@;
-  return 0;
+@ @<Function prototypes@>=
+void update(int signum);
+@ @c
+void update(int signum)
+{
+  (void) signum;
+  mf_update = 1;
+  if (on_top == 0) {
+    char dummy = on_top;
+    write(STDOUT_FILENO, &dummy, 1);
+  }
 }
 
 @* Active window detection.
 
 @ @<Global...@>=
+volatile char on_top = 1;
 struct wl_seat *seat = NULL;
 
 @ @<Get seat from the registry@>=
@@ -434,6 +440,12 @@ uint32_t key, uint32_t state);
 @ @c
 void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
 uint32_t key, uint32_t state) {
+  @<Bind `\.q' to exit@>@;
+}
+
+@* Key bindings.
+
+@<Bind `\.q' to exit@>=
   struct xkb_state *xkb_state = NULL;
   if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
     xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
@@ -443,11 +455,9 @@ uint32_t key, uint32_t state) {
       exit(0);
     }
   }
-}
 
 @ @<Head...@>=
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>

@@ -52,6 +52,7 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
   and for synchronization */
 
 @ |mf_wl_initscreen| returns 1 if display opened successfully, else 0.
+
 @c
 int mf_wl_initscreen(void)
 {
@@ -66,6 +67,7 @@ int mf_wl_initscreen(void)
 }
 
 @ Data is communicated to wayland process via memory.
+
 @<Allocate shared memory@>=
 int shm_size = screenwidth * screendepth * sizeof (pixel_t);
 fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
@@ -91,7 +93,7 @@ If child is in foreground, it marks for update and on subsequent
 callback it updates the screen and writes 1 to pipe.
 If parent reads 0, it makes graphics window to pop-up by restarting child.
 
-Using \.{strace} I found out that child sits on \\{poll} syscall, 
+Using \.{strace} I found out that child sits on \\{poll} syscall,
 which is restartable by using \.{SA_RESTART} in |SIGUSR1| signal handler.
 
 @c
@@ -118,6 +120,7 @@ if (cpid != -1) {
 
 @ |prctl| is used to automatically close window when {\logo METAFONT} exits.
 |getppid| is used to make sure that {\logo METAFONT} did not exit just before |prctl| call.
+
 @<Start child program@>=
 if (pipe(pipefd) == -1) return;
 cpid = fork();
@@ -126,6 +129,7 @@ if (cpid == 0) {
     char screen_depth[5];
     snprintf(screen_width, 5, "%d", screenwidth);
     snprintf(screen_depth, 5, "%d", screendepth);
+    close(pipefd[0]);
     dup2(fd, STDIN_FILENO);
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
@@ -138,6 +142,7 @@ close(pipefd[1]); /* EOF */
 
 @ |execl| returns only if there is an error so we do not check return value.
 |write| to parent so that it will not block forever.
+
 @<Abort starting child program@>=
 char dummy; @+
 write(STDOUT_FILENO, &dummy, 1);
