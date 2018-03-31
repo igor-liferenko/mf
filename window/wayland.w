@@ -424,16 +424,18 @@ uint32_t key, uint32_t state) {
 
 @* Key bindings.
 
+@ FIXME: now it reacts on any keypress - see way/wayland-input.c how to do it properly
+
 @<Bind `\.q' to exit@>=
-  struct xkb_state *xkb_state = NULL;
-  if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
-    xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
-    uint32_t utf32 = xkb_keysym_to_utf32(keysym);
-    if (utf32 == 'q') {
-      wl_display_disconnect(display);
-      exit(0);
-    }
+struct xkb_state *xkb_state = NULL;
+if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
+  xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
+  uint32_t utf32 = xkb_keysym_to_utf32(keysym);
+  if (utf32 == 'q') {
+    wl_display_disconnect(display);
+    exit(0);
   }
+}
 
 @ @<Head...@>=
 #include <stdio.h>
