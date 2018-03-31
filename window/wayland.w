@@ -31,9 +31,7 @@ int main(int argc, char *argv[])
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
     @<Notify parent@>;
-    while (wl_display_dispatch(display) != -1) { /* this function blocks - it exits only
-                                                    when window focus is changed */
-    }
+    while (wl_display_dispatch(display) != -1) ;
     return EXIT_SUCCESS;
 }
 
@@ -66,9 +64,6 @@ This must be done when signal handler is installed {\it and\/} when wayland is f
 because |SIGINT| may be received in the middle of
 wayland initializaiton, which will cause segfault error in libwayland-client.so in \.{dmesg}
 output.
-
-This must also be done before exiting in case of error to avoid {\logo METAFONT} being blocked
-forever.
 
 The behavior is as follows: if parent did not do |read| before this |write| happens,
 this |write| does not block, instead it continues operation as if the data was read.
