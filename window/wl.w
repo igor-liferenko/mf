@@ -16,7 +16,6 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 FIXME: if you do not get answer here: https://stackoverflow.com/questions/49567475/,
 do via shmat, passing identifier in argument list
-@^FIXME@>
 
 Color is set in XRGB format (X byte is not used for anything).
 
@@ -25,7 +24,6 @@ so on first screen colors are different from subsequent
 screens; don't know why it happens, but if black and white colors are used, this change
 does not manifest itself; to see this, use |sleep(1);| at the beginning of
 |mf_wl_updatescreen| and 0xff0000 and 0x0000ff for BLACK and WHITE here
-@^FIXME@>
 
 @d BLACK 0x0
 @d WHITE 0xffffff

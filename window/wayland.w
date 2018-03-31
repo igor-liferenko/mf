@@ -195,7 +195,6 @@ if (shell_surface == NULL) exit(1);
 #if 1==0
 wl_shell_surface_set_title(shell_surface, "METAFONT"); /* FIXME: this does not work */
 #endif
-@^FIXME@>
 wl_shell_surface_set_fullscreen(shell_surface,
   WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 wl_shell_surface_add_listener(shell_surface,
