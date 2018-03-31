@@ -96,6 +96,9 @@ If parent reads 0, it makes graphics window to pop-up by restarting child.
 Using \.{strace} I found out that child sits on \\{poll} syscall,
 which is restartable by using \.{SA\_RESTART} in |SIGUSR1| signal handler.
 
+If child was closed via `\.q', |read| will not block, because write end of pipe
+is closed in parent.
+
 @c
 void mf_wl_updatescreen(void)
 {
