@@ -1,1 +1,1 @@
-find out why "make view" does not show wl.w in full
+find out why "make view" does not show wl.w in full (and if making the first section starred does not influence it, remove @* from wl.w because it is unnecessary there?)
