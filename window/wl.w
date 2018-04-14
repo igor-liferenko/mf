@@ -102,12 +102,12 @@ is closed in parent.
 @c
 void mf_wl_updatescreen(void)
 {
-  char dummy = 0;
+  uint8_t byte = 0;
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
-    read(pipefd[0], &dummy, 1);
+    read(pipefd[0], &byte, 1);
   }
-  if (dummy == 0) {
+  if (byte == 0) {
     @<Stop child program if it is already running@>@;
     @<Start child program@>@;
     @<Wait until child program is initialized@>@;
@@ -147,14 +147,14 @@ close(pipefd[1]); /* EOF */
 |write| to parent so that it will not block forever.
 
 @<Abort starting child program@>=
-char dummy; @+
-write(STDOUT_FILENO, &dummy, 1);
+uint8_t byte; @+
+write(STDOUT_FILENO, &byte, 1);
 exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
-  char dummy; @+
-  read(pipefd[0], &dummy, 1); /* blocks until |STDOUT_FILENO| is written to in child */
+  uint8_t byte; @+
+  read(pipefd[0], &byte, 1); /* blocks until |STDOUT_FILENO| is written to in child */
 }
 else
   close(pipefd[0]);
