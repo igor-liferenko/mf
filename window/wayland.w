@@ -279,7 +279,7 @@ the callback is fired and as such the client must not attempt to use it after th
 wl_callback_add_listener(wl_surface_frame(surface), &frame_listener, NULL);
 
 @ @<Global...@>=
-volatile char mf_update = 0;
+volatile uint8_t mf_update = 0;
 
 @ Damage only after update.
 
@@ -326,7 +326,7 @@ void update(int signum)
 @* Active window detection.
 
 @ @<Global...@>=
-volatile char on_top = 1;
+volatile uint8_t on_top = 1;
 struct wl_seat *seat = NULL;
 
 @ @<Get seat from the registry@>=
