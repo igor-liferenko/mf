@@ -102,12 +102,12 @@ is closed in parent.
 @c
 void mf_wl_updatescreen(void)
 {
-  char code = '0';
+  uint8_t byte = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
-    read(pipefd[0], &code, 1);
+    read(pipefd[0], &byte, 1);
   }
-  if (code == '0') {
+  if (byte == '0') {
     @<Stop child program if it is already running@>@;
     @<Start child program@>@;
     @<Wait until child program is initialized@>@;
