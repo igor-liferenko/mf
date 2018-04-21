@@ -56,8 +56,7 @@ The reason is that the data is buffered, ready to be read when necessary
 (see \.{pipe(7)} for more info).
 
 @<Notify parent@>=
-uint8_t byte; @+
-write(STDOUT_FILENO, &byte, 1);
+write(STDOUT_FILENO, "", 1);
 
 @ If we do not use this, we get "window is not responding" warning.
 |shell_surface_listener| is activated with |wl_shell_surface_add_listener|
@@ -295,8 +294,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
       mf_update=0;
       memcpy(buffer_data, shm_data, shm_size);
       wl_surface_damage(surface, 0, 0, screenwidth, screendepth);
-      uint8_t byte = 1;
-      write(STDOUT_FILENO, &byte, 1);
+      write(STDOUT_FILENO, "1", 1);
     }
     @<Request ``compositor free'' notification@>@;
     @<Commit surface@>@;
@@ -316,12 +314,8 @@ void update(int signum);
 void update(int signum)
 {
   (void) signum;
-  if (on_top == 0) {
-    uint8_t byte = 0;
-    write(STDOUT_FILENO, &byte, 1);
-  }
-  else
-    mf_update = 1;
+  if (on_top == 0) @+ write(STDOUT_FILENO, "0", 1);
+  else @+ mf_update = 1;
 }
 
 @* Active window detection.

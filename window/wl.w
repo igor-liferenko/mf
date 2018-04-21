@@ -88,10 +88,10 @@ if (shm_data == MAP_FAILED) {
 We use it to send signals to child.
 
 Parent sends |SIGUSR1|. On receiving this signal, child
-checks if it is in foreground. If no, it writes 0 to pipe.
+checks if it is in foreground. If no, it writes |'0'| to pipe.
 If child is in foreground, it marks for update and on subsequent
-callback it updates the screen and writes 1 to pipe.
-If parent reads 0, it makes graphics window to pop-up by restarting child.
+callback it updates the screen and writes |'1'| to pipe.
+If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 
 Using \.{strace} I found out that child sits on \\{poll} syscall,
 which is restartable by using \.{SA\_RESTART} in |SIGUSR1| signal handler.
@@ -102,12 +102,12 @@ is closed in parent.
 @c
 void mf_wl_updatescreen(void)
 {
-  uint8_t byte = 0;
+  char code = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
-    read(pipefd[0], &byte, 1);
+    read(pipefd[0], &code, 1);
   }
-  if (byte == 0) {
+  if (code == '0') {
     @<Stop child program if it is already running@>@;
     @<Start child program@>@;
     @<Wait until child program is initialized@>@;
@@ -147,8 +147,7 @@ close(pipefd[1]); /* EOF */
 |write| to parent so that it will not block forever.
 
 @<Abort starting child program@>=
-uint8_t byte; @+
-write(STDOUT_FILENO, &byte, 1);
+write(STDOUT_FILENO, "", 1);
 exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
