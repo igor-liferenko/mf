@@ -316,11 +316,12 @@ void update(int signum);
 void update(int signum)
 {
   (void) signum;
-  mf_update = 1;
   if (on_top == 0) {
-    uint8_t byte = on_top;
+    uint8_t byte = 0;
     write(STDOUT_FILENO, &byte, 1);
   }
+  else
+    mf_update = 1;
 }
 
 @* Active window detection.
