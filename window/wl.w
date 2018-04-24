@@ -137,6 +137,7 @@ if (cpid == 0) {
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
+    signal(SIGINT, SIG_IGN);
     if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
       execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
     @<Abort starting child program@>;
