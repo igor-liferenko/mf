@@ -43,7 +43,7 @@ if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
 if (sscanf(argv[2], "%d", &screendepth) != 1) exit(EXIT_FAILURE);
 
 @ Allow {\logo METAFONT} to proceed.
-This must be done after signal handler is installed.
+This must be done after wayland was initialized and signal handlers were installed.
 
 The behavior is as follows: if parent did not do |read| before this |write| happens,
 this |write| does not block, instead it continues operation as if the data was read.
