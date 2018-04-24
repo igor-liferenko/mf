@@ -21,7 +21,6 @@ typedef uint32_t pixel_t;
 int main(int argc, char *argv[])
 {
     @<Get screen resolution@>@;
-    @<Install terminate signal handler@>;
     @<Install update signal handler@>;
     @<Get shared memory address@>@;
     @<Setup wayland@>;
