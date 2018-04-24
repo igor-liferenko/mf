@@ -44,10 +44,7 @@ if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
 if (sscanf(argv[2], "%d", &screendepth) != 1) exit(EXIT_FAILURE);
 
 @ Allow {\logo METAFONT} to proceed.
-This must be done when signal handler is installed {\it and\/} when wayland is fully initialized,
-because |SIGINT| may be received in the middle of
-wayland initializaiton, which will cause segfault error in libwayland-client.so in \.{dmesg}
-output.
+This must be done after signal handler is installed.
 
 The behavior is as follows: if parent did not do |read| before this |write| happens,
 this |write| does not block, instead it continues operation as if the data was read.
@@ -245,24 +242,6 @@ shm_size = screenwidth * screendepth * sizeof (pixel_t);
 shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
-@ @<Install terminate signal...@>= {
-  struct sigaction sa;
-  sa.sa_handler = terminate;
-  sa.sa_flags = 0;
-  sigemptyset(&sa.sa_mask);
-  sigaction(SIGINT, &sa, NULL);
-}
-
-@ @<Function...@>=
-void terminate(int signum);
-@ @c
-void terminate(int signum)
-{
-  (void) signum;
-  wl_display_disconnect(display);
-  exit(0);
-}
-
 @* Redraw.
 
 @ @<Get notified when compositor can draw@>=
@@ -300,13 +279,12 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Commit surface@>@;
 }
 
-@ @<Install update signal...@>= {
-  struct sigaction sa;
-  sa.sa_handler = update;
-  sigemptyset(&sa.sa_mask);
-  sa.sa_flags = SA_RESTART;
-  sigaction(SIGUSR1, &sa, NULL);
-}
+@ @<Install update signal...@>=
+struct sigaction sa;
+sa.sa_handler = update;
+sigemptyset(&sa.sa_mask);
+sa.sa_flags = SA_RESTART;
+sigaction(SIGUSR1, &sa, NULL);
 
 @ @<Function prototypes@>=
 void update(int signum);

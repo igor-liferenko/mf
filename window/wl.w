@@ -117,7 +117,7 @@ void mf_wl_updatescreen(void)
 @ @<Stop child...@>=
 if (cpid != -1) {
   close(pipefd[0]);
-  kill(cpid, SIGINT);
+  kill(cpid, SIGTERM);
   waitpid(cpid, NULL, 0);
 }
 
@@ -137,7 +137,7 @@ if (cpid == 0) {
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
-    if (prctl(PR_SET_PDEATHSIG, SIGINT) != -1 && getppid() != 1)
+    if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
       execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
     @<Abort starting child program@>;
 }
