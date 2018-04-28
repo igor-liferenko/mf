@@ -20,7 +20,9 @@ typedef uint32_t pixel_t;
 
 int main(int argc, char *argv[])
 {
+    struct sigaction sa; /* used for signal handlers */
     @<Get screen resolution@>@;
+    @<Install terminate signal handler@>@;
     @<Install update signal handler@>;
     @<Get shared memory address@>@;
     @<Setup wayland@>;
@@ -241,6 +243,22 @@ shm_size = screenwidth * screendepth * sizeof (pixel_t);
 shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
+@ @<Install terminate signal...@>=
+sa.sa_handler = terminate;
+sa.sa_flags = 0;
+sigemptyset(&sa.sa_mask);
+sigaction(SIGTERM, &sa, NULL);
+
+@ @<Function...@>=
+void terminate(int signum);
+@ @c
+void terminate(int signum)
+{
+  (void) signum;
+  wl_display_disconnect(display);
+  exit(0);
+}
+
 @* Redraw.
 
 @ @<Get notified when compositor can draw@>=
@@ -278,8 +296,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Commit surface@>@;
 }
 
-@ @<Install update signal...@>=
-struct sigaction sa;
+@ @<Install update signal...@>= 
 sa.sa_handler = update;
 sigemptyset(&sa.sa_mask);
 sa.sa_flags = SA_RESTART;
