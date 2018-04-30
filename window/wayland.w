@@ -336,11 +336,11 @@ struct wl_keyboard_listener keyboard_listener = {
 };
 
 @ @<Function prototypes@>=
-void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
+void keyboard_enter(void *data, struct wl_keyboard *keyboard, uint32_t serial,
   struct wl_surface *surface, struct wl_array *keys);
 
 @ @c
-void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
+void keyboard_enter(void *data, struct wl_keyboard *keyboard, uint32_t serial,
   struct wl_surface *surface, struct wl_array *keys) {
   on_top=1;
 }
@@ -356,40 +356,40 @@ void keyboard_leave(void *data, struct wl_keyboard *keyboard,
 }
 
 @ @<Function prototypes@>=
-void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities);
+void seat_capabilities(void *data, struct wl_seat *seat, uint32_t capabilities);
 
 @ @c
-void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities) {
+void seat_capabilities(void *data, struct wl_seat *seat, uint32_t capabilities) {
         if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD) {
                 struct wl_keyboard *keyboard = wl_seat_get_keyboard (seat);
-                wl_keyboard_add_listener (keyboard, &keyboard_listener, NULL);
+                wl_keyboard_add_listener(keyboard, &keyboard_listener, NULL);
         }
 }
 
 @ @<Function prototypes@>=
-void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
+void keyboard_modifiers(void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
   mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group);
 
 @ @c
-void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
+void keyboard_modifiers(void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
   mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group) {
 }
 
 @ @<Function prototypes@>=
-void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
+void keyboard_keymap(void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
   uint32_t size);
 
 @ @c
-void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
+void keyboard_keymap(void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
   uint32_t size) {
 }
 
 @ @<Function prototypes@>=
-void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
+void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
   uint32_t key, uint32_t state);
 
 @ @c
-void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
+void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
   uint32_t key, uint32_t state) {
 }
 
