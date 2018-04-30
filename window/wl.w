@@ -15,7 +15,7 @@ applications---they work in endless loop. As we are using |fork|, {\logo METAFON
 automatically has the pid of Wayland process, which is used to send signals to it.
 
 FIXME: if you do not get answer here: https://stackoverflow.com/questions/49567475/,
-do via shmat, passing identifier in argument list (see radioclk.w for an example)
+do via shmat, passing identifier in argument list (see http://users.cs.cf.ac.uk/Dave.Marshall/C/node27.html and radioclk.w for an example)
 
 Color is set in XRGB format (X byte is not used for anything).
 
