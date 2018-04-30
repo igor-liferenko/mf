@@ -56,6 +56,8 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
 @c
 int mf_wl_initscreen(void)
 {
+  @<Create pipe for communication with the child@>@;
+
   @<Allocate shared memory@>@;
   @<Get address of allocated memory@>@;
 
@@ -65,6 +67,20 @@ int mf_wl_initscreen(void)
 
   return 1;
 }
+
+@ We do not need to close write end of pipe in parent, because child cannot exit by itself
+(thus \\{read} in \\{updatescreen} will never block). So, we need to create pipe only once,
+even though child may be forked multiple times.
+
+I specifically do not implement exit via keybind in child, because I decided that screen
+must be always there, once it is created. The only case when it can disappear without
+signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
+Activities menu by mouse. But this case is excluded, because it happens that this graphics
+window cannot be closed from Activities menu.
+
+@<Create pipe...@>=
+if (pipe(pipefd) == -1)
+  return 0;
 
 @ Data is communicated to wayland process via memory.
 
@@ -116,7 +132,6 @@ void mf_wl_updatescreen(void)
 
 @ @<Stop child...@>=
 if (cpid != -1) {
-  close(pipefd[0]);
   kill(cpid, SIGTERM);
   waitpid(cpid, NULL, 0);
 }
@@ -125,14 +140,12 @@ if (cpid != -1) {
 |getppid| is used to make sure that {\logo METAFONT} did not exit just before |prctl| call.
 
 @<Start child program@>=
-if (pipe(pipefd) == -1) return;
 cpid = fork();
 if (cpid == 0) {
     char screen_width[5];
     char screen_depth[5];
     snprintf(screen_width, 5, "%d", screenwidth);
     snprintf(screen_depth, 5, "%d", screendepth);
-    close(pipefd[0]);
     dup2(fd, STDIN_FILENO);
     close(fd);
     dup2(pipefd[1], STDOUT_FILENO);
@@ -143,7 +156,6 @@ if (cpid == 0) {
       execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
     @<Abort starting child program@>;
 }
-close(pipefd[1]); /* EOF */
 
 @ |execl| returns only if there is an error so we do not check return value.
 |write| to parent so that it will not block forever.
@@ -157,8 +169,6 @@ if (cpid != -1) {
   uint8_t byte; @+
   read(pipefd[0], &byte, 1); /* blocks until |STDOUT_FILENO| is written to in child */
 }
-else
-  close(pipefd[0]);
 
 @ @c
 void mf_wl_blankrectangle(screencol left,

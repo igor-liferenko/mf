@@ -338,35 +338,28 @@ struct wl_keyboard_listener keyboard_listener = {
 @ @<Function prototypes@>=
 void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
   struct wl_surface *surface, struct wl_array *keys);
+
 @ @c
 void keyboard_enter (void *data, struct wl_keyboard *keyboard, uint32_t serial,
   struct wl_surface *surface, struct wl_array *keys) {
-  (void) data;
-  (void) keyboard;
-  (void) serial;
-  (void) surface;
-  (void) keys;
   on_top=1;
 }
 
 @ @<Function prototypes@>=
 void keyboard_leave(void *data, struct wl_keyboard *keyboard,
   uint32_t serial, struct wl_surface *surface);
+
 @ @c
 void keyboard_leave(void *data, struct wl_keyboard *keyboard,
   uint32_t serial, struct wl_surface *surface) {
-  (void) data;
-  (void) keyboard;
-  (void) serial;
-  (void) surface;
   on_top=0;
 }
 
 @ @<Function prototypes@>=
 void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities);
+
 @ @c
 void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities) {
-  (void) data;
         if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD) {
                 struct wl_keyboard *keyboard = wl_seat_get_keyboard (seat);
                 wl_keyboard_add_listener (keyboard, &keyboard_listener, NULL);
@@ -375,54 +368,29 @@ void seat_capabilities (void *data, struct wl_seat *seat, uint32_t capabilities)
 
 @ @<Function prototypes@>=
 void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
-mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group);
+  mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group);
+
 @ @c
 void keyboard_modifiers (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t
-mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group) {
-  (void) data;
-  (void) keyboard;
-  (void) serial;
-  (void) mods_depressed;
-  (void) mods_latched;
-  (void) mods_locked;
-  (void) group;
+  mods_depressed, uint32_t mods_latched, uint32_t mods_locked, uint32_t group) {
 }
 
 @ @<Function prototypes@>=
 void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
-uint32_t size);
+  uint32_t size);
+
 @ @c
 void keyboard_keymap (void *data, struct wl_keyboard *keyboard, uint32_t format, int32_t fd,
-uint32_t size) {
-  (void) data;
-  (void) keyboard;
-  (void) format;
-  (void) fd;
-  (void) size;
+  uint32_t size) {
 }
 
 @ @<Function prototypes@>=
 void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
-uint32_t key, uint32_t state);
+  uint32_t key, uint32_t state);
+
 @ @c
 void keyboard_key (void *data, struct wl_keyboard *keyboard, uint32_t serial, uint32_t time,
-uint32_t key, uint32_t state) {
-  @<Bind `\.q' to exit@>@;
-}
-
-@* Key bindings.
-
-@ FIXME: now it reacts on any keypress - see way/wayland-input.c how to do it properly
-
-@<Bind `\.q' to exit@>=
-struct xkb_state *xkb_state = NULL;
-if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
-  xkb_keysym_t keysym = xkb_state_key_get_one_sym(xkb_state, key+8);
-  uint32_t utf32 = xkb_keysym_to_utf32(keysym);
-  if (utf32 == 'q') {
-    wl_display_disconnect(display);
-    exit(0);
-  }
+  uint32_t key, uint32_t state) {
 }
 
 @ @<Head...@>=
@@ -440,4 +408,3 @@ if (state == WL_KEYBOARD_KEY_STATE_PRESSED) {
 #include <signal.h>
 #include <sys/syscall.h>
 #include <sys/mman.h>
-#include <xkbcommon/xkbcommon.h>
