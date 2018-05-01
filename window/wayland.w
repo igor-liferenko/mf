@@ -213,6 +213,8 @@ called a pool, which represents a block of data of some kind, linked to the
 global Wayland shared memory object. This is then used to create a
 Wayland buffer, which is used for most of the window operations later.
 
+TODO: see https://eyl.io/blog/use-memfd_create-for-wayland-shared-memory/
+
 @<Create buffer@>=
 int fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
 if (fd == -1) exit(1);
