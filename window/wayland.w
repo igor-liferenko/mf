@@ -242,8 +242,8 @@ wl_surface_commit(surface);
 
 @ @<Get shared...@>=
 shm_size = screenwidth * screendepth * sizeof (pixel_t);
-shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
-if (shm_data == MAP_FAILED) exit(1);
+shm_data = mmap(argv[3], shm_size, PROT_READ, MAP_SHARED | MAP_FIXED, -1, 0);
+if (shm_data == MAP_FAILED | MAP_FIXED) exit(1);
 
 @ @<Install terminate signal...@>=
 sa.sa_handler = terminate;

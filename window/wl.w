@@ -59,7 +59,6 @@ int mf_wl_initscreen(void)
   @<Create pipe for communication with the child@>@;
 
   @<Allocate shared memory@>@;
-  @<Get address of allocated memory@>@;
 
   pixel_t *pixel = shm_data;
   for (int n = 0; n < screenwidth * screendepth; n++)
@@ -86,17 +85,8 @@ if (pipe(pipefd) == -1)
 
 @<Allocate shared memory@>=
 int shm_size = screenwidth * screendepth * sizeof (pixel_t);
-fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
-if (fd == -1) return 0;
-if (ftruncate(fd, shm_size) == -1) {
-  close(fd);
-  return 0;
-}
-
-@ @<Get address of allocated memory@>=
-shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0);
 if (shm_data == MAP_FAILED) {
-  close(fd);
   return 0;
 }
 
@@ -144,16 +134,17 @@ cpid = fork();
 if (cpid == 0) {
     char screen_width[5];
     char screen_depth[5];
+    char shared_memory[20];
     snprintf(screen_width, 5, "%d", screenwidth);
     snprintf(screen_depth, 5, "%d", screendepth);
-    dup2(fd, STDIN_FILENO);
-    close(fd);
+    snprintf(shared_memory, 20, "%p", shm_data);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
     signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
       act on CTRL+C */
     if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
-      execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
+      execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth,
+        shared_memory, (char *) NULL);
     @<Abort starting child program@>;
 }
 
