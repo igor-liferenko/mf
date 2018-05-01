@@ -13,8 +13,9 @@ int main(void)
 //    if (check == -1) return 1;
 printf("%zu\n", sizeof (long));
     long pixel=1;
-    for (int n = 0; n < size/8; n++)
-      write(fd, &pixel, sizeof (long));
+    for (int n = 0; n < size/8; n++) {
+if (n == 100) pixel=42; else pixel=1;
+      write(fd, &pixel, sizeof (long));}
 
 printf("done\n");fflush(stdout);
 sleep(10);
@@ -22,7 +23,7 @@ sleep(10);
     void *ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (ptr == MAP_FAILED) return 1;
 long *x1 = ptr;
-*(x1+100)=14;
+printf("val1: %ld\n", *(x1+100));
 printf("%p\n",ptr);fflush(stdout);
 sleep(10);
     void *ptr2 = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
