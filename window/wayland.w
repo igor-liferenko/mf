@@ -245,7 +245,10 @@ shm_size = screenwidth * screendepth * sizeof (pixel_t);
 void *base_addr;
 sscanf(argv[3], "%p", (void **)&base_addr);
 shm_data = mmap(base_addr, shm_size, PROT_READ, MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED, -1, 0);
-if (shm_data == MAP_FAILED) exit(1);
+if (shm_data == MAP_FAILED) {
+  fprintf(stderr, "mmap: %m\n");
+  exit(1);
+}
 
 @ @<Install terminate signal...@>=
 sa.sa_handler = terminate;
