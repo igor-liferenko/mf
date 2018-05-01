@@ -1,3 +1,5 @@
+/*allocate 1G of memory; test in htop that it does not change after mmap is used, and test that
+both mmapped addresses refer to the same memory*/
 #include <stdio.h>
 #include <sys/mman.h>
 #include <sys/syscall.h>
