@@ -107,6 +107,7 @@ is closed in parent.
 @c
 void mf_wl_updatescreen(void)
 {
+  msync(shm_data, (size_t)(screenwidth*screendepth)*sizeof(pixel_t), MS_SYNC);
   uint8_t byte = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
