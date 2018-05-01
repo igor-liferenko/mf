@@ -20,6 +20,7 @@ typedef uint32_t pixel_t;
 
 int main(int argc, char *argv[])
 {
+    if (argc != 4) exit(EXIT_FAILURE);
     struct sigaction sa; /* used for signal handlers */
     @<Get screen resolution@>@;
     @<Install terminate signal handler@>@;
@@ -40,7 +41,6 @@ int main(int argc, char *argv[])
 int32_t screenwidth, screendepth;
 
 @ @<Get screen resolution@>=
-if (argc != 3) exit(EXIT_FAILURE);
 if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
 if (sscanf(argv[2], "%d", &screendepth) != 1) exit(EXIT_FAILURE);
 
@@ -242,8 +242,10 @@ wl_surface_commit(surface);
 
 @ @<Get shared...@>=
 shm_size = screenwidth * screendepth * sizeof (pixel_t);
-shm_data = mmap(argv[3], shm_size, PROT_READ, MAP_SHARED | MAP_FIXED, -1, 0);
-if (shm_data == MAP_FAILED | MAP_FIXED) exit(1);
+void *base_addr;
+sscanf(argv[3], "%p", (void **)&base_addr);
+shm_data = mmap(base_addr, shm_size, PROT_READ, MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED, -1, 0);
+if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Install terminate signal...@>=
 sa.sa_handler = terminate;

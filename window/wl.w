@@ -42,7 +42,6 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 
 typedef uint32_t pixel_t;
 
-static int fd;
 void *shm_data;
 static pid_t cpid = -1;
 
@@ -143,7 +142,7 @@ if (cpid == 0) {
     signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
       act on CTRL+C */
     if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
-      execl("/usr/local/bin/wayland", "wayland", screen_width, screen_depth,
+      execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth,
         shared_memory, (char *) NULL);
     @<Abort starting child program@>;
 }
