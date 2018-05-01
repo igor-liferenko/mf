@@ -14,8 +14,10 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-FIXME: if you do not get answer here: https://stackoverflow.com/questions/49567475/,
-do via shmat, passing identifier in argument list (see http://users.cs.cf.ac.uk/Dave.Marshall/C/node27.html, https://stackoverflow.com/questions/5656530/ and radioclk.w for an example)
+TODO: do not use |memfd_create|; instead, use |mmap| with |MAP_ANONYMOUS|, write the obtained
+address to in-memory file (use example from here:
+https://www.uninformativ.de/blog/postings/2017-02-11/0/POSTING-en.html), pass its descriptor
+to child, and in child use MAP_FIXED with address read from the file descriptor, inherited from parent
 
 Color is set in XRGB format (X byte is not used for anything).
 
