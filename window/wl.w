@@ -14,9 +14,6 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-TODO: do not use |memfd_create|; instead, use |mmap| with |MAP_ANONYMOUS|, pass obtained
-address to child in argument list, and in child use |MAP_FIXED| with that address
-
 Color is set in XRGB format (X byte is not used for anything).
 
 FIXME: R and B in RGB components are swapped for some reason when \\{wl\_surface\_damage} is used,
@@ -93,7 +90,10 @@ if (ftruncate(fd, shm_size) == -1) {
   return 0;
 }
 
-@ @<Get address of allocated memory@>=
+@ |mmap| maps buffers in device memory into the application's address space.
+read https://linux-kernel-labs.github.io/master/labs/memory_mapping.html
+
+@<Get address of allocated memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   close(fd);
