@@ -91,8 +91,23 @@ if (ftruncate(fd, shm_size) == -1) {
 }
 
 @ |mmap| maps buffers in device memory into the application's address space.
-read https://linux-kernel-labs.github.io/master/labs/memory_mapping.html
-see test.c
+
+Let's review a few important memory management concepts and terminology.
+
+The basic unit for virtual memory management is a page, which size is usually 4K, but it can be
+up to 64K on same platforms. Whenever we work with virtual memory we work with two types
+addresses: virtual address and physical address. All CPU access (including from kernel space)
+uses virtual addresses that are translated by the MMU into physical address with the help of
+page tables.
+
+A physical page of memory is identified by the Page Frame Number (PFN). The PFN can be easily
+computed from the physical address by dividing it with the size of the page (or by shifting the
+physical address with \.{PAGE\_SHIFT} bits to the right).
+
+$$\hbox to16cm{\vbox to11.99cm{\vfil\special{psfile=paging.eps
+  clip llx=0 lly=0 urx=1066 ury=799 rwi=4535}}\hfil}$$
+
+See \.{test.c}.
 
 @<Get address of allocated memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);

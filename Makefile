@@ -27,3 +27,7 @@ print:
 	@make --no-print-directory -C window $@
 	@tex mf-wl >/dev/null
 	@echo use \"prt mf-wl\" to print the document
+
+paging.eps: paging.png
+	@convert $< $@
+	@imgsize $@ 16 -
