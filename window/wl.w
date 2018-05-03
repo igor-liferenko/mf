@@ -95,7 +95,8 @@ address space.
 
 https://www.linuxjournal.com/article/1287
 ----------------
-Also see chapter 15 in linux device drivers, 3rd edition. http://static.lwn.net/images/pdf/LDD3/ch15.pdf
+Also see chapter 15 in linux device drivers, 3rd edition:
+http://static.lwn.net/images/pdf/LDD3/ch15.pdf
 --------------
 Let's review a few important memory management concepts and terminology.
 
