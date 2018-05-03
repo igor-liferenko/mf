@@ -28,6 +28,12 @@ print:
 	@tex mf-wl >/dev/null
 	@echo use \"prt mf-wl\" to print the document
 
+.PHONY: $(wildcard *.eps)
+
 paging.eps: paging.png
 	@convert $< $@
+	@imgsize $@ 16 -
+
+kernel-virtmem-map.eps: kernel-virtmem-map.png
+	@convert $< -background white -flatten $@
 	@imgsize $@ 16 -

@@ -107,6 +107,22 @@ physical address with \.{PAGE\_SHIFT} bits to the right).
 $$\hbox to16cm{\vbox to11.99cm{\vfil\special{psfile=paging.eps
   clip llx=0 lly=0 urx=1066 ury=799 rwi=4535}}\hfil}$$
 
+For efficiency reasons, the virtual address space is divided into user-space and kernel-space.
+For the same reason, the kernel-space contains memory mapped zone, called lowmem, which is
+contiguously mapped in physical memory, starting from the lowest possible physical address
+(usually 0). The virtual address where lowmem is mapped is defined by \.{PAGE\_OFFSET}.
+
+On 32bit system not all available memory can be mapped in lowmem and because of that there is
+a separate zone in kernel-space called highmem which can be used to arbitrarily map physical
+memory.
+
+Memory allocated by \\{kmalloc} resides in lowmem and it is physically contiguous.
+Memory allocated with \\{vmalloc} is not contiguous and does not reside in lowmem
+(it has a dedicated zone in high mem).
+
+$$\hbox to16cm{\vbox to10.32cm{\vfil\special{psfile=kernel-virtmem-map.eps
+  clip llx=0 lly=0 urx=1085 ury=700 rwi=4535}}\hfil}$$
+
 See \.{test.c}.
 
 @<Get address of allocated memory@>=
