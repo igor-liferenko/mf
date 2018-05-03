@@ -243,9 +243,7 @@ the commit).
 @<Commit surface@>=
 wl_surface_commit(surface);
 
-@ % see https://stackoverflow.com/questions/6446101/ for comment of bobwirka
-
-@<Get shared...@>=
+@ @<Get shared...@>=
 shm_size = screenwidth * screendepth * sizeof (pixel_t);
 shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);

@@ -92,6 +92,7 @@ if (ftruncate(fd, shm_size) == -1) {
 
 @ |mmap| maps buffers in device memory into the application's address space.
 read https://linux-kernel-labs.github.io/master/labs/memory_mapping.html
+see test.c
 
 @<Get address of allocated memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
