@@ -110,9 +110,6 @@ If child is in foreground, it marks for update and on subsequent
 callback it updates the screen and writes |'1'| to pipe.
 If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 
-Using \.{strace} I found out that child sits on \\{poll} syscall,
-which is restartable by using \.{SA\_RESTART} in |SIGUSR1| signal handler.
-
 @c
 void mf_wl_updatescreen(void)
 {

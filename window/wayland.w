@@ -310,7 +310,10 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Commit surface@>@;
 }
 
-@ @<Install update signal...@>=
+@ Using \.{strace} I found out that child sits on \\{poll} syscall,
+which is restartable by using \.{SA\_RESTART} in |SIGUSR1| signal handler.
+
+@<Install update signal...@>=
 sa.sa_handler = update;
 sigemptyset(&sa.sa_mask);
 sa.sa_flags = SA_RESTART;
