@@ -90,8 +90,12 @@ if (ftruncate(fd, shm_size) == -1) {
   return 0;
 }
 
-@ |mmap| maps buffers in device memory into the application's address space.
+@ |mmap| maps buffers in ??? memory into the application's address space.
 
+https://www.linuxjournal.com/article/1287
+----------------
+Also see chapter 15 in linux device drivers, 3rd edition. http://static.lwn.net/images/pdf/LDD3/ch15.pdf
+--------------
 Let's review a few important memory management concepts and terminology.
 
 The basic unit for virtual memory management is a page, which size is usually 4K, but it can be
