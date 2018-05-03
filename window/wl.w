@@ -90,7 +90,8 @@ if (ftruncate(fd, shm_size) == -1) {
   return 0;
 }
 
-@ |mmap| maps buffers in physical memory into the application's address space.
+@ |mmap| maps buffers in physical memory into the application's (aka logical, virtual)
+address space.
 
 https://www.linuxjournal.com/article/1287
 ----------------
