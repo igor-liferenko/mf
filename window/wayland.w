@@ -268,7 +268,6 @@ void terminate(int signum);
 @ @c
 void terminate(int signum)
 {
-  (void) signum;
   wl_display_disconnect(display);
   exit(0);
 }
@@ -324,7 +323,6 @@ void update(int signum);
 @ @c
 void update(int signum)
 {
-  (void) signum;
   if (on_top == 0) @+ write(STDOUT_FILENO, "0", 1);
   else @+ mf_update = 1;
 }
