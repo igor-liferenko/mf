@@ -1,1 +1,3 @@
 find out why "make view" does not show wl.w in full (and if making the first section starred does not influence it, remove @* from wl.w because it is unnecessary there?)
+
+re-check removing keybind - it was added after commit 2a8dda1c7aaf0eb672aac94850cd2f8b9bc64c76 and removed in 535e5fd..5164249
