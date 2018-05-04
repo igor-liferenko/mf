@@ -310,7 +310,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 }
 
 @ Using \.{strace} I found out that child sits on \\{poll} syscall,
-which is restartable by using \.{SA\_RESTART} in |SIGUSR1| signal handler.
+which is restartable by using |SA_RESTART|.
 
 @<Install update signal...@>=
 sa.sa_handler = update;
