@@ -1,5 +1,6 @@
 \let\lheader\rheader
 \datethis
+\noinx
 
 \font\logo=manfnt
 

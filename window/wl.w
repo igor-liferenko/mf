@@ -1,7 +1,8 @@
 \let\lheader\rheader
 \datethis
+\noinx
 
-@f EXTERN extern
+@s EXTERN extern
 
 \font\logo=manfnt
 
