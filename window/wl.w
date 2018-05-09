@@ -1,6 +1,6 @@
 \let\lheader\rheader
 \datethis
-\noinx
+%\def\title{XXX} %instead of name of file
 
 @s EXTERN extern
 
