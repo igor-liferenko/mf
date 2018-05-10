@@ -95,6 +95,8 @@ if (ftruncate(fd, shm_size) == -1) {
 address space.
 
 https://www.linuxjournal.com/article/1287
+
+TODO: remove pictures and the following stuff and put here brief summary from above link:
 ----------------
 Also see chapter 15 in linux device drivers, 3rd edition:
 http://static.lwn.net/images/pdf/LDD3/ch15.pdf
@@ -129,8 +131,6 @@ Memory allocated with \\{vmalloc} is not contiguous and does not reside in lowme
 
 $$\hbox to16cm{\vbox to10.32cm{\vfil\special{psfile=kernel-virtmem-map.eps
   clip llx=0 lly=0 urx=1085 ury=700 rwi=4535}}\hfil}$$
-
-See \.{test.c}.
 
 @<Get address of allocated memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
