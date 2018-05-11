@@ -149,20 +149,20 @@ if (cpid != -1) {
 @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
-    char screen_width[5];
-    char screen_depth[5];
-    snprintf(screen_width, 5, "%d", screenwidth);
-    snprintf(screen_depth, 5, "%d", screendepth);
+  char screen_width[5];
+  char screen_depth[5];
+  snprintf(screen_width, 5, "%d", screenwidth);
+  snprintf(screen_depth, 5, "%d", screendepth);
   close(pipefd[0]); /* cleanup */
-    dup2(fd, STDIN_FILENO);
-    close(fd);
-    dup2(pipefd[1], STDOUT_FILENO);
-    close(pipefd[1]);
-    signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
-      act on CTRL+C */
-    if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
-      execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
-    @<Abort starting child program@>;
+  dup2(fd, STDIN_FILENO);
+  close(fd);
+  dup2(pipefd[1], STDOUT_FILENO);
+  close(pipefd[1]);
+  signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
+    act on CTRL+C */
+  if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
+    execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
+  @<Abort starting child program@>;
 }
 
 @ |execl| returns only if there is an error so we do not check return value.
