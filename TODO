@@ -1,6 +1,10 @@
 find out why "make view" does not show wl.w in full (and if making the first section starred does not influence it, remove @* from wl.w because it is unnecessary there?)
+
 Use an MWE:
 cweave -x a
 cweave -x b
 create ab.tex like mf-wl.tex
 tex ab
+NO, better do this:
+start with tcb.tex in cwebtest/ and remove content from \input files little
+by little until failure occurs
