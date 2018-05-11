@@ -1,6 +1,6 @@
 \let\lheader\rheader
 \datethis
-%\def\title{XXX} %instead of name of file
+\def\title{MF-WL}
 
 @s EXTERN extern
 
@@ -94,43 +94,17 @@ if (ftruncate(fd, shm_size) == -1) {
 @ |mmap| maps buffers in physical memory into the application's (aka logical, virtual)
 address space.
 
-https://www.linuxjournal.com/article/1287
+Since the days of the 80386, the Intel world has supported a technique called virtual addressing. Coming from the Z80 and 68000 world, my first thought about this was: “You can allocate more memory than you have as physical RAM, as some addresses will be associated with portions of your hard disk”.
 
-TODO: remove pictures and the following stuff and put here brief summary from above link:
-----------------
-Also see chapter 15 in linux device drivers, 3rd edition:
-http://static.lwn.net/images/pdf/LDD3/ch15.pdf
---------------
-Let's review a few important memory management concepts and terminology.
+To be more academic: Every address used by the program to access memory (no matter whether data or program code) will be translated--either into a physical address in the physical RAM or an exception, which is dealt with by the OS in order to give you the memory you required. Sometimes, however, the access to that location in virtual memory reveals that the program is out of order—in this case, the OS should cause a “real” exception (usually SIGSEGV, signal 11).
+
+The smallest unit of address translation is the page, which is 4 kB on Intel architectures and 8 kB on Alpha (defined in asm/page.h).
 
 The basic unit for virtual memory management is a page, which size is usually 4K, but it can be
 up to 64K on same platforms. Whenever we work with virtual memory we work with two types
 addresses: virtual address and physical address. All CPU access (including from kernel space)
 uses virtual addresses that are translated by the MMU into physical address with the help of
 page tables.
-
-A physical page of memory is identified by the Page Frame Number (PFN). The PFN can be easily
-computed from the physical address by dividing it with the size of the page (or by shifting the
-physical address with \.{PAGE\_SHIFT} bits to the right).
-
-$$\hbox to16cm{\vbox to11.99cm{\vfil\special{psfile=paging.eps
-  clip llx=0 lly=0 urx=1066 ury=799 rwi=4535}}\hfil}$$
-
-For efficiency reasons, the virtual address space is divided into user-space and kernel-space.
-For the same reason, the kernel-space contains memory mapped zone, called lowmem, which is
-contiguously mapped in physical memory, starting from the lowest possible physical address
-(usually 0). The virtual address where lowmem is mapped is defined by \.{PAGE\_OFFSET}.
-
-On 32bit system not all available memory can be mapped in lowmem and because of that there is
-a separate zone in kernel-space called highmem which can be used to arbitrarily map physical
-memory.
-
-Memory allocated by \\{kmalloc} resides in lowmem and it is physically contiguous.
-Memory allocated with \\{vmalloc} is not contiguous and does not reside in lowmem
-(it has a dedicated zone in high mem).
-
-$$\hbox to16cm{\vbox to10.32cm{\vfil\special{psfile=kernel-virtmem-map.eps
-  clip llx=0 lly=0 urx=1085 ury=700 rwi=4535}}\hfil}$$
 
 @<Get address of allocated memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
