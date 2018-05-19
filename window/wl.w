@@ -94,11 +94,19 @@ if (ftruncate(fd, shm_size) == -1) {
 @ |mmap| maps buffers in physical memory into the application's (aka logical, virtual)
 address space.
 
-Since the days of the 80386, the Intel world has supported a technique called virtual addressing. Coming from the Z80 and 68000 world, my first thought about this was: “You can allocate more memory than you have as physical RAM, as some addresses will be associated with portions of your hard disk”.
+Since the days of the 80386, the Intel world has supported a technique called virtual
+addressing. Coming from the Z80 and 68000 world, my first thought about this was: ``You
+can allocate more memory than you have as physical RAM, as some addresses will be
+associated with portions of your hard disk''.
 
-To be more academic: Every address used by the program to access memory (no matter whether data or program code) will be translated--either into a physical address in the physical RAM or an exception, which is dealt with by the OS in order to give you the memory you required. Sometimes, however, the access to that location in virtual memory reveals that the program is out of order—in this case, the OS should cause a “real” exception (usually SIGSEGV, signal 11).
+To be more academic: Every address used by the program to access memory (no matter
+whether data or program code) will be translated--either into a physical address in the
+physical RAM or an exception, which is dealt with by the OS in order to give you the
+memory you required. Sometimes, however, the access to that location in virtual memory
+reveals that the program is out of order—in this case, the OS should cause a ``real''
+exception (usually \.{SIGSEGV}, signal 11).
 
-The smallest unit of address translation is the page, which is 4 kB on Intel architectures and 8 kB on Alpha (defined in asm/page.h).
+The smallest unit of address translation is the page, which is 4 kB on Intel architectures.
 
 The basic unit for virtual memory management is a page, which size is usually 4K, but it can be
 up to 64K on same platforms. Whenever we work with virtual memory we work with two types
