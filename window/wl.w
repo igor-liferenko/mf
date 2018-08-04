@@ -103,7 +103,7 @@ To be more academic: Every address used by the program to access memory (no matt
 whether data or program code) will be translated--either into a physical address in the
 physical RAM or an exception, which is dealt with by the OS in order to give you the
 memory you required. Sometimes, however, the access to that location in virtual memory
-reveals that the program is out of order—in this case, the OS should cause a ``real''
+reveals that the program is out of order --- in this case, the OS should cause a ``real''
 exception (usually \.{SIGSEGV}, signal 11).
 
 The smallest unit of address translation is the page, which is 4 kB on Intel architectures.
