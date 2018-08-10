@@ -25,10 +25,13 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 
 @d BLACK 0x0
 @d WHITE 0xffffff
+@d WLWIN /* for mcpp */
 
 @c
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
+
+#ifdef WLWIN                  /* almost whole file */
 
 #undef read
 #include <sys/wait.h>
@@ -220,3 +223,7 @@ void mf_wl_paintrow(screenrow row,
       init_color = !init_color;
   } while (k != vector_size);
 }
+
+#else
+int wl_dummy;
+#endif /* WLWIN */
