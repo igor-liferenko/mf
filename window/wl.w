@@ -25,12 +25,12 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 
 @d BLACK 0x0
 @d WHITE 0xffffff
-@d WLWIN /* for mcpp */
 
 @c
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
+@=#define WLWIN /* for mcpp */@>
 #ifdef WLWIN                  /* almost whole file */
 
 #undef read
