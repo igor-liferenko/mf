@@ -30,7 +30,7 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
-@=#define WLWIN /* for mcpp */@>
+#define WLWIN /* for mcpp */
 #ifdef WLWIN                  /* almost whole file */
 
 #undef read
