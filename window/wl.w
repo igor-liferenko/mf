@@ -92,8 +92,7 @@ if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
   return 0;
 }
 
-@ |mmap| gives a pointer to memory occupied by the memory-only file.
-It does not copy the memory.
+@ |mmap| gives a pointer to memory associated with the file.
 If the same file is mapped multiple times, each call to |mmap|
 reserves a new region of virtual memory, but all those regions
 access the same portion of physical memory.
