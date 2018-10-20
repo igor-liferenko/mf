@@ -30,10 +30,6 @@ does not manifest itself; to see this, use |sleep(1);| at the beginning of
 #define	EXTERN extern /* needed for \.{mfd.h} */
 #include "../mfd.h"
 
-#undef WLWIN /* defined in \.{w2c/c-auto.h} */
-#define WLWIN /* for \.{mcpp} */
-#ifdef WLWIN                  /* almost whole file */
-
 #undef read
 #include <sys/wait.h>
 #include <sys/prctl.h>
@@ -210,7 +206,3 @@ void mf_wl_paintrow(screenrow row,
       init_color = !init_color;
   } while (k != vector_size);
 }
-
-#else
-int wl_dummy;
-#endif /* WLWIN */

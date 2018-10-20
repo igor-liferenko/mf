@@ -3555,21 +3555,6 @@ zmakescaled (integer p, integer q)		/* Approximate 2^16*p/q */
    graphics routines appropriate to the user's terminal.  stdout must be
    connected to a terminal for us to do any graphics.  */
 
-#ifdef MFNOWIN
-#undef AMIGAWIN
-#undef EPSFWIN
-#undef HP2627WIN
-#undef MFTALKWIN
-#undef NEXTWIN
-#undef REGISWIN
-#undef SUNWIN
-#undef TEKTRONIXWIN
-#undef UNITERMWIN
-#undef WIN32WIN
-#undef X11WIN
-#undef WLWIN
-#endif
-
 /* Prototypes for Metafont display routines: mf_XXX_initscreen,
    mf_XXX_updatescreen, mf_XXX_blankrectangle, and mf_XXX_paintrow.  */
 #include <window/mfdisplay.h>
@@ -3589,54 +3574,8 @@ struct mfwin_sw
   void (*mfwsw_paintrow) (screenrow, pixelcolor, transspec, screencol);
 } mfwsw[] =
 {
-#ifdef AMIGAWIN
-  { "amiterm", mf_amiga_initscreen, mf_amiga_updatescreen,
-    mf_amiga_blankrectangle, mf_amiga_paintrow },
-#endif
-#ifdef EPSFWIN
-  { "epsf", mf_epsf_initscreen, mf_epsf_updatescreen, 
-    mf_epsf_blankrectangle, mf_epsf_paintrow },
-#endif
-#ifdef HP2627WIN
-  { "hp2627", mf_hp2627_initscreen, mf_hp2627_updatescreen,
-    mf_hp2627_blankrectangle, mf_hp2627_paintrow },
-#endif
-#ifdef MFTALKWIN
-  { "mftalk", mf_mftalk_initscreen, mf_mftalk_updatescreen, 
-     mf_mftalk_blankrectangle, mf_mftalk_paintrow },
-#endif
-#ifdef NEXTWIN
-  { "next", mf_next_initscreen, mf_next_updatescreen,
-    mf_next_blankrectangle, mf_next_paintrow },
-#endif
-#ifdef REGISWIN
-  { "regis", mf_regis_initscreen, mf_regis_updatescreen,
-    mf_regis_blankrectangle, mf_regis_paintrow },
-#endif
-#ifdef SUNWIN
-  { "sun", mf_sun_initscreen, mf_sun_updatescreen,
-    mf_sun_blankrectangle, mf_sun_paintrow },
-#endif
-#ifdef TEKTRONIXWIN
-  { "tek", mf_tektronix_initscreen, mf_tektronix_updatescreen,
-    mf_tektronix_blankrectangle, mf_tektronix_paintrow },
-#endif
-#ifdef UNITERMWIN
-   { "uniterm", mf_uniterm_initscreen, mf_uniterm_updatescreen,
-     mf_uniterm_blankrectangle, mf_uniterm_paintrow },
-#endif
-#ifdef WIN32WIN
-  { "win32term", mf_win32_initscreen, mf_win32_updatescreen, 
-    mf_win32_blankrectangle, mf_win32_paintrow },
-#endif
-#ifdef X11WIN
-  { "xterm", mf_x11_initscreen, mf_x11_updatescreen, 
-    mf_x11_blankrectangle, mf_x11_paintrow },
-#endif
-#ifdef WLWIN
   { "xterm", mf_wl_initscreen, mf_wl_updatescreen,
     mf_wl_blankrectangle, mf_wl_paintrow },
-#endif
   
   /* Always support this.  */
   { "trap", mf_trap_initscreen, mf_trap_updatescreen,

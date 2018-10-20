@@ -311,9 +311,6 @@
 # endif
 #endif
 
-/* Define to include X11 window in Metafont. */
-#define WLWIN 1
-
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #undef X_DISPLAY_MISSING */
 
