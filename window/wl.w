@@ -93,7 +93,8 @@ if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
 }
 
 @ |mmap| gives a pointer to memory associated with the file.
-If the same file is mapped multiple times, each call to |mmap|
+|mmap| is also called in child process go get pointer to
+the same memory. Each call to |mmap|
 reserves a new region of virtual memory, but all those regions
 access the same portion of physical memory.
 
