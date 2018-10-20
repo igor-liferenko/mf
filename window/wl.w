@@ -58,8 +58,8 @@ int mf_wl_initscreen(void)
 {
   @<Create pipe for communication with the child@>@;
 
-  @<Allocate shared memory@>@;
-  @<Get address of allocated memory@>@;
+  @<Create shared memory@>@;
+  @<Get address of shared memory@>@;
 
   pixel_t *pixel = shm_data;
   for (int n = 0; n < screenwidth * screendepth; n++)
@@ -82,41 +82,27 @@ window cannot be closed from Activities menu.
 if (pipe(pipefd) == -1)
   return 0;
 
-@ Data is communicated to wayland process via memory.
+@ Data is communicated to child wayland process via shared memory.
+|memfd_create| creates a memory-only file and returns a descriptor
+for it, which is tied to child's standard input via |dup2| before |execl|.
+So, child process just uses descriptor 0 to attach to the shared memory.
 
-@<Allocate shared memory@>=
-int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+@<Create shared memory@>=
 fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
 if (fd == -1) return 0;
-if (ftruncate(fd, shm_size) == -1) {
+int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
   close(fd);
   return 0;
 }
 
-@ |mmap| maps buffers in physical memory into the application's (aka logical, virtual)
-address space.
+@ |mmap| gives a pointer to memory occupied by the memory-only file.
+It does not copy the memory.
+If the same file is mapped multiple times, each call to |mmap|
+reserves a new region of virtual memory, but all those regions
+access the same portion of physical memory.
 
-Since the days of the 80386, the Intel world has supported a technique called virtual
-addressing. Coming from the Z80 and 68000 world, my first thought about this was: ``You
-can allocate more memory than you have as physical RAM, as some addresses will be
-associated with portions of your hard disk''.
-
-To be more academic: Every address used by the program to access memory (no matter
-whether data or program code) will be translated--either into a physical address in the
-physical RAM or an exception, which is dealt with by the OS in order to give you the
-memory you required. Sometimes, however, the access to that location in virtual memory
-reveals that the program is out of order --- in this case, the OS should cause a ``real''
-exception (usually \.{SIGSEGV}, signal 11).
-
-The smallest unit of address translation is the page, which is 4 kB on Intel architectures.
-
-The basic unit for virtual memory management is a page, which size is usually 4K, but it can be
-up to 64K on same platforms. Whenever we work with virtual memory we work with two types
-addresses: virtual address and physical address. All CPU access (including from kernel space)
-uses virtual addresses that are translated by the MMU into physical address with the help of
-page tables.
-
-@<Get address of allocated memory@>=
+@<Get address of shared memory@>=
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   close(fd);
