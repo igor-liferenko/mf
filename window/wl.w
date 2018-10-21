@@ -17,13 +17,7 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 Color is set in XRGB format (X byte is not used for anything).
 
-FIXME: R and B in RGB components are swapped for some reason when \\{wl\_surface\_damage} is used,
-so on first screen colors are different from subsequent
-screens; don't know why it happens, but if black and white colors are used, this change
-does not manifest itself; to see this, use |sleep(1);| at the beginning of
-|mf_wl_updatescreen| and 0xff0000 and 0x0000ff for BLACK and WHITE here
-
-@d BLACK 0x0
+@d BLACK 0x000000
 @d WHITE 0xffffff
 
 @c
