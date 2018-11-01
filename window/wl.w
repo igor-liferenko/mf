@@ -26,7 +26,6 @@ Color is set in XRGB format (X byte is not used for anything).
 
 #undef read
 #include <sys/wait.h>
-#include <sys/prctl.h>
 #include <sys/syscall.h>
 #include <sys/mman.h>
 
@@ -129,8 +128,8 @@ if (cpid != -1) {
   waitpid(cpid, NULL, 0);
 }
 
-@ |prctl| is used to automatically close window when {\logo METAFONT} exits.
-|getppid| is used to make sure that {\logo METAFONT} did not exit just before |prctl| call.
+@ Graphics window is left running when {\logo METAFONT} exits.
+Create a shell wrapper to kill it before starting {\logo METAFONT}.
 
 @<Start child program@>=
 cpid = fork();
@@ -146,8 +145,7 @@ if (cpid == 0) {
   close(pipefd[1]);
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
-  if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
-    execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
+  execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
   @<Abort starting child program@>;
 }
 
