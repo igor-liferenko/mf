@@ -15,8 +15,9 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-Graphics window is left running when {\logo METAFONT} exits.
-Create a shell wrapper to kill it before starting {\logo METAFONT}.
+The \.{wayland} process is left running when {\logo METAFONT} exits.
+Therefore each new screen initialization makes sure that there is no
+\.{wayland} process left from previous run.
 
 Color is set in XRGB format (X byte is not used for anything).
 
@@ -48,6 +49,8 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
 @c
 int mf_wl_initscreen(void)
 {
+  system("pkill -x wayland");
+
   @<Create pipe for communication with the child@>@;
 
   @<Create shared memory@>@;
