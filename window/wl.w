@@ -15,6 +15,9 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
+Graphics window is left running when {\logo METAFONT} exits.
+Create a shell wrapper to kill it before starting {\logo METAFONT}.
+
 Color is set in XRGB format (X byte is not used for anything).
 
 @d BLACK 0x000000
@@ -128,10 +131,7 @@ if (cpid != -1) {
   waitpid(cpid, NULL, 0);
 }
 
-@ Graphics window is left running when {\logo METAFONT} exits.
-Create a shell wrapper to kill it before starting {\logo METAFONT}.
-
-@<Start child program@>=
+@ @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
   char screen_width[5];
