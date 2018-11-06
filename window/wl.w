@@ -16,8 +16,10 @@ applications---they work in endless loop. As we are using |fork|, {\logo METAFON
 automatically has the pid of Wayland process, which is used to send signals to it.
 
 The \.{wayland} process is left running when {\logo METAFONT} exits.
-Therefore each new screen initialization makes sure that there is no
-\.{wayland} process left from previous run.
+We need to make sure that there is no \.{wayland} process left from previous run.
+This can be done either in |mf_wl_initscreen| or in shell wrapper.
+The latter variant is better because graphics window can be simply killed
+by running \.{mf} and pressing \.{Ctrl+D}.
 
 Color is set in XRGB format (X byte is not used for anything).
 
@@ -49,8 +51,6 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
 @c
 int mf_wl_initscreen(void)
 {
-  system("pkill -x wayland");
-
   @<Create pipe for communication with the child@>@;
 
   @<Create shared memory@>@;
