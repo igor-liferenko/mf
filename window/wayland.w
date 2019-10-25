@@ -247,9 +247,10 @@ if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Install terminate signal...@>=
 sa.sa_handler = terminate;
-sa.sa_flags = 0;
 sigemptyset(&sa.sa_mask);
-sigaction(SIGTERM, &sa, NULL);
+sa.sa_flags = 0;
+@t}\let\&=\\{@> sigaction(SIGTERM, &sa, NULL);
+@:sigaction}\\{sigaction@>
 
 @ @<Function...@>=
 void terminate(int signum);
@@ -304,7 +305,8 @@ which is restartable by using |SA_RESTART|.
 sa.sa_handler = update;
 sigemptyset(&sa.sa_mask);
 sa.sa_flags = SA_RESTART;
-sigaction(SIGUSR1, &sa, NULL);
+@t}\let\&=\\{@> sigaction(SIGUSR1, &sa, NULL);
+@:sigaction}\\{sigaction@>
 
 @ @<Function prototypes@>=
 void update(int signum);
@@ -408,6 +410,11 @@ void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uin
 #include <unistd.h>
 #include <wayland-client.h>
 #include <errno.h>
-#include <signal.h>
+#include <signal.h> /* |@t}\let\&=\\{@>sigaction|
+  \unskip|@q struct sigaction @>|
+  \unskip|@t}\let\\=\9{@>sa_handler|
+  \unskip|@t}\let\\=\9{@>sa_mask|
+  \unskip|@t}\let\\=\9{@>sa_flags| */
+@:sigaction}\\{sigaction@>
 #include <sys/syscall.h>
 #include <sys/mman.h>
