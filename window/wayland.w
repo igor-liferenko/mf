@@ -22,7 +22,7 @@ typedef uint32_t pixel_t;
 
 int main(int argc, char *argv[])
 {
-    struct sigaction sa; /* used for signal handlers */
+    sigaction_t sa; /* used for signal handlers */
     @<Get screen resolution@>@;
     @<Install terminate signal handler@>@;
     @<Install update signal handler@>;
@@ -249,8 +249,7 @@ if (shm_data == MAP_FAILED) exit(1);
 sa.sa_handler = terminate;
 sigemptyset(&sa.sa_mask);
 sa.sa_flags = 0;
-@t}\let\&=\\{@> sigaction(SIGTERM, &sa, NULL);
-@:sigaction}\\{sigaction@>
+sigaction(SIGTERM, &sa, NULL);
 
 @ @<Function...@>=
 void terminate(int signum);
@@ -305,8 +304,7 @@ which is restartable by using |SA_RESTART|.
 sa.sa_handler = update;
 sigemptyset(&sa.sa_mask);
 sa.sa_flags = SA_RESTART;
-@t}\let\&=\\{@> sigaction(SIGUSR1, &sa, NULL);
-@:sigaction}\\{sigaction@>
+sigaction(SIGUSR1, &sa, NULL);
 
 @ @<Function prototypes@>=
 void update(int signum);
@@ -398,7 +396,9 @@ void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uin
   uint32_t key, uint32_t state) {
 }
 
-@ @<Head...@>=
+@ @s sigaction_t int
+@<Head...@>=
+typedef struct @[s@&i@&g@&a@&c@&t@&i@&o@&n@] sigaction_t;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -410,11 +410,9 @@ void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uin
 #include <unistd.h>
 #include <wayland-client.h>
 #include <errno.h>
-#include <signal.h> /* |@t}\let\&=\\{@>sigaction|
-  \unskip|@q struct sigaction @>|
+#include <signal.h> /* |sigaction|
   \unskip|@t}\let\\=\9{@>sa_handler|
   \unskip|@t}\let\\=\9{@>sa_mask|
   \unskip|@t}\let\\=\9{@>sa_flags| */
-@:sigaction}\\{sigaction@>
 #include <sys/syscall.h>
 #include <sys/mman.h>
