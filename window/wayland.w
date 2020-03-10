@@ -246,9 +246,9 @@ shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Install terminate signal...@>=
-sa.sa_handler = terminate;
-sigemptyset(&sa.sa_mask);
-sa.sa_flags = 0;
+sa.@!sa_handler = terminate;
+sigemptyset(&sa.@!sa_mask);
+sa.@!sa_flags = 0;
 sigaction(SIGTERM, &sa, NULL);
 
 @ @<Function...@>=
@@ -301,9 +301,9 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 which is restartable by using |SA_RESTART|.
 
 @<Install update signal...@>=
-sa.sa_handler = update;
-sigemptyset(&sa.sa_mask);
-sa.sa_flags = SA_RESTART;
+sa.@!sa_handler = update;
+sigemptyset(&sa.@!sa_mask);
+sa.@!sa_flags = SA_RESTART;
 sigaction(SIGUSR1, &sa, NULL);
 
 @ @<Function prototypes@>=
@@ -410,9 +410,6 @@ typedef struct @[s@&i@&g@&a@&c@&t@&i@&o@&n@] sigaction_t;
 #include <unistd.h>
 #include <wayland-client.h>
 #include <errno.h>
-#include <signal.h> /* |sigaction|
-  \unskip|@t}\let\\=\9{@>sa_handler|
-  \unskip|@t}\let\\=\9{@>sa_mask|
-  \unskip|@t}\let\\=\9{@>sa_flags| */
+#include <signal.h> /* |sigaction| */
 #include <sys/syscall.h>
 #include <sys/mman.h>
