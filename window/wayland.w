@@ -22,7 +22,9 @@ typedef uint32_t pixel_t;
 
 int main(int argc, char *argv[])
 {
-    sigaction_t sa; /* used for signal handlers */
+    struct
+    @=sigaction@>
+    sa; /* used for signal handlers */
     @<Get screen resolution@>@;
     @<Install terminate signal handler@>@;
     @<Install update signal handler@>;
@@ -246,9 +248,9 @@ shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Install terminate signal...@>=
-sa.@!sa_handler = terminate;
-sigemptyset(&sa.@!sa_mask);
-sa.@!sa_flags = 0;
+sa.@=sa_handler@> = terminate;
+sigemptyset(&sa.@=sa_mask@>);
+sa.@=sa_flags@> = 0;
 sigaction(SIGTERM, &sa, NULL);
 
 @ @<Function...@>=
@@ -301,9 +303,9 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 which is restartable by using |SA_RESTART|.
 
 @<Install update signal...@>=
-sa.@!sa_handler = update;
-sigemptyset(&sa.@!sa_mask);
-sa.@!sa_flags = SA_RESTART;
+sa.@=sa_handler@> = update;
+sigemptyset(&sa.@=sa_mask@>);
+sa.@=sa_flags@> = SA_RESTART;
 sigaction(SIGUSR1, &sa, NULL);
 
 @ @<Function prototypes@>=
@@ -396,9 +398,7 @@ void keyboard_key(void *data, struct wl_keyboard *keyboard, uint32_t serial, uin
   uint32_t key, uint32_t state) {
 }
 
-@ @s sigaction_t int
-@<Head...@>=
-typedef struct @[s@&i@&g@&a@&c@&t@&i@&o@&n@] sigaction_t;
+@ @<Head...@>=
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -410,6 +410,6 @@ typedef struct @[s@&i@&g@&a@&c@&t@&i@&o@&n@] sigaction_t;
 #include <unistd.h>
 #include <wayland-client.h>
 #include <errno.h>
-#include <signal.h> /* |sigaction| */
+#include <signal.h> /* |@!sigaction| */
 #include <sys/syscall.h>
 #include <sys/mman.h>
