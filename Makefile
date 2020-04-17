@@ -6,8 +6,8 @@ mf: libmf.a
 libmf.a:
 	make -C lib
 	make -C web2c
-	tie -c mf-final.ch mf.web mf.ch mf-binpool.ch
-	tangle mf mf-final
+	tie -c mf-final.ch web2w/mf.web mf.ch mf-binpool.ch
+	tangle web2w/mf mf-final
 	web2c/convert mf
 	gcc -DHAVE_CONFIG_H -I. -I./w2c -Wimplicit -Wreturn-type -g -O2 -c -o mf-mfextra.o mfextra.c
 	gcc -DHAVE_CONFIG_H -I. -I./w2c -Wimplicit -Wreturn-type -g -O2 -c -o mfini.o mfini.c

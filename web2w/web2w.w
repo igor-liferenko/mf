@@ -2782,15 +2782,15 @@ I have shown already some of the handling of the empty string\index{empty string
 the rest follows now:
 
 @<convert some strings to macro names@>=
-    else@+ if (t->sym_no==TeXinputs_no) wprint("TEX_area");
+    else@+ if (t->sym_no==TeXinputs_no) wprint("MF_area");
     else if (t->sym_no==TeXfonts_no) wprint("TEX_font_area");
-    else if (t->sym_no==fmt_no) wprint("format_extension");
+    else if (t->sym_no==fmt_no) wprint("base_extension");
     else if (t->sym_no==math_spacing_no) wprint("math_spacing");
 @
 
 @<generate macros for some strings@>=
     if (str_k->sym_no==empty_string_no) wputs("@@d empty_string "),wputi(k);
-    else if (str_k->sym_no==TeXinputs_no) wputs("@@d TEX_area "),wputi(k);
+    else if (str_k->sym_no==TeXinputs_no) wputs("@@d MF_area "),wputi(k);
     else if (str_k->sym_no==TeXfonts_no) wputs("@@d TEX_font_area "),wputi(k);
     else if (str_k->sym_no==fmt_no) wputs("@@d format_extension "),wputi(k);
     else if (str_k->sym_no==math_spacing_no) wputs("@@d math_spacing "),wputi(k);
@@ -2800,9 +2800,9 @@ the rest follows now:
 int TeXinputs_no, TeXfonts_no, fmt_no, math_spacing_no;
 @
 @<initialize token list@>=
-TeXinputs_no=predefine("\"TeXinputs:\"",PID,0); 
+TeXinputs_no=predefine("\"MFinputs:\"",PID,0); 
 TeXfonts_no=predefine("\"TeXfonts:\"",PID,0); 
-fmt_no=predefine("\".fmt\"",PID,0); 
+fmt_no=predefine("\".base\"",PID,0); 
 math_spacing_no=predefine(
   "\"0234000122*4000133**3**344*0400400*000000234000111*1111112341011\"",PID,1); 
 @
