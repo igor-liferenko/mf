@@ -23,7 +23,7 @@ typedef uint32_t pixel_t;
 int main(int argc, char *argv[])
 {
     struct
-    @=sigaction@>
+    @t}\bgroup\let\vb=\&{@> @=sigaction@> @t}\egroup{@>
     sa; /* used for signal handlers */
     @<Get screen resolution@>@;
     @<Install terminate signal handler@>@;
@@ -248,9 +248,9 @@ shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
 @ @<Install terminate signal...@>=
-sa.@=sa_handler@> = terminate;
-sigemptyset(&sa.@=sa_mask@>);
-sa.@=sa_flags@> = 0;
+sa.@t}\bgroup\let\vb=\\{@>@=sa_handler@>@t}\egroup{@> = terminate;
+sigemptyset(&sa.@t}\bgroup\let\vb=\\{@>@=sa_mask@>@t}\egroup{@>);
+sa.@t}\bgroup\let\vb=\\{@>@=sa_flags@>@t}\egroup{@> = 0;
 sigaction(SIGTERM, &sa, NULL);
 
 @ @<Function...@>=
@@ -303,9 +303,9 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
 which is restartable by using |SA_RESTART|.
 
 @<Install update signal...@>=
-sa.@=sa_handler@> = update;
-sigemptyset(&sa.@=sa_mask@>);
-sa.@=sa_flags@> = SA_RESTART;
+sa.@t}\bgroup\let\vb=\\{@>@=sa_handler@>@t}\egroup{@> = update;
+sigemptyset(&sa.@t}\bgroup\let\vb=\\{@>@=sa_mask@>@t}\egroup{@>);
+sa.@t}\bgroup\let\vb=\\{@>@=sa_flags@>@t}\egroup{@> = SA_RESTART;
 sigaction(SIGUSR1, &sa, NULL);
 
 @ @<Function prototypes@>=
