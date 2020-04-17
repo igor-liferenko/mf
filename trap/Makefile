@@ -1,6 +1,6 @@
 all:
 	@make -C .. trapmf
-	@rm -f trap.log trip.fmt
+	@rm -f trap.log trip.base
 	@/bin/echo -e '\n\\input trap' | ./trapmf >/dev/null || true
 	@sed -i -f trapin.sed trap.log
 	@diff mf/trapin.log trap.log
@@ -14,7 +14,7 @@ all:
 	@perl -i -l -0777 -pe 's/\n$$//' trap.fot
 	@sed -i -f trapfot.sed trap.fot
 	@diff mf/trap.fot trap.fot
-	@tftopl trap.tfm | diff trap.pl -
+	@tftopl trap.tfm | diff mf/trap.pl -
 	@echo
 	@echo Passed.
 	@echo
