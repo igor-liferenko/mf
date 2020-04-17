@@ -1,6 +1,6 @@
 all:
 	@make -C .. trapmf
-	@rm -f trap.log trip.base
+	@rm -f trap.log trap.base
 	@/bin/echo -e '\n\\input trap' | ./trapmf >/dev/null || true
 	@sed -i -f trapin.sed trap.log
 	@diff mf/trapin.log trap.log
