@@ -138,6 +138,7 @@ cpid = fork();
 if (cpid == 0) {
   char screen_width[5];
   char screen_depth[5];
+  @/@t\4@>/* TODO: set resolution in mf's environment from xrandr */
   snprintf(screen_width, 5, "%d", screenwidth);
   snprintf(screen_depth, 5, "%d", screendepth);
   close(pipefd[0]); /* cleanup */
