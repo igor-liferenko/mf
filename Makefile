@@ -27,3 +27,16 @@ print:
 	@make --no-print-directory -C window $@
 	@tex mf-wl >/dev/null
 	@echo use \"prt mf-wl\" to print the document
+
+my: web2w/ctangle
+	web2w/ctangle -bhp mf
+	gcc -g -Og -DINIT -o initex tex.c -lm
+	@echo 'plain dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	gcc -g -Og -o virmf mf.c -lm
+
+trapmf: web2w/ctangle
+	web2w/ctangle -bhp mf.w trap/constants.ch trapmf
+	gcc -DINIT -DSTAT trapmf.c -lm -o trap/trapmf
+
+web2w/ctangle:
+	make -C web2w ctangle
