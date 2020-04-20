@@ -369,6 +369,9 @@ in production versions of \MF.
 @!max_wiggle=300; {number of autorounded points per cycle}
 @!gf_buf_size=800; {size of the output buffer, must be a multiple of 8}
 @!file_name_size=40; {file names shouldn't be longer than this}
+@!pool_name='MFbases:MF.POOL                         ';
+  {string of length |file_name_size|; tells where the string pool appears}
+@.MFbases@>
 @!path_size=300; {maximum number of knots between breakpoints of a path}
 @!bistack_size=785; {size of stack for bisection algorithms;
   should probably be left at this value}
@@ -377,9 +380,6 @@ in production versions of \MF.
   at least 255 and at most 32510}
 @!max_kerns=500; {maximum number of distinct kern amounts}
 @!max_font_dimen=50; {maximum number of \&{fontdimen} parameters}
-@!pool_name='MFbases:MF.POOL                         ';
-  {string of length |file_name_size|; tells where the string pool appears}
-@.MFbases@>
 
 @ Like the preceding parameters, the following quantities can be changed
 at compile time to extend or reduce \MF's capacity. But if they are changed,
