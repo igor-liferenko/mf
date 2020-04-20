@@ -246,6 +246,7 @@ labeldecl: NMACRO  {IGN($1); SYM($1)->obsolete=1; }
 constants: 
          | PCONST constdefinitions
          | PCONST constdefinitions conststringdefinition
+         | PCONST constdefinitions conststringdefinition constdefinitions
          ; 
 
 constdefinitions:  constdefinition
