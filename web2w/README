@@ -1,4 +1,2 @@
-1. edit mf.web before convension:
-
-2. manually revert changes in mf.w made in step 1.
-TODO: change pascal-mf.patch that the same mf.w will be obtained automatically
+current mf.w has additional manual changes, which revert mf-web2w.patch and sed command from Makefile
+TODO: change pascal-mf.patch that the same mf.w will be obtained automatically without using mf-web2w.patch, sed command and manual changes
