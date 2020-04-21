@@ -8815,8 +8815,8 @@ If |0<=t<=1|, the quantity |t[a,b]| is always between |a| and~|b|, even in
 the presence of rounding errors. Our subroutines
 also obey the identity |t[a,b]+t[b,a]=a+b|.
 
-@d t_of_the_way_end(#)==#,t@=)@>
-@d t_of_the_way(#)==#-take_fraction@=(@>#-t_of_the_way_end
+@d t_of_the_way_end(#)==1
+@d t_of_the_way(#)==t_of_the_way_end
 
 @<Declare the procedure called |split_cubic|@>=
 procedure split_cubic(@!p:pointer;@!t:fraction;
@@ -9660,10 +9660,10 @@ expected to understand why.
 begin new_boundary(p,right_type(p)); s:=link(p);
 o1:=octant_number[right_type(p)]; o2:=octant_number[right_type(q)];
 case o2-o1 of
-1,-7,7,-1: goto done;
-2,-6: clockwise:=false;
-3,-5,4,-4,5,-3: @<Decide whether or not to go clockwise@>;
-6,-2: clockwise:=true;
+1,7,7,1: goto done;
+2,6: clockwise:=false;
+3,5,4,4,5,3: @<Decide whether or not to go clockwise@>;
+6,2: clockwise:=true;
 0:clockwise:=rev_turns;
 end; {there are no other cases}
 @<Insert additional boundary nodes, then |goto done|@>;
@@ -10835,13 +10835,6 @@ the final offset adjustments are stored in |smooth_bot| and |smooth_top|,
 respectively.
 
 @<Other local variables for |fill_envelope|@>=
-@!m,@!n:integer; {current lattice position}
-@!mm0,@!mm1:integer; {skewed equivalents of |m0| and |m1|}
-@!k:integer; {current offset number}
-@!w,@!ww:pointer; {pointers to the current offset and its neighbor}
-@!smooth_bot,@!smooth_top:0..move_size; {boundaries of smoothing}
-@!xx,@!yy,@!xp,@!yp,@!delx,@!dely,@!tx,@!ty:scaled;
-  {registers for coordinate calculations}
 
 @ @<Make the envelope moves for the current octant...@>=
 if odd(octant_number[octant]) then
@@ -10954,6 +10947,13 @@ because some \PASCAL\ compilers cannot handle procedures as large as
 procedure dual_moves(@!h,@!p,@!q:pointer);
 label done,done1;
 var @!r,@!s:pointer; {for list traversal}
+@!m,@!n:integer; {current lattice position}
+@!mm0,@!mm1:integer; {skewed equivalents of |m0| and |m1|}
+@!k:integer; {current offset number}
+@!w,@!ww:pointer; {pointers to the current offset and its neighbor}
+@!smooth_bot,@!smooth_top:0..move_size; {boundaries of smoothing}
+@!xx,@!yy,@!xp,@!yp,@!delx,@!dely,@!tx,@!ty:scaled;
+  {registers for coordinate calculations}
 @<Other local variables for |fill_envelope|@>@;
 begin @<Initialize for dual envelope moves@>;
 r:=p; {recall that |right_type(q)=endpoint=0| now}
@@ -12103,7 +12103,6 @@ system for which |white| was black and |black| was bright green.
 @<Types...@>=
 @!screen_row=0..screen_depth; {a row number on the screen}
 @!screen_col=0..screen_width; {a column number on the screen}
-@!trans_spec=array[screen_col] of screen_col; {a transition spec, see below}
 @!pixel_color=white..black; {specifies one of the two pixel values}
 
 @ We'll illustrate the |blank_rectangle| and |paint_row| operations by
@@ -12131,7 +12130,7 @@ var @!r:screen_row;
 @!c:screen_col;
 begin @{@+for r:=top_row to bot_row-1 do
   for c:=left_col to right_col-1 do
-    screen_pixel[r,c]:=white;@+@}@/
+    screen_pixel[r]:=white;@+@}@/
 @!init wlog_cr; {this will be done only after |init_screen=true|}
 wlog_ln('Calling BLANKRECTANGLE(',left_col:1,',',
   right_col:1,',',top_row:1,',',bot_row:1,')');@+tini
@@ -12152,14 +12151,14 @@ the precise details are best conveyed by means of a \PASCAL\
 program (see the commented-out code below).
 @^system dependencies@>
 
-@p procedure paint_row(@!r:screen_row;@!b:pixel_color;var @!a:trans_spec;
+@p procedure paint_row(@!r:screen_row;@!b:pixel_color;var @!a:integerl;
   @!n:screen_col);
 var @!k:screen_col; {an index into |a|}
 @!c:screen_col; {an index into |screen_pixel|}
-begin @{ k:=0; c:=a[0];
+begin @{ k:=0; c:=a;
 repeat incr(k);
-  repeat screen_pixel[r,c]:=b; incr(c);
-  until c=a[k];
+  repeat screen_pixel[r]:=b; incr(c);
+  until c=a;
   b:=black-b; {$|black|\swap|white|$}
   until k=n;@+@}@/
 @!init wlog('Calling PAINTROW(',r:1,',',b:1,';');
@@ -12354,7 +12353,7 @@ done: end
 array.
 
 @<Glob...@>=
-@!row_transition:trans_spec; {an array of |black|/|white| transitions}
+@!row_transition:array[screen_col] of screen_col; {an array of |black|/|white| transitions}
 
 @ The job remaining is to go through the list |sorted(p)|, unpacking the
 |info| fields into |m| and weight, then making |black| the pixels whose
@@ -16316,7 +16315,7 @@ begin if interaction=error_stop_mode then wake_up_terminal;
 print_nl(">> ");
 @.>>@>
 print_exp(p,1); {``medium verbose'' printing of the expression}
-if s<>"" then
+if interaction<>error_stop_mode then
   begin print_nl("! "); print(s);
 @.!\relax@>
   end;
@@ -19136,8 +19135,7 @@ if b>l then
   end;
 str_room(b-a);
 if reversed then
-  for k:=str_start[s]+b-1 downto str_start[s]+a do append_char(so(str_pool[k]))
-else for k:=str_start[s]+a to str_start[s]+b-1 do append_char(so(str_pool[k]));
+ for k:=str_start[s]+a to str_start[s]+b-1 do append_char(so(str_pool[k]));
 cur_exp:=make_string; delete_str_ref(s);
 end;
 
@@ -21206,7 +21204,7 @@ We may need to cancel skips that span more than 127 lig/kern steps.
 
 @d cancel_skips(#)==ll:=#;
   repeat lll:=qo(skip_byte(ll)); skip_byte(ll):=stop_flag; ll:=ll-lll;
-  until lll=0
+  until lll=0;
 @d skip_error(#)==begin print_err("Too far to skip");
 @.Too far to skip@>
   help1("At most 127 lig/kern steps can separate skipto1 from 1::.");
