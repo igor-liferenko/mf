@@ -12147,8 +12147,8 @@ purposes only.
 
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
-{@+int @!r;
-int @!c;
+{@+screen_row @!r;
+screen_col @!c;
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
