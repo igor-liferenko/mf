@@ -1,2 +1,4 @@
-current mf.w has additional manual changes, which revert mf-web2w.patch and sed command from Makefile
-TODO: change pascal-mf.patch that the same mf.w will be obtained automatically without using mf-web2w.patch, sed command and manual changes
+current mf.w has manual changes, which revert mf-web2w.patch
+TODO: change pascal-mf.patch and maybe web-mf.patch that the
+      same mf.w will be obtained automatically without using
+      mf-web2w.patch and manual changes
