@@ -741,27 +741,27 @@ cannot be found, or if such a file cannot be opened for some other reason
 
 @p bool a_open_in(@!alpha_file *@!f)
    /*open a text file for input*/ 
-{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
+{@+reset((*f), name_of_file,"r");return reset_OK((*f));
 } 
 @#
 bool a_open_out(@!alpha_file *@!f)
    /*open a text file for output*/ 
-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
+{@+rewrite((*f), name_of_file,"w");return rewrite_OK((*f));
 } 
 @#
 bool b_open_out(@!byte_file *@!f)
    /*open a binary file for output*/ 
-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
+{@+rewrite((*f), name_of_file,"wb");return rewrite_OK((*f));
 } 
 @#
 bool w_open_in(@!word_file *@!f)
    /*open a word file for input*/ 
-{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
+{@+reset((*f), name_of_file,"rb");return reset_OK((*f));
 } 
 @#
 bool w_open_out(@!word_file *@!f)
    /*open a word file for output*/ 
-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
+{@+rewrite((*f), name_of_file,"wb");return rewrite_OK((*f));
 } 
 
 @ Files can be closed with the \ph\ routine `|close(f)|', which
@@ -874,9 +874,8 @@ in \ph. The `\.{/I}' switch suppresses the first |get|.
 @:PASCAL H}{\ph@>
 @^system dependencies@>
 
-@d t_open_in	reset(term_in,"TTY:","/O/I") /*open the terminal for text input*/ 
-@d t_open_out	rewrite(term_out,"TTY:","/O")
-  /*open the terminal for text output*/ 
+@d t_open_in   term_in.f=stdin /*open the terminal for text input*/ 
+@d t_open_out   term_out.f=stdout /*open the terminal for text output*/ 
 
 @ Sometimes it is necessary to synchronize the input/output mixture that
 happens on the user's terminal, and three system-dependent
@@ -1281,7 +1280,7 @@ else bad_pool("! I can't read MF.POOL.")
 @ @<Read one string...@>=
 {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
 @.MF.POOL has no check sum@>
-read(pool_file, m, n); /*read two digits of string length*/ 
+read(pool_file, m);@+read(pool_file, n); /*read two digits of string length*/ 
 if (m== '*' ) @<Check the pool check sum@>@;
 else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
       (xord[n] < '0')||(xord[n] > '9')) 
@@ -1435,7 +1434,7 @@ using the |xchr| array to map it into an external character compatible with
 @<Basic printing...@>=
 void print_char(ASCII_code @!s) /*prints a single character*/ 
 {@+switch (selector) {
-case term_and_log: {@+wterm(xchr[s]);wlog(xchr[s]);
+case term_and_log: {@+wterm("%c",xchr[s]);wlog("%c",xchr[s]);
   incr(term_offset);incr(file_offset);
   if (term_offset==max_print_line) 
     {@+wterm_cr;term_offset=0;
@@ -1444,10 +1443,10 @@ case term_and_log: {@+wterm(xchr[s]);wlog(xchr[s]);
     {@+wlog_cr;file_offset=0;
     } 
   } @+break;
-case log_only: {@+wlog(xchr[s]);incr(file_offset);
+case log_only: {@+wlog("%c",xchr[s]);incr(file_offset);
   if (file_offset==max_print_line) print_ln();
   } @+break;
-case term_only: {@+wterm(xchr[s]);incr(term_offset);
+case term_only: {@+wterm("%c",xchr[s]);incr(term_offset);
   if (term_offset==max_print_line) print_ln();
   } @+break;
 case no_print: do_nothing;@+break;
@@ -1479,6 +1478,10 @@ else{@+j=str_start[s];
   } 
 } 
 
+void print_str(char *s) /* the simple version */
+{while (*s!=0) print_char(*s++);@+
+} 
+
 @ Sometimes it's necessary to print a string whose characters
 may not be visible ASCII codes. In that case |slow_print| is used.
 
@@ -1502,7 +1505,7 @@ and base identifier together will occupy at most |max_print_line|
 character positions.
 
 @<Initialize the output...@>=
-wterm(banner);
+wterm("%s",banner);
 if (base_ident==0) wterm_ln(" (no base preloaded)");
 else{@+slow_print(base_ident);print_ln();
   } 
@@ -1691,8 +1694,9 @@ void close_files_and_terminate(void);@/
 void clear_for_error_prompt(void);@/
 @t\4\hskip-\fontdimen2\font@>@;
 #ifdef @!DEBUG
-@+void debug_help(void)
-  ;@;
+void debug_help(void);
+#else
+#define debug_help() do_nothing
 #endif
 @;@/
 @t\4@>@<Declare the procedure called |flush_string|@>@;
@@ -1736,7 +1740,7 @@ procedure that quietly terminates the program.
 
 @<Error hand...@>=
 void jump_out(void)
-{@+goto end_of_MF;
+{@+ close_files_and_terminate(); exit(0);
 } 
 
 @ Here now is the general |error| routine.
@@ -1924,11 +1928,7 @@ if (interaction==batch_mode) decr(selector);
 @d succumb	{@+if (interaction==error_stop_mode) 
     interaction=scroll_mode; /*no more interaction*/ 
   if (log_opened) error();
-  
-#ifdef @!DEBUG
-if (interaction > batch_mode) debug_help();@;
-#endif
-@;@/
+  if (interaction > batch_mode) debug_help();
   history=fatal_error_stop;jump_out(); /*irrecoverable error*/ 
   } 
 
