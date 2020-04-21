@@ -30,7 +30,7 @@ print:
 
 my: web2w/ctangle
 	web2w/ctangle -bhp mf
-	gcc -g -Og -DINIT -o initex tex.c -lm
+	gcc -g -Og -DINIT -o inimf mf.c -lm
 	@echo 'plain dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -g -Og -o virmf mf.c -lm
 

@@ -878,8 +878,8 @@ these operations can be specified in \ph:
 @:PASCAL H}{\ph@>
 @^system dependencies@>
 
-@d update_terminal	break(term_out) /*empty the terminal output buffer*/ 
-@d clear_terminal	break_in(term_in, true) /*clear the terminal input buffer*/ 
+@d update_terminal	fflush(term_out.f) /*empty the terminal output buffer*/ 
+@d clear_terminal	fflush(term_in.f) /*clear the terminal input buffer*/ 
 @d wake_up_terminal	do_nothing /*cancel the user's cancellation of output*/ 
 
 @ We need a special routine to read the first line of \MF\ input from
@@ -3316,29 +3316,29 @@ return p;
 
 @ Conversely, a one-word node is recycled by calling |free_avail|.
 
-@d free_avail(X)	 /*single-word node liberation*/ 
-  {@+link(X)=avail;avail=X;
-  
+@p void free_avail(pointer p) {
+  link(p)=avail;avail=p;
 #ifdef @!STAT
-decr(dyn_used);
+  decr(dyn_used);
 #endif
-  } 
+} 
 
 @ There's also a |fast_get_avail| routine, which saves the procedure-call
 overhead at the expense of extra programming. This macro is used in
 the places that would otherwise account for the most calls of |get_avail|.
 @^inner loop@>
 
-@d fast_get_avail(X)	@t@>@;@/
-  {@+X=avail; /*avoid |get_avail| if possible, to save time*/ 
-  if (X==null) X=get_avail();
-  else{@+avail=link(X);link(X)=null;
-    
+@p pointer fast_get_avail(pointer *p)	@t@>@;@/
+{
+  *p=avail; /*avoid |get_avail| if possible, to save time*/ 
+  if (*p==null) *p=get_avail();
+  else {
+    avail=link(*p);link(*p)=null;
 #ifdef @!STAT
-incr(dyn_used);
+    incr(dyn_used);
 #endif
-    } 
   } 
+} 
 
 @ The available-space list that keeps track of the variable-size portion
 of |mem| is a nonempty, doubly-linked circular list of empty nodes,
@@ -8201,7 +8201,7 @@ if (delta > 0)
   {@+k=0;
   edge_and_weight=8*(m0+m_offset(cur_edges))+min_halfword+zero_w-cur_wt;
   @/do@+{edge_and_weight=edge_and_weight+dx*move[k];
-  fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=link(p);incr(k);incr(n);
   }@+ while (!(k==delta));
@@ -8214,7 +8214,7 @@ if (delta > 0)
   {@+k=0;
   edge_and_weight=8*(m0+m_offset(cur_edges))+min_halfword+zero_w+cur_wt;
   @/do@+{edge_and_weight=edge_and_weight+dx*move[k];
-  fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=knil(p);incr(k);decr(n);
   }@+ while (!(k==delta));
@@ -8226,7 +8226,7 @@ edge_and_weight=8*(n0+m_offset(cur_edges))+min_halfword+zero_w-cur_wt;
 n0=m0;k=0;@<Move to row |n0|, pointed to by |p|@>;
 @/do@+{j=move[k];
 while (j > 0) 
-  {@+fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  {@+fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=link(p);decr(j);incr(n);
   } 
@@ -8239,7 +8239,7 @@ edge_and_weight=8*(n0+m_offset(cur_edges))+min_halfword+zero_w+cur_wt;
 n0=-m0-1;k=0;@<Move to row |n0|, pointed to by |p|@>;
 @/do@+{j=move[k];
 while (j > 0) 
-  {@+fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  {@+fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=knil(p);decr(j);decr(n);
   } 
@@ -13733,7 +13733,7 @@ if (cur_sym==0)
     if (cur_cmd==numeric_token) type(p)=known;
     else type(p)=string_type;
     } 
-else{@+fast_get_avail(p);info(p)=cur_sym;
+else{@+fast_get_avail(&p);info(p)=cur_sym;
   } 
 return p;
 } 
@@ -15571,8 +15571,6 @@ pool_pointer @!ext_delimiter; /*the relevant `\..', if any*/
 system area called |MF_area|.
 This system area name will, of course, vary from place to place.
 @^system dependencies@>
-
-@d MF_area	MF_area
 @.MFinputs@>
 
 @ Here now is the first of the system-dependent routines for file name scanning.
@@ -16881,7 +16879,7 @@ pointer @!t; /*a token*/
 pointer @!macro_ref; /*reference count for a suffixed macro*/ 
 
 @ @<Scan a variable primary...@>=
-{@+fast_get_avail(pre_head);tail=pre_head;post_head=null;tt=vacuous;
+{@+fast_get_avail(&pre_head);tail=pre_head;post_head=null;tt=vacuous;
 loop@+{@+t=cur_tok();link(tail)=t;
   if (tt!=undefined) 
     {@+@<Find the approximate type |tt| and corresponding~|q|@>;
@@ -17422,7 +17420,7 @@ if (cur_type!=pair_type)
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I \?\?\?' now.)");
   put_get_flush_error(0);cur_x=0;cur_y=0;
   } 
 else{@+p=value(cur_exp);
@@ -17442,7 +17440,7 @@ else{@+disp_err(x_part_loc(p),
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I \?\?\?' now.)");
   put_get_error();recycle_value(x_part_loc(p));cur_x=0;
   } 
 if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
@@ -17452,7 +17450,7 @@ else{@+disp_err(y_part_loc(p),
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I \?\?\?' now.)");
   put_get_error();recycle_value(y_part_loc(p));cur_y=0;
   } 
 
@@ -17527,7 +17525,7 @@ else{@+t=given;cur_exp=n_arg(cur_x, cur_y);
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I \?\?\?' now.)");
   put_get_flush_error(0);
   } 
 x=cur_exp;
@@ -17545,7 +17543,7 @@ if (cur_type!=known)
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I \?\?\?' now.)");
   put_get_flush_error(0);
   } 
 cur_y=cur_exp;cur_x=x;
@@ -23797,7 +23795,7 @@ for more than 60\pct! of \MF's running time, exclusive of input and output.
 @d str_464 "final value"
 @<|"final value"|@>=@+464
 @ 
-@d str_465 "MFinputs:"
+@d str_465 "MFinputs/"
 @d MF_area 465
 @ 
 @d str_466 ".base"
