@@ -878,8 +878,8 @@ these operations can be specified in \ph:
 @:PASCAL H}{\ph@>
 @^system dependencies@>
 
-@d update_terminal	fflush(term_out.f) /*empty the terminal output buffer*/ 
-@d clear_terminal	fflush(term_in.f) /*clear the terminal input buffer*/ 
+@d update_terminal	break(term_out) /*empty the terminal output buffer*/ 
+@d clear_terminal	break_in(term_in, true) /*clear the terminal input buffer*/ 
 @d wake_up_terminal	do_nothing /*cancel the user's cancellation of output*/ 
 
 @ We need a special routine to read the first line of \MF\ input from
@@ -3316,29 +3316,29 @@ return p;
 
 @ Conversely, a one-word node is recycled by calling |free_avail|.
 
-@p void free_avail(pointer p) {
-  link(p)=avail;avail=p;
+@d free_avail(X)	 /*single-word node liberation*/ 
+  {@+link(X)=avail;avail=X;
+  
 #ifdef @!STAT
-  decr(dyn_used);
+decr(dyn_used);
 #endif
-} 
+  } 
 
 @ There's also a |fast_get_avail| routine, which saves the procedure-call
 overhead at the expense of extra programming. This macro is used in
 the places that would otherwise account for the most calls of |get_avail|.
 @^inner loop@>
 
-@p pointer fast_get_avail(pointer *p)	@t@>@;@/
-{
-  *p=avail; /*avoid |get_avail| if possible, to save time*/ 
-  if (*p==null) *p=get_avail();
-  else {
-    avail=link(*p);link(*p)=null;
+@d fast_get_avail(X)	@t@>@;@/
+  {@+X=avail; /*avoid |get_avail| if possible, to save time*/ 
+  if (X==null) X=get_avail();
+  else{@+avail=link(X);link(X)=null;
+    
 #ifdef @!STAT
-    incr(dyn_used);
+incr(dyn_used);
 #endif
+    } 
   } 
-} 
 
 @ The available-space list that keeps track of the variable-size portion
 of |mem| is a nonempty, doubly-linked circular list of empty nodes,
@@ -7133,13 +7133,13 @@ row has not changed since the last time we sorted it.
 The final |link| of the |sorted| list will be |sentinel|, which points to
 a special one-word node whose |info| field is essentially infinite; this
 facilitates the sorting and merging operations. The final |link| of the
-|unsorted| list will be either |null| or |xvoid|, where |xvoid==null+1|
+|unsorted| list will be either |null| or |empty|, where |empty==null+1|
 is used to avoid redisplaying data that has not changed:
-A |xvoid| value is stored at the head of the
+A |empty| value is stored at the head of the
 unsorted list whenever the corresponding row has been displayed.
 
 @d zero_w	4
-@d xvoid	null+1
+@d empty	null+1
 
 @<Initialize table entries...@>=
 info(sentinel)=max_halfword; /*|link(sentinel)==null|*/ 
@@ -7191,10 +7191,10 @@ The header node of an edge structure also contains two somewhat unusual
 fields that are called |last_window(h)| and |last_window_time(h)|. When this
 structure is displayed in window~|k| of the user's screen, after that
 window has been updated |t| times, \MF\ sets |last_window(h)=k| and
-|last_window_time(h)=t|; it also sets |unsorted(p)=xvoid| for all row
+|last_window_time(h)=t|; it also sets |unsorted(p)=empty| for all row
 headers~|p|, after merging any existing unsorted weights with the sorted
 ones.  A subsequent display in the same window will be able to avoid
-redisplaying rows whose |unsorted| list is still |xvoid|, if the window
+redisplaying rows whose |unsorted| list is still |empty|, if the window
 hasn't been used for something else in the meantime.
 
 A pointer to the row header of row |n_pos(h)-4096| is provided in
@@ -7257,7 +7257,7 @@ while (q!=cur_edges)
     {@+info(p)=info(p)-delta;p=link(p);
     } 
   p=unsorted(q);
-  while (p > xvoid) 
+  while (p > empty) 
     {@+info(p)=info(p)-delta;p=link(p);
     } 
   q=link(q);
@@ -7292,7 +7292,7 @@ if (nr > n_max(cur_edges))
 @ @<Insert exactly |n_min(cur_edges)-nl| empty rows at the bottom@>=
 {@+delta=n_min(cur_edges)-nl;n_min(cur_edges)=nl;
 p=link(cur_edges);
-@/do@+{q=get_node(row_node_size);sorted(q)=sentinel;unsorted(q)=xvoid;
+@/do@+{q=get_node(row_node_size);sorted(q)=sentinel;unsorted(q)=empty;
 knil(p)=q;link(q)=p;p=q;decr(delta);
 }@+ while (!(delta==0));
 knil(p)=cur_edges;link(cur_edges)=p;
@@ -7302,7 +7302,7 @@ if (n_rover(cur_edges)==cur_edges) n_pos(cur_edges)=nl-1;
 @ @<Insert exactly |nr-n_max(cur_edges)| empty rows at the top@>=
 {@+delta=nr-n_max(cur_edges);n_max(cur_edges)=nr;
 p=knil(cur_edges);
-@/do@+{q=get_node(row_node_size);sorted(q)=sentinel;unsorted(q)=xvoid;
+@/do@+{q=get_node(row_node_size);sorted(q)=sentinel;unsorted(q)=empty;
 link(p)=q;knil(q)=p;p=q;decr(delta);
 }@+ while (!(delta==0));
 link(p)=cur_edges;knil(cur_edges)=p;
@@ -7322,9 +7322,9 @@ print_diagnostic(@[@<|"Edge structure"|@>@], s, nuline);
 p=knil(cur_edges);n=n_max(cur_edges)-zero_field;
 while (p!=cur_edges) 
   {@+q=unsorted(p);r=sorted(p);
-  if ((q > xvoid)||(r!=sentinel)) 
+  if ((q > empty)||(r!=sentinel)) 
     {@+print_nl("row ");print_int(n+y_off);print_char(':');
-    while (q > xvoid) 
+    while (q > empty) 
       {@+print_weight(q, x_off);q=link(q);
       } 
     print_str(" |");
@@ -7382,7 +7382,7 @@ while (r!=sentinel)
   } 
 link(rr)=sentinel;@/
 r=unsorted(p);rr=temp_head;
-while (r > xvoid) 
+while (r > empty) 
   {@+ss=get_avail();link(rr)=ss;rr=ss;info(rr)=info(r);@/
   r=link(r);
   } 
@@ -7428,7 +7428,7 @@ one without the other.
 
 @<Reflect the edge-and-weight data in |unsorted(p)|@>=
 q=unsorted(p);
-while (q > xvoid) 
+while (q > empty) 
   {@+info(q)=m-info(q);q=link(q);
   } 
 
@@ -7510,7 +7510,7 @@ while (p!=sentinel)
   {@+t=ho(info(p));w=t%8;info(p)=(t-w)*s+w+delta;p=link(p);
   } 
 p=unsorted(q);
-while (p > xvoid) 
+while (p > empty) 
   {@+t=ho(info(p));w=t%8;info(p)=(t-w)*s+w+delta;p=link(p);
   } 
 q=link(q);
@@ -7525,7 +7525,7 @@ pointer @!p, @!q, @!r, @!s, @!t, @!u; /*structure traversers*/
 p=link(h);
 while (p!=h) 
   {@+q=unsorted(p);
-  while (q > xvoid) 
+  while (q > empty) 
     {@+info(q)=8-2*((ho(info(q)))%8)+info(q);q=link(q);
     } 
   q=sorted(p);
@@ -7569,7 +7569,7 @@ halfword @!k; /*key register that we compare to |info(q)|*/
 pointer @!p, @!q, @!r, @!s;
 r=unsorted(h);unsorted(h)=null;
 p=link(r);link(r)=sentinel;link(temp_head)=r;
-while (p > xvoid)  /*sort node |p| into the list that starts at |temp_head|*/ 
+while (p > empty)  /*sort node |p| into the list that starts at |temp_head|*/ 
   {@+k=info(p);q=temp_head;
   @/do@+{r=q;q=link(r);
   }@+ while (!(k <= info(q)));
@@ -7618,7 +7618,7 @@ min_d=max_halfword;max_d=min_halfword;
 min_n=max_halfword;max_n=min_halfword;@/
 p=link(cur_edges);n=n_min(cur_edges);
 while (p!=cur_edges) 
-  {@+if (unsorted(p) > xvoid) sort_edges(p);
+  {@+if (unsorted(p) > empty) sort_edges(p);
   if (sorted(p)!=sentinel) 
     @<Cull superfluous edge-weight entries from |sorted(p)|@>;
   p=link(p);incr(n);
@@ -7727,7 +7727,7 @@ pointer @!p, @!q, @!r, @!s; /*pointers that traverse the given structure*/
 @<Initialize the array of new edge list heads@>;
 @<Insert blank rows at the top and bottom, and set |p| to the new top row@>;
 @<Compute the magic offset values@>;
-@/do@+{q=knil(p);@+if (unsorted(q) > xvoid) sort_edges(q);
+@/do@+{q=knil(p);@+if (unsorted(q) > empty) sort_edges(q);
 @<Insert the horizontal edges defined by adjacent rows |p,q|, and destroy row~|p|@>;
 p=q;n_magic=n_magic-8;
 }@+ while (!(knil(p)==cur_edges));
@@ -7889,7 +7889,7 @@ while (qq!=sentinel)
   {@+info(qq)=info(qq)+delta;qq=link(qq);
   } 
 qq=unsorted(pp);
-while (qq > xvoid) 
+while (qq > empty) 
   {@+info(qq)=info(qq)+delta;qq=link(qq);
   } 
 pp=link(pp);
@@ -7902,14 +7902,14 @@ been merged into row~|p|.
 
 @<Merge row |pp|...@>=
 qq=unsorted(pp);
-if (qq > xvoid) 
-  if (unsorted(p) <= xvoid) unsorted(p)=qq;
-  else{@+while (link(qq) > xvoid) qq=link(qq);
+if (qq > empty) 
+  if (unsorted(p) <= empty) unsorted(p)=qq;
+  else{@+while (link(qq) > empty) qq=link(qq);
     link(qq)=unsorted(p);unsorted(p)=unsorted(pp);
     } 
 unsorted(pp)=null;qq=sorted(pp);
 if (qq!=sentinel) 
-  {@+if (unsorted(p)==xvoid) unsorted(p)=null;
+  {@+if (unsorted(p)==empty) unsorted(p)=null;
   sorted(pp)=sentinel;r=sorted_loc(p);q=link(r); /*|q==sorted(p)|*/ 
   if (q==sentinel) sorted(p)=qq;
   else loop@+{@+k=info(qq);
@@ -7943,7 +7943,7 @@ while (p!=h)
   while (q!=sentinel) 
     @<Add the contribution of node |q| to the total weight, and set |q:=link(q)|@>;
   q=unsorted(p);
-  while (q > xvoid) 
+  while (q > empty) 
     @<Add the contribution of node |q| to the total weight, and set |q:=link(q)|@>;
   p=link(p);
   } 
@@ -8201,7 +8201,7 @@ if (delta > 0)
   {@+k=0;
   edge_and_weight=8*(m0+m_offset(cur_edges))+min_halfword+zero_w-cur_wt;
   @/do@+{edge_and_weight=edge_and_weight+dx*move[k];
-  fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=link(p);incr(k);incr(n);
   }@+ while (!(k==delta));
@@ -8214,7 +8214,7 @@ if (delta > 0)
   {@+k=0;
   edge_and_weight=8*(m0+m_offset(cur_edges))+min_halfword+zero_w+cur_wt;
   @/do@+{edge_and_weight=edge_and_weight+dx*move[k];
-  fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=knil(p);incr(k);decr(n);
   }@+ while (!(k==delta));
@@ -8226,7 +8226,7 @@ edge_and_weight=8*(n0+m_offset(cur_edges))+min_halfword+zero_w-cur_wt;
 n0=m0;k=0;@<Move to row |n0|, pointed to by |p|@>;
 @/do@+{j=move[k];
 while (j > 0) 
-  {@+fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  {@+fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=link(p);decr(j);incr(n);
   } 
@@ -8239,7 +8239,7 @@ edge_and_weight=8*(n0+m_offset(cur_edges))+min_halfword+zero_w+cur_wt;
 n0=-m0-1;k=0;@<Move to row |n0|, pointed to by |p|@>;
 @/do@+{j=move[k];
 while (j > 0) 
-  {@+fast_get_avail(&r);link(r)=unsorted(p);info(r)=edge_and_weight;
+  {@+fast_get_avail(r);link(r)=unsorted(p);info(r)=edge_and_weight;
   if (internal[tracing_edges] > 0) trace_new_edge(r, n);
   unsorted(p)=r;p=knil(p);decr(j);decr(n);
   } 
@@ -8256,7 +8256,7 @@ void toss_edges(pointer @!h)
 q=link(h);
 while (q!=h) 
   {@+flush_list(sorted(q));
-  if (unsorted(q) > xvoid) flush_list(unsorted(q));
+  if (unsorted(q) > empty) flush_list(unsorted(q));
   p=q;q=link(q);free_node(p, row_node_size);
   } 
 free_node(h, edge_header_size);
@@ -12147,8 +12147,8 @@ purposes only.
 
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
-{@+int @!r;
-int @!c;
+{@+screen_row @!r;
+screen_col @!c;
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
@@ -12358,9 +12358,9 @@ if (screen_OK)
 whenever we can.
 
 @<Display the pixels of edge row |p| in screen row |r|@>=
-{@+if (unsorted(p) > xvoid) sort_edges(p);
-else if (unsorted(p)==xvoid) if (already_there) goto done;
-unsorted(p)=xvoid; /*this time we'll paint, but maybe not next time*/ 
+{@+if (unsorted(p) > empty) sort_edges(p);
+else if (unsorted(p)==empty) if (already_there) goto done;
+unsorted(p)=empty; /*this time we'll paint, but maybe not next time*/ 
 @<Set up the parameters needed for |paint_row|; but |goto done| if no painting is
 needed after all@>;
 paint_row(r, b, &row_transition, n);
@@ -13538,13 +13538,13 @@ default:print_nl("?"); /*this should never happen*/
 @ The parameter that corresponds to a loop text is either a token list
 (in the case of \&{forsuffixes}) or a ``capsule'' (in the case of \&{for}).
 We'll discuss capsules later; for now, all we need to know is that
-the |link| field in a capsule parameter is |xvoid| and that
+the |link| field in a capsule parameter is |empty| and that
 |print_exp(p, 0)| displays the value of capsule~|p| in abbreviated form.
 
 @<Print the current loop value@>=
 {@+print_nl("<for(");p=param_stack[param_start];
 if (p!=null) 
-  if (link(p)==xvoid) print_exp(p, 0); /*we're in a \&{for} loop*/ 
+  if (link(p)==empty) print_exp(p, 0); /*we're in a \&{for} loop*/ 
   else show_token_list(p, null, 20, tally);
 print_str(")> ");
 } 
@@ -13705,7 +13705,7 @@ while (param_ptr > param_start)  /*parameters must be flushed*/
   {@+decr(param_ptr);
   p=param_stack[param_ptr];
   if (p!=null) 
-    if (link(p)==xvoid)  /*it's an \&{expr} parameter*/ 
+    if (link(p)==empty)  /*it's an \&{expr} parameter*/ 
       {@+recycle_value(p);free_node(p, value_node_size);
       } 
     else flush_token_list(p); /*it's a \&{suffix} or \&{text} parameter*/ 
@@ -13733,7 +13733,7 @@ if (cur_sym==0)
     if (cur_cmd==numeric_token) type(p)=known;
     else type(p)=string_type;
     } 
-else{@+fast_get_avail(&p);info(p)=cur_sym;
+else{@+fast_get_avail(p);info(p)=cur_sym;
   } 
 return p;
 } 
@@ -14778,7 +14778,7 @@ further arguments (if any).
 
 Arguments of type \&{expr} are so-called capsules, which we will
 discuss later when we concentrate on expressions; they can be
-recognized easily because their |link| field is |xvoid|. Arguments of type
+recognized easily because their |link| field is |empty|. Arguments of type
 \&{suffix} and \&{text} are token lists without reference counts.
 
 @ After argument scanning is complete, the arguments are moved to the
@@ -14842,11 +14842,11 @@ else{@+p=info(a);
 
 @ @<Declare the procedure called |print_arg|@>=
 void print_arg(pointer @!q, int @!n, pointer @!b)
-{@+if (link(q)==xvoid) print_nl("(EXPR");
+{@+if (link(q)==empty) print_nl("(EXPR");
 else if ((b < text_base)&&(b!=text_macro)) print_nl("(SUFFIX");
 else print_nl("(TEXT");
 print_int(n);print_str(")<-");
-if (link(q)==xvoid) print_exp(q, 1);
+if (link(q)==empty) print_exp(q, 1);
 else show_token_list(q, null, 1000, 0);
 } 
 
@@ -15285,10 +15285,10 @@ A loop-control node also has two other fields, called |loop_type| and
 points to a list of one-word nodes whose |info| fields point to the
 remaining argument values of a suffix list and expression list.
 
-\yskip\indent|loop_type(loop_ptr)==xvoid| means that the current loop is
+\yskip\indent|loop_type(loop_ptr)==empty| means that the current loop is
 `\&{forever}'.
 
-\yskip\indent|loop_type(loop_ptr)==p > xvoid| means that |value(p)|,
+\yskip\indent|loop_type(loop_ptr)==p > empty| means that |value(p)|,
 |step_size(p)|, and |final_value(p)| contain the data for an arithmetic
 progression.
 
@@ -15338,7 +15338,7 @@ halfword @!n; /*hash address of the current symbol*/
 pointer @!p, @!q, @!s, @!pp; /*link manipulation registers*/ 
 m=cur_mod;n=cur_sym;s=get_node(loop_node_size);
 if (m==start_forever) 
-  {@+loop_type(s)=xvoid;p=null;get_x_next();goto found;
+  {@+loop_type(s)=empty;p=null;get_x_next();goto found;
   } 
 get_symbol();p=get_node(token_node_size);info(p)=cur_sym;value(p)=m;@/
 get_x_next();
@@ -15392,13 +15392,13 @@ text(frozen_repeat_loop)=@[@<|" ENDFOR"|@>@];
 {@+
 pointer @!p, @!q; /*link registers*/ 
 p=loop_type(loop_ptr);
-if (p > xvoid)  /*|p| points to a progression node*/ 
+if (p > empty)  /*|p| points to a progression node*/ 
   {@+cur_exp=value(p);
   if (@<The arithmetic progression has ended@>) goto not_found;
   cur_type=known;q=stash_cur_exp(); /*make |q| an \&{expr} argument*/ 
   value(p)=cur_exp+step_size(p); /*set |value(p)| for the next iteration*/ 
   } 
-else if (p < xvoid) 
+else if (p < empty) 
   {@+p=loop_list(loop_ptr);
   if (p==null) goto not_found;
   loop_list(loop_ptr)=link(p);q=info(p);free_avail(p);
@@ -15419,7 +15419,7 @@ not_found: stop_iteration();
 @ @<Trace the start of a loop@>=
 {@+begin_diagnostic();print_nl("{loop value=");
 @.loop value=n@>
-if ((q!=null)&&(link(q)==xvoid)) print_exp(q, 1);
+if ((q!=null)&&(link(q)==empty)) print_exp(q, 1);
 else show_token_list(q, null, 50, 0);
 print_char('}');end_diagnostic(false);
 } 
@@ -15431,13 +15431,13 @@ from the input stack.
 @p void stop_iteration(void)
 {@+pointer @!p, @!q; /*the usual*/ 
 p=loop_type(loop_ptr);
-if (p > xvoid) free_node(p, progression_node_size);
-else if (p < xvoid) 
+if (p > empty) free_node(p, progression_node_size);
+else if (p < empty) 
   {@+q=loop_list(loop_ptr);
   while (q!=null) 
     {@+p=info(q);
     if (p!=null) 
-      if (link(p)==xvoid)  /*it's an \&{expr} parameter*/ 
+      if (link(p)==empty)  /*it's an \&{expr} parameter*/ 
         {@+recycle_value(p);free_node(p, value_node_size);
         } 
       else flush_token_list(p); /*it's a \&{suffix} or \&{text} parameter*/ 
@@ -15571,6 +15571,8 @@ pool_pointer @!ext_delimiter; /*the relevant `\..', if any*/
 system area called |MF_area|.
 This system area name will, of course, vary from place to place.
 @^system dependencies@>
+
+@d MF_area	MF_area
 @.MFinputs@>
 
 @ Here now is the first of the system-dependent routines for file name scanning.
@@ -16128,7 +16130,7 @@ are allowed.  Conversely, \MF\ has no variables of type |vacuous| or
 @ Capsules are two-word nodes that have a similar meaning
 to |cur_type| and |cur_exp|. Such nodes have |name_type==capsule|,
 and their |type| field is one of the possibilities for |cur_type| listed above.
-Also |link <= xvoid| in capsules that aren't part of a token list.
+Also |link <= empty| in capsules that aren't part of a token list.
 
 The |value| field of a capsule is, in most cases, the value that
 corresponds to its |type|, as |cur_exp| corresponds to |cur_type|.
@@ -16156,7 +16158,7 @@ capsule. It is not used when |cur_type==token_list|.
 After the operation, |cur_type==vacuous|; hence there is no need to
 copy path lists or to update reference counts, etc.
 
-The special link |xvoid| is put on the capsule returned by
+The special link |empty| is put on the capsule returned by
 |stash_cur_exp|, because this procedure is used to store macro parameters
 that must be easily distinguishable from token lists.
 
@@ -16170,7 +16172,7 @@ default:{@+p=get_node(value_node_size);name_type(p)=capsule;
   type(p)=cur_type;value(p)=cur_exp;
   } 
 } @/
-cur_type=vacuous;link(p)=xvoid;return p;
+cur_type=vacuous;link(p)=empty;return p;
 } 
 
 @ The inverse of |stash_cur_exp| is the following procedure, which
@@ -16879,7 +16881,7 @@ pointer @!t; /*a token*/
 pointer @!macro_ref; /*reference count for a suffixed macro*/ 
 
 @ @<Scan a variable primary...@>=
-{@+fast_get_avail(&pre_head);tail=pre_head;post_head=null;tt=vacuous;
+{@+fast_get_avail(pre_head);tail=pre_head;post_head=null;tt=vacuous;
 loop@+{@+t=cur_tok();link(tail)=t;
   if (tt!=undefined) 
     {@+@<Find the approximate type |tt| and corresponding~|q|@>;
@@ -17420,7 +17422,7 @@ if (cur_type!=pair_type)
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I \?\?\?' now.)");
+    ("you might want to type `I ???' now.)");
   put_get_flush_error(0);cur_x=0;cur_y=0;
   } 
 else{@+p=value(cur_exp);
@@ -17440,7 +17442,7 @@ else{@+disp_err(x_part_loc(p),
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I \?\?\?' now.)");
+    ("you might want to type `I ???' now.)");
   put_get_error();recycle_value(x_part_loc(p));cur_x=0;
   } 
 if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
@@ -17450,7 +17452,7 @@ else{@+disp_err(y_part_loc(p),
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I \?\?\?' now.)");
+    ("you might want to type `I ???' now.)");
   put_get_error();recycle_value(y_part_loc(p));cur_y=0;
   } 
 
@@ -17525,7 +17527,7 @@ else{@+t=given;cur_exp=n_arg(cur_x, cur_y);
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I \?\?\?' now.)");
+    ("you might want to type `I ???' now.)");
   put_get_flush_error(0);
   } 
 x=cur_exp;
@@ -17543,7 +17545,7 @@ if (cur_type!=known)
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I \?\?\?' now.)");
+    ("you might want to type `I ???' now.)");
   put_get_flush_error(0);
   } 
 cur_y=cur_exp;cur_x=x;
@@ -18342,7 +18344,7 @@ that returns |null| if and only if its argument is not tarnished.
 @<Sidestep |independent| cases in capsule |p|@>=
 switch (type(p)) {
 case transform_type: case pair_type: old_p=tarnished(p);@+break;
-case independent: old_p=xvoid;@+break;
+case independent: old_p=empty;@+break;
 default:old_p=null;
 } 
 if (old_p!=null) 
@@ -18353,7 +18355,7 @@ if (old_p!=null)
 @ @<Sidestep |independent| cases in the current expression@>=
 switch (cur_type) {
 case transform_type: case pair_type: old_exp=tarnished(cur_exp);@+break;
-case independent: old_exp=xvoid;@+break;
+case independent: old_exp=empty;@+break;
 default:old_exp=null;
 } 
 if (old_exp!=null) 
@@ -18368,7 +18370,7 @@ pointer @!r; /*current position in the big node*/
 q=value(p);r=q+big_node_size[type(p)];
 @/do@+{r=r-2;
 if (type(r)==independent) 
-  {@+return xvoid;
+  {@+return empty;
   } 
 }@+ while (!(r==q));
 return null;
@@ -18621,7 +18623,7 @@ if (internal[tracing_commands] > two)
   @<Trace the fraction multiplication@>;
 switch (cur_type) {
 case transform_type: case pair_type: old_exp=tarnished(cur_exp);@+break;
-case independent: old_exp=xvoid;@+break;
+case independent: old_exp=empty;@+break;
 default:old_exp=null;
 } 
 if (old_exp!=null) 
@@ -22337,7 +22339,7 @@ Several edges might cancel at the same column position, so we need to
 look ahead to column~|mm| before actually outputting anything.
 
 @<Output the pixels of edge row |p| to font row |n|@>=
-if (unsorted(p) > xvoid) sort_edges(p);
+if (unsorted(p) > empty) sort_edges(p);
 q=sorted(p);w=0;prev_m=-fraction_one; /*$|fraction_one|\approx\infty$*/ 
 ww=0;prev_w=0;m=prev_m;
 @/do@+{if (q==sentinel) mm=fraction_one;
@@ -23795,7 +23797,7 @@ for more than 60\pct! of \MF's running time, exclusive of input and output.
 @d str_464 "final value"
 @<|"final value"|@>=@+464
 @ 
-@d str_465 "MFinputs/"
+@d str_465 "MFinputs:"
 @d MF_area 465
 @ 
 @d str_466 ".base"
