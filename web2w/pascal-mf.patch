@@ -1,0 +1,12 @@
+diff --git a/web2w/pascal.y b/web2w/pascal.y
+index b3e6823..da2eb44 100644
+--- a/web2w/pascal.y
++++ b/web2w/pascal.y
+@@ -246,6 +246,7 @@ labeldecl: NMACRO  {IGN($1); SYM($1)->obsolete=1; }
+ constants: 
+          | PCONST constdefinitions
+          | PCONST constdefinitions conststringdefinition
++         | PCONST constdefinitions conststringdefinition constdefinitions
+          ; 
+ 
+ constdefinitions:  constdefinition
