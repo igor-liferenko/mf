@@ -1,5 +1,5 @@
 diff --git a/web2w/mf.web b/web2w/mf.web
-index ca3cb25..b9d61e5 100644
+index ca3cb25..94384f5 100644
 --- a/web2w/mf.web
 +++ b/web2w/mf.web
 @@ -7120,13 +7120,13 @@ row has not changed since the last time we sorted it.
@@ -261,7 +261,7 @@ index ca3cb25..b9d61e5 100644
  @!init wlog_cr; {this will be done only after |init_screen=true|}
  wlog_ln('Calling BLANKRECTANGLE(',left_col:1,',',
    right_col:1,',',top_row:1,',',bot_row:1,')');@+tini
-@@ -12152,16 +12148,11 @@ the precise details are best conveyed by means of a \PASCAL\
+@@ -12152,20 +12148,15 @@ the precise details are best conveyed by means of a \PASCAL\
  program (see the commented-out code below).
  @^system dependencies@>
  
@@ -280,6 +280,11 @@ index ca3cb25..b9d61e5 100644
  @!init wlog('Calling PAINTROW(',r:1,',',b:1,';');
    {this is done only after |init_screen=true|}
  for k:=0 to n do
+-  begin wlog(a[k]:1); if k<>n then wlog(',');
++  begin if k<>n then wlog(',');
+   end;
+ wlog_ln(')');@+tini
+ end;
 @@ -12342,19 +12333,19 @@ end;
  whenever we can.
  
