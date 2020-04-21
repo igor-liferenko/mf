@@ -8822,8 +8822,8 @@ If |0 <= t <= 1|, the quantity |t[a, b]| is always between |a| and~|b|, even in
 the presence of rounding errors. Our subroutines
 also obey the identity |t[a, b]+t[b, a]==a+b|.
 
-@d t_of_the_way_end(X)	1
-@d t_of_the_way(X)	t_of_the_way_end
+@d t_of_the_way_end(X)	X,t@=)@>
+@d t_of_the_way(X)	X-take_fraction@=(@>X-t_of_the_way_end
 
 @<Declare the procedure called |split_cubic|@>=
 void split_cubic(pointer @!p, fraction @!t,
@@ -9663,10 +9663,10 @@ expected to understand why.
 {@+new_boundary(p, right_type(p));s=link(p);
 o1=octant_number[right_type(p)];o2=octant_number[right_type(q)];
 switch (o2-o1) {
-case 1: case 7: case 7: case 1: goto done;
-case 2: case 6: clockwise=false;@+break;
-case 3: case 5: case 4: case 4: case 5: case 3: @<Decide whether or not to go clockwise@>@;@+break;
-case 6: case 2: clockwise=true;@+break;
+case -1: case -7: case 7: case -1: goto done;
+case -2: case -6: clockwise=false;@+break;
+case -3: case -5: case 4: case -4: case 5: case -3: @<Decide whether or not to go clockwise@>@;@+break;
+case -6: case -2: clockwise=true;@+break;
 case 0: clockwise=rev_turns;
 }  /*there are no other cases*/ 
 @<Insert additional boundary nodes, then |goto done|@>;
@@ -10838,6 +10838,13 @@ the final offset adjustments are stored in |smooth_bot| and |smooth_top|,
 respectively.
 
 @<Other local variables for |fill_envelope|@>=
+int @!m, @!n; /*current lattice position*/ 
+int @!mm0, @!mm1; /*skewed equivalents of |m0| and |m1|*/ 
+int @!k; /*current offset number*/ 
+pointer @!w, @!ww; /*pointers to the current offset and its neighbor*/ 
+uint16_t @!smooth_bot, @!smooth_top; /*boundaries of smoothing*/ 
+scaled @!xx, @!yy, @!xp, @!yp, @!delx, @!dely, @!tx, @!ty;
+   /*registers for coordinate calculations*/ 
 
 @ @<Make the envelope moves for the current octant...@>=
 if (odd(octant_number[octant])) 
@@ -10959,13 +10966,6 @@ because some \PASCAL\ compilers cannot handle procedures as large as
 void dual_moves(pointer @!h, pointer @!p, pointer @!q)
 {@+
 pointer @!r, @!s; /*for list traversal*/ 
-int @!m, @!n; /*current lattice position*/ 
-int @!mm0, @!mm1; /*skewed equivalents of |m0| and |m1|*/ 
-int @!k; /*current offset number*/ 
-pointer @!w, @!ww; /*pointers to the current offset and its neighbor*/ 
-uint16_t @!smooth_bot, @!smooth_top; /*boundaries of smoothing*/ 
-scaled @!xx, @!yy, @!xp, @!yp, @!delx, @!dely, @!tx, @!ty;
-   /*registers for coordinate calculations*/ 
 @<Other local variables for |fill_envelope|@>@;
 @<Initialize for dual envelope moves@>;
 r=p; /*recall that |right_type(q)==endpoint==0| now*/ 
@@ -12123,6 +12123,7 @@ system for which |white| was black and |black| was bright green.
 @<Types...@>=
 typedef uint16_t screen_row; /*a row number on the screen*/ 
 typedef uint16_t screen_col; /*a column number on the screen*/ 
+typedef screen_col *trans_spec;
 typedef uint8_t pixel_color; /*specifies one of the two pixel values*/ 
 
 @ We'll illustrate the |blank_rectangle| and |paint_row| operations by
@@ -12148,11 +12149,6 @@ purposes only.
   screen_row @!top_row, screen_row @!bot_row)
 {@+int @!r;
 int @!c;
-#if 0
-@+for (r=top_row; r<=bot_row-1; r++) 
-  for (c=left_col; c<=right_col-1; c++) 
-    screen_pixel[r]=white;@+
-#endif
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
@@ -12176,18 +12172,10 @@ the precise details are best conveyed by means of a \PASCAL\
 program (see the commented-out code below).
 @^system dependencies@>
 
-@p void paint_row(screen_row @!r, pixel_color @!b,@!integerl *@!a,
+@p void paint_row(screen_row @!r, pixel_color @!b,@!trans_spec @!a,
   screen_col @!n)
 {@+int @!k; /*an index into |a|*/ 
 screen_col @!c; /*an index into |screen_pixel|*/ 
-#if 0
-k=0;c=(*a);
-@/do@+{incr(k);
-  @/do@+{screen_pixel[r]=b;incr(c);
-  }@+ while (!(c==(*a)));
-  b=black-b; /*$|black|\swap|white|$*/ 
-  }@+ while (!(k==n));@+
-#endif
 @/
 #ifdef @!INIT
 wlog("Calling PAINTROW(", r: 1, ',' , b: 1, ';' );
@@ -12382,7 +12370,7 @@ done: ;}
 array.
 
 @<Glob...@>=
-screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/ 
+trans_spec @!row_transition; /*an array of |black|/|white| transitions*/ 
 
 @ The job remaining is to go through the list |sorted(p)|, unpacking the
 |info| fields into |m| and weight, then making |black| the pixels whose
@@ -16330,7 +16318,7 @@ void disp_err(pointer @!p, str_number @!s)
 print_nl(">> ");
 @.>>@>
 print_exp(p, 1); /*``medium verbose'' printing of the expression*/ 
-if (interaction!=error_stop_mode) 
+if (s!=empty_string) 
   {@+print_nl("! ");print(s);
 @.!\relax@>
   } 
@@ -19141,8 +19129,10 @@ if (b > l)
   if (a > l) a=l;
   } 
 str_room(b-a);
-if (reversed) 
- for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));
+if (reversed)
+  for (k=str_start[s]+b-1; k>=str_start[s]+a; k--) append_char(so(str_pool[k]));
+else
+  for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));
 cur_exp=make_string();delete_str_ref(s);
 } 
 
