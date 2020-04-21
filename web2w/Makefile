@@ -1,9 +1,9 @@
 all: ctangle
-	./ctangle -bhp web2w
+	./ctangle -bhp web2w web2w-mf
 	flex -o web.lex.c web.l
 	patch pascal.y -o pascal-mf.y <pascal-mf.patch
 	bison --warnings=none -d -v pascal-mf.y
-	gcc -o web2w web2w.c web.lex.c pascal.tab.c
+	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	./web2w -o mf.w mf.web
 	#patch mf.w cmf.patch
 
