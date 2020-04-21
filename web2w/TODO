@@ -1,4 +1,5 @@
 current mf.w has manual changes, which revert mf-web2w.patch
 TODO: change pascal-mf.patch and maybe web-mf.patch that the
       same mf.w will be obtained automatically without using
-      mf-web2w.patch and manual changes
+      mf-web2w.patch and manual changes, and then remove
+      web2w/mf.w from git control
