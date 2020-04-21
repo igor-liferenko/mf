@@ -276,11 +276,26 @@ Arithmetic overflow will be detected in all cases.
 @^overflow in arithmetic@>
 
 @<Compiler directives@>=
-/*@&$C-,A+,D-*/ /*no range check, catch arithmetic overflow, no debug overhead*/ 
-#ifdef @!DEBUG
-/*@&$C+,D+*/
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#define odd(X)       ((X)&1)
+#define chr(X)       ((unsigned char)(X))
+#define ord(X)       ((int)(X))
+#define abs(X)       ((X)>-(X)?(X):-(X))
+#define round(X)     ((int)((X)>=0.0?floor((X)+0.5):ceil((X)-0.5)))
+
+#if __SIZEOF_FLOAT__==4
+typedef float float32_t;
+#else
+#error  float type must have size 4
 #endif
- /*but turn everything on when debugging*/ 
+
+@h
 
 @ This \MF\ implementation conforms to the rules of the {\sl Pascal User
 @:PASCAL}{\PASCAL@>
@@ -693,7 +708,7 @@ implement \MF\ can open a file whose external name is specified by
 @^system dependencies@>
 
 @<Glob...@>=
-uint8_t @!name_of_file0[file_name_size], *const @!name_of_file = @!name_of_file0-1;@;@/
+uint8_t @!name_of_file0[file_name_size+1]={0}, *const @!name_of_file = @!name_of_file0-1;@;@/
    /*on some systems this may be a \&{record} variable*/ 
 uint8_t @!name_length;@/ /*this many characters are actually
   relevant in |name_of_file| (the rest are blank)*/ 
@@ -878,8 +893,8 @@ these operations can be specified in \ph:
 @:PASCAL H}{\ph@>
 @^system dependencies@>
 
-@d update_terminal	break(term_out) /*empty the terminal output buffer*/ 
-@d clear_terminal	break_in(term_in, true) /*clear the terminal input buffer*/ 
+@d update_terminal	fflush(term_out.f) /*empty the terminal output buffer*/ 
+@d clear_terminal	fflush(term_in.f) /*clear the terminal input buffer*/ 
 @d wake_up_terminal	do_nothing /*cancel the user's cancellation of output*/ 
 
 @ We need a special routine to read the first line of \MF\ input from
@@ -1024,10 +1039,11 @@ typedef uint16_t str_number; /*for variables that point into |str_start|*/
 typedef uint8_t packed_ASCII_code; /*elements of |str_pool| array*/ 
 
 @ @<Glob...@>=
-packed_ASCII_code @!str_pool[pool_size+1]; /*the characters*/ 
-pool_pointer @!str_start[max_strings+1]; /*the starting pointers*/ 
-pool_pointer @!pool_ptr; /*first unused position in |str_pool|*/ 
-str_number @!str_ptr; /*number of the current string being created*/ 
+@<prepare for string pool initialization@>@;
+packed_ASCII_code @!str_pool[pool_size+1]= @<|str_pool| initialization@>; /*the characters*/ 
+pool_pointer @!str_start[max_strings+1]= {@<|str_start| initialization@>}; /*the starting pointers*/ 
+pool_pointer @!pool_ptr=@<|pool_ptr| initialization@>; /*first unused position in |str_pool|*/ 
+str_number @!str_ptr=@<|str_ptr| initialization@>; /*number of the current string being created*/
 pool_pointer @!init_pool_ptr; /*the starting value of |pool_ptr|*/ 
 str_number @!init_str_ptr; /*the starting value of |str_ptr|*/ 
 pool_pointer @!max_pool_ptr; /*the maximum so far of |pool_ptr|*/ 
@@ -1196,11 +1212,11 @@ message and return |false|@>;
 
 @<Make the first 256...@>=
 for (k=0; k<=255; k++) 
-  {@+if ((@<Character |k| cannot be printed@>)) 
-    {@+append_char('^');append_char('^');
+  { if (@[@<Character |k| cannot be printed@>@]) 
+    { append_char('^');append_char('^');
     if (k < 0100) append_char(k+0100)@;
     else if (k < 0200) append_char(k-0100)@;
-    else{@+app_lc_hex(k/16);app_lc_hex(k%16);
+    else{ app_lc_hex(k/16);app_lc_hex(k%16);
       } 
     } 
   else append_char(k);
@@ -1251,7 +1267,7 @@ alpha_file @!pool_file; /*the string-pool file output by \.{TANGLE}*/
   a_close(&pool_file);return false;
   } 
 @<Read the other strings...@>=
-name_of_file=pool_name; /*we needn't set |name_length|*/ 
+{@+int k;@+for(k=1; k<=file_name_size;k++)name_of_file[k]=pool_name[k-1];@+} /*we needn't set |name_length|*/ 
 if (a_open_in(&pool_file)) 
   {@+c=false;
   @/do@+{@<Read one string, but return |false| if the string memory space is getting
@@ -1371,12 +1387,30 @@ for terminal output, and it is possible to adhere to those conventions
 by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
 @^system dependencies@>
 
-@d wterm(X)	write(term_out, X)
-@d wterm_ln(...)	write_ln(term_out,__VA_ARGS__)
-@d wterm_cr	write_ln(term_out)
-@d wlog(...)	write(log_file,__VA_ARGS__)
-@d wlog_ln(...)	write_ln(log_file,__VA_ARGS__)
-@d wlog_cr	write_ln(log_file)
+@<Compiler directives@>=
+#define put(file)    @[fwrite(&((file).d),sizeof((file).d),1,(file).f)@]
+#define get(file)    @[fread(&((file).d),sizeof((file).d),1,(file).f)@]
+
+#define reset(file,name,mode)   @[((file).f=fopen((char *)(name)+1,mode),\
+                                 (file).f!=NULL?get(file):0)@]
+#define rewrite(file,name,mode) @[((file).f=fopen((char *)(name)+1,mode))@]
+#define close(file)    @[fclose((file).f)@]
+#define eof(file)    @[feof((file).f)@]
+#define eoln(file)    @[((file).d=='\n'||eof(file))@]
+#define erstat(file)   @[((file).f==NULL?-1:ferror((file).f))@]
+
+#define read(file,x) @[((x)=(file).d,get(file))@]
+#define read_ln(file)  @[do get(file); while (!eoln(file))@]
+
+#define write(file, format,...)    @[fprintf(file.f,format,## __VA_ARGS__)@]
+#define write_ln(file,...)	   @[write(file,__VA_ARGS__"\n")@]
+
+#define wterm(format,...)	@[write(term_out,format, ## __VA_ARGS__)@]
+#define wterm_ln(format,...)	@[wterm(format "\n", ## __VA_ARGS__)@]
+#define wterm_cr	        @[write(term_out,"\n")@]
+#define wlog(format, ...)	@[write(log_file,format, ## __VA_ARGS__)@]
+#define wlog_ln(format, ...)   @[wlog(format "\n", ## __VA_ARGS__)@]
+#define wlog_cr	        @[write(log_file,"\n")@]
 
 @ To end a line of text output, we call |print_ln|.
 
@@ -1478,10 +1512,10 @@ update_terminal;
 string appears at the beginning of a new line.
 
 @<Basic print...@>=
-void print_nl(str_number @!s) /*prints string |s| at beginning of line*/ 
+void print_nl(char *@!s) /*prints string |s| at beginning of line*/ 
 {@+if (((term_offset > 0)&&(odd(selector)))||@|
   ((file_offset > 0)&&(selector >= log_only))) print_ln();
-print(s);
+print_str(s);
 } 
 
 @ An array of digits in the range |0 dotdot 9| is printed by |print_the_digs|.
@@ -1551,10 +1585,10 @@ print_ln();buffer[last]='%';incr(selector); /*restore previous status*/
 @* Reporting errors.
 When something anomalous is detected, \MF\ typically does something like this:
 $$\vbox{\halign{#\hfil\cr
-|print_err(@[@<|"Something anomalous has been detected"|@>@]);|\cr
-|help3(@[@<|"This is the first line of my offer to help."|@>@])|\cr
-|(@[@<|"This is the second line. I'm trying to"|@>@])|\cr
-|(@[@<|"explain the best way for you to proceed."|@>@]);|\cr
+|print_err("Something anomalous has been detected");|\cr
+|help3("This is the first line of my offer to help.")|\cr
+|("This is the second line. I'm trying to")|\cr
+|("explain the best way for you to proceed.");|\cr
 |error;|\cr}}$$
 A two-line help message would be given using |help2|, etc.; these informal
 helps should use simple vocabulary that complements the words used in the
@@ -1682,7 +1716,7 @@ in reverse order, i.e., with |help_line[0]| appearing last.
 @d help6	@+{@+help_ptr=6;hlp6 /*use this with six help lines*/ 
 
 @<Glob...@>=
-str_number @!help_line[6]; /*helps for the next |error|*/ 
+char *@!help_line[6]; /*helps for the next |error|*/ 
 uint8_t @!help_ptr; /*the number of help lines present*/ 
 bool @!use_err_help; /*should the |err_help| string be shown?*/ 
 str_number @!err_help; /*a string set up by \&{errhelp}*/ 
@@ -1840,7 +1874,7 @@ show_context();goto resume;
 else{@+if (help_ptr==0) 
     help2("Sorry, I don't know how to help in this situation.")@/
     @t\kern1em@>("Maybe you should try asking a human?");
-  @/do@+{decr(help_ptr);print(help_line[help_ptr]);print_ln();
+  @/do@+{decr(help_ptr);print_str(help_line[help_ptr]);print_ln();
   }@+ while (!(help_ptr==0));
   } 
 help4("Sorry, I already gave what help I could...")@/
@@ -3262,7 +3296,14 @@ report these statistics when |tracing_stats| is positive.
 
 @<Glob...@>=
 int @!var_used, @!dyn_used; /*how much memory is in use*/ 
-
+#ifdef @!DEBUG
+#define incr_dyn_used @[incr(dyn_used)@]
+#define decr_dyn_used @[decr(dyn_used)@]
+#else
+#define incr_dyn_used
+#define decr_dyn_used
+#endif
+ 
 @ Let's consider the one-word memory region first, since it's the
 simplest. The pointer variable |mem_end| holds the highest-numbered location
 of |mem| that has ever been used. The free locations of |mem| that
@@ -3307,10 +3348,7 @@ else{@+decr(hi_mem_min);p=hi_mem_min;
     } 
   } 
 link(p)=null; /*provide an oft-desired initialization of the new node*/ 
-#ifdef @!STAT
-incr(dyn_used);
-#endif
-@; /*maintain statistics*/ 
+incr_dyn_used; /*maintain statistics*/ 
 return p;
 } 
 
@@ -3318,10 +3356,7 @@ return p;
 
 @d free_avail(X)	 /*single-word node liberation*/ 
   {@+link(X)=avail;avail=X;
-  
-#ifdef @!STAT
-decr(dyn_used);
-#endif
+    decr_dyn_used;
   } 
 
 @ There's also a |fast_get_avail| routine, which saves the procedure-call
@@ -3333,10 +3368,7 @@ the places that would otherwise account for the most calls of |get_avail|.
   {@+X=avail; /*avoid |get_avail| if possible, to save time*/ 
   if (X==null) X=get_avail();
   else{@+avail=link(X);link(X)=null;
-    
-#ifdef @!STAT
-incr(dyn_used);
-#endif
+        incr_dyn_used;
     } 
   } 
 
@@ -15647,7 +15679,7 @@ for (j=str_start[a]; j<=str_start[a+1]-1; j++) append_to_name(so(str_pool[j]));
 for (j=str_start[n]; j<=str_start[n+1]-1; j++) append_to_name(so(str_pool[j]));
 for (j=str_start[e]; j<=str_start[e+1]-1; j++) append_to_name(so(str_pool[j]));
 if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
-for (k=name_length+1; k<=file_name_size; k++) name_of_file[k]= ' ' ;
+name_of_file[name_length+1]=0;
 } 
 
 @ A messier routine is also needed, since base file names must be scanned
@@ -15696,7 +15728,7 @@ for (j=a; j<=b; j++) append_to_name(buffer[j]);
 for (j=base_default_length-base_ext_length+1; j<=base_default_length; j++) 
   append_to_name(xord[MF_base_default[j]]);
 if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
-for (k=name_length+1; k<=file_name_size; k++) name_of_file[k]= ' ' ;
+name_of_file[name_length+1]=0;
 } 
 
 @ Here is the only place we use |pack_buffered_name|. This part of the program
@@ -22540,7 +22572,7 @@ that reads~one~in. The function returns |false| if the dumped base is
 incompatible with the present \MF\ table sizes, etc.
 
 @d too_small(X)	{@+wake_up_terminal;
-  wterm_ln("---! Must increase the ", X);
+  wterm_ln("---! Must increase the %s", X);
 @.Must increase the x@>
   goto off_base;
   } 
@@ -23075,13 +23107,13 @@ int @!k, @!l, @!m, @!n;
 loop{@+wake_up_terminal;
   print_nl("debug # (-1 to exit):");update_terminal;
 @.debug \#@>
-  read(term_in, m);
-  if (m < 0) return;
+  if (fscanf(term_in.f," %d",&m)<1 ||
+      m < 0) return;
   else if (m==0) 
     {@+goto breakpoint; /*go to every label at least once*/ 
     breakpoint: m=0;/*'BREAKPOINT'*/
     } 
-  else{@+read(term_in, n);
+  else{@+fscanf(term_in.f," %d",&n);
     switch (m) {
     @t\4@>@<Numbered cases for |debug_help|@>@;
     default:print_str("?");
