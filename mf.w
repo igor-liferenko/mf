@@ -15603,8 +15603,6 @@ pool_pointer @!ext_delimiter; /*the relevant `\..', if any*/
 system area called |MF_area|.
 This system area name will, of course, vary from place to place.
 @^system dependencies@>
-
-@d MF_area	MF_area
 @.MFinputs@>
 
 @ Here now is the first of the system-dependent routines for file name scanning.
@@ -17454,7 +17452,7 @@ if (cur_type!=pair_type)
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I ?\?\?' now.)");
   put_get_flush_error(0);cur_x=0;cur_y=0;
   } 
 else{@+p=value(cur_exp);
@@ -17474,7 +17472,7 @@ else{@+disp_err(x_part_loc(p),
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I ?\?\?' now.)");
   put_get_error();recycle_value(x_part_loc(p));cur_x=0;
   } 
 if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
@@ -17484,7 +17482,7 @@ else{@+disp_err(y_part_loc(p),
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I ?\?\?' now.)");
   put_get_error();recycle_value(y_part_loc(p));cur_y=0;
   } 
 
@@ -17559,7 +17557,7 @@ else{@+t=given;cur_exp=n_arg(cur_x, cur_y);
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
 @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I ?\?\?' now.)");
   put_get_flush_error(0);
   } 
 x=cur_exp;
@@ -17577,7 +17575,7 @@ if (cur_type!=known)
     ("The value I found (see above) was no good;")@/
     ("so I'll try to keep going by using zero instead.")@/
     ("(Chapter 27 of The METAFONTbook explains that")@/
-    ("you might want to type `I ???' now.)");
+    ("you might want to type `I ?\?\?' now.)");
   put_get_flush_error(0);
   } 
 cur_y=cur_exp;cur_x=x;
