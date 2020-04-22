@@ -15739,7 +15739,8 @@ if (buffer[loc]=='&')
      /*now try the system base file area*/ 
   if (w_open_in(&base_file)) goto found;
   wake_up_terminal;
-  wterm_ln("Sorry, I can't find that base;"," will try PLAIN.");
+  wterm_ln("Sorry, I can't find that base; will try PLAIN.");
+
 @.Sorry, I can't find...@>
   update_terminal;
   } 
@@ -15852,17 +15853,17 @@ is the default extension if none is given. Upon exit from the routine,
 variables |cur_name|, |cur_area|, |cur_ext|, and |name_of_file| are
 ready for another attempt at file opening.
 
-@p void prompt_file_name(str_number @!s, str_number @!e)
+@p void prompt_file_name(char *@!s, str_number @!e)
 {@+
 uint16_t @!k; /*index into |buffer|*/ 
 if (interaction==scroll_mode) wake_up_terminal;
-if (s==@[@<|"input file name"|@>@]) print_err("I can't find file `")@;
+if (strcmp(s,"input file name")==0) print_err("I can't find file `")@;
 @.I can't find file x@>
 else print_err("I can't write on file `");
 @.I can't write on file x@>
 print_file_name(cur_name, cur_area, cur_ext);print_str("'.");
 if (e==@[@<|".mf"|@>@]) show_context();
-print_nl("Please type another ");print(s);
+print_nl("Please type another ");print_str(s);
 @.Please type...@>
 if (interaction < scroll_mode) 
   fatal_error("*** (job aborted, file error in nonstop mode)");
@@ -15890,7 +15891,7 @@ it catch up to what has previously been printed on the terminal.
 int @!k; /*index into |months| and |buffer|*/ 
 uint16_t @!l; /*end of first input line*/ 
 int @!m; /*the current month*/ 
-uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
+@!ASCII_code @!months[]=" JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC"; /*abbreviations of month names*/ 
 old_setting=selector;
 if (job_name==0) job_name=@[@<|"mfput"|@>@];
 @.mfput@>
@@ -15928,12 +15929,11 @@ prompt_file_name("transcript file name",@[@<|".log"|@>@]);
 } 
 
 @ @<Print the banner...@>=
-{@+wlog(banner);
+{@+wlog("%s",banner);
 slow_print(base_ident);print_str("  ");
 print_int(round_unscaled(internal[day]));print_char(' ');
-months="JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 m=round_unscaled(internal[month]);
-for (k=3*m-2; k<=3*m; k++) wlog(months[k]);
+for (k=3*m-2; k<=3*m; k++) wlog("%c",months[k]);
 print_char(' ');print_int(round_unscaled(internal[year]));print_char(' ');
 m=round_unscaled(internal[time]);
 print_dd(m/60);print_char(':');print_dd(m%60);
@@ -21593,7 +21593,7 @@ for (k=bc; k<=ec; k++) if (char_exists[k])
 @ Finally we're ready to actually write the \.{TFM} information.
 Here are some utility routines for this purpose.
 
-@d tfm_out(X)	write(tfm_file, X) /*output one byte to |tfm_file|*/ 
+@d tfm_out(X)	write(tfm_file, "%c", X) /*output one byte to |tfm_file|*/ 
 
 @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
 {@+tfm_out(x/256);tfm_out(x%256);
@@ -22863,14 +22863,13 @@ t_open_out; /*open the terminal for output*/
 if (ready_already==314159) goto start_of_MF;
 @<Check the ``constant'' values...@>@;
 if (bad > 0) 
-  {@+wterm_ln("Ouch---my internal constants have been clobbered!",
-    "---case ", bad: 1);
+  {@+wterm_ln("Ouch---my internal constants have been clobbered!"
+    "---case %d", bad);
 @.Ouch...clobbered@>
   exit(0);
   } 
 initialize(); /*set global variables to their starting values*/ 
 #ifdef @!INIT
-if (!get_strings_started()) exit(0);
 init_tab(); /*initialize the tables*/ 
 init_prim(); /*call |primitive| for each primitive*/ 
 init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
@@ -22885,7 +22884,7 @@ if (start_sym > 0)  /*insert the `\&{everyjob}' symbol*/
   } 
 main_control(); /*come to life*/ 
 final_cleanup(); /*prepare for death*/ 
-end_of_MF: close_files_and_terminate();
+close_files_and_terminate();
 ready_already=0;
 return 0; }
 
@@ -22958,28 +22957,28 @@ up |str_pool| memory when a non-{\bf stat} version of \MF\ is being used.
 
 @<Output statistics...@>=
 if (log_opened) 
-  {@+wlog_ln( ' ' );
-  wlog_ln("Here is how much of METAFONT's memory"," you used:");
+  {@+wlog_ln(" ");
+  wlog_ln("Here is how much of METAFONT's memory you used:");
 @.Here is how much...@>
-  wlog( ' ' , max_str_ptr-init_str_ptr: 1," string");
-  if (max_str_ptr!=init_str_ptr+1) wlog( 's' );
-  wlog_ln(" out of ", max_strings-init_str_ptr: 1);@/
-  wlog_ln( ' ' , max_pool_ptr-init_pool_ptr: 1," string characters out of ",
-    pool_size-init_pool_ptr: 1);@/
-  wlog_ln( ' ' , lo_mem_max-mem_min+mem_end-hi_mem_min+2: 1,@|
-    " words of memory out of ", mem_end+1-mem_min: 1);@/
-  wlog_ln( ' ' , st_count: 1," symbolic tokens out of ",
-    hash_size: 1);@/
-  wlog_ln( ' ' , max_in_stack: 1,"i,",@|
-    int_ptr: 1,"n,",@|
-    max_rounding_ptr: 1,"r,",@|
-    max_param_stack: 1,"p,",@|
-    max_buf_stack+1: 1,"b stack positions out of ",@|
-    stack_size: 1,"i,",
-    max_internal: 1,"n,",
-    max_wiggle: 1,"r,",
-    param_size: 1,"p,",
-    buf_size: 1, 'b' );
+  wlog(" %d string", max_str_ptr-init_str_ptr);
+  if (max_str_ptr!=init_str_ptr+1) wlog( "s" );
+  wlog_ln( " out of %d", max_strings-init_str_ptr);@/
+  wlog_ln( " %d string characters out of %d", max_pool_ptr-init_pool_ptr,
+    pool_size-init_pool_ptr);@/
+  wlog_ln(" %d words of memory out of %d", lo_mem_max-mem_min+mem_end-hi_mem_min+2,@|
+    mem_end+1-mem_min);@/
+  wlog_ln(" %d symbolic tokens out of %d", cs_count, hash_size);@/
+  wlog_ln(" %di,%dn,%dr,%dp,%db stack positions out of %di,%dn,%dr,%dp,%db",
+    max_in_stack,@|
+    int_ptr,@|
+    max_rounding_ptr,@|
+    max_param_stack,@|
+    max_buf_stack+1,@|
+    stack_size,
+    max_internal,
+    max_wiggle,
+    param_size,
+    buf_size );
   } 
 
 @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
@@ -23123,7 +23122,7 @@ case 9: show_token_list(n, null, 100000, 0);@+break;
 case 10: slow_print(n);@+break;
 case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
 case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
-case 13: {@+read(term_in, l);print_cmd_mod(n, l);
+case 13: {@+fscanf(term_in.f," %d",&l);print_cmd_mod(n, l);
   } @+break;
 case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
 case 15: panicking=!panicking;@+break;
