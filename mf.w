@@ -289,12 +289,6 @@ Arithmetic overflow will be detected in all cases.
 #define abs(X)       ((X)>-(X)?(X):-(X))
 #define round(X)     ((int)((X)>=0.0?floor((X)+0.5):ceil((X)-0.5)))
 
-#if __SIZEOF_FLOAT__==4
-typedef float float32_t;
-#else
-#error  float type must have size 4
-#endif
-
 @h
 
 @ This \MF\ implementation conforms to the rules of the {\sl Pascal User
@@ -1933,7 +1927,7 @@ if (interaction==batch_mode) decr(selector);
   } 
 
 @<Error hand...@>=
-void fatal_error(str_number @!s) /*prints |s|, and that's it*/ 
+void fatal_error(char *@!s) /*prints |s|, and that's it*/ 
 {@+normalize_selector();@/
 print_err("Emergency stop");help1(s);succumb;
 @.Emergency stop@>
@@ -1942,11 +1936,11 @@ print_err("Emergency stop");help1(s);succumb;
 @ Here is the most dreaded error message.
 
 @<Error hand...@>=
-void overflow(str_number @!s, int @!n) /*stop due to finiteness*/ 
+void overflow(char *@!s, int @!n) /*stop due to finiteness*/ 
 {@+normalize_selector();
 print_err("METAFONT capacity exceeded, sorry [");
 @.METAFONT capacity exceeded ...@>
-print(s);print_char('=');print_int(n);print_char(']');
+print_str(s);print_char('=');print_int(n);print_char(']');
 help2("If you really absolutely need more capacity,")@/
   ("you can ask a wizard to enlarge me.");
 succumb;
@@ -3590,9 +3584,7 @@ pointer @!q, @!r; /*list traversers*/
 if (p >= hi_mem_min) if (p!=sentinel) 
   {@+r=p;
   @/do@+{q=r;r=link(r);
-#ifdef @!STAT
-decr(dyn_used);
-#endif
+  decr_dyn_used;
   if (r < hi_mem_min) goto done;
   }@+ while (!(r==sentinel));
   done:  /*now |q| is the last node on the list*/ 
@@ -4359,7 +4351,7 @@ printing, as follows. (The parameter |s| is typically |@[@<|"Path"|@>@]| or
 @<Basic printing...@>=
 void print_diagnostic(str_number @!s, str_number @!t, bool @!nuline)
 {@+begin_diagnostic();
-if (nuline) print_nl(s);@+else print(s);
+if (nuline) print_nl("");print(s);@+else print(s); // !!!!!!!!!!!!! is it necessary?
 print_str(" at line ");print_int(line);
 print(t);print_char(':');
 } 
@@ -15689,13 +15681,10 @@ and extensions related to base files.
 @d base_default_length	18 /*length of the |MF_base_default| string*/ 
 @d base_area_length	8 /*length of its area part*/ 
 @d base_ext_length	5 /*length of its `\.{.base}' part*/ 
-@d base_extension	base_extension /*the extension, as a \.{WEB} constant*/ 
+@d base_extension_str	".base" /*the extension, as a \.{WEB} constant*/ 
 
 @<Glob...@>=
-uint8_t @!MF_base_default0[base_default_length], *const @!MF_base_default = @!MF_base_default0-1;
-
-@ @<Set init...@>=
-MF_base_default="MFbases:plain.base";
+ASCII_code @!MF_base_default[1+base_default_length+1]=" MFbases/plain.base";
 @.MFbases@>
 @.plain@>
 @^system dependencies@>
@@ -23827,7 +23816,7 @@ for more than 60\pct! of \MF's running time, exclusive of input and output.
 @d str_464 "final value"
 @<|"final value"|@>=@+464
 @ 
-@d str_465 "MFinputs:"
+@d str_465 "MFinputs/"
 @d MF_area 465
 @ 
 @d str_466 ".base"
