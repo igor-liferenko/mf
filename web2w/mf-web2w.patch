@@ -7,15 +7,15 @@ index ca3cb25..94384f5 100644
  a special one-word node whose |info| field is essentially infinite; this
  facilitates the sorting and merging operations. The final |link| of the
 -|unsorted| list will be either |null| or |void|, where |void=null+1|
-+|unsorted| list will be either |null| or |empty|, where |empty=null+1|
++|unsorted| list will be either |null| or |void|, where |void=null+1|
  is used to avoid redisplaying data that has not changed:
 -A |void| value is stored at the head of the
-+A |empty| value is stored at the head of the
++A |void| value is stored at the head of the
  unsorted list whenever the corresponding row has been displayed.
  
  @d zero_w=4
 -@d void==null+1
-+@d empty==null+1
++@d void==null+1
  
  @<Initialize table entries...@>=
  info(sentinel):=max_halfword; {|link(sentinel)=null|}
@@ -24,11 +24,11 @@ index ca3cb25..94384f5 100644
  structure is displayed in window~|k| of the user's screen, after that
  window has been updated |t| times, \MF\ sets |last_window(h):=k| and
 -|last_window_time(h):=t|; it also sets |unsorted(p):=void| for all row
-+|last_window_time(h):=t|; it also sets |unsorted(p):=empty| for all row
++|last_window_time(h):=t|; it also sets |unsorted(p):=void| for all row
  headers~|p|, after merging any existing unsorted weights with the sorted
  ones.  A subsequent display in the same window will be able to avoid
 -redisplaying rows whose |unsorted| list is still |void|, if the window
-+redisplaying rows whose |unsorted| list is still |empty|, if the window
++redisplaying rows whose |unsorted| list is still |void|, if the window
  hasn't been used for something else in the meantime.
  
  A pointer to the row header of row |n_pos(h)-4096| is provided in
@@ -37,7 +37,7 @@ index ca3cb25..94384f5 100644
      end;
    p:=unsorted(q);
 -  while p>void do
-+  while p>empty do
++  while p>void do
      begin info(p):=info(p)-delta; p:=link(p);
      end;
    q:=link(q);
@@ -46,7 +46,7 @@ index ca3cb25..94384f5 100644
  begin delta:=n_min(cur_edges)-nl; n_min(cur_edges):=nl;
  p:=link(cur_edges);
 -repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=void;
-+repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=empty;
++repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=void;
  knil(p):=q; link(q):=p; p:=q; decr(delta);
  until delta=0;
  knil(p):=cur_edges; link(cur_edges):=p;
@@ -55,7 +55,7 @@ index ca3cb25..94384f5 100644
  begin delta:=nr-n_max(cur_edges); n_max(cur_edges):=nr;
  p:=knil(cur_edges);
 -repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=void;
-+repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=empty;
++repeat q:=get_node(row_node_size); sorted(q):=sentinel; unsorted(q):=void;
  link(p):=q; knil(q):=p; p:=q; decr(delta);
  until delta=0;
  link(p):=cur_edges; knil(cur_edges):=p;
@@ -64,10 +64,10 @@ index ca3cb25..94384f5 100644
  while p<>cur_edges do
    begin q:=unsorted(p); r:=sorted(p);
 -  if(q>void)or(r<>sentinel) then
-+  if(q>empty)or(r<>sentinel) then
++  if(q>void)or(r<>sentinel) then
      begin print_nl("row "); print_int(n+y_off); print_char(":");
 -    while q>void do
-+    while q>empty do
++    while q>void do
        begin print_weight(q,x_off); q:=link(q);
        end;
      print(" |");
@@ -76,7 +76,7 @@ index ca3cb25..94384f5 100644
  link(rr):=sentinel;@/
  r:=unsorted(p); rr:=temp_head;
 -while r>void do
-+while r>empty do
++while r>void do
    begin ss:=get_avail; link(rr):=ss; rr:=ss; info(rr):=info(r);@/
    r:=link(r);
    end;
@@ -85,7 +85,7 @@ index ca3cb25..94384f5 100644
  @<Reflect the edge-and-weight data in |unsorted(p)|@>=
  q:=unsorted(p);
 -while q>void do
-+while q>empty do
++while q>void do
    begin info(q):=m-info(q); q:=link(q);
    end
  
@@ -94,7 +94,7 @@ index ca3cb25..94384f5 100644
    end;
  p:=unsorted(q);
 -while p>void do
-+while p>empty do
++while p>void do
    begin t:=ho(info(p)); w:=t mod 8; info(p):=(t-w)*s+w+delta; p:=link(p);
    end;
  q:=link(q);
@@ -103,7 +103,7 @@ index ca3cb25..94384f5 100644
  while p<>h do
    begin q:=unsorted(p);
 -  while q>void do
-+  while q>empty do
++  while q>void do
      begin info(q):=8-2*((ho(info(q))) mod 8)+info(q); q:=link(q);
      end;
    q:=sorted(p);
@@ -112,7 +112,7 @@ index ca3cb25..94384f5 100644
  begin r:=unsorted(h); unsorted(h):=null;
  p:=link(r); link(r):=sentinel; link(temp_head):=r;
 -while p>void do {sort node |p| into the list that starts at |temp_head|}
-+while p>empty do {sort node |p| into the list that starts at |temp_head|}
++while p>void do {sort node |p| into the list that starts at |temp_head|}
    begin k:=info(p); q:=temp_head;
    repeat r:=q; q:=link(r);
    until k<=info(q);
@@ -121,7 +121,7 @@ index ca3cb25..94384f5 100644
  p:=link(cur_edges); n:=n_min(cur_edges);
  while p<>cur_edges do
 -  begin if unsorted(p)>void then sort_edges(p);
-+  begin if unsorted(p)>empty then sort_edges(p);
++  begin if unsorted(p)>void then sort_edges(p);
    if sorted(p)<>sentinel then
      @<Cull superfluous edge-weight entries from |sorted(p)|@>;
    p:=link(p); incr(n);
@@ -130,7 +130,7 @@ index ca3cb25..94384f5 100644
  @<Insert blank rows at the top and bottom, and set |p| to the new top row@>;
  @<Compute the magic offset values@>;
 -repeat q:=knil(p);@+if unsorted(q)>void then sort_edges(q);
-+repeat q:=knil(p);@+if unsorted(q)>empty then sort_edges(q);
++repeat q:=knil(p);@+if unsorted(q)>void then sort_edges(q);
  @<Insert the horizontal edges defined by adjacent rows |p,q|,
    and destroy row~|p|@>;
  p:=q; n_magic:=n_magic-8;
@@ -139,7 +139,7 @@ index ca3cb25..94384f5 100644
    end;
  qq:=unsorted(pp);
 -while qq>void do
-+while qq>empty do
++while qq>void do
    begin info(qq):=info(qq)+delta; qq:=link(qq);
    end;
  pp:=link(pp);
@@ -150,15 +150,15 @@ index ca3cb25..94384f5 100644
 -if qq>void then
 -  if unsorted(p)<=void then unsorted(p):=qq
 -  else  begin while link(qq)>void do qq:=link(qq);
-+if qq>empty then
-+  if unsorted(p)<=empty then unsorted(p):=qq
-+  else  begin while link(qq)>empty do qq:=link(qq);
++if qq>void then
++  if unsorted(p)<=void then unsorted(p):=qq
++  else  begin while link(qq)>void do qq:=link(qq);
      link(qq):=unsorted(p); unsorted(p):=unsorted(pp);
      end;
  unsorted(pp):=null; qq:=sorted(pp);
  if qq<>sentinel then
 -  begin if unsorted(p)=void then unsorted(p):=null;
-+  begin if unsorted(p)=empty then unsorted(p):=null;
++  begin if unsorted(p)=void then unsorted(p):=null;
    sorted(pp):=sentinel; r:=sorted_loc(p); q:=link(r); {|q=sorted(p)|}
    if q=sentinel then sorted(p):=qq
    else loop@+begin k:=info(qq);
@@ -167,7 +167,7 @@ index ca3cb25..94384f5 100644
        and set |q:=link(q)|@>;
    q:=unsorted(p);
 -  while q>void do
-+  while q>empty do
++  while q>void do
      @<Add the contribution of node |q| to the total weight,
        and set |q:=link(q)|@>;
    p:=link(p);
@@ -176,7 +176,7 @@ index ca3cb25..94384f5 100644
  while q<>h do
    begin flush_list(sorted(q));
 -  if unsorted(q)>void then flush_list(unsorted(q));
-+  if unsorted(q)>empty then flush_list(unsorted(q));
++  if unsorted(q)>void then flush_list(unsorted(q));
    p:=q; q:=link(q); free_node(p,row_node_size);
    end;
  free_node(h,edge_header_size);
@@ -292,9 +292,9 @@ index ca3cb25..94384f5 100644
 -begin if unsorted(p)>void then sort_edges(p)
 -else if unsorted(p)=void then if already_there then goto done;
 -unsorted(p):=void; {this time we'll paint, but maybe not next time}
-+begin if unsorted(p)>empty then sort_edges(p)
-+else if unsorted(p)=empty then if already_there then goto done;
-+unsorted(p):=empty; {this time we'll paint, but maybe not next time}
++begin if unsorted(p)>void then sort_edges(p)
++else if unsorted(p)=void then if already_there then goto done;
++unsorted(p):=void; {this time we'll paint, but maybe not next time}
  @<Set up the parameters needed for |paint_row|;
    but |goto done| if no painting is needed after all@>;
 -paint_row(r,b,row_transition,n);
@@ -347,14 +347,14 @@ index ca3cb25..94384f5 100644
  (in the case of \&{forsuffixes}) or a ``capsule'' (in the case of \&{for}).
  We'll discuss capsules later; for now, all we need to know is that
 -the |link| field in a capsule parameter is |void| and that
-+the |link| field in a capsule parameter is |empty| and that
++the |link| field in a capsule parameter is |void| and that
  |print_exp(p,0)| displays the value of capsule~|p| in abbreviated form.
  
  @<Print the current loop value@>=
  begin print_nl("<for("); p:=param_stack[param_start];
  if p<>null then
 -  if link(p)=void then print_exp(p,0) {we're in a \&{for} loop}
-+  if link(p)=empty then print_exp(p,0) {we're in a \&{for} loop}
++  if link(p)=void then print_exp(p,0) {we're in a \&{for} loop}
    else show_token_list(p,null,20,tally);
  print(")> ");
  end
@@ -363,7 +363,7 @@ index ca3cb25..94384f5 100644
    p:=param_stack[param_ptr];
    if p<>null then
 -    if link(p)=void then {it's an \&{expr} parameter}
-+    if link(p)=empty then {it's an \&{expr} parameter}
++    if link(p)=void then {it's an \&{expr} parameter}
        begin recycle_value(p); free_node(p,value_node_size);
        end
      else flush_token_list(p); {it's a \&{suffix} or \&{text} parameter}
@@ -372,7 +372,7 @@ index ca3cb25..94384f5 100644
  Arguments of type \&{expr} are so-called capsules, which we will
  discuss later when we concentrate on expressions; they can be
 -recognized easily because their |link| field is |void|. Arguments of type
-+recognized easily because their |link| field is |empty|. Arguments of type
++recognized easily because their |link| field is |void|. Arguments of type
  \&{suffix} and \&{text} are token lists without reference counts.
  
  @ After argument scanning is complete, the arguments are moved to the
@@ -381,12 +381,12 @@ index ca3cb25..94384f5 100644
  @ @<Declare the procedure called |print_arg|@>=
  procedure print_arg(@!q:pointer;@!n:integer;@!b:pointer);
 -begin if link(q)=void then print_nl("(EXPR")
-+begin if link(q)=empty then print_nl("(EXPR")
++begin if link(q)=void then print_nl("(EXPR")
  else if (b<text_base)and(b<>text_macro) then print_nl("(SUFFIX")
  else print_nl("(TEXT");
  print_int(n); print(")<-");
 -if link(q)=void then print_exp(q,1)
-+if link(q)=empty then print_exp(q,1)
++if link(q)=void then print_exp(q,1)
  else show_token_list(q,null,1000,0);
  end;
  
@@ -395,11 +395,11 @@ index ca3cb25..94384f5 100644
  remaining argument values of a suffix list and expression list.
  
 -\yskip\indent|loop_type(loop_ptr)=void| means that the current loop is
-+\yskip\indent|loop_type(loop_ptr)=empty| means that the current loop is
++\yskip\indent|loop_type(loop_ptr)=void| means that the current loop is
  `\&{forever}'.
  
 -\yskip\indent|loop_type(loop_ptr)=p>void| means that |value(p)|,
-+\yskip\indent|loop_type(loop_ptr)=p>empty| means that |value(p)|,
++\yskip\indent|loop_type(loop_ptr)=p>void| means that |value(p)|,
  |step_size(p)|, and |final_value(p)| contain the data for an arithmetic
  progression.
  
@@ -408,7 +408,7 @@ index ca3cb25..94384f5 100644
  begin m:=cur_mod; n:=cur_sym; s:=get_node(loop_node_size);
  if m=start_forever then
 -  begin loop_type(s):=void; p:=null; get_x_next; goto found;
-+  begin loop_type(s):=empty; p:=null; get_x_next; goto found;
++  begin loop_type(s):=void; p:=null; get_x_next; goto found;
    end;
  get_symbol; p:=get_node(token_node_size); info(p):=cur_sym; value(p):=m;@/
  get_x_next;
@@ -417,14 +417,14 @@ index ca3cb25..94384f5 100644
  var @!p,@!q:pointer; {link registers}
  begin p:=loop_type(loop_ptr);
 -if p>void then {|p| points to a progression node}
-+if p>empty then {|p| points to a progression node}
++if p>void then {|p| points to a progression node}
    begin cur_exp:=value(p);
    if @<The arithmetic progression has ended@> then goto not_found;
    cur_type:=known; q:=stash_cur_exp; {make |q| an \&{expr} argument}
    value(p):=cur_exp+step_size(p); {set |value(p)| for the next iteration}
    end
 -else if p<void then
-+else if p<empty then
++else if p<void then
    begin p:=loop_list(loop_ptr);
    if p=null then goto not_found;
    loop_list(loop_ptr):=link(p); q:=info(p); free_avail(p);
@@ -433,7 +433,7 @@ index ca3cb25..94384f5 100644
  begin begin_diagnostic; print_nl("{loop value=");
  @.loop value=n@>
 -if (q<>null)and(link(q)=void) then print_exp(q,1)
-+if (q<>null)and(link(q)=empty) then print_exp(q,1)
++if (q<>null)and(link(q)=void) then print_exp(q,1)
  else show_token_list(q,null,50,0);
  print_char("}"); end_diagnostic(false);
  end
@@ -443,14 +443,14 @@ index ca3cb25..94384f5 100644
  begin p:=loop_type(loop_ptr);
 -if p>void then free_node(p,progression_node_size)
 -else if p<void then
-+if p>empty then free_node(p,progression_node_size)
-+else if p<empty then
++if p>void then free_node(p,progression_node_size)
++else if p<void then
    begin q:=loop_list(loop_ptr);
    while q<>null do
      begin p:=info(q);
      if p<>null then
 -      if link(p)=void then {it's an \&{expr} parameter}
-+      if link(p)=empty then {it's an \&{expr} parameter}
++      if link(p)=void then {it's an \&{expr} parameter}
          begin recycle_value(p); free_node(p,value_node_size);
          end
        else flush_token_list(p); {it's a \&{suffix} or \&{text} parameter}
@@ -459,7 +459,7 @@ index ca3cb25..94384f5 100644
  to |cur_type| and |cur_exp|. Such nodes have |name_type=capsule|,
  and their |type| field is one of the possibilities for |cur_type| listed above.
 -Also |link<=void| in capsules that aren't part of a token list.
-+Also |link<=empty| in capsules that aren't part of a token list.
++Also |link<=void| in capsules that aren't part of a token list.
  
  The |value| field of a capsule is, in most cases, the value that
  corresponds to its |type|, as |cur_exp| corresponds to |cur_type|.
@@ -468,7 +468,7 @@ index ca3cb25..94384f5 100644
  copy path lists or to update reference counts, etc.
  
 -The special link |void| is put on the capsule returned by
-+The special link |empty| is put on the capsule returned by
++The special link |void| is put on the capsule returned by
  |stash_cur_exp|, because this procedure is used to store macro parameters
  that must be easily distinguishable from token lists.
  
@@ -477,7 +477,7 @@ index ca3cb25..94384f5 100644
    end
  endcases;@/
 -cur_type:=vacuous; link(p):=void; stash_cur_exp:=p;
-+cur_type:=vacuous; link(p):=empty; stash_cur_exp:=p;
++cur_type:=vacuous; link(p):=void; stash_cur_exp:=p;
  end;
  
  @ The inverse of |stash_cur_exp| is the following procedure, which
@@ -495,7 +495,7 @@ index ca3cb25..94384f5 100644
  case type(p) of
  transform_type,pair_type: old_p:=tarnished(p);
 -independent: old_p:=void;
-+independent: old_p:=empty;
++independent: old_p:=void;
  othercases old_p:=null
  endcases;
  if old_p<>null then
@@ -504,7 +504,7 @@ index ca3cb25..94384f5 100644
  case cur_type of
  transform_type,pair_type:old_exp:=tarnished(cur_exp);
 -independent:old_exp:=void;
-+independent:old_exp:=empty;
++independent:old_exp:=void;
  othercases old_exp:=null
  endcases;
  if old_exp<>null then
@@ -513,7 +513,7 @@ index ca3cb25..94384f5 100644
  repeat r:=r-2;
  if type(r)=independent then
 -  begin tarnished:=void; return;
-+  begin tarnished:=empty; return;
++  begin tarnished:=void; return;
    end;
  until r=q;
  tarnished:=null;
@@ -522,7 +522,7 @@ index ca3cb25..94384f5 100644
  case cur_type of
  transform_type,pair_type:old_exp:=tarnished(cur_exp);
 -independent:old_exp:=void;
-+independent:old_exp:=empty;
++independent:old_exp:=void;
  othercases old_exp:=null
  endcases;
  if old_exp<>null then
@@ -550,7 +550,7 @@ index ca3cb25..94384f5 100644
  
  @<Output the pixels of edge row |p| to font row |n|@>=
 -if unsorted(p)>void then sort_edges(p);
-+if unsorted(p)>empty then sort_edges(p);
++if unsorted(p)>void then sort_edges(p);
  q:=sorted(p); w:=0; prev_m:=-fraction_one; {$|fraction_one|\approx\infty$}
  ww:=0; prev_w:=0; m:=prev_m;
  repeat if q=sentinel then mm:=fraction_one
