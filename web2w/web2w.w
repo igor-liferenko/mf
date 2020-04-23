@@ -2792,7 +2792,7 @@ the rest follows now:
     if (str_k->sym_no==empty_string_no) wputs("@@d empty_string "),wputi(k);
     else if (str_k->sym_no==TeXinputs_no) wputs("@@d MF_area "),wputi(k);
     else if (str_k->sym_no==TeXfonts_no) wputs("@@d TEX_font_area "),wputi(k);
-    else if (str_k->sym_no==fmt_no) wputs("@@d format_extension "),wputi(k);
+    else if (str_k->sym_no==fmt_no) wputs("@@d base_extension "),wputi(k);
     else if (str_k->sym_no==math_spacing_no) wputs("@@d math_spacing "),wputi(k);
 @
 

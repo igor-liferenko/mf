@@ -9687,10 +9687,10 @@ expected to understand why.
 {@+new_boundary(p, right_type(p));s=link(p);
 o1=octant_number[right_type(p)];o2=octant_number[right_type(q)];
 switch (o2-o1) {
-case -1: case -7: case 7: case -1: goto done;
-case -2: case -6: clockwise=false;@+break;
-case -3: case -5: case 4: case -4: case 5: case -3: @<Decide whether or not to go clockwise@>@;@+break;
-case -6: case -2: clockwise=true;@+break;
+case 1: case -7: case 7: case -1: goto done;
+case 2: case -6: clockwise=false;@+break;
+case 3: case -5: case 4: case -4: case 5: case -3: @<Decide whether or not to go clockwise@>@;@+break;
+case 6: case -2: clockwise=true;@+break;
 case 0: clockwise=rev_turns;
 }  /*there are no other cases*/ 
 @<Insert additional boundary nodes, then |goto done|@>;
@@ -19151,9 +19151,9 @@ if (b > l)
   } 
 str_room(b-a);
 if (reversed)
-  for (k=str_start[s]+b-1; k>=str_start[s]+a; k--) append_char(so(str_pool[k]));
+  {for (k=str_start[s]+b-1; k>=str_start[s]+a; k--) append_char(so(str_pool[k]));}
 else
-  for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));
+  {for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));}
 cur_exp=make_string();delete_str_ref(s);
 } 
 
