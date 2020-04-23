@@ -12172,7 +12172,7 @@ the precise details are best conveyed by means of a \PASCAL\
 program (see the commented-out code below).
 @^system dependencies@>
 
-@p void paint_row(screen_row @!r, pixel_color @!b,@!trans_spec @!a,
+@p void paint_row(screen_row @!r, pixel_color @!b, trans_spec @!a,
   screen_col @!n)
 {@+int @!k; /*an index into |a|*/ 
 screen_col @!c; /*an index into |screen_pixel|*/ 
@@ -12181,7 +12181,7 @@ screen_col @!c; /*an index into |screen_pixel|*/
 wlog("Calling PAINTROW(", r: 1, ',' , b: 1, ';' );
    /*this is done only after |init_screen==true|*/ 
 for (k=0; k<=n; k++) 
-  {@+wlog((*a)[k]: 1);if (k!=n) wlog( ',' );
+  {@+if (k!=n) wlog( ',' );
   } 
 wlog_ln( ')' );
 #endif
