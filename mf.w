@@ -12176,8 +12176,8 @@ screen_col @!c;
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
-wlog_ln("Calling BLANKRECTANGLE(", left_col: 1, ',' ,
-  right_col: 1, ',' , top_row: 1, ',' , bot_row: 1, ')' );
+wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
+  right_col, top_row, bot_row);
 #endif
 } 
 
@@ -12202,10 +12202,10 @@ program (see the commented-out code below).
 screen_col @!c; /*an index into |screen_pixel|*/ 
 @/
 #ifdef @!INIT
-wlog("Calling PAINTROW(", r: 1, ',' , b: 1, ';' );
+wlog("Calling PAINTROW(%d,%d;", r, b);
    /*this is done only after |init_screen==true|*/ 
 for (k=0; k<=n; k++) 
-  {@+wlog((*a)[k]: 1);if (k!=n) wlog( ',' );
+  {@+if (k!=n) wlog( ',' );
   } 
 wlog_ln( ')' );
 #endif
@@ -21752,14 +21752,14 @@ if (tfm_changed > 0)
   } 
 
 @ @<Log the subfile sizes of the \.{TFM} file@>=
-{@+wlog_ln( ' ' );
+{@+wlog_ln("");
 if (bch_label < undefined_label) decr(nl);
-wlog_ln("(You used ", nw: 1,"w,",@|nh: 1,"h,",@|nd: 1,"d,",@|ni: 1,"i,",@|
- nl: 1,"l,",@|nk: 1,"k,",@|ne: 1,"e,",@|
- np: 1,"p metric file positions");
-wlog_ln("  out of ",@|"256w,16h,16d,64i,",@|
- lig_table_size: 1,"l,", max_kerns: 1,"k,256e,",@|
- max_font_dimen: 1,"p)");
+wlog_ln("(You used %dw,%dh,%dd,%di,%dl,%dk,%de,%dp metric file positions", nw,@|nh,@|nd,@|ni,@|
+ nl,@|nk,@|ne,@|
+ np);
+wlog_ln("  out of 256w,16h,16d,64i,%dl,%dk,256e,%dp)",@|
+ lig_table_size, max_kerns,@|
+ max_font_dimen);
 } 
 
 @* Generic font file format.
