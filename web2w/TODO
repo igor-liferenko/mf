@@ -5,4 +5,4 @@ TODO: change pascal-mf.patch and maybe web-mf.patch that the
       web2w/mf.w from git control, run
       diff -u web2w/mf.w mf.w >web2w/cmf.patch
       and uncomment applying cmf.patch in web2w/Makefile,
-      and then you may start adding UTF-8 support to mf.w
+      and then you may start adding UTF-8 support to mf.w and changing printf to wprintf in exit.ch
