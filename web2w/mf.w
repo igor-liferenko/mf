@@ -23801,7 +23801,7 @@ for more than 60\pct! of \MF's running time, exclusive of input and output.
 @d MF_area 465
 @ 
 @d str_466 ".base"
-@d format_extension 466
+@d base_extension 466
 @ 
 @d str_467 ".log"
 @<|".log"|@>=@+467
