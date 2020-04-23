@@ -12205,9 +12205,9 @@ screen_col @!c; /*an index into |screen_pixel|*/
 wlog("Calling PAINTROW(%d,%d;", r, b);
    /*this is done only after |init_screen==true|*/ 
 for (k=0; k<=n; k++) 
-  {@+if (k!=n) wlog( ',' );
+  {@+if (k!=n) wlog(",");
   } 
-wlog_ln( ')' );
+wlog_ln(")");
 #endif
 } 
 
@@ -21752,7 +21752,7 @@ if (tfm_changed > 0)
   } 
 
 @ @<Log the subfile sizes of the \.{TFM} file@>=
-{@+wlog_ln("");
+{@+wlog_ln(" ");
 if (bch_label < undefined_label) decr(nl);
 wlog_ln("(You used %dw,%dh,%dd,%di,%dl,%dk,%de,%dp metric file positions", nw,@|nh,@|nd,@|ni,@|
  nl,@|nk,@|ne,@|
