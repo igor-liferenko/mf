@@ -8578,7 +8578,7 @@ p=link(p);
 }@+ while (!(p==f));
 print_char(' ');print_int(left_type(p)-1);
 if (q!=null) @<Print the turns...@>;
-print_err("TODO: change this 2");
+print_nl("! ");print(s);
 } 
 
 @ If the segment numbers on the cycle are $t_1$, $t_2$, \dots, $t_m$,
@@ -16663,7 +16663,7 @@ done: if (cur_cmd==left_bracket)
 
 @p void bad_exp(str_number @!s)
 {@+uint8_t save_flag;
-print_err("TODO: change this");print_str(" expression can't begin with `");
+print_nl("! ");print(s);print_str(" expression can't begin with `");
 print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
 help4("I'm afraid I need some sort of value in order to continue,")@/
   ("so I've tentatively inserted `0'. You may want to")@/
