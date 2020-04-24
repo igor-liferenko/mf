@@ -8,7 +8,6 @@ all: ctangle
 	patch mf.web -o mf-web2w.web <mf-web2w.patch
 	sed -i 's/\bvoid\b/empty/g' mf-web2w.web
 	./web2w -o mf.w mf-web2w.web
-	#patch mf.w cmf.patch
 
 ctangle:
 	/var/local/bin/ctangle -bhp common.w /home/user/cweb-git/utf8/comm-show.ch
