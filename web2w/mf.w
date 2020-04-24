@@ -21202,7 +21202,7 @@ We may need to cancel skips that span more than 127 lig/kern steps.
 
 @d cancel_skips(X)	ll=X;
   @/do@+{lll=qo(skip_byte(ll));skip_byte(ll)=stop_flag;ll=ll-lll;
-  }@+ while (!(lll==0));
+  }@+ while (!(lll==0))
 @d skip_error(X)	{@+print_err("Too far to skip");
 @.Too far to skip@>
   help1("At most 127 lig/kern steps can separate skipto1 from 1::.");
