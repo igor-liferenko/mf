@@ -153,7 +153,7 @@ index ca3cb25..f0bc845 100644
  @.>>@>
  print_exp(p,1); {``medium verbose'' printing of the expression}
 -if s<>"" then
-+if interaction<>error_stop_mode then
++if s="" then
    begin print_nl("! "); print(s);
  @.!\relax@>
    end;
