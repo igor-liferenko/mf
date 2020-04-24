@@ -8578,7 +8578,7 @@ p=link(p);
 }@+ while (!(p==f));
 print_char(' ');print_int(left_type(p)-1);
 if (q!=null) @<Print the turns...@>;
-print_err(s);
+print_err("TODO: change this 2");
 } 
 
 @ If the segment numbers on the cycle are $t_1$, $t_2$, \dots, $t_m$,
@@ -12389,7 +12389,7 @@ else if (unsorted(p)==empty) if (already_there) goto done;
 unsorted(p)=empty; /*this time we'll paint, but maybe not next time*/ 
 @<Set up the parameters needed for |paint_row|; but |goto done| if no painting is
 needed after all@>;
-paint_row(r, b, &row_transition, n);
+paint_row(r, b, row_transition, n);
 done: ;} 
 
 @ The transition-specification parameter to |paint_row| is always the same
@@ -14370,7 +14370,7 @@ primitive(@[@<|"@@#"|@>@], macro_special, macro_suffix);@/
 @ @<Cases of |print_cmd...@>=
 case macro_special: switch (m) {
   case macro_prefix: print_str("#@@");@+break;
-  case macro_at: print_char(@[@<|"@@"|@>@]);@+break;
+  case macro_at: print_char('@@');@+break;
   case macro_suffix: print_str("@@#");@+break;
   default:print_str("quote");
   } @+break;
@@ -16663,7 +16663,7 @@ done: if (cur_cmd==left_bracket)
 
 @p void bad_exp(str_number @!s)
 {@+uint8_t save_flag;
-print_err(s);print_str(" expression can't begin with `");
+print_err("TODO: change this");print_str(" expression can't begin with `");
 print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
 help4("I'm afraid I need some sort of value in order to continue,")@/
   ("so I've tentatively inserted `0'. You may want to")@/
@@ -22149,7 +22149,7 @@ output an array of words with one system call.
 @<Declare generic font output procedures@>=
 void write_gf(gf_index @!a, gf_index @!b)
 {@+int k;
-for (k=a; k<=b; k++) write(gf_file, gf_buf[k]);
+for (k=a; k<=b; k++) write(gf_file, "%c", gf_buf[k]);
 } 
 
 @ To put a byte in the buffer without paying the cost of invoking a procedure
@@ -22969,7 +22969,7 @@ if (log_opened)
     pool_size-init_pool_ptr);@/
   wlog_ln(" %d words of memory out of %d", lo_mem_max-mem_min+mem_end-hi_mem_min+2,@|
     mem_end+1-mem_min);@/
-  wlog_ln(" %d symbolic tokens out of %d", cs_count, hash_size);@/
+  wlog_ln(" %d symbolic tokens out of %d", st_count, hash_size);@/
   wlog_ln(" %di,%dn,%dr,%dp,%db stack positions out of %di,%dn,%dr,%dp,%db",
     max_in_stack,@|
     int_ptr,@|
