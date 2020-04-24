@@ -4351,7 +4351,7 @@ printing, as follows. (The parameter |s| is typically |@[@<|"Path"|@>@]| or
 @<Basic printing...@>=
 void print_diagnostic(str_number @!s, str_number @!t, bool @!nuline)
 {@+begin_diagnostic();
-if (nuline) {print_nl("");print(s);}@+else print(s); // !!!!!!!!!!!!! is it necessary?
+if (nuline) print_nl(""); print(s);
 print_str(" at line ");print_int(line);
 print(t);print_char(':');
 } 
