@@ -148,15 +148,6 @@ index ca3cb25..f0bc845 100644
    end
  else if n=0 then goto done
  
-@@ -16316,7 +16306,7 @@ begin if interaction=error_stop_mode then wake_up_terminal;
- print_nl(">> ");
- @.>>@>
- print_exp(p,1); {``medium verbose'' printing of the expression}
--if s<>"" then
-+if s="" then
-   begin print_nl("! "); print(s);
- @.!\relax@>
-   end;
 @@ -19136,8 +19126,7 @@ if b>l then
    end;
  str_room(b-a);

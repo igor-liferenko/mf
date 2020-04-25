@@ -1,8 +1,6 @@
-diff --git a/web2w/pascal.y b/web2w/pascal.y
-index b3e6823..da2eb44 100644
---- a/web2w/pascal.y
-+++ b/web2w/pascal.y
-@@ -246,6 +246,7 @@ labeldecl: NMACRO  {IGN($1); SYM($1)->obsolete=1; }
+--- pascal.y	2020-04-25 11:00:09.904066469 +0700
++++ pascal-mf.y	2020-04-25 10:59:52.880096535 +0700
+@@ -246,6 +246,7 @@
  constants: 
           | PCONST constdefinitions
           | PCONST constdefinitions conststringdefinition
@@ -10,3 +8,11 @@ index b3e6823..da2eb44 100644
           ; 
  
  constdefinitions:  constdefinition
+@@ -731,6 +732,7 @@
+ expression: simple_expr {$$=$1; }
+           | simple_expr relop simple_expr {$$=$3; }
+           | simple_expr PEQ STRING {$$=$3; }
++          | simple_expr PNOTEQ STRING {$$=$3; }
+           ;
+ 
+ relop: PEQ | PNOTEQ | PLESS | PLESSEQ | PGREATER | PGREATEREQ;
