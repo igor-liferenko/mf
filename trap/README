@@ -1,0 +1,4 @@
+for trip.typ use this in /usr/local/share/texmf/web2c/texmf.cnf
+max_rows.gftype = 79
+max_cols.gftype = 79
+line_length.gftype = 79
