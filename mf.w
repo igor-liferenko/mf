@@ -22872,6 +22872,7 @@ if (bad > 0)
   } 
 initialize(); /*set global variables to their starting values*/ 
 #ifdef @!INIT
+for (int i = 0; i < str_ptr; i++) str_ref[i] = max_str_ref;
 init_tab(); /*initialize the tables*/ 
 init_prim(); /*call |primitive| for each primitive*/ 
 init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
