@@ -12204,9 +12204,7 @@ screen_col @!c; /*an index into |screen_pixel|*/
 wlog("Calling PAINTROW(%d,%d;", r, b);
    /*this is done only after |init_screen==true|*/ 
 for (k=0; k<=n; k++) 
-  {@+
-/* when doing trapmf put here |wlog(a[k]);| and to web2w/mf.w too */
-if (k!=n) wlog(",");
+  {@+wlog("%d", a[k]);if (k!=n) wlog(",");
   } 
 wlog_ln(")");
 #endif

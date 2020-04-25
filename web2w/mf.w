@@ -12181,7 +12181,7 @@ screen_col @!c; /*an index into |screen_pixel|*/
 wlog("Calling PAINTROW(", r: 1, ',' , b: 1, ';' );
    /*this is done only after |init_screen==true|*/ 
 for (k=0; k<=n; k++) 
-  {@+if (k!=n) wlog( ',' );
+  {@+wlog(a[k]);if (k!=n) wlog( ',' );
   } 
 wlog_ln( ')' );
 #endif
