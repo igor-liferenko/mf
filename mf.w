@@ -12147,7 +12147,6 @@ system for which |white| was black and |black| was bright green.
 @<Types...@>=
 typedef uint16_t screen_row; /*a row number on the screen*/ 
 typedef uint16_t screen_col; /*a column number on the screen*/ 
-typedef screen_col *trans_spec;
 typedef uint8_t pixel_color; /*specifies one of the two pixel values*/ 
 
 @ We'll illustrate the |blank_rectangle| and |paint_row| operations by
@@ -12196,7 +12195,7 @@ the precise details are best conveyed by means of a \PASCAL\
 program (see the commented-out code below).
 @^system dependencies@>
 
-@p void paint_row(screen_row @!r, pixel_color @!b, trans_spec @!a,
+@p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
   screen_col @!n)
 {@+int @!k; /*an index into |a|*/ 
 screen_col @!c; /*an index into |screen_pixel|*/ 
@@ -12396,7 +12395,7 @@ done: ;}
 array.
 
 @<Glob...@>=
-trans_spec @!row_transition; /*an array of |black|/|white| transitions*/ 
+screen_col @!row_transition[65536]; /*an array of |black|/|white| transitions*/ 
 
 @ The job remaining is to go through the list |sorted(p)|, unpacking the
 |info| fields into |m| and weight, then making |black| the pixels whose
