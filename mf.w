@@ -4607,15 +4607,15 @@ as follows:
 @<Put each of \MF's primitives into the hash table@>=
 primitive(@[@<|".."|@>@], path_join, 0);@/
 @!@:.._}{\.{..} primitive@>
-primitive(@[@<|"["|@>@], left_bracket, 0);eqtb[frozen_left_bracket]=eqtb[cur_sym];@/
+primitive('[', left_bracket, 0);eqtb[frozen_left_bracket]=eqtb[cur_sym];@/
 @!@:[ }{\.{[} primitive@>
-primitive(@[@<|"]"|@>@], right_bracket, 0);@/
+primitive(']', right_bracket, 0);@/
 @!@:] }{\.{]} primitive@>
-primitive(@[@<|"}"|@>@], right_brace, 0);@/
+primitive('}', right_brace, 0);@/
 @!@:]]}{\.{\char`\}} primitive@>
-primitive(@[@<|"{"|@>@], left_brace, 0);@/
+primitive('{', left_brace, 0);@/
 @!@:][}{\.{\char`\{} primitive@>
-primitive(@[@<|":"|@>@], colon, 0);eqtb[frozen_colon]=eqtb[cur_sym];@/
+primitive(':', colon, 0);eqtb[frozen_colon]=eqtb[cur_sym];@/
 @!@:: }{\.{:} primitive@>
 primitive(@[@<|"::"|@>@], double_colon, 0);@/
 @!@::: }{\.{::} primitive@>
@@ -4623,11 +4623,11 @@ primitive(@[@<|"||:"|@>@], bchar_label, 0);@/
 @!@:::: }{\.{\char'174\char'174:} primitive@>
 primitive(@[@<|":="|@>@], assignment, 0);@/
 @!@::=_}{\.{:=} primitive@>
-primitive(@[@<|","|@>@], comma, 0);@/
+primitive(',', comma, 0);@/
 @!@:, }{\., primitive@>
-primitive(@[@<|";"|@>@], semicolon, 0);eqtb[frozen_semicolon]=eqtb[cur_sym];@/
+primitive(';', semicolon, 0);eqtb[frozen_semicolon]=eqtb[cur_sym];@/
 @!@:; }{\.; primitive@>
-primitive(@[@<|"\\"|@>@], relax, 0);@/
+primitive('\\', relax, 0);@/
 @!@:]]\\}{\.{\char`\\} primitive@>
 @#
 primitive(@[@<|"addto"|@>@], add_to_command, 0);@/
@@ -17848,13 +17848,13 @@ primitive(@[@<|"angle"|@>@], unary, angle_op);@/
 @!@:angle_}{\&{angle} primitive@>
 primitive(@[@<|"cycle"|@>@], cycle, cycle_op);@/
 @!@:cycle_}{\&{cycle} primitive@>
-primitive(@[@<|"+"|@>@], plus_or_minus, plus);@/
+primitive('+', plus_or_minus, plus);@/
 @!@:+ }{\.{+} primitive@>
-primitive(@[@<|"-"|@>@], plus_or_minus, minus);@/
+primitive('-', plus_or_minus, minus);@/
 @!@:- }{\.{-} primitive@>
-primitive(@[@<|"*"|@>@], secondary_binary, times);@/
+primitive('*', secondary_binary, times);@/
 @!@:* }{\.{*} primitive@>
-primitive(@[@<|"/"|@>@], slash, over);eqtb[frozen_slash]=eqtb[cur_sym];@/
+primitive('/', slash, over);eqtb[frozen_slash]=eqtb[cur_sym];@/
 @!@:/ }{\.{/} primitive@>
 primitive(@[@<|"++"|@>@], tertiary_binary, pythag_add);@/
 @!@:++_}{\.{++} primitive@>
@@ -17864,15 +17864,15 @@ primitive(@[@<|"and"|@>@], and_command, and_op);@/
 @!@:and_}{\&{and} primitive@>
 primitive(@[@<|"or"|@>@], tertiary_binary, or_op);@/
 @!@:or_}{\&{or} primitive@>
-primitive(@[@<|"<"|@>@], expression_binary, less_than);@/
+primitive('<', expression_binary, less_than);@/
 @!@:< }{\.{<} primitive@>
 primitive(@[@<|"<="|@>@], expression_binary, less_or_equal);@/
 @!@:<=_}{\.{<=} primitive@>
-primitive(@[@<|">"|@>@], expression_binary, greater_than);@/
+primitive('>', expression_binary, greater_than);@/
 @!@:> }{\.{>} primitive@>
 primitive(@[@<|">="|@>@], expression_binary, greater_or_equal);@/
 @!@:>=_}{\.{>=} primitive@>
-primitive(@[@<|"="|@>@], equals, equal_to);@/
+primitive('=', equals, equal_to);@/
 @!@:= }{\.{=} primitive@>
 primitive(@[@<|"<>"|@>@], expression_binary, unequal_to);@/
 @!@:<>_}{\.{<>} primitive@>
@@ -17890,7 +17890,7 @@ primitive(@[@<|"postcontrol"|@>@], primary_binary, postcontrol_of);@/
 @!@:postcontrol_}{\&{postcontrol} primitive@>
 primitive(@[@<|"penoffset"|@>@], primary_binary, pen_offset_of);@/
 @!@:pen_offset_}{\&{penoffset} primitive@>
-primitive(@[@<|"&"|@>@], ampersand, concatenate);@/
+primitive('&', ampersand, concatenate);@/
 @!@:!!!}{\.{\&} primitive@>
 primitive(@[@<|"rotated"|@>@], secondary_binary, rotated_by);@/
 @!@:rotated_}{\&{rotated} primitive@>
@@ -24071,66 +24071,6 @@ for more than 60\pct! of \MF's running time, exclusive of input and output.
 @ 
 @d str_549 " (INIMF)"
 @<|" (INIMF)"|@>=@+549
-@ 
-@d str_550 "&"
-@<|"&"|@>=@+550
-@
-@d str_551 "["
-@<|"["|@>=@+551
-@
-@d str_552 "]"
-@<|"]"|@>=@+552
-@ 
-@d str_553 "}"
-@<|"}"|@>=@+553
-
-@ 
-@d str_554 "{"
-@<|"{"|@>=@+554
-
-@ 
-@d str_555 ":"
-@<|":"|@>=@+555
-
-@ 
-@d str_556 ","
-@<|","|@>=@+556
-
-@ 
-@d str_557 ";"
-@<|";"|@>=@+557
-
-@ 
-@d str_558 "\\"
-@<|"\\"|@>=@+558
-
-@ 
-@d str_559 "+"
-@<|"+"|@>=@+559
-
-@ 
-@d str_560 "-"
-@<|"-"|@>=@+560
-
-@ 
-@d str_561 "*"
-@<|"*"|@>=@+561
-
-@ 
-@d str_562 "/"
-@<|"/"|@>=@+562
-
-@ 
-@d str_563 "<"
-@<|"<"|@>=@+563
-
-@ 
-@d str_564 ">"
-@<|">"|@>=@+564
-
-@ 
-@d str_565 "="
-@<|"="|@>=@+565
 
 @ All the above strings together make up the string pool.
 @<|str_pool| initialization@>=
@@ -24171,9 +24111,7 @@ str_512 str_513 str_514 str_515 str_516 str_517 str_518 str_519@/
 str_520 str_521 str_522 str_523 str_524 str_525 str_526 str_527@/
 str_528 str_529 str_530 str_531 str_532 str_533 str_534 str_535@/
 str_536 str_537 str_538 str_539 str_540 str_541 str_542 str_543@/
-str_544 str_545 str_546 str_547 str_548 str_549 str_550 str_551@/
-str_552 str_553 str_554 str_555 str_556 str_557 str_558 str_559@/
-str_560 str_561 str_562 str_563 str_564 str_565
+str_544 str_545 str_546 str_547 str_548 str_549 
 
 @ @<|str_start| initialization@>=
 str_start_0_255
@@ -24250,11 +24188,7 @@ str_start_532, str_start_533, str_start_534, str_start_535,
 str_start_536, str_start_537, str_start_538, str_start_539,
 str_start_540, str_start_541, str_start_542, str_start_543,
 str_start_544, str_start_545, str_start_546, str_start_547,
-str_start_548, str_start_549, str_start_550, str_start_551,
-str_start_552, str_start_553, str_start_554, str_start_555,
-str_start_556, str_start_557, str_start_558, str_start_559,
-str_start_560, str_start_561, str_start_562, str_start_563,
-str_start_564, str_start_565, str_start_566
+str_start_548, str_start_549, str_start_550
 
 @ We still need to define the start locations of the strings.
 @<prepare for string pool initialization@>=
@@ -24554,24 +24488,8 @@ str_start_547=str_start_546+sizeof(str_546)-1,@/
 str_start_548=str_start_547+sizeof(str_547)-1,@/
 str_start_549=str_start_548+sizeof(str_548)-1,@/
 str_start_550=str_start_549+sizeof(str_549)-1,@/
-str_start_551=str_start_550+sizeof(str_550)-1,@/
-str_start_552=str_start_551+sizeof(str_551)-1,@/
-str_start_553=str_start_552+sizeof(str_552)-1,@/
-str_start_554=str_start_553+sizeof(str_553)-1,@/
-str_start_555=str_start_554+sizeof(str_554)-1,@/
-str_start_556=str_start_555+sizeof(str_555)-1,@/
-str_start_557=str_start_556+sizeof(str_556)-1,@/
-str_start_558=str_start_557+sizeof(str_557)-1,@/
-str_start_559=str_start_558+sizeof(str_558)-1,@/
-str_start_560=str_start_559+sizeof(str_559)-1,@/
-str_start_561=str_start_560+sizeof(str_560)-1,@/
-str_start_562=str_start_561+sizeof(str_561)-1,@/
-str_start_563=str_start_562+sizeof(str_562)-1,@/
-str_start_564=str_start_563+sizeof(str_563)-1,@/
-str_start_565=str_start_564+sizeof(str_564)-1,@/
-str_start_566=str_start_565+sizeof(str_565)-1,@/
 str_start_end } str_starts;
 
-@ @<|pool_ptr| initialization@>= str_start_566
+@ @<|pool_ptr| initialization@>= str_start_550
 
-@ @<|str_ptr| initialization@>= 566
+@ @<|str_ptr| initialization@>= 550
