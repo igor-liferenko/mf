@@ -4412,7 +4412,7 @@ char_class['!']=14;
 char_class['?']=14;@/
 char_class['#']=15;
 char_class['&']=15;
-char_class[@[@<|"@@"|@>@]]=15;
+char_class['@@']=15;
 char_class['$']=15;@/
 char_class['^']=16;
 char_class['~']=16;@/
@@ -14362,7 +14362,7 @@ primitive(@[@<|"quote"|@>@], macro_special, quote);@/
 @!@:quote_}{\&{quote} primitive@>
 primitive(@[@<|"#@@"|@>@], macro_special, macro_prefix);@/
 @!@:]]]\#\AT!_}{\.{\#\AT!} primitive@>
-primitive(@[@<|"@@"|@>@], macro_special, macro_at);@/
+primitive('@@', macro_special, macro_at);@/
 @!@:]]]\AT!_}{\.{\AT!} primitive@>
 primitive(@[@<|"@@#"|@>@], macro_special, macro_suffix);@/
 @!@:]]]\AT!\#_}{\.{\AT!\#} primitive@>
