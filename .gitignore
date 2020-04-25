@@ -19,3 +19,4 @@ test.log
 mf.c
 trapmf.c
 inimf
+.gdb_history
