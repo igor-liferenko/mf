@@ -1,0 +1,7 @@
+s/(INIMF)  [0-9]\+ ... .... ..:..$/(INIMF)  7 JAN 2014 17:51/
+s/(preloaded base=trap .....[0-9]\+.[0-9]\+)/(preloaded base=trap 2014.1.7)/
+s/584 strings of total length [0-9]\+/1117 strings of total length 20614/
+
+#TODO: is the following valid?
+s/Memory usage 291&3 (1922 still untouched)/Memory usage 291\&41 (1922 still untouched)/
+s/String usage 26&83 (1424&28331 still untouched)/String usage 26\&83 (891\&11438 still untouched)/
