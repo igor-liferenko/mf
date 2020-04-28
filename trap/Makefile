@@ -9,10 +9,9 @@ all:
 	@gftype -i -m trap.72270gf >trap.typ
 	@sed -i -f traptyp.sed trap.typ
 	@diff mf/trap.typ trap.typ
-	@sed -i '/CA$$/N;s/\n//' trap.log # unwrap line
-	@sed -i 's/CAPSULE[0-9]\+/&x/g' trap.log # use `x' postfix in traplog.sed to avoid double substitution
 	@sed -i -f traplog.sed trap.log
-	@fold -w 72 trap.log | sed '/JA$$/N;s/\n//' | diff mf/trap.log -
+	@patch -R trap.log <web2c.diff
+	@diff mf/trap.log trap.log
 	@perl -i -l -0777 -pe 's/\n$$//' trap.fot
 	@sed -i -f trapfot.sed trap.fot
 	@diff mf/trap.fot trap.fot
