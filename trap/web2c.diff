@@ -1,3 +1,6 @@
+This is taken from texk/web2c/triptrap/mftrap.diffs
+See also texk/web2c/mftraptest.test
+
 3693,3695c3693,3695
 < xpart %CAPSULE1359=xx
 < %CAPSULE1367=2yy-2
