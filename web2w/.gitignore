@@ -10,9 +10,6 @@ ctangle.o
 ctangle
 common.c
 common.o
-cweave.c
-cweave.o
-cweave
 pascal-mf.output
 pascal-mf.tab.c
 pascal-mf.tab.h
