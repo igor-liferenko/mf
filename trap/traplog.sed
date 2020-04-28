@@ -16,7 +16,9 @@ s/CAPSULE1615x/CAPSULE1615/g
 s/CAPSULE1675x/CAPSULE1172/g
 s/CAPSULE1744x/CAPSULE1889/g
 
-s/CAPSULE1378x/&/g # this must translate to 1367 and 1350
+# these must translate to 1367
+s/CAUPSULE1370x/&/g
+s/CAPSULE1378x/&/g # this must also translate to 1350
 
 # these must translate to 1494
 s/CAPSULE368x/&/g
