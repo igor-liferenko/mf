@@ -9,8 +9,10 @@ all:
 	@gftype -i -m trap.72270gf >trap.typ
 	@sed -i -f traptyp.sed trap.typ
 	@diff mf/trap.typ trap.typ
+	@sed -i '/CA$$/N;s/\n//' trap.log
+	@sed -i 's/CAPSULE[0-9]\+/&x/g' trap.log
 	@sed -i -f traplog.sed trap.log
-	@diff mf/trap.log trap.log
+	@fold -w 72 trap.log | sed '/JA$$/N;s/\n//' | diff mf/trap.log -
 	@perl -i -l -0777 -pe 's/\n$$//' trap.fot
 	@sed -i -f trapfot.sed trap.fot
 	@diff mf/trap.fot trap.fot
