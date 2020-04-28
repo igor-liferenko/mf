@@ -12393,7 +12393,7 @@ done: ;}
 array.
 
 @<Glob...@>=
-screen_col @!row_transition[65536]; /*an array of |black|/|white| transitions*/ 
+screen_col @!row_transition[2000]; /*an array of |black|/|white| transitions*/ 
 
 @ The job remaining is to go through the list |sorted(p)|, unpacking the
 |info| fields into |m| and weight, then making |black| the pixels whose
