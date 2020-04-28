@@ -3804,7 +3804,7 @@ At any rate, here is the list, for future reference.
 @d cycle	36 /*close a cyclic path (\&{cycle})*/ 
 @d primary_binary	37 /*binary operation taking `\&{of}' (e.g., \&{point})*/ 
 @d capsule_token	38 /*a value that has been put into a token list*/ 
-@d string_token	39 /*a string constant (e.g., |@[@<|"hello"|@>@]|)*/ 
+@d string_token	39 /*a string constant*/ 
 @d internal_quantity	40 /*internal numeric parameter (e.g., \&{pausing})*/ 
 @d min_suffix_token	internal_quantity
 @d tag_token	41 /*a symbolic token without a primitive meaning*/ 
@@ -12154,7 +12154,6 @@ pretending to declare a screen buffer called |screen_pixel|. This code
 is actually commented out, but it does specify the intended effects.
 
 @<Glob...@>=
-/*@!screen_pixel:array[screen_row,screen_col] of pixel_color;@+*/
 
 @ The |blank_rectangle| routine simply whitens all pixels that lie in
 columns |left_col| through |right_col-1|, inclusive, of rows
@@ -15838,7 +15837,7 @@ cur_name=job_name;pack_cur_name;
 } 
 
 @ Actually the main output file extension is usually something like
-|@[@<|".300gf"|@>@]| instead of just |@[@<|".gf"|@>@]|; the additional number indicates the
+\.{".300gf"} instead of just |@[@<|".gf"|@>@]|; the additional number indicates the
 resolution in pixels per inch, based on the setting of |hppp| when
 the file is opened.
 
