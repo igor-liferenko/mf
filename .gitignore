@@ -1,16 +1,3 @@
-mf-final.ch
-mf-mfextra.o
-mf-pool.c
-mf-pool.o
-mf.p
-mf.pool
-mf0.c
-mf0.o
-mfcoerce.h
-mfd.h
-mfini.c
-mfini.o
-libmf.a
 mf-wl.dvi
 mf-wl.ps
 mf-wl.log
@@ -19,4 +6,6 @@ test.log
 mf.c
 trapmf.c
 inimf
+plain.log
 .gdb_history
+virmf
