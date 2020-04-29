@@ -1,8 +1,7 @@
-xxxmy
 % [1.11] Compile-time constants.  Although we only change a few of
 % these, listing them all makes the patch file for a big Metafont simpler.
 % 16K for BSD I/O; file_name_size is set from the system constant.
-@x
+ @x
 @<Constants...@>=
 @!mem_max=30000; {greatest index in \MF's internal |mem| array;
   must be strictly less than |max_halfword|;
@@ -40,7 +39,7 @@ xxxmy
   at least 255 and at most 32510}
 @!max_kerns=500; {maximum number of distinct kern amounts}
 @!max_font_dimen=50; {maximum number of \&{fontdimen} parameters}
-@y
+ @y
 @d file_name_size == maxint
 @d ssup_error_line = 255
 @d ssup_screen_width = 32767
@@ -76,9 +75,9 @@ xxxmy
 
 @!inf_buf_size = 500;
 @!sup_buf_size = 30000000;
-@z
+ @z
 
-@x [1.12] Constants defined as WEB macros.
+ @x [1.12] Constants defined as WEB macros.
 @d mem_min=0 {smallest index in the |mem| array, must not be less
   than |min_halfword|}
 @d mem_top==30000 {largest index in the |mem| array dumped by \.{INIMF};
@@ -90,7 +89,7 @@ xxxmy
 @d max_in_open=6 {maximum number of input files and error insertions that
   can be going on simultaneously}
 @d param_size=150 {maximum number of simultaneous macro parameters}
-@y
+ @y
 @d mem_min=0 {smallest index in the |mem| array, must not be less
   than |min_halfword|}
 @d hash_size=9500 {maximum number of symbolic tokens,
@@ -99,5 +98,4 @@ xxxmy
 @d max_in_open=15 {maximum number of input files and error insertions that
   can be going on simultaneously}
 @d param_size=150 {maximum number of simultaneous macro parameters}
-@z
-yyymy
+ @z
