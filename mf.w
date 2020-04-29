@@ -3804,7 +3804,7 @@ At any rate, here is the list, for future reference.
 @d cycle	36 /*close a cyclic path (\&{cycle})*/ 
 @d primary_binary	37 /*binary operation taking `\&{of}' (e.g., \&{point})*/ 
 @d capsule_token	38 /*a value that has been put into a token list*/ 
-@d string_token	39 /*a string constant*/ 
+@d string_token	39 /*a string constant (e.g., |@[@<|"hello"|@>@]|)*/ 
 @d internal_quantity	40 /*internal numeric parameter (e.g., \&{pausing})*/ 
 @d min_suffix_token	internal_quantity
 @d tag_token	41 /*a symbolic token without a primitive meaning*/ 
@@ -15837,7 +15837,7 @@ cur_name=job_name;pack_cur_name;
 } 
 
 @ Actually the main output file extension is usually something like
-\.{".300gf"} instead of just |@[@<|".gf"|@>@]|; the additional number indicates the
+|@[@<|".300gf"|@>@]| instead of just |@[@<|".gf"|@>@]|; the additional number indicates the
 resolution in pixels per inch, based on the setting of |hppp| when
 the file is opened.
 
