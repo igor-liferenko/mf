@@ -15,3 +15,13 @@ change-file:
 
 web2w/ctangle:
 	make -C web2w ctangle
+
+view:
+	@make --no-print-directory -C window $@
+	@tex mf-wl >/dev/null
+	@echo use \"dvi mf-wl\" to view the document
+
+print:
+	@make --no-print-directory -C window $@
+	@tex mf-wl >/dev/null
+	@echo use \"prt mf-wl\" to print the document
