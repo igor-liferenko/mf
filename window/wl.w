@@ -7,18 +7,11 @@
 \font\logo=manfnt
 
 @* Wayland window interface for {\logo METAFONT}.
-Switch between terminal and the graphics window using Super+Tab (in GNOME 3).
 
 We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
 because the wayland program cannot terminate---it is a general rule for all Wayland
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
-
-The \.{wayland} process is left running when {\logo METAFONT} exits.
-We need to make sure that there is no \.{wayland} process left from previous run.
-This can be done either in |mf_wl_initscreen| or in shell wrapper.
-The latter variant is better because graphics window can be simply killed
-by running \.{mf} and pressing \.{Ctrl+D}.
 
 Color is set in XRGB format (X byte is not used for anything).
 
@@ -26,37 +19,44 @@ Color is set in XRGB format (X byte is not used for anything).
 @d WHITE 0xffffff
 
 @c
-#define	EXTERN extern /* needed for \.{mfd.h} */
-#include "../mfd.h"
-
-#undef read
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h> /* |snprintf| */
+#include <stdlib.h> /* |exit| */
 #include <sys/wait.h>
 #include <sys/syscall.h>
 #include <sys/mman.h>
+#include <unistd.h> /* |execl| */
 
 typedef uint32_t pixel_t;
+typedef uint8_t pixel_color;
+typedef uint16_t screen_row;
+typedef uint16_t screen_col;
 
 static int fd;
 void *shm_data;
-static pid_t cpid = -1;
+int screen_width, screen_depth;
 
-#include <mfdisplay.h>
+static pid_t cpid = -1;
 
 static int pipefd[2]; /* used to determine if the child has started, to get on-top status
   and for synchronization */
 
-@ |mf_wl_initscreen| returns 1 if display opened successfully, else 0.
+@ |init_screen| returns 1 if display opened successfully, else 0.
 
 @c
-int mf_wl_initscreen(void)
+bool init_screen(void)
 {
+  if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) return 0;
+  if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) return 0;
+
   @<Create pipe for communication with the child@>@;
 
   @<Create shared memory@>@;
   @<Get address of shared memory@>@;
 
   pixel_t *pixel = shm_data;
-  for (int n = 0; n < screenwidth * screendepth; n++)
+  for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = WHITE;
 
   return 1;
@@ -84,7 +84,7 @@ So, child process just uses descriptor 0 to attach to the shared memory.
 @<Create shared memory@>=
 fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
 if (fd == -1) return 0;
-int shm_size = screenwidth * screendepth * sizeof (pixel_t);
+int shm_size = screen_width * screen_depth * sizeof (pixel_t);
 if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
   close(fd);
   return 0;
@@ -113,7 +113,7 @@ callback it updates the screen and writes |'1'| to pipe.
 If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 
 @c
-void mf_wl_updatescreen(void)
+void update_screen(void)
 {
   uint8_t byte = '0';
   if (cpid != -1) {
@@ -136,10 +136,6 @@ if (cpid != -1) {
 @ @<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
-  char screen_width[5];
-  char screen_depth[5];
-  snprintf(screen_width, 5, "%d", screenwidth);
-  snprintf(screen_depth, 5, "%d", screendepth);
   close(pipefd[0]); /* cleanup */
   dup2(fd, STDIN_FILENO);
   close(fd);
@@ -147,7 +143,8 @@ if (cpid == 0) {
   close(pipefd[1]);
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
-  execl("/var/local/bin/wayland", "wayland", screen_width, screen_depth, (char *) NULL);
+  execl("/var/local/bin/wayland", "wayland", getenv("SCREEN_WIDTH"), getenv("SCREEN_DEPTH"),
+    (char *) NULL);
   @<Abort starting child program@>;
 }
 
@@ -165,29 +162,29 @@ if (cpid != -1) {
 }
 
 @ @c
-void mf_wl_blankrectangle(screencol left,
-                          screencol right,
-                          screenrow top,
-                          screenrow bottom)
+void blank_rectangle(screen_col left,
+                          screen_col right,
+                          screen_row top,
+                          screen_row bottom)
 {
   pixel_t *pixel;
-  for (screenrow r = top; r <= bottom; r++) {
+  for (screen_row r = top; r <= bottom; r++) {
     pixel = shm_data;
-    pixel += screenwidth*r + left;
-    for (screencol c = left; c <= right; c++)
+    pixel += screen_width*r + left;
+    for (screen_col c = left; c <= right; c++)
       *pixel++ = WHITE;
   }
 }
 
-void mf_wl_paintrow(screenrow row,
-                    pixelcolor init_color,
-                    transspec tvect,
-                    screencol vector_size)
+void paint_row(screen_row row,
+                    pixel_color init_color,
+                    screen_col *tvect,
+                    screen_col vector_size)
 {
   pixel_t *pixel = shm_data;
-  pixel += screenwidth*row + *tvect;
-  screencol k = 0;
-  screencol c = *tvect;
+  pixel += screen_width*row + *tvect;
+  screen_col k = 0;
+  screen_col c = *tvect;
   do {
       k++;
       do {
