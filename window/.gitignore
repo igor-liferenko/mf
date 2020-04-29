@@ -1,5 +1,3 @@
-libwindow.a
-trap.o
 wl.c
 wl.o
 wl.idx
