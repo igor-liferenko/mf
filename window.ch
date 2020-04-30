@@ -1,4 +1,4 @@
-NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus window is killed without user confirmation (TODO: check this again)
+NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus we reopen stdin to wait
 @x
 @h
 @y
@@ -12,9 +12,14 @@ NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus window is kil
     tcgetattr(STDIN_FILENO, &tcattr); \
     tcattr.c_lflag &= ~(ECHO | ICANON); \
     tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
-    printf("Waiting...\r"); fflush(stdout); getchar(); kill(cpid, SIGTERM); \
+    printf("Waiting...\r"); fflush(stdout); \
+    if (getchar() == -1) { \
+      freopen("/dev/tty", "r", stdin); \
+      getchar(); \
+    } \
     tcattr.c_lflag |= ECHO | ICANON; \
     tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
+    kill(cpid, SIGTERM); \
   }
 @h
 @z
