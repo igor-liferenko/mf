@@ -11,6 +11,7 @@ trapmf: change-file web2w/ctangle
 	web2w/ctangle -bhp trapmf.w trap/constants.ch
 	gcc -DINIT -DSTAT trapmf.c -lm -o trap/trapmf
 
+# TODO: try to use $(window.ch)
 change-file:
 	tie -bhp -c mf.ch mf.w constants.ch `[ "$(MAKECMDGOALS)" = trapmf ] || echo window.ch` exit.ch format.ch arg.ch #path.ch interrupt.ch output.ch editor.ch time.ch banner.ch
 

@@ -1,9 +1,11 @@
+TODO: compare ECHO and ICANON before changing - must differ
 @x
 @h
 @y
 #include <sys/types.h>
 #include <termios.h>
 #include <signal.h>
+#include <unistd.h>
 #define wait_window \
   if (cpid != -1) { \
     struct termios tcattr; \
@@ -47,7 +49,7 @@ void update_screen(void);
 @<Glob...@>=
 @y
 @<Glob...@>=
-extern int screen_width, screen_depth;
+int screen_width, screen_depth;
 extern pid_t cpid;
 @z
 
@@ -86,4 +88,12 @@ wlog_ln(")");
 @y
 @p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
   screen_col @!n);
+@z
+
+@x
+initialize(); /*set global variables to their starting values*/
+@y
+if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) exit(0);
+if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) exit(0);
+initialize(); /*set global variables to their starting values*/
 @z
