@@ -1,4 +1,4 @@
-NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus window is killed without user confirmation
+NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus window is killed without user confirmation (TODO: check this again)
 @x
 @h
 @y
