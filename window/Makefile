@@ -1,6 +1,7 @@
 wl: wayland
 	ctangle wl
 	gcc -g -Og -c wl.c
+	ar -cr libwl.a wl.o
 
 wayland:
 	ctangle wayland

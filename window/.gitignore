@@ -3,6 +3,7 @@ wl.o
 wl.idx
 wl.scn
 wl.tex
+libwl.a
 wayland.c
 wayland.idx
 wayland.scn
