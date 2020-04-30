@@ -1,4 +1,22 @@
 @x
+@h
+@y
+#include <sys/types.h>
+#include <termios.h>
+#define wait_window \
+  if (cpid != -1) { \
+    struct termios tcattr; \
+    tcgetattr(STDIN_FILENO, &tcattr); \
+    tcattr.c_lflag &= ~(ECHO | ICANON); \
+    tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
+    printf("Waiting...\r"); fflush(stdout); getchar(); kill(cpid, SIGTERM); \
+    tcattr.c_lflag |= ECHO | ICANON; \
+    tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
+  }
+@h
+@z
+
+@x
 enum {@+@!screen_width=768@+}; /*number of pixels in each row of screen display*/
 enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen display*/
 @y
@@ -29,6 +47,7 @@ void update_screen(void);
 @y
 @<Glob...@>=
 extern int screen_width, screen_depth;
+extern pid_t cpid;
 @z
 
 @x
