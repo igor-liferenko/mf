@@ -3,6 +3,7 @@
 @y
 #include <sys/types.h>
 #include <termios.h>
+#include <signal.h>
 #define wait_window \
   if (cpid != -1) { \
     struct termios tcattr; \

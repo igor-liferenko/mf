@@ -1,7 +1,6 @@
 @x
 @h
 @y
-#include <signal.h>
 @h
 #ifndef wait_window
 #define wait_window
