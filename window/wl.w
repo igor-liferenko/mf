@@ -29,12 +29,13 @@ Color is set in XRGB format (X byte is not used for anything).
 #include <unistd.h>
 
 typedef uint32_t pixel_t;
+
 typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
 typedef uint16_t screen_col;
 
 static int fd;
-void *shm_data;
+static void *shm_data;
 extern int screen_width, screen_depth;
 
 pid_t cpid = -1;
