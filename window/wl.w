@@ -13,11 +13,6 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-Color is set in XRGB format (X byte is not used for anything).
-
-@d BLACK 0x000000
-@d WHITE 0xffffff
-
 @c
 #include <stdbool.h>
 #include <stdint.h>
@@ -28,11 +23,13 @@ Color is set in XRGB format (X byte is not used for anything).
 #include <sys/mman.h>
 #include <unistd.h>
 
-typedef uint32_t pixel_t;
-
 typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
 typedef uint16_t screen_col;
+
+typedef uint32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
+#define BLACK 0x000000
+#define WHITE 0xffffff
 
 static int fd;
 static void *shm_data;
