@@ -1,3 +1,4 @@
+NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus window is killed without user confirmation
 @x
 @h
 @y
