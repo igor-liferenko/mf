@@ -1,4 +1,3 @@
-TODO: compare ECHO and ICANON before changing - must differ
 @x
 @h
 @y
