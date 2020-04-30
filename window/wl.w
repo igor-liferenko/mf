@@ -21,7 +21,7 @@ Color is set in XRGB format (X byte is not used for anything).
 @c
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h> /* |snprintf| */
+#include <stdio.h> /* |sscanf| */
 #include <stdlib.h> /* |exit| */
 #include <sys/wait.h>
 #include <sys/syscall.h>
@@ -37,7 +37,7 @@ static int fd;
 void *shm_data;
 int screen_width, screen_depth;
 
-static pid_t cpid = -1;
+pid_t cpid = -1;
 
 static int pipefd[2]; /* used to determine if the child has started, to get on-top status
   and for synchronization */
