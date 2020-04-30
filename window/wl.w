@@ -21,12 +21,12 @@ Color is set in XRGB format (X byte is not used for anything).
 @c
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h> /* |sscanf| */
-#include <stdlib.h> /* |exit| */
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <sys/syscall.h>
 #include <sys/mman.h>
-#include <unistd.h> /* |execl| */
+#include <unistd.h>
 
 typedef uint32_t pixel_t;
 typedef uint8_t pixel_color;
@@ -35,7 +35,7 @@ typedef uint16_t screen_col;
 
 static int fd;
 void *shm_data;
-int screen_width, screen_depth;
+extern int screen_width, screen_depth;
 
 pid_t cpid = -1;
 
@@ -47,9 +47,6 @@ static int pipefd[2]; /* used to determine if the child has started, to get on-t
 @c
 bool init_screen(void)
 {
-  if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) return 0;
-  if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) return 0;
-
   @<Create pipe for communication with the child@>@;
 
   @<Create shared memory@>@;
