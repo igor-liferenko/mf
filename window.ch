@@ -1,4 +1,4 @@
-NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus we reopen stdin to wait
+NOTE: freopen() is used to ensure that fgetc() does not return immediately (happens on Ctrl+D)
 @x
 @h
 @y
@@ -8,17 +8,11 @@ NOTE: if Ctrl+D is pressed, getchar() returns immediately and thus we reopen std
 #include <unistd.h>
 #define wait_window \
   if (cpid != -1) { \
-    struct termios tcattr; \
-    tcgetattr(STDIN_FILENO, &tcattr); \
-    tcattr.c_lflag &= ~(ECHO | ICANON); \
-    tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
+    freopen("/dev/tty", "r", stdin); \
+    system("stty -F /dev/tty -echo -icanon"); \
     printf("Waiting...\r"); fflush(stdout); \
-    if (getchar() == -1) { \
-      freopen("/dev/tty", "r", stdin); \
-      getchar(); \
-    } \
-    tcattr.c_lflag |= ECHO | ICANON; \
-    tcsetattr(STDIN_FILENO, TCSANOW, &tcattr); \
+    fgetc(stdin); \
+    system("stty -F /dev/tty echo icanon"); \
     kill(cpid, SIGTERM); \
   }
 @h
