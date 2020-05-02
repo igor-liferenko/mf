@@ -8,10 +8,9 @@ NOTE: freopen() is used to ensure that fgetc() does not return immediately (happ
 #include <stdlib.h>
 #define wait_window \
   if (cpid != -1) { \
-    freopen("/dev/tty", "r", stdin); \
-    system("stty -F /dev/tty -echo -icanon"); \
     printf("Waiting...\r"); fflush(stdout); \
-    fgetc(stdin); \
+    system("stty -F /dev/tty -echo -icanon"); \
+    freopen("/dev/tty", "r", stdin); fgetc(stdin); \
     system("stty -F /dev/tty echo icanon"); \
     kill(cpid, SIGTERM); \
   }
