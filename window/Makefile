@@ -1,7 +1,7 @@
 wl: wayland
 	ctangle wl
 	gcc -g -Og -c wl.c
-	ar -cr libwl.a wl.o
+	ar -cr wl.a wl.o # do via library to avoid errors if window.ch is not used
 
 wayland:
 	ctangle wayland

@@ -1,9 +1,9 @@
 all: change-file web2w/ctangle
 	web2w/ctangle -bhp mf mf # if you need to disable ch-file, put `#' after constants.ch, not here
 	make -C window
-	gcc -g -Og -DINIT -o inimf mf.c -lm window/libwl.a
+	gcc -g -Og -DINIT -o inimf mf.c -lm window/wl.a
 	@echo 'plain dump' | ./inimf >/dev/null; mv plain.base MFbases/
-	gcc -g -Og -o virmf mf.c -lm window/libwl.a
+	gcc -g -Og -o virmf mf.c -lm window/wl.a
 
 SHELL=/bin/bash
 trapmf: change-file web2w/ctangle
