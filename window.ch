@@ -5,7 +5,7 @@ NOTE: freopen() is used to ensure that fgetc() does not return immediately (happ
 #include <sys/types.h>
 #include <termios.h>
 #include <signal.h>
-#include <unistd.h>
+#include <stdlib.h>
 #define wait_window \
   if (cpid != -1) { \
     freopen("/dev/tty", "r", stdin); \
