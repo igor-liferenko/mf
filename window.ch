@@ -91,7 +91,9 @@ wlog_ln(")");
 @x
 initialize(); /*set global variables to their starting values*/
 @y
+#ifndef INIT
 if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) exit(0);
 if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) exit(0);
+#endif
 initialize(); /*set global variables to their starting values*/
 @z
