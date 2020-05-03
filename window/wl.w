@@ -38,7 +38,7 @@ pid_t cpid = -1;
 static int pipefd[2]; /* used to determine if the child has started, to get on-top status
   and for synchronization */
 
-@ |init_screen| returns 1 if display opened successfully, else 0.
+@ |init_screen| returns |true| if display opened successfully, else |false|.
 
 @c
 bool init_screen(void)
@@ -52,11 +52,11 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = WHITE;
 
-  return 1;
+  return true;
 }
 
 @ We do not need to close write end of pipe in parent, because child cannot exit by itself
-(thus \\{read} in \\{updatescreen} will never block). So, we need to create pipe only once,
+(thus |read| in |update_screen| will never block). So, we need to create pipe only once,
 even though child may be forked multiple times.
 
 I specifically do not implement exit via keybind in child, because I decided that screen
@@ -67,7 +67,7 @@ window cannot be closed from Activities menu.
 
 @<Create pipe...@>=
 if (pipe(pipefd) == -1)
-  return 0;
+  return false;
 
 @ Data is communicated to child wayland process via shared memory.
 |memfd_create| creates a memory-only file and returns a descriptor
@@ -76,11 +76,11 @@ So, child process just uses descriptor 0 to attach to the shared memory.
 
 @<Create shared memory@>=
 fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
-if (fd == -1) return 0;
+if (fd == -1) return false;
 int shm_size = screen_width * screen_depth * sizeof (pixel_t);
 if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
   close(fd);
-  return 0;
+  return false;
 }
 
 @ |mmap| gives a pointer to memory associated with the file.
@@ -93,7 +93,7 @@ access the same portion of physical memory.
 shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (shm_data == MAP_FAILED) {
   close(fd);
-  return 0;
+  return false;
 }
 
 @ We automatically get pid of child process in parent from |fork|.
