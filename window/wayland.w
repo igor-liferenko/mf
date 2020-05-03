@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
 }
 
 @ @<Global...@>=
-int32_t screenwidth, screendepth;
+int32_t screen_width, screen_depth;
 
 @ @<Get screen resolution@>=
 if (argc != 3) exit(EXIT_FAILURE);
-if (sscanf(argv[1], "%d", &screenwidth) != 1) exit(EXIT_FAILURE);
-if (sscanf(argv[2], "%d", &screendepth) != 1) exit(EXIT_FAILURE);
+if (sscanf(argv[1], "%d", &screen_width) != 1) exit(EXIT_FAILURE);
+if (sscanf(argv[2], "%d", &screen_depth) != 1) exit(EXIT_FAILURE);
 
 @ Allow {\logo METAFONT} to proceed.
 This must be done after wayland was initialized and signal handlers were installed.
@@ -224,10 +224,10 @@ if (ftruncate(fd, shm_size) == -1) exit(1);
 buffer_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (buffer_data == MAP_FAILED) exit(1);
 memcpy(buffer_data, shm_data, shm_size);
-pool = wl_shm_create_pool(shm, fd, screenwidth*screendepth*(int32_t)sizeof(pixel_t));
+pool = wl_shm_create_pool(shm, fd, screen_width*screen_depth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
-  0, screenwidth, screendepth,
-  screenwidth*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
+  0, screen_width, screen_depth,
+  screen_width*(int32_t)sizeof(pixel_t), WL_SHM_FORMAT_XRGB8888);
 wl_shm_pool_destroy(pool);
 
 @ @<Attach buffer to surface@>=
@@ -243,7 +243,7 @@ the commit).
 wl_surface_commit(surface);
 
 @ @<Get shared...@>=
-shm_size = screenwidth * screendepth * sizeof (pixel_t);
+shm_size = screen_width * screen_depth * sizeof (pixel_t);
 shm_data = mmap(NULL, shm_size, PROT_READ, MAP_SHARED, STDIN_FILENO, 0);
 if (shm_data == MAP_FAILED) exit(1);
 
@@ -292,7 +292,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     if (mf_update) {
       mf_update=0;
       memcpy(buffer_data, shm_data, shm_size);
-      wl_surface_damage(surface, 0, 0, screenwidth, screendepth);
+      wl_surface_damage(surface, 0, 0, screen_width, screen_depth);
       write(STDOUT_FILENO, "1", 1);
     }
     @<Request ``compositor free'' notification@>@;
