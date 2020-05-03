@@ -6,7 +6,7 @@ plain.log
 virmf
 trapmf.w
 mf.ch
-window.dvi
+*.dvi
 window.log
 window.toc
-window.ps
+*.ps
