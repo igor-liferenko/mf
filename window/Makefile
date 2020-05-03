@@ -12,5 +12,5 @@ view:
 	@cweave wayland >/dev/null
 
 print:
-	@cweave wl wayland >/dev/null
-	@cweave wayland wayland >/dev/null
+	@cweave wl duplex >/dev/null
+	@cweave wayland duplex >/dev/null
