@@ -24,10 +24,10 @@ web2w/ctangle:
 
 view:
 	@make --no-print-directory -C window $@
-	@tex mf-wl >/dev/null
-	@echo use \"dvi mf-wl\" to view the document
+	@tex window >/dev/null
+	@echo use \"dvi window\" to view the document
 
 print:
 	@make --no-print-directory -C window $@
-	@tex mf-wl >/dev/null
-	@echo use \"prt mf-wl\" to print the document
+	@tex window >/dev/null
+	@echo use \"prt window\" to print the document
