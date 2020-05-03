@@ -192,4 +192,4 @@ void paint_row(screen_row row,
   } while (k != vector_size);
 }
 
-@* Index.
+@* Wayland.
