@@ -1,8 +1,6 @@
 \let\lheader\rheader
 \datethis
-\def\title{MF-WL}
-
-@s EXTERN extern
+\def\title{WINDOW}
 
 \font\logo=manfnt
 
@@ -171,6 +169,7 @@ void blank_rectangle(screen_col left,
   }
 }
 
+@ @c
 void paint_row(screen_row row,
                     pixel_color init_color,
                     screen_col *tvect,
@@ -192,3 +191,5 @@ void paint_row(screen_row row,
       init_color = !init_color;
   } while (k != vector_size);
 }
+
+@* Index.
