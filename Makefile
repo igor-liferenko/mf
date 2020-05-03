@@ -17,7 +17,7 @@ else
 window.ch=window.ch
 endif
 change-file:
-	tie -bhp -c mf.ch mf.w constants.ch $(window.ch) exit.ch format.ch arg.ch #path.ch interrupt.ch output.ch editor.ch time.ch banner.ch
+	tie -bhp -c mf.ch mf.w constants.ch exit.ch format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch banner.ch $(window.ch)
 
 web2w/ctangle:
 	make -C web2w ctangle
