@@ -1,3 +1,6 @@
+% NOTE: incomplete page is discarded (from non-last files?) (TODO: find out why) - this is why we should force a page break by putting a starred section in the end (e.g., "@* Index."); \noinx \nosecs \nocon must not be used in .w files; \datethis must be used in the beginning of each .w file
+% TODO: find out for what is \deadcycles=0
+
 \input cwebmac
 \let\INPUT=\input
 \def\input#1 {\def\next{#1}\ifx\next\cwebmac\else\INPUT #1\fi}
