@@ -16,10 +16,12 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <sys/syscall.h>
-#include <sys/mman.h>
+#include <sys/wait.h>
 #include <unistd.h>
+
+#define _GNU_SOURCE
+#include <sys/mman.h>
 
 typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
@@ -38,15 +40,25 @@ pid_t cpid = -1;
 static int pipefd[2]; /* used to determine if the child has started, to get on-top status
   and for synchronization */
 
-@ |init_screen| returns |true| if display opened successfully, else |false|.
+@ Data is communicated to child wayland process via shared memory.
 
 @c
 bool init_screen(void)
 {
   @<Create pipe for communication with the child@>@;
 
-  @<Create shared memory@>@;
-  @<Get address of shared memory@>@;
+fd = memfd_create("shm", 0);
+if (fd == -1) return false;
+int shm_size = screen_width * screen_depth * sizeof (pixel_t);
+if (ftruncate(fd, shm_size) == -1) {
+  close(fd);
+  return false;
+}
+shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+if (shm_data == MAP_FAILED) {
+  close(fd);
+  return false;
+}
 
   pixel_t *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
@@ -68,33 +80,6 @@ window cannot be closed from Activities menu.
 @<Create pipe...@>=
 if (pipe(pipefd) == -1)
   return false;
-
-@ Data is communicated to child wayland process via shared memory.
-|memfd_create| creates a memory-only file and returns a descriptor
-for it, which is tied to child's standard input via |dup2| before |execl|.
-So, child process just uses descriptor 0 to attach to the shared memory.
-
-@<Create shared memory@>=
-fd = syscall(SYS_memfd_create, "shm", 0); /* no glibc wrappers exist for |memfd_create| */
-if (fd == -1) return false;
-int shm_size = screen_width * screen_depth * sizeof (pixel_t);
-if (ftruncate(fd, shm_size) == -1) { /* allocate memory */
-  close(fd);
-  return false;
-}
-
-@ |mmap| gives a pointer to memory associated with the file.
-|mmap| is also called in child process go get pointer to
-the same memory. Each call to |mmap|
-reserves a new region of virtual memory, but all those regions
-access the same portion of physical memory.
-
-@<Get address of shared memory@>=
-shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-if (shm_data == MAP_FAILED) {
-  close(fd);
-  return false;
-}
 
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
@@ -126,7 +111,10 @@ if (cpid != -1) {
   waitpid(cpid, NULL, 0);
 }
 
-@ @<Start child program@>=
+@ File descriptor for in-memory file is tied to child's standard input via |dup2| before |execl|.
+So, child process just uses descriptor 0 to attach to the shared memory.
+
+@<Start child program@>=
 cpid = fork();
 if (cpid == 0) {
   close(pipefd[0]); /* cleanup */
