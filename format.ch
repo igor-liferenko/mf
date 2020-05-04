@@ -5,8 +5,6 @@ if (ready_already==314159) goto start_of_MF;
 if (ready_already!=0) { fprintf(stderr, "error: this can not be"); exit(0); }
 @z
 
-TODO: compare tex with metafont
-
 NOTE: this code was taken verbatim from @<Get the first line...@> (except that open_fmt_file is replaced with w_open_in)
 NOTE: length of progname (in bytes) must be <= file_name_size-format_area_length-4
 @x
