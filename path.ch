@@ -6,34 +6,29 @@ enum {@+@!file_name_size=255@+}; /*file names shouldn't be longer than this*/
 @z
 
 @x
-  if ((c=='>')||(c==':')) 
+else{@+if ((c=='>')||(c==':')) 
 @y
-  if (c=='/')
+else{@+if (c=='/')
 @z
 
 use absolute path
 @x
-@d format_default_length	20 /*length of the |TEX_format_default| string*/
-@d format_area_length	11 /*length of its area part*/
+@d base_default_length	18 /*length of the |MF_base_default| string*/ 
+@d base_area_length	8 /*length of its area part*/ 
 @y
-@d format_default_length	36 /*length of the |TEX_format_default| string*/
-@d format_area_length	27 /*length of its area part*/
+@d base_default_length	32 /*length of the |MF_base_default| string*/ 
+@d base_area_length	22 /*length of its area part*/ 
 @z
 
 @x
-ASCII_code @!TEX_format_default[1+format_default_length+1]=" TeXformats/plain.fmt";
+ASCII_code @!MF_base_default[1+base_default_length+1]=" MFbases/plain.base";
 @y
-ASCII_code @!TEX_format_default[1+format_default_length+1]=" /home/user/ctex/TeXformats/plain.fmt";
+ASCII_code @!MF_base_default[1+base_default_length+1]=" /home/user/mf/MFbases/plain.base";
 @z
 
 use absolute paths
 @x
-@d str_506 "TeXinputs/"
+@d str_465 "MFinputs/"
 @y
-@d str_506 "/home/user/ctex/TeXinputs/"
-@z
-@x
-@d str_507 "TeXfonts/"
-@y
-@d str_507 "/home/user/ctex/TeXfonts/"
+@d str_465 "/home/user/mf/MFinputs/"
 @z
