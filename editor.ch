@@ -37,10 +37,8 @@ int edit_line;
     char ed_name[file_name_size+1];
       /* because this file was opened, it is guaranteed to fit into |file_name_size| */
     int k = 0;
-    for (pool_pointer j=ed_name_start; j<=ed_name_end; j++) {
-      k++;
-      ed_name[k-1] = xchr[str_pool[j]];
-    }
+    for (pool_pointer j=ed_name_start; j<=ed_name_end; j++)
+      ed_name[k++] = xchr[str_pool[j]];
     ed_name[k] = '\0';
 
     char cmd[500];
