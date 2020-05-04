@@ -123,20 +123,18 @@ if (cpid == 0) {
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
   execl("/home/user/mf/window/wayland", "wayland", (char *) NULL);
-  @<Abort starting child program@>;
+  write(STDOUT_FILENO, "x", 1);
+  exit(EXIT_FAILURE);
 }
-
-@ |execl| returns only if there is an error so we do not check return value.
-|write| to parent so that it will not block forever.
-
-@<Abort starting child program@>=
-write(STDOUT_FILENO, "", 1);
-exit(EXIT_FAILURE);
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
   uint8_t byte; @+
   read(pipefd[0], &byte, 1); /* blocks until |STDOUT_FILENO| is written to in child */
+  if (byte == 'x') {
+    waitpid(cpid, NULL, 0);
+    cpid = -1;
+  }
 }
 
 @ @c
