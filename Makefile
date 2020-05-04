@@ -11,7 +11,7 @@ trapmf: web2w/ctangle
 	web2w/ctangle -bhp mf.w trapmf.ch trapmf
 	gcc -DINIT -DSTAT trapmf.c -lm -o trap/trapmf
 
-CHF=exit.ch format.ch arg.ch interrupt.ch output.ch time.ch
+CHF=exit.ch format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
 change-file:
 	tie -bhp -c mf.ch mf.w constants.ch window.ch $(CHF)
 
