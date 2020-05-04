@@ -6,14 +6,14 @@
 #define str(x) str_(x)
 @z
 
-Display "TeXinputs/" instead of full path to it in log files and on terminal.
+Display "MFinputs/" instead of full path to it in log files and on terminal.
 @x
-else{@+for (k=1; k<=name_length; k++) {
+else{@+for (k=1; k<=name_length; k++) append_char(xord[name_of_file[k]]);
 @y
 else {
   k=1;
-  if (strstr(name_of_file+1, str(TEX_area)) == (char *) name_of_file+1)
-    if (strstr(str(TEX_area), "TeXinputs/") != NULL)
-      k = strstr(str(TEX_area), "TeXinputs/") - str(TEX_area) + 1;
-  for (; k<=name_length; k++) {
+  if (strstr(name_of_file+1, str(MF_area)) == (char *) name_of_file+1)
+    if (strstr(str(MF_area), "MFinputs/") != NULL)
+      k = strstr(str(MF_area), "MFinputs/") - str(MF_area) + 1;
+  for (; k<=name_length; k++) append_char(xord[name_of_file[k]]);
 @z
