@@ -16,12 +16,10 @@ automatically has the pid of Wayland process, which is used to send signals to i
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/mman.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-#define _GNU_SOURCE
-#include <sys/mman.h>
 
 typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
@@ -47,7 +45,7 @@ bool init_screen(void)
 {
   @<Create pipe for communication with the child@>@;
 
-fd = memfd_create("shm", 0);
+fd = syscall(SYS_memfd_create, "shm", 0);
 if (fd == -1) return false;
 int shm_size = screen_width * screen_depth * sizeof (pixel_t);
 if (ftruncate(fd, shm_size) == -1) {
