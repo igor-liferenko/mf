@@ -4,21 +4,17 @@
 @p bool init_terminal(int argc, char **argv)
 @z
 
-TODO: compare §35 in mf.pdf with tex.pdf and uncomment here
- @x
+@x
 t_open_in;
- @y
+@y
 t_open_in;
 if (argc == 2) {
   last = loc = first;
-  for (int k = 0, len; k < strlen(argv[1]); k += len) {
-    wchar_t wc;
-    len = mbtowc(&wc, argv[1]+k, MB_CUR_MAX);
-    buffer[last++] = xord(wc);
-  }
+  for (int k = 0, len; k < strlen(argv[1]); k++)
+    buffer[last++] = xord[*(argv[1]+k)];
   return true;
 }
- @z
+@z
 
 @x
 if (!init_terminal()) exit(0);
