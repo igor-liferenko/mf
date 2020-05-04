@@ -1,15 +1,14 @@
-all: change-file web2w/ctangle
+all: web2w/ctangle change-file
 	web2w/ctangle -bhp mf mf
 	make -C window
 	gcc -g -Og -DINIT -o inimf mf.c -lm window/wl.o
 	@echo 'plain dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -g -Og -o virmf mf.c -lm window/wl.o
 
-SHELL=/bin/bash
 trapmf: web2w/ctangle
-	tie -bhp -c trapmf.ch mf.w trap/constants.ch trap/window.ch $(CHF)
-	web2w/ctangle -bhp mf.w trapmf.ch trapmf.c
-	gcc -DINIT -DSTAT trapmf.c -lm -o trap/trapmf
+	tie -bhp -c mf.ch mf.w trap/constants.ch trap/window.ch $(CHF)
+	web2w/ctangle -bhp mf mf
+	gcc -DINIT -DSTAT mf.c -lm -o trap/trapmf
 
 CHF=exit.ch format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
 change-file:
