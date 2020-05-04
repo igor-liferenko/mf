@@ -1,6 +1,6 @@
 \let\lheader\rheader
 \datethis
-\def\title{WINDOW}
+\noinx
 
 \font\logo=manfnt
 
@@ -12,15 +12,7 @@ applications---they work in endless loop. As we are using |fork|, {\logo METAFON
 automatically has the pid of Wayland process, which is used to send signals to it.
 
 @c
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/syscall.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
+@<Header files@>@;
 typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
 typedef uint16_t screen_col;
@@ -45,18 +37,18 @@ bool init_screen(void)
 {
   @<Create pipe for communication with the child@>@;
 
-fd = syscall(SYS_memfd_create, "shm", 0);
-if (fd == -1) return false;
-int shm_size = screen_width * screen_depth * sizeof (pixel_t);
-if (ftruncate(fd, shm_size) == -1) {
-  close(fd);
-  return false;
-}
-shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-if (shm_data == MAP_FAILED) {
-  close(fd);
-  return false;
-}
+  fd = syscall(SYS_memfd_create, "shm", 0);
+  if (fd == -1) return false;
+  int shm_size = screen_width * screen_depth * sizeof (pixel_t);
+  if (ftruncate(fd, shm_size) == -1) {
+    close(fd);
+    return false;
+  }
+  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
+  if (shm_data == MAP_FAILED) {
+    close(fd);
+    return false;
+  }
 
   pixel_t *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
@@ -175,4 +167,12 @@ void paint_row(screen_row row,
   } while (k != vector_size);
 }
 
-@* Wayland.
+@ @<Header files@>=
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/syscall.h>
+#include <sys/wait.h>
+#include <unistd.h>
