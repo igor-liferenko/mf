@@ -34,11 +34,3 @@ enum {@+@!gf_buf_size=8@+};
 @y
 @d mem_top      3000
 @z
-
-@x Screen routines:
-@p bool init_screen(void)
-{@+return false;
-@y
-@p bool init_screen(void)
-{@+return true; /* screen instructions will be logged */
-@z
