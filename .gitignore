@@ -4,11 +4,9 @@ inimf
 plain.log
 .gdb_history
 virmf
-trapmf.w
 mf.ch
 *.dvi
 window.log
 window.toc
 *.ps
 trapmf.ch
-tmp.ch

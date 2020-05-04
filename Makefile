@@ -8,7 +8,7 @@ all: change-file web2w/ctangle
 SHELL=/bin/bash
 trapmf: web2w/ctangle
 	tie -bhp -c trapmf.ch mf.w trap/constants.ch trap/window.ch $(CHF)
-	web2w/ctangle -bhp mf.w trapmf.ch trapmf
+	web2w/ctangle -bhp mf.w trapmf.ch trapmf.c
 	gcc -DINIT -DSTAT trapmf.c -lm -o trap/trapmf
 
 CHF=exit.ch format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
