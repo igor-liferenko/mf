@@ -6,7 +6,7 @@
 @z
 
 @x
-int @!interrupt; /*should \TeX\ pause for instructions?*/ 
+int @!interrupt; /*should \MF\ pause for instructions?*/
 @y
 volatile int @!interrupt;
 void catchint(int signum)
