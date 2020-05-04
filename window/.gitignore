@@ -5,6 +5,7 @@ wl.scn
 wl.tex
 wl.log
 wl.toc
+wayland
 wayland.c
 wayland.idx
 wayland.scn

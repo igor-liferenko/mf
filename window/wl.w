@@ -122,8 +122,7 @@ if (cpid == 0) {
   close(pipefd[1]);
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
-  execl("/var/local/bin/wayland", "wayland", getenv("SCREEN_WIDTH"), getenv("SCREEN_DEPTH"),
-    (char *) NULL);
+  execl("/home/user/mf/window/wayland", "wayland", (char *) NULL);
   @<Abort starting child program@>;
 }
 

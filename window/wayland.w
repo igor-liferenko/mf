@@ -20,7 +20,7 @@ typedef uint32_t pixel_t;
 @<Get registry@>;
 @<Get notified when compositor can draw@>@;
 
-int main(int argc, char *argv[])
+int main(void)
 {
     struct
     @t}\bgroup\let\vb=\&{@> @=sigaction@> @t}\egroup{@>
@@ -44,9 +44,8 @@ int main(int argc, char *argv[])
 int32_t screen_width, screen_depth;
 
 @ @<Get screen resolution@>=
-if (argc != 3) exit(EXIT_FAILURE);
-if (sscanf(argv[1], "%d", &screen_width) != 1) exit(EXIT_FAILURE);
-if (sscanf(argv[2], "%d", &screen_depth) != 1) exit(EXIT_FAILURE);
+if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) exit(EXIT_FAILURE);
+if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) exit(EXIT_FAILURE);
 
 @ Allow {\logo METAFONT} to proceed.
 This must be done after wayland was initialized and signal handlers were installed.
