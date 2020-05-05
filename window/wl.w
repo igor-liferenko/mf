@@ -18,7 +18,6 @@ Data is communicated to child wayland process via shared memory.
 @<Type definitions@>@;
 @<Global variables@>@;
 
-@c
 static int fd;
 extern int screen_width, screen_depth;
 static void *shm_data;
