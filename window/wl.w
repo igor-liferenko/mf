@@ -17,18 +17,15 @@ typedef uint8_t pixel_color;
 typedef uint16_t screen_row;
 typedef uint16_t screen_col;
 
+@<Global variables@>@;
+
+static int fd;
+extern int screen_width, screen_depth;
+static void *shm_data;
+
 typedef uint32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
 #define BLACK 0x000000
 #define WHITE 0xffffff
-
-static int fd;
-static void *shm_data;
-extern int screen_width, screen_depth;
-
-pid_t cpid = -1;
-
-static int pipefd[2]; /* used to determine if the child has started, to get on-top status
-  and for synchronization */
 
 @ Data is communicated to child wayland process via shared memory.
 
@@ -67,14 +64,22 @@ signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
 Activities menu by mouse. But this case is excluded, because it happens that this graphics
 window cannot be closed from Activities menu.
 
-@<Create pipe...@>=
+@<Global...@>=
+static int pipefd[2]; /* used to determine if the child has started, to get on-top status
+  and for synchronization */
+
+@ @<Create pipe...@>=
 if (pipe(pipefd) == -1)
   return false;
 
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
-Parent sends |SIGUSR1|. On receiving this signal, child
+@<Global...@>=
+pid_t cpid = -1;
+
+@ On update, if window exists, {\logo METAFONT}
+sends |SIGUSR1|. On receiving this signal, child
 checks if it is in foreground. If no, it writes |'0'| to pipe.
 If child is in foreground, it marks for update and on subsequent
 callback it updates the screen and writes |'1'| to pipe.
@@ -130,7 +135,7 @@ if (cpid != -1) {
 }
 
 @ @c
-void blank_rectangle(screen_col left,
+void blank_rectangle(screen_col left, /* TODO: make the same variable names as in window.ch */
                           screen_col right,
                           screen_row top,
                           screen_row bottom)
@@ -145,7 +150,7 @@ void blank_rectangle(screen_col left,
 }
 
 @ @c
-void paint_row(screen_row row,
+void paint_row(screen_row row, /* TODO: make the same variable names as in window.ch */
                     pixel_color init_color,
                     screen_col *tvect,
                     screen_col vector_size)
