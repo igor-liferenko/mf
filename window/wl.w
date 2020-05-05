@@ -135,41 +135,36 @@ if (cpid != -1) {
 }
 
 @ @c
-void blank_rectangle(screen_col left, /* TODO: make the same variable names as in window.ch */
-                          screen_col right,
-                          screen_row top,
-                          screen_row bottom)
+void blank_rectangle(screen_col left_col, screen_col right_col,
+  screen_row top_row, screen_row bot_row)
 {
   pixel_t *pixel;
-  for (screen_row r = top; r <= bottom; r++) {
+  for (screen_row r = top_row; r <= bot_row; r++) {
     pixel = shm_data;
-    pixel += screen_width*r + left;
-    for (screen_col c = left; c <= right; c++)
+    pixel += screen_width*r + left_col;
+    for (screen_col c = left_col; c <= right_col; c++)
       *pixel++ = WHITE;
   }
 }
 
 @ @c
-void paint_row(screen_row row, /* TODO: make the same variable names as in window.ch */
-                    pixel_color init_color,
-                    screen_col *tvect,
-                    screen_col vector_size)
+void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   pixel_t *pixel = shm_data;
-  pixel += screen_width*row + *tvect;
-  screen_col k = 0;
-  screen_col c = *tvect;
+  pixel += screen_width*r + a[0];
+  int k = 0;
+  screen_col c = a[0];
   do {
       k++;
       do {
-           if (init_color == 0)
+           if (b == 0)
              *pixel++ = WHITE;
            else
              *pixel++ = BLACK;
            c++;
-      } while (c != *(tvect+k));
-      init_color = !init_color;
-  } while (k != vector_size);
+      } while (c != a[k]);
+      b = !b;
+  } while (k != n);
 }
 
 @ @<Header files@>=

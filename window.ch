@@ -64,8 +64,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 #endif
 } 
 @y
-@p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
-  screen_row @!top_row, screen_row @!bot_row);
+@p void blank_rectangle(screen_col, screen_col, screen_row, screen_row);
 @z
 
 @x
@@ -84,8 +83,7 @@ wlog_ln(")");
 #endif
 } 
 @y
-@p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
-  screen_col @!n);
+@p void paint_row(screen_row, pixel_color, screen_col *, screen_col);
 @z
 
 @x
