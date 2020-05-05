@@ -11,14 +11,14 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
+Data is communicated to child wayland process via shared memory.
+
 @c
 @<Header files@>@;
-typedef uint8_t pixel_color;
-typedef uint16_t screen_row;
-typedef uint16_t screen_col;
-
+@<Type definitions@>@;
 @<Global variables@>@;
 
+@c
 static int fd;
 extern int screen_width, screen_depth;
 static void *shm_data;
@@ -27,9 +27,6 @@ typedef uint32_t pixel_t; /* color is set in XRGB format (X byte is not used for
 #define BLACK 0x000000
 #define WHITE 0xffffff
 
-@ Data is communicated to child wayland process via shared memory.
-
-@c
 bool init_screen(void)
 {
   @<Create pipe for communication with the child@>@;
@@ -54,6 +51,10 @@ bool init_screen(void)
   return true;
 }
 
+@ @<Global...@>=
+static int pipefd[2]; /* used to determine if the child has started, to get on-top status
+  and for synchronization */
+
 @ We do not need to close write end of pipe in parent, because child cannot exit by itself
 (thus |read| in |update_screen| will never block). So, we need to create pipe only once,
 even though child may be forked multiple times.
@@ -64,11 +65,7 @@ signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
 Activities menu by mouse. But this case is excluded, because it happens that this graphics
 window cannot be closed from Activities menu.
 
-@<Global...@>=
-static int pipefd[2]; /* used to determine if the child has started, to get on-top status
-  and for synchronization */
-
-@ @<Create pipe...@>=
+@<Create pipe...@>=
 if (pipe(pipefd) == -1)
   return false;
 
@@ -133,6 +130,13 @@ if (cpid != -1) {
     cpid = -1;
   }
 }
+
+@ These are from \.{mf.w}.
+
+@<Type definitions@>=
+typedef uint8_t pixel_color;
+typedef uint16_t screen_row;
+typedef uint16_t screen_col;
 
 @ @c
 void blank_rectangle(screen_col left_col, screen_col right_col,
