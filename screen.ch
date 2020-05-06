@@ -2,8 +2,6 @@ NOTE: freopen() is used to ensure that fgetc() does not return immediately (happ
 @x
 @h
 @y
-#include <sys/types.h>
-#include <termios.h>
 #include <signal.h>
 #include <stdlib.h>
 #define wait_window \
@@ -34,6 +32,7 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @<Types...@>=
 @y
 @(screen.h@>=
+#include <sys/types.h>
 extern pid_t cpid;
 extern int screen_width, screen_depth;
 @z
