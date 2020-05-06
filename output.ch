@@ -12,7 +12,7 @@ else{@+for (k=1; k<=name_length; k++) append_char(xord[name_of_file[k]]);
 @y
 else {
   k=1;
-  if (strstr(name_of_file+1, str(MF_area)) == name_of_file + 1)
+  if (strstr(name_of_file+1, str(MF_area)) == name_of_file+1)
     if (strstr(str(MF_area), "MFinputs/") != NULL)
       k = strstr(str(MF_area), "MFinputs/") - str(MF_area) + 1;
   for (; k<=name_length; k++) append_char(xord[name_of_file[k]]);
