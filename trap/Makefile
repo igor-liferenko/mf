@@ -12,7 +12,6 @@ all:
 	@sed -i -f traplog.sed trap.log
 	@patch -sR trap.log capsule.diff
 	@diff mf/trap.log trap.log
-	@perl -i -l -0777 -pe 's/\n$$//' trap.fot
 	@sed -i -f trapfot.sed trap.fot
 	@diff mf/trap.fot trap.fot
 	@tftopl trap.tfm | diff mf/trap.pl -
