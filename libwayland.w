@@ -87,13 +87,10 @@ So, child process just uses descriptor 0 to attach to the shared memory.
 if (pipe(pipefd) == -1) return;
 cpid = fork();
 if (cpid == 0) {
-  close(pipefd[0]); /* cleanup */
   dup2(fd, STDIN_FILENO);
-  close(fd);
   dup2(pipefd[1], STDOUT_FILENO);
-  close(pipefd[1]);
-  signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
-    act on CTRL+C */
+  signal(SIGINT, SIG_IGN); /* ignore CTRL+C in child */
+/* TODO: restore PRT_DEATHSIG */
   execl("/home/user/mf/wayland", "wayland", (char *) NULL);
   exit(EXIT_FAILURE);
 }
