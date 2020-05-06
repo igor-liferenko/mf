@@ -34,6 +34,8 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @<Types...@>=
 @y
 @(screen.h@>=
+extern pid_t cpid;
+extern int screen_width, screen_depth;
 @z
 
 @x
@@ -41,7 +43,6 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @y
 @<Glob...@>=
 int screen_width, screen_depth;
-extern pid_t cpid;
 @z
 
 @x
