@@ -4,7 +4,7 @@ all: web2w/ctangle change-file
 	ctangle -bhp libwayland
 	gcc -g -Og -c libwayland.c
 	gcc -g -Og -DINIT -o inimf mf.c -lm libwayland.o
-	@echo 'plain; dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -g -Og -o virmf mf.c -lm libwayland.o
 
 trapmf: web2w/ctangle
