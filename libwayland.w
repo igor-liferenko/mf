@@ -11,20 +11,17 @@ because the wayland program cannot terminate---it is a general rule for all Wayl
 applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
 automatically has the pid of Wayland process, which is used to send signals to it.
 
-Data is communicated to child wayland process via shared memory.
-
 @c
 @<Header files@>@;
-@<Global variables@>@;
 
+@ Data is communicated to child wayland process via shared memory.
+
+@c
 static int fd;
-extern int screen_width, screen_depth;
 static void *shm_data;
 
 bool init_screen(void)
 {
-  @<Create pipe for communication with the child@>@;
-
   fd = syscall(SYS_memfd_create, "shm", 0);
   if (fd == -1) return false;
   int shm_size = screen_width * screen_depth * 4;
@@ -38,16 +35,46 @@ bool init_screen(void)
     return false;
   }
 
+  @/@t\4@> /* Initialize memory */
   int *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = 0xffffff;
 
+  @<Create pipe for communication with the screen@>@;
+
   return true;
 }
 
-@ @<Global...@>=
+@ We automatically get pid of child process in parent from |fork|.
+We use it to send signals to child.
+
+@c
+pid_t cpid = -1;
+
+@ On update, if window exists, {\logo METAFONT}
+sends |SIGUSR1|. On receiving this signal, child
+checks if it is in foreground. If no, it writes |'0'| to pipe.
+If child is in foreground, it marks for update and on subsequent
+callback it updates the screen and writes |'1'| to pipe.
+If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
+
+@c
 static int pipefd[2]; /* used to determine if the child has started, to get on-top status
   and for synchronization */
+
+void update_screen(void)
+{
+  uint8_t byte = '0';
+  if (cpid != -1) {
+    kill(cpid, SIGUSR1);
+    read(pipefd[0], &byte, 1);
+  }
+  if (byte == '0') {
+    @<Stop child program if it is already running@>@;
+    @<Start child program@>@;
+    @<Wait until child program is initialized@>@;
+  }
+}
 
 @ We do not need to close write end of pipe in parent, because child cannot exit by itself
 (thus |read| in |update_screen| will never block). So, we need to create pipe only once,
@@ -62,34 +89,6 @@ window cannot be closed from Activities menu.
 @<Create pipe...@>=
 if (pipe(pipefd) == -1)
   return false;
-
-@ We automatically get pid of child process in parent from |fork|.
-We use it to send signals to child.
-
-@<Global...@>=
-pid_t cpid = -1;
-
-@ On update, if window exists, {\logo METAFONT}
-sends |SIGUSR1|. On receiving this signal, child
-checks if it is in foreground. If no, it writes |'0'| to pipe.
-If child is in foreground, it marks for update and on subsequent
-callback it updates the screen and writes |'1'| to pipe.
-If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
-
-@c
-void update_screen(void)
-{
-  uint8_t byte = '0';
-  if (cpid != -1) {
-    kill(cpid, SIGUSR1);
-    read(pipefd[0], &byte, 1);
-  }
-  if (byte == '0') {
-    @<Stop child program if it is already running@>@;
-    @<Start child program@>@;
-    @<Wait until child program is initialized@>@;
-  }
-}
 
 @ @<Stop child...@>=
 if (cpid != -1) {
