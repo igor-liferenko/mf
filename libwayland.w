@@ -122,7 +122,7 @@ if (cpid == 0) {
   signal(SIGINT, SIG_IGN); /* CTRL+C must not kill screen */
   if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
     execl("/home/user/mf/wayland", "wayland", (char *) NULL);
-  _exit(EXIT_FAILURE);
+  _exit(0); /* the underscore is super important - don't know why */
 }
 close(out);
 
@@ -139,7 +139,6 @@ if (cpid != -1) {
 else close(in);
 
 @ @<Header files@>=
-#include <stdlib.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
