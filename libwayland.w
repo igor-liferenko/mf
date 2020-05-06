@@ -15,16 +15,11 @@ Data is communicated to child wayland process via shared memory.
 
 @c
 @<Header files@>@;
-@<Type definitions@>@;
 @<Global variables@>@;
 
 static int fd;
 extern int screen_width, screen_depth;
 static void *shm_data;
-
-typedef uint32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
-#define BLACK 0x000000
-#define WHITE 0xffffff
 
 bool init_screen(void)
 {
@@ -32,7 +27,7 @@ bool init_screen(void)
 
   fd = syscall(SYS_memfd_create, "shm", 0);
   if (fd == -1) return false;
-  int shm_size = screen_width * screen_depth * sizeof (pixel_t);
+  int shm_size = screen_width * screen_depth * 4;
   if (ftruncate(fd, shm_size) == -1) {
     close(fd);
     return false;
@@ -43,9 +38,9 @@ bool init_screen(void)
     return false;
   }
 
-  pixel_t *pixel = shm_data;
+  int *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
-    *pixel++ = WHITE;
+    *pixel++ = 0xffffff;
 
   return true;
 }
@@ -115,7 +110,7 @@ if (cpid == 0) {
   close(pipefd[1]);
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
-  execl("/home/user/mf/window/wayland", "wayland", (char *) NULL);
+  execl("/home/user/mf/wayland", "wayland", (char *) NULL);
   write(STDOUT_FILENO, "x", 1);
   exit(EXIT_FAILURE);
 }
@@ -130,30 +125,23 @@ if (cpid != -1) {
   }
 }
 
-@ These are from \.{mf.w}.
-
-@<Type definitions@>=
-typedef uint8_t pixel_color;
-typedef uint16_t screen_row;
-typedef uint16_t screen_col;
-
 @ @c
 void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
-  pixel_t *pixel;
+  int *pixel;
   for (screen_row r = top_row; r <= bot_row; r++) {
     pixel = shm_data;
     pixel += screen_width*r + left_col;
     for (screen_col c = left_col; c <= right_col; c++)
-      *pixel++ = WHITE;
+      *pixel++ = 0xffffff;
   }
 }
 
 @ @c
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
-  pixel_t *pixel = shm_data;
+  int *pixel = shm_data;
   pixel += screen_width*r + a[0];
   int k = 0;
   screen_col c = a[0];
@@ -161,9 +149,9 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
       k++;
       do {
            if (b == 0)
-             *pixel++ = WHITE;
+             *pixel++ = 0xffffff;
            else
-             *pixel++ = BLACK;
+             *pixel++ = 0x000000;
            c++;
       } while (c != a[k]);
       b = !b;
@@ -179,3 +167,4 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 #include <sys/syscall.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "screen.h"

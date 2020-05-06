@@ -1,6 +1,6 @@
 all: web2w/ctangle change-file
 	web2w/ctangle -bhp mf mf
-	../edit.pl screen.h
+	./edit.pl screen.h
 	ctangle -bhp libwayland
 	gcc -g -Og -c libwayland.c
 	gcc -g -Og -DINIT -o inimf mf.c -lm libwayland.o
