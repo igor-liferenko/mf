@@ -20,5 +20,4 @@ web2w/ctangle:
 	make -C web2w ctangle
 
 wayland:
-	ctangle -bhp wayland
 	gcc -o wayland wayland.c -lwayland-client
