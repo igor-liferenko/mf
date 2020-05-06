@@ -88,12 +88,12 @@ If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 @c
 void update_screen(void)
 {
-  static int fd[2]; /* used to read from child */
-  static pid_t cpid = -1; /* used to send signals to child */
+  static pid_t pid = -1;
+  static int fd[2];
 
   char byte = '0';
-  if (cpid != -1) {
-    kill(cpid, SIGUSR1);
+  if (pid != -1) {
+    kill(pid, SIGUSR1);
     read(in, &byte, 1);
   }
   if (byte == '0') {
@@ -104,35 +104,32 @@ void update_screen(void)
 }
 
 @ @<Stop child...@>=
-if (cpid != -1) {
-  kill(cpid, SIGTERM);
-  waitpid(cpid, NULL, 0);
+if (pid != -1) {
+  kill(pid, SIGTERM);
+  waitpid(pid, NULL, 0);
   close(in);
 }
 
-@ Descriptor for the in-memory file is tied to child's standard input.
-The write end of pipe is tied to child's standard output.
-
-@<Start child program@>=
+@ @<Start child program@>=
 if (pipe(fd) == -1) return;
-cpid = fork();
-if (cpid == 0) {
+pid = fork();
+if (pid == 0) {
   dup2(shm_fd, STDIN_FILENO);
   dup2(out, STDOUT_FILENO);
-  signal(SIGINT, SIG_IGN); /* CTRL+C must not kill screen */
-  if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
-    execl("/home/user/mf/wayland", "wayland", (char *) NULL);
-  _exit(0); /* the underscore is super important - don't know why */
+  signal(SIGINT, SIG_IGN);
+  prctl(PR_SET_PDEATHSIG, SIGTERM);
+  execl("/home/user/mf/wayland", "wayland", (char *) NULL);
+  _exit(0);
 }
 close(out);
 
 @ @<Wait until child program is initialized@>=
-if (cpid != -1) {
+if (pid != -1) {
   char byte = 'x';
   read(in, &byte, 1);
   if (byte == 'x') {
-    waitpid(cpid, NULL, 0);
-    cpid = -1;
+    waitpid(pid, NULL, 0);
+    pid = -1;
     close(in);
   }
 }
