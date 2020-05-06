@@ -4,11 +4,11 @@
 
 @* Wayland window interface for {\logo METAFONT}.
 
-We need to run \.{mf} and wayland process in parallel,
-because the wayland process must run in an endless loop --- it is a general rule for all Wayland
-applications.
+We need to run \.{mf} and \.{wayland} processes in parallel,
+because a Wayland application runs in an endless loop.
 
-Data is communicated to child wayland process via memory.
+Screen data is stored in memory, which is shared among
+the processes.
 
 @c
 @<Header files@>@;
@@ -75,12 +75,10 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   } while (k != n);
 }
 
-@ On update, if window exists, {\logo METAFONT}
-sends |SIGUSR1|. On receiving this signal, child
+@ On update, if window exists, \.{mf}
+sends |SIGUSR1|. On receiving this signal, \.{wayland}
 checks if it is in foreground. If no, it writes |'0'| to pipe.
-If child is in foreground, it marks for update and on subsequent
-callback it updates the screen and writes |'1'| to pipe.
-If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
+If \.{wayland} is in foreground, it updates the screen and writes |'1'| to pipe.
 
 @d in fd[0]
 @d out fd[1]
@@ -97,20 +95,20 @@ void update_screen(void)
     read(in, &byte, 1);
   }
   if (byte == '0') {
-    @<Stop child program if it is already running@>@;
-    @<Start child program@>@;
-    @<Wait until child program is initialized@>@;
+    @<Stop \.{wayland} if it is already running@>@;
+    @<Start \.{wayland}@>@;
+    @<Wait until \.{wayland} is initialized@>@;
   }
 }
 
-@ @<Stop child...@>=
+@ @<Stop ...@>=
 if (pid != -1) {
   kill(pid, SIGTERM);
   waitpid(pid, NULL, 0);
   close(in);
 }
 
-@ @<Start child program@>=
+@ @<Start ...@>=
 if (pipe(fd) == -1) return;
 pid = fork();
 if (pid == 0) {
@@ -123,7 +121,7 @@ if (pid == 0) {
 }
 close(out);
 
-@ @<Wait until child program is initialized@>=
+@ @<Wait ...@>=
 if (pid != -1) {
   char byte = 'x';
   read(in, &byte, 1);
@@ -136,9 +134,9 @@ if (pid != -1) {
 else close(in);
 
 @ @<Header files@>=
+#include "screen.h"
 #include <sys/mman.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "screen.h"
