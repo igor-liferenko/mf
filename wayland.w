@@ -1,7 +1,5 @@
 % https://www.uninformativ.de/blog/postings/2017-02-11/0/POSTING-en.html
 
-\let\lheader\rheader
-\datethis
 \noinx
 
 \font\logo=manfnt
@@ -10,6 +8,8 @@
 % https://jan.newmarch.name/Wayland/WhenCanIDraw/
 
 @* Wayland.
+TODO: get more information about Wayland to understand how to avoid having three separate memory buffers for screen contents here;
+      documentation here is mostly copy-pasted from various sources - rewrite it
 
 @c
 @<Header files@>;
@@ -42,7 +42,7 @@ int main(void)
 }
 
 @ @<Global...@>=
-int32_t screen_width, screen_depth;
+int screen_width, screen_depth;
 
 @ @<Get screen resolution@>=
 if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) exit(EXIT_FAILURE);
@@ -165,27 +165,13 @@ and server is called a shared memory pool, which is simply a memory area mmapped
 client and servers. Inside a memory pool, a set of images can be appended as buffer objects
 and all will be shared both by client and server.
 
-In this program we |mmap| our hardcoded image file. In a typical application, however, an
-empty memory pool would be created, for example, by creating a shared memory object with
-|shm_open|, then gradually filled with dynamically constructed image buffers representing
-the widgets. While writing this program, the author had to decide if he would create an
-empty memory pool and allocate buffers inside it, which is more usual and simpler to
-understand, or if he would use a less intuitive example of creating a pre built memory
-pool. He decided to go with the less intuitive example for an important reason: if you
-read the whole program, you'll notice that there's no memory copy operation anywhere. The
-image file is open once, and |mmap|ped once. No extra copy is required. This was done to
-make clear that a wayland application can have maximal efficiency if carefully implemented.
-
-@ The buffer object has the contents of a surface. Buffers are created inside of a
+The buffer object has the contents of a surface. Buffers are created inside of a
 memory pool (they are memory pool slices), so that they are shared by the client and
-the server. In our example, we do not create an empty buffer, instead we rely on the
-fact that the memory pool was previously filled with data and just pass the image
-dimensions as a parameter.
+the server.
 
 @ Objects representing visible elements are called surfaces. Surfaces are rectangular
 areas, having position and size. Surface contents are filled by using buffer objects.
-During the lifetime of a surface, a couple of buffers will be attached as the surface
-contents and the server will be requested to redraw the surfaces. In this program, the
+In this program, the
 surface object is of type |wl_shell_surface|, which is used for creating top level windows.
 
 @<Create surface@>=
@@ -193,7 +179,7 @@ surface = wl_compositor_create_surface(compositor);
 if (surface == NULL) exit(1);
 shell_surface = wl_shell_get_shell_surface(shell, surface);
 if (shell_surface == NULL) exit(1);
-#if 1==0
+#if 0
 wl_shell_surface_set_title(shell_surface, "METAFONT"); /* FIXME: this does not work */
 #endif
 wl_shell_surface_set_fullscreen(shell_surface,
@@ -201,15 +187,14 @@ wl_shell_surface_set_fullscreen(shell_surface,
 wl_shell_surface_add_listener(shell_surface,
   &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
 
-@ To make the buffer visible we need to bind buffer data to a surface, that is, we
+@ To make the buffer visible we need to
 set the surface contents to the buffer data. The bind operation also commits the
-surface to the server. In wayland there's an idea of surface ownership: either the client
+surface to the server. In Wayland there's an idea of surface ownership: either the client
 owns the surface, so that it can be drawn (and the server keeps an old copy of it), or
 the server owns the surface, when the client can't change it because the server is
 drawing it on the screen. For transfering the ownership to the server, there's the
 commit request and for sending the ownership back to the client, the server sends a
-release event. In a generic application, the surface will be moved back and forth, but
-in this program it's enough to commit only once, as part of the bind operation.
+release event.
 
 In the Wayland shared memory model, an area of shared memory is created using the
 file descriptor for a file. This memory is then mapped into a Wayland structure
@@ -224,7 +209,6 @@ if (ftruncate(fd, shm_size) == -1) exit(1);
 buffer_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (buffer_data == MAP_FAILED) exit(1);
 memcpy(buffer_data, shm_data, shm_size);
-/* FIXME: is it possible to attach to existing memory instead of copying it */
 pool = wl_shm_create_pool(shm, fd, screen_width*screen_depth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screen_width, screen_depth,
@@ -300,8 +284,7 @@ void redraw(void *data, struct wl_callback *callback, uint32_t time)
     @<Commit surface@>@;
 }
 
-@ Using \.{strace} I found out that child sits on \\{poll} syscall,
-which is restartable by using |SA_RESTART|.
+@ Use |SA_RESTART| not to break the endless \\{poll} syscall loop.
 
 @<Install update signal...@>=
 sa.@t}\bgroup\let\vb=\\{@>@=sa_handler@>@t}\egroup{@> = update;
