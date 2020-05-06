@@ -96,7 +96,7 @@ void update_screen(void)
 {
   static int fd[2]; /* used to read from child */
 
-  uint8_t byte = '0';
+  char byte = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
     read(in, &byte, 1);
@@ -133,7 +133,7 @@ close(out);
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
-  uint8_t byte = 'x';
+  char byte = 'x';
   read(in, &byte, 1);
   if (byte == 'x') {
     waitpid(cpid, NULL, 0);
@@ -144,11 +144,9 @@ if (cpid != -1) {
 else close(in);
 
 @ @<Header files@>=
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include <sys/prctl.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
 #include <unistd.h>
