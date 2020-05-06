@@ -13,8 +13,6 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 @c
 @<Header files@>@;
-static int pipefd[2]; /* used to determine if the child has started, to get on-top status
-  and for synchronization */
 
 @ Data is communicated to child wayland process via shared memory.
 
@@ -42,24 +40,8 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = 0xffffff;
 
-  @<Create pipe for communication with the screen@>@;
-
   return true;
 }
-
-@ We do not need to close write end of pipe in parent, because child cannot exit by itself
-(thus |read| in |update_screen| will never block). So, we need to create pipe only once,
-even though child may be forked multiple times.
-
-I specifically do not implement exit via keybind in child, because I decided that screen
-must be always there, once it is created. The only case when it can disappear without
-signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
-Activities menu by mouse. But this case is excluded, because it happens that this graphics
-window cannot be closed from Activities menu.
-
-@<Create pipe...@>=
-if (pipe(pipefd) == -1)
-  return false;
 
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
@@ -77,6 +59,8 @@ If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 @c
 void update_screen(void)
 {
+  static int pipefd[2];
+
   uint8_t byte = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
@@ -93,13 +77,15 @@ void update_screen(void)
 if (cpid != -1) {
   kill(cpid, SIGTERM);
   waitpid(cpid, NULL, 0);
+  close(pipefd[0]); /* cleanup */
 }
 
 @ File descriptor for in-memory file is tied to child's standard input via |dup2| before |execl|.
 So, child process just uses descriptor 0 to attach to the shared memory.
 
 @<Start child program@>=
-cpid = fork();
+if (pipe(pipefd) == 0)
+  cpid = fork();
 if (cpid == 0) {
   close(pipefd[0]); /* cleanup */
   dup2(fd, STDIN_FILENO);
@@ -109,19 +95,21 @@ if (cpid == 0) {
   signal(SIGINT, SIG_IGN); /* ignore |SIGINT| in child --- only {\logo METAFONT} must
     act on CTRL+C */
   execl("/home/user/mf/wayland", "wayland", (char *) NULL);
-  write(STDOUT_FILENO, "x", 1);
   exit(EXIT_FAILURE);
 }
+close(pipefd[1]); /* cleanup */
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
-  uint8_t byte; @+
-  read(pipefd[0], &byte, 1); /* blocks until |STDOUT_FILENO| is written to in child */
+  uint8_t byte = 'x'; @+
+  read(pipefd[0], &byte, 1);
   if (byte == 'x') {
     waitpid(cpid, NULL, 0);
     cpid = -1;
+    close(pipefd[0]); /* cleanup */
   }
 }
+else close(pipefd[0]); /* cleanup */
 
 @ @c
 void blank_rectangle(screen_col left_col, screen_col right_col,
