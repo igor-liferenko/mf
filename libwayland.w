@@ -84,8 +84,8 @@ if (cpid != -1) {
 So, child process just uses descriptor 0 to attach to the shared memory.
 
 @<Start child program@>=
-if (pipe(pipefd) == 0)
-  cpid = fork();
+if (pipe(pipefd) == -1) return;
+cpid = fork();
 if (cpid == 0) {
   close(pipefd[0]); /* cleanup */
   dup2(fd, STDIN_FILENO);
