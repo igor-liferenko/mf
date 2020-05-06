@@ -187,8 +187,8 @@ wl_shell_surface_set_fullscreen(shell_surface,
 wl_shell_surface_add_listener(shell_surface,
   &shell_surface_listener, NULL); /* see |@<Keep-alive@>| for explanation of this */
 
-@ To make the buffer visible we need to
-set the surface contents to the buffer data. The bind operation also commits the
+@ To make the buffer visible we need to bind the buffer data to
+the surface contents. The bind operation also commits the
 surface to the server. In Wayland there's an idea of surface ownership: either the client
 owns the surface, so that it can be drawn (and the server keeps an old copy of it), or
 the server owns the surface, when the client can't change it because the server is
