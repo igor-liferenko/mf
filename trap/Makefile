@@ -6,7 +6,7 @@ all:
 	@diff mf/trapin.log trap.log
 	@rm -f trap.72270gf trap.log trap.tfm
 	@echo ' &trap  trap ' | ./trapmf >trap.fot || true
-	@TEXMFCNF=`pwd` gftype -i -m ./trap.72270gf >trap.typ
+	@max_rows=79 max_cols=79 line_length=79 gftype -i -m trap.72270gf >trap.typ
 	@sed -i -f traptyp.sed trap.typ
 	@diff mf/trap.typ trap.typ
 	@sed -i -f traplog.sed trap.log
