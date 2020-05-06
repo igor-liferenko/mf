@@ -1,4 +1,4 @@
-#!/usr/bin/perl -0777 -p
+#!/usr/bin/perl -i -0777 -p
 # purge bodies of functions
 use Regexp::Common;
 BEGIN { $bp = $RE{balanced}{-parens=>'{}'} }
