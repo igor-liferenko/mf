@@ -17,25 +17,28 @@ automatically has the pid of Wayland process, which is used to send signals to i
 @ Data is communicated to child wayland process via shared memory.
 
 @c
-static int fd;
+static int shm_fd;
 static void *shm_data;
 
 bool init_screen(void)
 {
-  fd = syscall(SYS_memfd_create, "shm", 0);
-  if (fd == -1) return false;
+  @/@t\4@> /* allocate memory and associate file descriptor with it */
+  shm_fd = syscall(SYS_memfd_create, "shm", 0);
+  if (shm_fd == -1) return false;
   int shm_size = screen_width * screen_depth * 4;
-  if (ftruncate(fd, shm_size) == -1) {
-    close(fd);
-    return false;
-  }
-  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
-  if (shm_data == MAP_FAILED) {
-    close(fd);
+  if (ftruncate(shm_fd, shm_size) == -1) {
+    close(shm_fd);
     return false;
   }
 
-  @/@t\4@> /* Initialize memory */
+  @/@t\4@> /* get address of memory, referred to by the file descriptor */
+  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+  if (shm_data == MAP_FAILED) {
+    close(shm_fd);
+    return false;
+  }
+
+  @/@t\4@> /* initialize the memory */
   int *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = 0xffffff;
@@ -56,15 +59,18 @@ If child is in foreground, it marks for update and on subsequent
 callback it updates the screen and writes |'1'| to pipe.
 If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 
+@d in fd[0]
+@d out fd[1]
+
 @c
 void update_screen(void)
 {
-  static int pipefd[2];
+  static int fd[2]; /* used to read from child */
 
   uint8_t byte = '0';
   if (cpid != -1) {
     kill(cpid, SIGUSR1);
-    read(pipefd[0], &byte, 1);
+    read(in, &byte, 1);
   }
   if (byte == '0') {
     @<Stop child program if it is already running@>@;
@@ -77,36 +83,35 @@ void update_screen(void)
 if (cpid != -1) {
   kill(cpid, SIGTERM);
   waitpid(cpid, NULL, 0);
-  close(pipefd[0]); /* cleanup */
+  close(in);
 }
 
-@ File descriptor for in-memory file is tied to child's standard input via |dup2| before |execl|.
-So, child process just uses descriptor 0 to attach to the shared memory.
+@ Descriptor for the in-memory file is tied to child's standard input.
+The write end of pipe is tied to child's standard output.
 
 @<Start child program@>=
-if (pipe(pipefd) == -1) return;
+if (pipe(fd) == -1) return;
 cpid = fork();
 if (cpid == 0) {
-  dup2(fd, STDIN_FILENO);
-  dup2(pipefd[1], STDOUT_FILENO);
-  signal(SIGINT, SIG_IGN); /* ignore CTRL+C in child */
-/* TODO: restore PRT_DEATHSIG */
+  dup2(shm_fd, STDIN_FILENO);
+  dup2(out, STDOUT_FILENO);
+  signal(SIGINT, SIG_IGN); /* CTRL+C must not kill screen */
   execl("/home/user/mf/wayland", "wayland", (char *) NULL);
   exit(EXIT_FAILURE);
 }
-close(pipefd[1]); /* cleanup */
+close(out);
 
 @ @<Wait until child program is initialized@>=
 if (cpid != -1) {
-  uint8_t byte = 'x'; @+
-  read(pipefd[0], &byte, 1);
+  uint8_t byte = 'x';
+  read(in, &byte, 1);
   if (byte == 'x') {
     waitpid(cpid, NULL, 0);
     cpid = -1;
-    close(pipefd[0]); /* cleanup */
+    close(in);
   }
 }
-else close(pipefd[0]); /* cleanup */
+else close(in);
 
 @ @c
 void blank_rectangle(screen_col left_col, screen_col right_col,
