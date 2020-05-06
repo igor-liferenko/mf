@@ -13,6 +13,8 @@ automatically has the pid of Wayland process, which is used to send signals to i
 
 @c
 @<Header files@>@;
+static int pipefd[2]; /* used to determine if the child has started, to get on-top status
+  and for synchronization */
 
 @ Data is communicated to child wayland process via shared memory.
 
@@ -45,6 +47,20 @@ bool init_screen(void)
   return true;
 }
 
+@ We do not need to close write end of pipe in parent, because child cannot exit by itself
+(thus |read| in |update_screen| will never block). So, we need to create pipe only once,
+even though child may be forked multiple times.
+
+I specifically do not implement exit via keybind in child, because I decided that screen
+must be always there, once it is created. The only case when it can disappear without
+signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
+Activities menu by mouse. But this case is excluded, because it happens that this graphics
+window cannot be closed from Activities menu.
+
+@<Create pipe...@>=
+if (pipe(pipefd) == -1)
+  return false;
+
 @ We automatically get pid of child process in parent from |fork|.
 We use it to send signals to child.
 
@@ -59,9 +75,6 @@ callback it updates the screen and writes |'1'| to pipe.
 If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 
 @c
-static int pipefd[2]; /* used to determine if the child has started, to get on-top status
-  and for synchronization */
-
 void update_screen(void)
 {
   uint8_t byte = '0';
@@ -75,20 +88,6 @@ void update_screen(void)
     @<Wait until child program is initialized@>@;
   }
 }
-
-@ We do not need to close write end of pipe in parent, because child cannot exit by itself
-(thus |read| in |update_screen| will never block). So, we need to create pipe only once,
-even though child may be forked multiple times.
-
-I specifically do not implement exit via keybind in child, because I decided that screen
-must be always there, once it is created. The only case when it can disappear without
-signal from {\logo METAFONT} is that it could be inadvertently closed in Gnome
-Activities menu by mouse. But this case is excluded, because it happens that this graphics
-window cannot be closed from Activities menu.
-
-@<Create pipe...@>=
-if (pipe(pipefd) == -1)
-  return false;
 
 @ @<Stop child...@>=
 if (cpid != -1) {
