@@ -1,5 +1,3 @@
-\let\lheader\rheader
-\datethis
 \noinx
 
 \font\logo=manfnt
@@ -81,7 +79,7 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 We use it to send signals to child.
 
 @c
-pid_t cpid = -1;
+static pid_t cpid = -1;
 
 @ On update, if window exists, {\logo METAFONT}
 sends |SIGUSR1|. On receiving this signal, child
@@ -127,7 +125,8 @@ if (cpid == 0) {
   dup2(shm_fd, STDIN_FILENO);
   dup2(out, STDOUT_FILENO);
   signal(SIGINT, SIG_IGN); /* CTRL+C must not kill screen */
-  execl("/home/user/mf/wayland", "wayland", (char *) NULL);
+  if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
+    execl("/home/user/mf/wayland", "wayland", (char *) NULL);
   exit(EXIT_FAILURE);
 }
 close(out);
