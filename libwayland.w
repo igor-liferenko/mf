@@ -6,17 +6,15 @@
 
 @* Wayland window interface for {\logo METAFONT}.
 
-We need to run {\logo METAFONT} and Wayland in parallel, so the method is to use |fork| and |exec|,
-because the wayland program cannot terminate---it is a general rule for all Wayland
-applications---they work in endless loop. As we are using |fork|, {\logo METAFONT} process
-automatically has the pid of Wayland process, which is used to send signals to it.
+We need to run \.{mf} and wayland process in parallel,
+because the wayland process must run in an endless loop --- it is a general rule for all Wayland
+applications.
+
+Data is communicated to child wayland process via memory.
 
 @c
 @<Header files@>@;
 
-@ Data is communicated to child wayland process via shared memory.
-
-@c
 static int shm_fd;
 static void *shm_data;
 
@@ -44,6 +42,39 @@ bool init_screen(void)
     *pixel++ = 0xffffff;
 
   return true;
+}
+
+@ @c
+void blank_rectangle(screen_col left_col, screen_col right_col,
+  screen_row top_row, screen_row bot_row)
+{
+  int *pixel;
+  for (screen_row r = top_row; r <= bot_row; r++) {
+    pixel = shm_data;
+    pixel += screen_width*r + left_col;
+    for (screen_col c = left_col; c <= right_col; c++)
+      *pixel++ = 0xffffff;
+  }
+}
+
+@ @c
+void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
+{
+  int *pixel = shm_data;
+  pixel += screen_width*r + a[0];
+  int k = 0;
+  screen_col c = a[0];
+  do {
+      k++;
+      do {
+           if (b == 0)
+             *pixel++ = 0xffffff;
+           else
+             *pixel++ = 0x000000;
+           c++;
+      } while (c != a[k]);
+      b = !b;
+  } while (k != n);
 }
 
 @ We automatically get pid of child process in parent from |fork|.
@@ -112,39 +143,6 @@ if (cpid != -1) {
   }
 }
 else close(in);
-
-@ @c
-void blank_rectangle(screen_col left_col, screen_col right_col,
-  screen_row top_row, screen_row bot_row)
-{
-  int *pixel;
-  for (screen_row r = top_row; r <= bot_row; r++) {
-    pixel = shm_data;
-    pixel += screen_width*r + left_col;
-    for (screen_col c = left_col; c <= right_col; c++)
-      *pixel++ = 0xffffff;
-  }
-}
-
-@ @c
-void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
-{
-  int *pixel = shm_data;
-  pixel += screen_width*r + a[0];
-  int k = 0;
-  screen_col c = a[0];
-  do {
-      k++;
-      do {
-           if (b == 0)
-             *pixel++ = 0xffffff;
-           else
-             *pixel++ = 0x000000;
-           c++;
-      } while (c != a[k]);
-      b = !b;
-  } while (k != n);
-}
 
 @ @<Header files@>=
 #include <stdbool.h>
