@@ -224,6 +224,7 @@ if (ftruncate(fd, shm_size) == -1) exit(1);
 buffer_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, fd, 0);
 if (buffer_data == MAP_FAILED) exit(1);
 memcpy(buffer_data, shm_data, shm_size);
+/* FIXME: is it possible to attach to existing memory instead of copying it */
 pool = wl_shm_create_pool(shm, fd, screen_width*screen_depth*(int32_t)sizeof(pixel_t));
 buffer = wl_shm_pool_create_buffer(pool,
   0, screen_width, screen_depth,
