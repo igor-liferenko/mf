@@ -19,5 +19,5 @@ change-file:
 web2w/ctangle:
 	make -C web2w ctangle
 
-wayland:
-	gcc -o wayland wayland.c -lwayland-client
+wayland: wayland.c
+	gcc -o $@ $< -lwayland-client
