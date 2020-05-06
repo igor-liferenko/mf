@@ -75,12 +75,6 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   } while (k != n);
 }
 
-@ We automatically get pid of child process in parent from |fork|.
-We use it to send signals to child.
-
-@c
-static pid_t cpid = -1;
-
 @ On update, if window exists, {\logo METAFONT}
 sends |SIGUSR1|. On receiving this signal, child
 checks if it is in foreground. If no, it writes |'0'| to pipe.
@@ -95,6 +89,7 @@ If parent reads |'0'|, it makes graphics window to pop-up by restarting child.
 void update_screen(void)
 {
   static int fd[2]; /* used to read from child */
+  static pid_t cpid = -1; /* used to send signals to child */
 
   char byte = '0';
   if (cpid != -1) {
@@ -127,7 +122,7 @@ if (cpid == 0) {
   signal(SIGINT, SIG_IGN); /* CTRL+C must not kill screen */
   if (prctl(PR_SET_PDEATHSIG, SIGTERM) != -1 && getppid() != 1)
     execl("/home/user/mf/wayland", "wayland", (char *) NULL);
-  exit(EXIT_FAILURE);
+  _exit(EXIT_FAILURE);
 }
 close(out);
 
