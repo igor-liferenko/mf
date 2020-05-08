@@ -113,7 +113,7 @@ if (pid == 0) {
   dup2(out, STDOUT_FILENO);
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
-  execl("/home/user/mf-wayland/wayland", "wayland", (char *) NULL);
+  execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
   _exit(0);
 }
 close(out);
