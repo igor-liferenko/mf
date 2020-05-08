@@ -47,10 +47,10 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
   int *pixel;
-  for (screen_row r = top_row; r <= bot_row; r++) {
+  for (screen_row r = top_row; r < bot_row; r++) {
     pixel = shm_data;
     pixel += screen_width*r + left_col;
-    for (screen_col c = left_col; c <= right_col; c++)
+    for (screen_col c = left_col; c < right_col; c++)
       *pixel++ = 0xffffff;
   }
 }
@@ -65,10 +65,7 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   do {
       k++;
       do {
-           if (b == 0)
-             *pixel++ = 0xffffff;
-           else
-             *pixel++ = 0x000000;
+           *pixel++ = b == 0 ? 0xffffff : 0x000000;
            c++;
       } while (c != a[k]);
       b = !b;

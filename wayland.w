@@ -8,7 +8,8 @@
 % https://jan.newmarch.name/Wayland/WhenCanIDraw/
 
 @* Wayland.
-TODO: get more information about Wayland to understand how to avoid having three separate memory buffers for screen contents here;
+TODO: get more information about Wayland to understand how to avoid having three
+      separate memory buffers for screen contents here;
       documentation here is mostly copy-pasted from various sources - rewrite it
 
 @c

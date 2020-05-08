@@ -43,7 +43,7 @@ int edit_line;
 
     char cmd[500];
     int r;
-    if (strstr(ed_name, "MFinputs/") == ed_name)
+    if (strstr(ed_name, "MFinputs/") != NULL)
       r = snprintf(cmd, sizeof cmd, "em %s%s %d", str(MF_area), ed_name+strlen("MFinputs/"), line);
         /* restore what was changed in output.ch */
     else
