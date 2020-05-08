@@ -1,11 +1,11 @@
 mf.ch
 mf.c
 screen.h
-libwayland.c
-libwayland.o
+wayland.c
+wayland.o
 inimf
 virmf
 plain.log
-wayland.c
-wayland
+window.c
+window
 .gdb_history
