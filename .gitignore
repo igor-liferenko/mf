@@ -6,6 +6,4 @@ wayland.o
 inimf
 virmf
 plain.log
-window.c
-window
 .gdb_history

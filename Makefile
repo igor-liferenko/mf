@@ -18,6 +18,3 @@ CHF=exit.ch format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
 
 web2w/ctangle:
 	make -C web2w ctangle
-
-window: window.c
-	gcc -o $@ $< -lwayland-client
