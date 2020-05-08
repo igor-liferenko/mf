@@ -2,7 +2,7 @@
 
 \font\logo=manfnt
 
-@* Wayland online graphics display for {\logo METAFONT}.
+@* Online graphics display for {\logo METAFONT}.
 
 We need to run \.{mf} and \.{wayland} processes in parallel,
 because a Wayland application runs in an endless loop.
