@@ -13,29 +13,29 @@ the processes.
 @c
 @<Header files@>@;
 
-static int shm_fd;
-static void *shm_data;
+static int screen_fd;
+static void *screen_data;
 
 bool init_screen(void)
 {
   @/@t\4@> /* allocate memory and associate file descriptor with it */
-  shm_fd = syscall(SYS_memfd_create, "shm", 0);
-  if (shm_fd == -1) return false;
-  int shm_size = screen_width * screen_depth * 4;
-  if (ftruncate(shm_fd, shm_size) == -1) {
-    close(shm_fd);
+  screen_fd = syscall(SYS_memfd_create, "metafont", 0);
+  if (screen_fd == -1) return false;
+  int screen_size = screen_width * screen_depth * 4;
+  if (ftruncate(screen_fd, screen_size) == -1) {
+    close(screen_fd);
     return false;
   }
 
   @/@t\4@> /* get address of memory, referred to by the file descriptor */
-  shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, shm_fd, 0);
-  if (shm_data == MAP_FAILED) {
-    close(shm_fd);
+  screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, screen_fd, 0);
+  if (screen_data == MAP_FAILED) {
+    close(screen_fd);
     return false;
   }
 
   @/@t\4@> /* initialize the memory */
-  int *pixel = shm_data;
+  int *pixel = screen_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = 0xffffff;
 
@@ -48,7 +48,7 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
 {
   int *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
-    pixel = shm_data;
+    pixel = screen_data;
     pixel += screen_width*r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
       *pixel++ = 0xffffff;
@@ -58,7 +58,7 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
 @ @c
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
-  int *pixel = shm_data;
+  int *pixel = screen_data;
   pixel += screen_width*r + a[0];
   int k = 0;
   screen_col c = a[0];
@@ -109,7 +109,7 @@ if (pid != -1) {
 if (pipe(fd) == -1) return;
 pid = fork();
 if (pid == 0) {
-  dup2(shm_fd, STDIN_FILENO);
+  dup2(screen_fd, STDIN_FILENO);
   dup2(out, STDOUT_FILENO);
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
