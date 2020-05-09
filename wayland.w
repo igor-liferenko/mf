@@ -18,6 +18,8 @@ static void *screen_data;
 
 bool init_screen(void)
 {
+  if (getenv("NOWIN")) return false;
+
   @/@t\4@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
@@ -132,6 +134,7 @@ else close(in);
 
 @ @<Header files@>=
 #include "screen.h"
+#include <stdlib.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
