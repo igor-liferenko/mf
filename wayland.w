@@ -65,12 +65,12 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   int k = 0;
   screen_col c = a[0];
   do {
-      k++;
-      do {
-           *pixel++ = b == 0 ? 0xffffff : 0x000000;
-           c++;
-      } while (c != a[k]);
-      b = !b;
+    k++;
+    do {
+      *pixel++ = b ? 0x000000 : 0xffffff;
+      c++;
+    } while (c != a[k]);
+    b = !b;
   } while (k != n);
 }
 
