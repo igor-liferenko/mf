@@ -22,13 +22,6 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @<Types...@>=
 @y
 @(screen.h@>=
-extern int screen_width, screen_depth;
-@z
-
-@x
-@<Glob...@>=
-@y
-@<Glob...@>=
 int screen_width, screen_depth;
 @z
 
