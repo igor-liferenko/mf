@@ -133,7 +133,6 @@ if (pid != -1) {
 else close(in);
 
 @ @<Header files@>=
-#include "screen.h"
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>

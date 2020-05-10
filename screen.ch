@@ -1,8 +1,9 @@
 @x
 @h
 @y
-@h
 #include "screen.h"
+#include "wayland.c"
+@h
 @z
 
 @x
@@ -14,7 +15,7 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @x
 @p bool init_screen(void)
 @y
-@(screen.h@>= bool init_screen(void)
+@(/dev/null@>= bool init_screen(void)
 @z
 
 @x
@@ -34,13 +35,13 @@ int screen_width, screen_depth;
 @x
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
 @y
-@(screen.h@>= void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
+@(/dev/null@>= void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
 @z
 
 @x
 @p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
 @y
-@(screen.h@>= void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
+@(/dev/null@>= void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
 @z
 
 @x

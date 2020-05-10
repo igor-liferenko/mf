@@ -1,9 +1,8 @@
 all: wayland web2w/ctangle change-file
 	web2w/ctangle -bhp mf mf
-	./edit.pl screen.h
-	gcc -g -Og -DINIT mf.c wayland.c -o inimf
+	gcc -g -Og -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
-	gcc -g -Og mf.c wayland.c -o virmf
+	gcc -g -Og mf.c -o virmf
 
 trapmf: web2w/ctangle
 	tie -bhp -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF)
