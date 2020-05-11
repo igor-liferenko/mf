@@ -13,8 +13,8 @@ the processes.
 @c
 @<Header files@>@;
 
-static int screen_fd;
-static void *screen_data;
+int screen_fd;
+void *screen_data;
 
 bool init_screen(void)
 {
