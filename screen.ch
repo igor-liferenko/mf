@@ -1,7 +1,10 @@
 @x
 @h
 @y
-#include "screen.h"
+typedef uint16_t screen_row;
+typedef uint16_t screen_col;
+typedef uint8_t pixel_color;
+int screen_width, screen_depth;
 #include "wayland.c"
 @h
 @z
@@ -19,10 +22,10 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @z
 
 @x
-@<Types...@>=
+typedef uint16_t screen_row; /*a row number on the screen*/
+typedef uint16_t screen_col; /*a column number on the screen*/
+typedef uint8_t pixel_color; /*specifies one of the two pixel values*/
 @y
-@(screen.h@>=
-int screen_width, screen_depth;
 @z
 
 @x
