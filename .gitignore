@@ -1,9 +1,14 @@
 mf.ch
 mf.c
-screen.h
 wayland.c
-wayland.o
 inimf
 virmf
 plain.log
 .gdb_history
+wayland.dvi
+wayland.idx
+wayland.log
+wayland.ps
+wayland.scn
+wayland.tex
+wayland.toc
