@@ -44,7 +44,10 @@ bool init_screen(void)
   return true;
 }
 
-@ @c
+@ @s screen_col int
+@s screen_row int
+
+@c
 void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
@@ -57,7 +60,9 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
   }
 }
 
-@ @c
+@ @s pixel_color int
+
+@c
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
