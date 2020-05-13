@@ -1,5 +1,5 @@
 all: ctangle
-	./ctangle -bhp web2w web2w-mf
+	./ctangle web2w web2w-mf >/dev/null
 	patch web.l -o web-mf.l <web-mf.patch
 	flex -o web.lex.c web-mf.l
 	patch pascal.y -o pascal-mf.y <pascal-mf.patch
@@ -10,8 +10,8 @@ all: ctangle
 	./web2w -o mf.w mf-web2w.web
 
 ctangle:
-	/var/local/bin/ctangle -bhp common.w /home/user/cweb-git/utf8/comm-show.ch
+	ctangle common.w >/dev/null
 	gcc -w -c common.c
-	/var/local/bin/ctangle -bhp ctangle.w /home/user/cweb-git/utf8/ctang-show.ch
+	ctangle ctangle.w >/dev/null
 	gcc -w -c ctangle.c
 	gcc -w -o ctangle ctangle.o common.o
