@@ -4,7 +4,7 @@
 
 @* Online graphics display for {\logo METAFONT}.
 
-We need to run \.{mf} and \.{wayland} processes in parallel,
+We need to run metafont and wayland processes in parallel,
 because a Wayland application runs in an endless loop.
 
 Screen data is stored in memory, which is shared among
@@ -74,10 +74,10 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   } while (k != n);
 }
 
-@ On update, if window exists, \.{mf}
-sends |SIGUSR1|. On receiving this signal, \.{wayland}
+@ On update, if window exists, metafont process
+sends |SIGUSR1|. On receiving this signal, wayland process
 checks if it is in foreground. If no, it writes |'0'| to pipe.
-If \.{wayland} is in foreground, it updates the screen and writes |'1'| to pipe.
+If wayland process is in foreground, it updates the screen and writes |'1'| to pipe.
 
 @d in fd[0]
 @d out fd[1]
@@ -94,9 +94,9 @@ void update_screen(void)
     read(in, &byte, 1);
   }
   if (byte == '0') {
-    @<Stop \.{wayland} if it is already running@>@;
-    @<Start \.{wayland}@>@;
-    @<Wait until \.{wayland} is initialized@>@;
+    @<Stop wayland process if it is already running@>@;
+    @<Start wayland process@>@;
+    @<Wait until wayland process is initialized@>@;
   }
 }
 
