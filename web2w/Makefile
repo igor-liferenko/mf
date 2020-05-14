@@ -10,8 +10,8 @@ all: ctangle
 	./web2w -o mf.w mf-web2w.web
 
 ctangle:
-	ctangle common.w >/dev/null
+	ctangle -bhp common.w
 	gcc -w -c common.c
-	ctangle ctangle.w >/dev/null
+	ctangle -bhp ctangle.w
 	gcc -w -c ctangle.c
 	gcc -w -o ctangle ctangle.o common.o
