@@ -1,4 +1,4 @@
-Add the following to .bashrc (build process is expected to segfault when these are not set):
+Add the following to .bashrc (it is by design that metafont will segfault when these are not set):
   export SCREEN_WIDTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f3)
   export SCREEN_DEPTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f5)
 
