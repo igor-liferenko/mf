@@ -1,4 +1,5 @@
 Add the following to .bashrc:
+  export SCREEN_WIDTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f3)
+  export SCREEN_DEPTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f5)
 
-export SCREEN_WIDTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f3)
-export SCREEN_DEPTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f5)
+It is assumed that this repo is in /home/user.
