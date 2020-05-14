@@ -17,4 +17,4 @@ web2w/ctangle:
 	make -C web2w ctangle
 
 wayland:
-	ctangle wayland >/dev/null
+	ctangle -bhp wayland
