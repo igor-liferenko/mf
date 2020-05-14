@@ -5,10 +5,10 @@ inimf
 virmf
 plain.log
 .gdb_history
-wayland.dvi
+*.dvi
 wayland.idx
 wayland.log
-wayland.ps
+*.ps
 wayland.scn
 wayland.tex
 wayland.toc
