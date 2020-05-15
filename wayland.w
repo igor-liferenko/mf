@@ -86,7 +86,6 @@ If wayland process is in foreground, it updates the screen and writes |'1'| to p
 
 @d in fd[0]
 @d out fd[1]
-@s pid_t int
 
 @c
 void update_screen(void)
