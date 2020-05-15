@@ -43,7 +43,7 @@ typedef uint8_t pixel_color; /*specifies one of the two pixel values*/
 @x
 initialize(); /*set global variables to their starting values*/
 @y
-if (sscanf(getenv("SCREEN_WIDTH"), "%d", &screen_width) != 1) exit(0);
-if (sscanf(getenv("SCREEN_DEPTH"), "%d", &screen_depth) != 1) exit(0);
+if (!getenv("SCREEN_SIZE") ||
+    sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth) != 2) putenv("NOWIN=1");
 initialize(); /*set global variables to their starting values*/
 @z

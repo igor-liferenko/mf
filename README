@@ -1,7 +1,6 @@
-Add the following to .bashrc (it is by design that metafont will segfault when these are not set):
-  export SCREEN_WIDTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f3)
-  export SCREEN_DEPTH=$(xrandr|grep current|cut -d, -f2|cut -d' ' -f5)
+Add the following to .bashrc:
+  export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o '[0-9]\+x[0-9]\+')
 
-It is assumed that this repo is in /home/user.
+It is assumed that this repo is in /home/user/.
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
