@@ -1,4 +1,4 @@
-NOTE: the same approach is used here as in tex/editor.ch - see there to understand why this approach is used
+NOTE: implementation here is similar to tex/editor.ch - see there for additional explanations
 
 @x
 @<Global variables@>@;
