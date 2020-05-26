@@ -20,7 +20,7 @@ bool init_screen(void)
 {
   if (getenv("NOWIN")) return false;
 
-  @#@t\4\4\4@> /* allocate memory and associate file descriptor with it */
+  @#@t\8@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
   @+@t}\6{@>
@@ -31,14 +31,14 @@ bool init_screen(void)
     return false;
   }
 
-  @#@t\4\4\4@> /* get address of memory, referred to by the file descriptor */
+  @#@t\8@> /* get address of memory, referred to by the file descriptor */
   screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, screen_fd, 0);
   if (screen_data == MAP_FAILED) {
     close(screen_fd);
     return false;
   }
 
-  @#@t\4\4\4@> /* initialize the memory */
+  @#@t\8@> /* initialize the memory */
   @+@t}\6{@>
   int *pixel = screen_data;
   @;@+@t@>@;
