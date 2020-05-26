@@ -12,10 +12,8 @@ the processes.
 
 @c
 @<Header files@>@;
-@+@t}\6{@>
 int screen_fd;
 void *screen_data;
-@;@+@t}\6{@>
 bool init_screen(void)
 {
   if (getenv("NOWIN")) return false;
@@ -23,9 +21,7 @@ bool init_screen(void)
   @#@t\8@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
-  @+@t}\6{@>
   int screen_size = screen_width * screen_depth * 4;
-  @;@+@t@>@;
   if (ftruncate(screen_fd, screen_size) == -1) {
     close(screen_fd);
     return false;
@@ -39,9 +35,7 @@ bool init_screen(void)
   }
 
   @#@t\8@> /* initialize the memory */
-  @+@t}\6{@>
   int *pixel = screen_data;
-  @;@+@t@>@;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = 0xffffff;
 
@@ -56,7 +50,6 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
   int *pixel;
-  @;@+@t@>@;
   for (screen_row r = top_row; r < bot_row; r++) {
     pixel = screen_data;
     pixel += screen_width*r + left_col;
@@ -71,12 +64,9 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
-  @;@+@t@>@;
   pixel += screen_width*r + a[0];
-  @;@+@t}\6{@>
   int k = 0;
   screen_col c = a[0];
-  @;@+@t@>@;
   do {
     k++;
     do {
@@ -102,7 +92,6 @@ void update_screen(void)
   static int fd[2];
 
   char byte = '0';
-  @;@+@t@>@;
   if (pid != -1) {
     kill(pid, SIGUSR1);
     read(in, &byte, 1);
@@ -137,7 +126,6 @@ close(out);
 @ @<Wait ...@>=
 if (pid != -1) {
   char byte = 'x';
-  @;@+@t@>@;
   read(in, &byte, 1);
   if (byte == 'x') {
     waitpid(pid, NULL, 0);
