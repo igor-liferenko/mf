@@ -12,8 +12,10 @@ the processes.
 
 @c
 @<Header files@>@;
+
 int screen_fd;
 void *screen_data;
+
 bool init_screen(void)
 {
   if (getenv("NOWIN")) return false;
