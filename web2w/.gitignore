@@ -5,11 +5,6 @@ web.lex.c
 web2w
 web2w.c
 web2w.h
-ctangle.c
-ctangle.o
-ctangle
-common.c
-common.o
 pascal-mf.output
 pascal-mf.tab.c
 pascal-mf.tab.h
