@@ -1,12 +1,14 @@
 See http://mruckert.userweb.mwn.de/hint/web2w.html
 
 Add the following to .bashrc:
-  export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o '[0-9]\+x[0-9]\+')
+  export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o "[0-9]\+x[0-9]\+")
 
 It is assumed that this repo is in /home/user/.
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
 
-To use debugger, run "gdb plain"
+To use debugger, run "gdb plain" or
+"NOWIN=1 gdb plain" or
+"mv ~/mf-wayland/hello-wayland ~/mf-wayland/suppress-wayland; gdb plain"
 
 To run METAFONT, use "exec /home/user/mf/plain"
