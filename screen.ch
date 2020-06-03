@@ -22,10 +22,9 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @z
 
 @x
-typedef uint16_t screen_row; /*a row number on the screen*/
-typedef uint16_t screen_col; /*a column number on the screen*/
-typedef uint8_t pixel_color; /*specifies one of the two pixel values*/
+@<Types...@>=
 @y
+@(/dev/null@>=
 @z
 
 @x
