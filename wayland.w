@@ -1,7 +1,7 @@
 \noinx
 
 \font\logo=manfnt
-@s pid_t int
+
 @* Online graphics display for {\logo METAFONT}.
 
 We need to run metafont and wayland processes in parallel,
@@ -44,10 +44,11 @@ bool init_screen(void)
   return true;
 }
 
-@ @s screen_col int
-@s screen_row int
+@ @s uint16_t int
 
 @c
+typedef uint16_t screen_row; @+
+typedef uint16_t screen_col;
 void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
@@ -60,9 +61,10 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
   }
 }
 
-@ @s pixel_color int
+@ @s uint8_t int
 
 @c
+typedef uint8_t pixel_color;
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
@@ -86,6 +88,7 @@ If wayland process is in foreground, it updates the screen and writes |'1'| to p
 
 @d in fd[0]
 @d out fd[1]
+@s pid_t int
 
 @c
 void update_screen(void)

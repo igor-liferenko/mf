@@ -1,9 +1,6 @@
 @x
 @h
 @y
-typedef uint16_t screen_row;
-typedef uint16_t screen_col;
-typedef uint8_t pixel_color;
 int screen_width, screen_depth;
 #include "wayland.c"
 @h
