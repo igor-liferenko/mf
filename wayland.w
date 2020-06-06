@@ -47,8 +47,8 @@ bool init_screen(void)
 @ @s uint16_t int
 
 @c
-typedef uint16_t screen_row; @+
-typedef uint16_t screen_col;
+typedef uint16_t screen_row; /* a row number on the screen */
+typedef uint16_t screen_col; /* a column number on the screen */
 void blank_rectangle(screen_col left_col, screen_col right_col,
   screen_row top_row, screen_row bot_row)
 {
@@ -64,7 +64,7 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
 @ @s uint8_t int
 
 @c
-typedef uint8_t pixel_color;
+typedef uint8_t pixel_color; /* specifies one of the two pixel values */
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
