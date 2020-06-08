@@ -1,12 +1,12 @@
 all: wayland change-file
-	CWEBINPUTS=.:$$CWEBINPUTS /usr/bin/ctangle -bhp mf mf
+	CWEBINPUTS=. /usr/bin/ctangle -bhp mf mf
 	gcc -g -Og -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -g -Og mf.c -o virmf
 
 trapmf:
 	tie -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
-	CWEBINPUTS=.:$CWEBINPUTS /usr/bin/ctangle -bhp mf mf
+	CWEBINPUTS=. /usr/bin/ctangle -bhp mf mf
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
 change-file:
