@@ -141,11 +141,13 @@ if (pid != -1) {
 else close(in);
 
 @ @<Header files@>=
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/prctl.h>
-#include <sys/syscall.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include <signal.h> /* |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|, |@!signal| */
+#include <stdbool.h> /* |@!false|, |@!true| */
+#include <stdint.h> /* |@!uint8_t|, |@!uint16_t| */
+#include <stdlib.h> /* |@!getenv| */
+#include <sys/mman.h> /* |@!MAP_FAILED|, |@!MAP_SHARED|, |@!PROT_WRITE|, |@!mmap| */
+#include <sys/prctl.h> /* |@!PR_SET_PDEATHSIG|, |@!prctl| */
+#include <sys/syscall.h> /* |@!SYS_memfd_create|, |@!syscall| */
+#include <sys/wait.h> /* |@!waitpid| */
+#include <unistd.h> /* |@!STDIN_FILENO|, |@!STDOUT_FILENO|, |@!_exit|, |@!close|,
+  |@!dup2|, |@!execl|, |@!fork|, |@!ftruncate|, |@!pipe|, |@!read| */
