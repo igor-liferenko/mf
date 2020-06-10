@@ -1,5 +1,5 @@
 In practice only one argument is used (filename);
-other cases may be handled via pipe: "echo '\nonstopmode ...' | tex"
+other cases may be handled via pipe: "echo '\nonstopmode ...' | mf"
 
 @x
 @p bool init_terminal(void) /*gets the terminal input started*/
