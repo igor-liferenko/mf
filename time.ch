@@ -28,13 +28,13 @@ internal[day]=4*unity; /*fourth day of the month*/
 internal[month]=7*unity; /*seventh month of the year*/
 internal[year]=1776*unity; /*Anno Domini*/
 @y
-{ time_t clock = time(NULL);
-  struct tm *time = localtime(&clock);
+{ time_t timestamp = time(NULL);
+  struct tm *tm = localtime(&timestamp);
 
-  internal[17] = (time->tm_hour * 60 + time->tm_min) * unity;
-  internal[day] = time->tm_mday * unity;
-  internal[month] = (time->tm_mon + 1) * unity;
-  internal[year] = (time->tm_year + 1900) * unity;
+  internal[17] = (tm->tm_hour * 60 + tm->tm_min) * unity;
+  internal[day] = tm->tm_mday * unity;
+  internal[month] = (tm->tm_mon + 1) * unity;
+  internal[year] = (tm->tm_year + 1900) * unity;
 @z
 
 @x
