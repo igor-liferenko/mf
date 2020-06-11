@@ -15,7 +15,7 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @x
 @p bool init_screen(void)
 @y
-@(/dev/null@>=
+@(/dev/null@>= bool init_screen(void)
 @z
 
 @x
@@ -27,13 +27,13 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @x
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
 @y
-@(/dev/null@>=
+@(/dev/null@>= void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
 @z
 
 @x
 @p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
 @y
-@(/dev/null@>=
+@(/dev/null@>= void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
 @z
 
 @x
