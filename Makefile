@@ -2,7 +2,7 @@ all: wayland change-file
 	CWEBINPUTS=. /usr/bin/ctangle -bhp mf mf
 	gcc -g -Og -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
-	gcc -g -Og mf.c -o virmf
+	gcc -g -Og -DSTAT mf.c -o virmf
 
 trapmf:
 	tie -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
