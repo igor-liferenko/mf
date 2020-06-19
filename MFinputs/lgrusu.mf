@@ -1276,8 +1276,8 @@ _one:=5; _two:=6; _three:=7; _four:=8;
 %
 pickup tiny.nib; pos[_one](cap_stem,0); pos[_two](cap_stem,0);%pos
 lft x[_one]l=lft x[_two]l=
-	l+letter_fit+if monospace:-.35u else: cap_serif_fit fi
-	+hround max(2u,3u-.5cap_stem);
+ l+letter_fit+if monospace:-.35u else: cap_serif_fit fi
+ +hround max(2u,3u-.5cap_stem);
 top y[_one]=h; bot y[_two]=0;
 filldraw stroke z[_one]e--z[_two]e; % stem
 x[_three]=x[_one]; y[_three]=y[_zero];
