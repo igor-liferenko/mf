@@ -13,3 +13,10 @@ enum {@+@!mem_max=65534@+};
 @y
 @d mem_top      65534
 @z
+
+@x
+@d max_in_open	6 /*maximum number of input files and error insertions that
+  can be going on simultaneously*/
+@y
+@d max_in_open 1
+@z
