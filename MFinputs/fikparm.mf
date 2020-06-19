@@ -147,7 +147,7 @@ if unknown kapitel:
 fi
 
 % -- set flags for ligature and kerning stuff
-boolean	TITLEfont,SmallCapsfont,ROMANfont;
+boolean TITLEfont,SmallCapsfont,ROMANfont;
 
 % there must stay jobname because data is read from started font header
 % to check whether is the "standard LH" font;
@@ -279,24 +279,24 @@ vardef use_driver @# (expr fonteq) =
 % - input driver file
  scantokens("input "&
   if genmode="ex":
-     if driver_name=		"exroman" :	"leroman"  % also cmbright&ec (vvv)
-        elseif driver_name=	"ebroman" :	"lebroman" % cmbright&ec (vvv)
-        elseif driver_name=	"extextit":	"letextit"
-        elseif driver_name=	"excsc"   : 	"lecsc"
+     if driver_name=  "exroman" : "leroman"  % also cmbright&ec (vvv)
+        elseif driver_name= "ebroman" : "lebroman" % cmbright&ec (vvv)
+        elseif driver_name= "extextit": "letextit"
+        elseif driver_name= "excsc"   :  "lecsc"
         else:  driver_name fi
   elseif genmode="ec":
-     if driver_name=		"exroman" :	"ldroman"
-        elseif driver_name=	"extextit":	"ldtextit"
-        elseif driver_name=	"excsc"   : 	"ldcsc"
+     if driver_name=  "exroman" : "ldroman"
+        elseif driver_name= "extextit": "ldtextit"
+        elseif driver_name= "excsc"   :  "ldcsc"
         else:  driver_name fi
   else:
-     if driver_name=		"roman"   :	"ldroman"
-        elseif driver_name=	"sroman"  :	"ldroman"  % slitex must be true
-        elseif driver_name=	"broman"  :	"ldbroman" % cmbright (vvv)
-        elseif driver_name=	"textit"  :	"ldtextit"
-        elseif driver_name=	"title"   :	"ldtitle"
-        elseif driver_name=	"csc"     :	"ldcsc"
-        elseif driver_name=	"texset"  :	"ldtexset"
+     if driver_name=  "roman"   : "ldroman"
+        elseif driver_name= "sroman"  : "ldroman"  % slitex must be true
+        elseif driver_name= "broman"  : "ldbroman" % cmbright (vvv)
+        elseif driver_name= "textit"  : "ldtextit"
+        elseif driver_name= "title"   : "ldtitle"
+        elseif driver_name= "csc"     : "ldcsc"
+        elseif driver_name= "texset"  : "ldtexset"
         else:  driver_name fi fi);
 enddef;
 
