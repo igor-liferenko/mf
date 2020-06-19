@@ -21566,7 +21566,7 @@ from the |tfm_width| data relative to the design size.
 
 @p void fix_check_sum(void)
 {@+
-eight_bits @!k; /*runs through character codes*/ 
+int @!k; /*runs through character codes*/ 
 eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
 int @!x; /*hash value used in check sum computation*/ 
 if (header_byte[1] < 0) if (header_byte[2] < 0) 
