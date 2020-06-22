@@ -30,5 +30,5 @@ enum {@+@!mem_max=262142@+};
 @x
 @d max_halfword	65535 /*largest allowable value in a |halfword|*/
 @y
-@d max_halfword	262143
+@d max_halfword	262143 /* integer is 36 bit instead of 32 */
 @z
