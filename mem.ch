@@ -1,5 +1,4 @@
-Allow to increase mem_max in constants.ch (mem_top, max_quarterword and max_halfword are also
-adjusted accordingly).
+Allow to increase mem_max above 65534.
 @x
 typedef uint8_t quarterword; /*1/4 of a word*/ 
 typedef uint16_t halfword; /*1/2 of a word*/ 
