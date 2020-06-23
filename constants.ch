@@ -3,7 +3,7 @@ enum {@+@!mem_max=30000@+}; /*greatest index in \MF's internal |mem| array;
   must be strictly less than |max_halfword|;
   must be equal to |mem_top| in \.{INIMF}, otherwise | >= mem_top|*/ 
 @y
-enum {@+@!mem_max=262142@+};
+enum {@+@!mem_max=131070@+};
 @z
 
 @x
@@ -11,7 +11,7 @@ enum {@+@!mem_max=262142@+};
   must be substantially larger than |mem_min|
   and not greater than |mem_max|*/ 
 @y
-@d mem_top      262142
+@d mem_top      131070
 @z
 
 @x
@@ -21,9 +21,9 @@ enum {@+@!mem_max=262142@+};
 @d max_in_open	10
 @z
 
-Integer is 36 bit instead of 32.
+17 bits
 @x
 @d max_halfword	65535 /*largest allowable value in a |halfword|*/
 @y
-@d max_halfword	262143
+@d max_halfword	131071
 @z
