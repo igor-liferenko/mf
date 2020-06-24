@@ -21,9 +21,14 @@ enum {@+@!mem_max=131070@+};
 @d max_in_open	10
 @z
 
-17 bits
 @x
 @d max_halfword	65535 /*largest allowable value in a |halfword|*/
 @y
 @d max_halfword	131071
+@z
+
+@x
+typedef uint16_t halfword; /*1/2 of a word*/ 
+@y
+typedef int halfword; /*1/2 of a word*/ 
 @z
