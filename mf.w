@@ -287,7 +287,6 @@ Arithmetic overflow will be detected in all cases.
 #define chr(X)       ((unsigned char)(X))
 #define ord(X)       ((int)(X))
 #define abs(X)       ((X)>-(X)?(X):-(X))
-#define round(X)     ((int)((X)>=0.0?floor((X)+0.5):ceil((X)-0.5)))
 
 @h
 
