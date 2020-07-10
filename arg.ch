@@ -12,8 +12,8 @@ t_open_in;
 t_open_in;
 if (argc == 2) {
   last = loc = first;
-  for (int k = 0, len; k < strlen(argv[1]); k++)
-    buffer[last++] = xord[*(argv[1]+k)];
+  for (int k = 0; k < strlen(argv[1]); k++)
+    buffer[last++] = xord[argv[1][k]];
   return true;
 }
 @z
