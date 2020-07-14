@@ -286,7 +286,7 @@ Arithmetic overflow will be detected in all cases.
 #define odd(X)       ((X)&1)
 #define chr(X)       ((unsigned char)(X))
 #define ord(X)       ((int)(X))
-#define abs(X)       ((X)>-(X)?(X):-(X))
+#define abs(X)       ((X)>-(X)?(X):-(X)) /* FIXME: is it needed? */
 
 @h
 
