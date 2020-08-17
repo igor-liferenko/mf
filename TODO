@@ -1,1 +1,13 @@
 when all LH-fonts will compile, replace symlinks with real files and change tabs to spaces and rm tab.ch
+
+web2w/mf.w has manual changes, which revert mf-web2w.patch - to see them do:
+  make -C web2w
+  git diff web2w/mf.w
+TODO: remove mf-web2w.patch and change pascal-mf.patch and maybe web-mf.patch that the
+diff will be empty, and then do:
+  diff -u web2w/mf.w mf.w >web2w/cmf.patch
+  git add web2w/cmf.patch
+  git rm web2w/mf.w mf.w
+and then patch web2w/mf.w with cmf.patch in the end of web2w/Makefile
+and then in Makefile do:
+  patch -so mf.w web2w/mf.w goto.patch
