@@ -1,6 +1,14 @@
 see interrupt.ch
 
 @x
+   /*open a text file for input*/
+{@+reset((*f), name_of_file,"r");return reset_OK((*f));
+@y
+{@+
+if (((*f).f=fopen(name_of_file+1,"r"))!=NULL) (*f).d = fgetc((*f).f); return reset_OK((*f));
+@z
+
+@x
 if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
 if (bypass_eoln) if (!eof((*f))) {
