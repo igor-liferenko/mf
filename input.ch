@@ -1,5 +1,6 @@
 see interrupt.ch
 
+This change is not used in interrupt - it is just to use fgetc uniformly.
 @x
    /*open a text file for input*/
 {@+reset((*f), name_of_file,"r");return reset_OK((*f));
