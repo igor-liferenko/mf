@@ -25,6 +25,7 @@ ASCII_code @!MF_base_default[1+base_default_length+1]=" MFbases/plain.base";
 ASCII_code @!MF_base_default[1+base_default_length+1]=" /home/user/mf/MFbases/plain.base";
 @z
 
+You may use non-ASCII characters here.
 @x
 @d str_465 "MFinputs/"
 @y
