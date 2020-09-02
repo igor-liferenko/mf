@@ -1,3 +1,5 @@
+see interrupt.ch
+
 @x
    /*open a text file for input*/
 {@+reset((*f), name_of_file,"r");return reset_OK((*f));
