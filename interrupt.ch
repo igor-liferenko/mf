@@ -8,6 +8,23 @@ FIXTHIS: see tex/interrupt.ch
 @z
 
 @x
+if (bypass_eoln) if (!eof((*f))) get((*f));
+@y
+if (bypass_eoln) if (!eof((*f)) && !ferror((*f).f)) get((*f));
+else if (ferror((*f).f)) {fprintf(stderr, "gotcha\n"); fflush(stderr);}
+@z
+
+@x
+  while (!eoln((*f)))
+@y
+  if (ferror((*f).f)) {
+    clearerr((*f).f);
+    return true;
+  }
+  while (!eoln((*f)))
+@z
+
+@x
 int @!interrupt; /*should \MF\ pause for instructions?*/
 @y
 volatile int @!interrupt;
@@ -23,7 +40,7 @@ initialize(); /*set global variables to their starting values*/
 struct sigaction sa;
 sa.sa_handler = catchint;
 sigemptyset(&sa.sa_mask);
-sa.sa_flags = SA_RESTART;
+sa.sa_flags = 0;
 sigaction(SIGINT, &sa, NULL);
 initialize(); /*set global variables to their starting values*/ 
 @z
