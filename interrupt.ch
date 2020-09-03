@@ -10,8 +10,8 @@ FIXTHIS: see tex/interrupt.ch
 @x
 if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
-if (bypass_eoln) if (!eof((*f)) && !ferror((*f).f)) get((*f));
-else if (ferror((*f).f)) {fprintf(stderr, "gotcha\n"); fflush(stderr);}
+if (bypass_eoln) if (!eof((*f))) if (ferror((*f).f)) {fprintf(stderr, "!!!!!\n"); fflush(stderr);}
+if (bypass_eoln) if (!eof((*f))) get((*f));
 @z
 
 @x
