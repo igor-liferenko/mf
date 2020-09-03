@@ -6,11 +6,19 @@
 @z
 
 @x
+{@+uint16_t @!last_nonblank; /*|last| with trailing blanks removed*/
+@y
+{@+uint16_t @!last_nonblank; /*|last| with trailing blanks removed*/
+restart:
+@z
+
+@x
   while (!eoln((*f)))
 @y
   if (ferror((*f).f)) {
+    interrupt = 0;
     clearerr((*f).f);
-    return true;
+    goto restart;
   }
   while (!eoln((*f)))
 @z
