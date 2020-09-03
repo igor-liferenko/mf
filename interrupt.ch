@@ -8,13 +8,6 @@ FIXTHIS: see tex/interrupt.ch
 @z
 
 @x
-if (bypass_eoln) if (!eof((*f))) get((*f));
-@y
-if (bypass_eoln) if (!eof((*f))) if (ferror((*f).f)) {fprintf(stderr, "!!!!!\n"); fflush(stderr);}
-if (bypass_eoln) if (!eof((*f))) get((*f));
-@z
-
-@x
   while (!eoln((*f)))
 @y
   if (ferror((*f).f)) {
