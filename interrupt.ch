@@ -1,5 +1,3 @@
-FIXTHIS: see tex/interrupt.ch
-
 @x
 @h
 @y
