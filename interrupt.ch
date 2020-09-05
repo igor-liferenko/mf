@@ -1,26 +1,40 @@
+MF is aborted when ^C is pressed when MF is waiting for input
+
 @x
 @h
 @y
 #include <signal.h>
+#include <unistd.h>
 @h
 @z
 
 @x
-{@+uint16_t @!last_nonblank; /*|last| with trailing blanks removed*/
+   /*open a text file for input*/
+{@+reset((*f), name_of_file,"r");return reset_OK((*f));
 @y
-{@+uint16_t @!last_nonblank; /*|last| with trailing blanks removed*/
-restart:
+   /*open a text file for input*/
+{@+if (((*f).f=fopen(name_of_file+1,"r"))!=NULL) {
+  get((*f));
+  if (ferror((*f).f)) kill(getpid(), SIGABRT), pause();
+}
+return reset_OK((*f));
 @z
 
 @x
-  while (!eoln((*f)))
+if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
-  if (ferror((*f).f)) {
-    interrupt = 0;
-    clearerr((*f).f);
-    goto restart;
-  }
-  while (!eoln((*f)))
+if (bypass_eoln) if (!eof((*f))) {
+  get((*f));
+  if (ferror((*f).f)) kill(getpid(), SIGABRT), pause();
+}
+@z
+
+@x
+    buffer[last]=xord[(*f).d];get((*f));incr(last);
+@y
+    buffer[last]=xord[(*f).d];get((*f));
+    if (ferror((*f).f)) kill(getpid(), SIGABRT), pause();
+    incr(last);
 @z
 
 @x
