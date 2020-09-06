@@ -11,7 +11,7 @@ Until the input is terminated with <return>, the first "get" in input_ln()
 blocks. We surround it with waiting_for_input flag to allow the interrupt
 handler know that it must terminate the program.
 @x
-if (bypass_eoln) if (!eof((*f))) (*f).d=fgetwc((*f).f);
+if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
 if ((*f).f == stdin) waiting_for_input = 1;
 if (bypass_eoln) if (!eof((*f))) get((*f));
