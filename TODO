@@ -1,5 +1,3 @@
-when all LH-fonts will compile, replace symlinks with real files and change tabs to spaces and rm tab.ch
-
 web2w/mf.w has manual changes, which revert mf-web2w.patch - to see them do:
   make -C web2w
   git diff web2w/mf.w
