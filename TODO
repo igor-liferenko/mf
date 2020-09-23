@@ -7,9 +7,9 @@ diff will be empty, and then do:
   git add web2w/cmf.patch
   git rm web2w/mf.w mf.w
 and then patch web2w/mf.w with cmf.patch in the end of web2w/Makefile
-and then in Makefile do:
+and then in Makefile in two places replace
+  patch -so mf-goto.w mf.w goto.patch
+with
   make -C web2w
   patch -so mf.w web2w/mf.w goto.patch
-and from Makefile remove:
-  patch -so mf-goto.w mf.w goto.patch
-and in Makefile change mf-goto to mf and remove last argument from both /bin/ctangle calls
+and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle
