@@ -1,8 +1,4 @@
-diff --git a/mf.w b/mf.w
-index 1953248..f9f28b0 100644
---- a/mf.w
-+++ b/mf.w
-@@ -911,14 +911,10 @@ consist of the remainder of the command line, after the part that invoked \MF.
+@@ -911,14 +911,10 @@
  The first line is special also because it may be read before \MF\ has
  input a base file. In such cases, normal error messages cannot yet
  be given. The following code uses concepts that will be explained later.
@@ -18,7 +14,7 @@ index 1953248..f9f28b0 100644
  @.Buffer size exceeded@>
    } 
  else{@+cur_input.loc_field=first;cur_input.limit_field=last-1;
-@@ -1725,15 +1721,9 @@ help_ptr=0;use_err_help=false;err_help=0;
+@@ -1725,15 +1721,9 @@
  goes to |end_of_MF|. This is the only nontrivial |@!goto| statement in the
  whole program. It is used when there is no recovery from a particular error.
  
@@ -35,7 +31,7 @@ index 1953248..f9f28b0 100644
  } 
  
  @ Here now is the general |error| routine.
-@@ -13831,7 +13821,7 @@ param_ptr=0;max_param_stack=0;
+@@ -13831,7 +13821,7 @@
  first=1;
  start=1;index=0;line=0;name=0;
  force_eof=false;
@@ -44,7 +40,7 @@ index 1953248..f9f28b0 100644
  limit=last;first=last+1; /*|init_terminal| has set |loc| and |last|*/ 
  } 
  
-@@ -22863,7 +22853,7 @@ if (bad > 0)
+@@ -22863,7 +22853,7 @@
    {@+wterm_ln("Ouch---my internal constants have been clobbered!"
      "---case %d", bad);
  @.Ouch...clobbered@>
@@ -53,7 +49,7 @@ index 1953248..f9f28b0 100644
    } 
  initialize(); /*set global variables to their starting values*/ 
  #ifdef @!INIT
-@@ -22883,8 +22873,10 @@ if (start_sym > 0)  /*insert the `\&{everyjob}' symbol*/
+@@ -22883,8 +22873,10 @@
  main_control(); /*come to life*/ 
  final_cleanup(); /*prepare for death*/ 
  close_files_and_terminate();
@@ -66,7 +62,7 @@ index 1953248..f9f28b0 100644
  
  @ Here we do whatever is needed to complete \MF's job gracefully on the
  local operating system. The code here might come into play after a fatal
-@@ -23049,9 +23041,9 @@ But when we finish this part of the program, \MF\ is ready to call on the
+@@ -23049,9 +23041,9 @@
  {@+@<Initialize the input routines@>;
  if ((base_ident==0)||(buffer[loc]=='&')) 
    {@+if (base_ident!=0) initialize(); /*erase preloaded base*/ 
