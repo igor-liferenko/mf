@@ -11,6 +11,6 @@ trapmf:
 	patch -so mf-goto.w mf.w goto.patch
 	tie -c mf.ch mf-goto.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf-goto mf mf
-	gcc -DINIT -DSTAT -o trap/trapmf mf.c
+	gcc -g -Og -DINIT -DSTAT -o trap/trapmf mf.c
 
 CHF=format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
