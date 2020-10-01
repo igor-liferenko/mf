@@ -4,7 +4,7 @@ Add the following to .bashrc:
   export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o "[0-9]\+x[0-9]\+")
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
-(it is assumed that it is in /home/user/)
+(set path to it in wayland.w)
 
 Run as "exec /path/to/mf/plain"
 
