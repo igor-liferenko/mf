@@ -18,6 +18,8 @@ void *screen_data;
 
 bool init_screen(void)
 {
+  if (!getenv("SCREEN_SIZE")) return false;
+
   @#@t\8@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;

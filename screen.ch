@@ -39,8 +39,6 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @x
 initialize(); /*set global variables to their starting values*/
 @y
-#ifndef INIT
-if (sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth) != 2) exit(1);
-#endif
+if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
 initialize(); /*set global variables to their starting values*/
 @z
