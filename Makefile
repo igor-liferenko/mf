@@ -4,7 +4,7 @@ all:
 	/bin/ctangle mf-goto mf mf
 	ctangle wayland
 	gcc -DINIT mf.c -o inimf
-	@echo 'plain; input modes; dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
 
 trapmf:
