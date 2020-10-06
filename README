@@ -8,6 +8,4 @@ Use the companion repo http://github.com/igor-liferenko/mf-wayland
 
 Run as "exec /path/to/mf/plain"
 
-To use debugger, compile with "-g -Og" flags and run "gdb plain" or
-"NOWIN=1 gdb plain" or
-"mv ~/mf-wayland/hello-wayland ~/mf-wayland/suppress-wayland; gdb plain"
+To use debugger, compile with "-g -Og" flags and run "gdb plain"
