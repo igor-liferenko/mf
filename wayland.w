@@ -124,7 +124,7 @@ if (pid == 0) {
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
   execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-  _exit(0);
+  _exit(0); @q _ is important! @>
 }
 close(out);
 
