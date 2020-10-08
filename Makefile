@@ -1,6 +1,6 @@
 all:
 	patch -so mf-goto.w mf.w goto.patch
-	tie -c mf.ch mf-goto.w constants.ch screen.ch $(CHF) >/dev/null
+	tie -c mf.ch mf-goto.w constants.ch screen.ch gftopk.ch $(CHF) >/dev/null
 	/bin/ctangle mf-goto mf mf
 	ctangle wayland
 	gcc -DINIT mf.c -o inimf
@@ -13,4 +13,4 @@ trapmf:
 	/bin/ctangle mf-goto mf mf
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
-CHF=format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch gftopk.ch
+CHF=format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch

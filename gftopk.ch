@@ -1,11 +1,4 @@
 @x
-@h
-@y
-#include <unistd.h>
-@h
-@z
-
-@x
 b_close(&gf_file);
 @y
 char absname[1000];
