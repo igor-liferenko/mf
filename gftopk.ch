@@ -1,17 +1,9 @@
-TODO:
-1) do via fork+exec directly (like in wayland.w)
-2) kill if gftopk fails (like in 'git lg -- input.ch' in tex/)
-
 @x
 b_close(&gf_file);
 @y
-char fname[1000];
-char tmp[1000];
-snprintf(tmp, sizeof tmp, "/proc/self/fd/%d", fileno(gf_file.f));
-int nb = readlink(tmp, fname, sizeof fname - 1);
+char tmp[1000], fname[1000];
+sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
+fname[readlink(tmp, fname, sizeof fname)] = 0;
 b_close(&gf_file);
-if (nb != -1) {
-  strncat(strcpy(tmp, "gftopk "), fname, nb);
-  system(tmp);
-}
+if (fork() == 0) execl("/bin/gftopk", "gftopk", fname, (char *) NULL);
 @z
