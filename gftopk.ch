@@ -2,8 +2,7 @@
 b_close(&gf_file);
 @y
 char tmp[22];
-if (snprintf(tmp, sizeof tmp, "/proc/self/fd/%d", fileno(gf_file.f)) >= sizeof tmp)
-  kill(getpid(), SIGABRT), pause();
+sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
 char fname[1000] = { };
 if (readlink(tmp, fname, sizeof fname) == -1 || fname[sizeof fname - 1])
   kill(getpid(), SIGABRT), pause();
