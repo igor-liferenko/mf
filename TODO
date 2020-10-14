@@ -6,10 +6,11 @@ diff will be empty, and then do:
   diff -u web2w/mf.w mf.w >web2w/cmf.patch
   git add web2w/cmf.patch
   git rm web2w/mf.w mf.w
-and then patch web2w/mf.w with cmf.patch in the end of web2w/Makefile
+and then in web2w/Makefile change './web2w -o mf.w ...' to './web2w -o cmf.w ...'
+and then patch web2w/cmf.w with cmf.patch in the end of web2w/Makefile and add cmf.w to web2w/.gitignore
 and then in Makefile in two places replace
   patch -so mf-goto.w mf.w goto.patch
 with
   make -C web2w
-  patch -so mf.w web2w/mf.w goto.patch
+  patch -so mf.w web2w/cmf.w goto.patch
 and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle and remove mf-goto.w from .gitignore
