@@ -122,8 +122,12 @@ if (pid != -1) {
 if (pipe(fd) == -1) return;
 pid = fork();
 if (pid == 0) {
+  /* TODO: close all files here above descriptor 2 */
+  close(in);
   dup2(screen_fd, STDIN_FILENO);
+  close(screen_fd);
   dup2(out, STDOUT_FILENO);
+  close(out);
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
   execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
