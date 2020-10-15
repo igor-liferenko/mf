@@ -86,9 +86,6 @@ sends |SIGUSR1|. On receiving this signal, wayland process
 checks if it is in foreground. If no, it writes |'0'| to pipe.
 If wayland process is in foreground, it updates the screen and writes |'1'| to pipe.
 
-If starting the wayland process fails, metafont continues
-to operate as if this function was a no-op. 
-
 @d in fd[0]
 @d out fd[1]
 @s pid_t int
@@ -122,16 +119,13 @@ if (pid != -1) {
 if (pipe(fd) == -1) return;
 pid = fork();
 if (pid == 0) {
-  /* TODO: close all files here above descriptor 2 */
-  close(in);
   dup2(screen_fd, STDIN_FILENO);
-  close(screen_fd);
   dup2(out, STDOUT_FILENO);
-  close(out);
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
   execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-  _exit(0); @q_ is important@>
+  _exit(0); /* TODO: |exit(1)| here and Abort if fail and remove logic which enables
+  metafont to continue execution if this line is reached */
 }
 close(out);
 
