@@ -16,5 +16,5 @@ if (gftopk == 0) {
 }
 int wstatus;
 waitpid(gftopk, &wstatus, 0);
-if (WEXITSTATUS(wstatus) != 0) kill(getpid(), SIGABRT), pause();
+if (wstatus) kill(getpid(), SIGABRT), pause();
 @z
