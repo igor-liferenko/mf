@@ -1,3 +1,4 @@
+\let\lheader\rheader
 \noinx
 
 \font\logo=manfnt
@@ -23,7 +24,7 @@ bool init_screen(void)
   @#@t\8@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
-  int screen_size = screen_width * screen_depth * 4;
+  int screen_size = @!screen_width * @!screen_depth * 4;
   if (ftruncate(screen_fd, screen_size) == -1) {
     close(screen_fd);
     return false;
@@ -83,11 +84,12 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 
 @ On update, if window exists, metafont process
 sends |SIGUSR1|. On receiving this signal, wayland process
-checks if it is in foreground. If no, it writes |'0'| to pipe.
-If wayland process is in foreground, it updates the screen and writes |'1'| to pipe.
+checks if it is in foreground.
+If yes, it updates the screen and writes |'1'| to pipe.
+If no or it is dead, |byte| will be |'0'|.
 
-@d in fd[0]
-@d out fd[1]
+@d read_end fd[0]
+@d write_end fd[1]
 @s pid_t int
 
 @c
@@ -99,7 +101,7 @@ void update_screen(void)
   char byte = '0';
   if (pid != -1) {
     kill(pid, SIGUSR1);
-    read(in, &byte, 1);
+    read(read_end, &byte, 1);
   }
   if (byte == '0') {
     @<Stop wayland process if it is already running@>@;
@@ -112,43 +114,36 @@ void update_screen(void)
 if (pid != -1) {
   kill(pid, SIGTERM);
   waitpid(pid, NULL, 0);
-  close(in);
+  close(read_end);
 }
 
 @ @<Start ...@>=
-if (pipe(fd) == -1) return;
-pid = fork();
+if (pipe(fd) == -1) kill(getpid(), SIGABRT), pause();
+if ((pid = fork()) == -1) kill(getpid(), SIGABRT), pause();
 if (pid == 0) {
   dup2(screen_fd, STDIN_FILENO);
-  dup2(out, STDOUT_FILENO);
+  dup2(write_end, STDOUT_FILENO);
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
   execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-  _exit(0); /* TODO: |exit(1)| here and Abort if fail and remove logic which enables
-  metafont to continue execution if this line is reached */
+  exit(1);
 }
-close(out);
+close(write_end);
 
 @ @<Wait ...@>=
-if (pid != -1) {
-  char byte = 'x';
-  read(in, &byte, 1);
-  if (byte == 'x') {
-    waitpid(pid, NULL, 0);
-    pid = -1;
-    close(in);
-  }
-}
-else close(in);
+byte = 'x';
+read(read_end, &byte, 1);
+if (byte == 'x') kill(getpid(), SIGABRT), pause();
 
 @ @<Header files@>=
-#include <signal.h> /* |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|, |@!signal| */
+#include <signal.h> /* |@!SIGABRT|, |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|,
+  |@!signal| */
 #include <stdbool.h> /* |@!false|, |@!true| */
 #include <stdint.h> /* |@!uint8_t|, |@!uint16_t| */
-#include <stdlib.h> /* |@!getenv| */
+#include <stdlib.h> /* |@!exit|, |@!getenv| */
 #include <sys/mman.h> /* |@!MAP_FAILED|, |@!MAP_SHARED|, |@!PROT_WRITE|, |@!mmap| */
 #include <sys/prctl.h> /* |@!PR_SET_PDEATHSIG|, |@!prctl| */
 #include <sys/syscall.h> /* |@!SYS_memfd_create|, |@!syscall| */
 #include <sys/wait.h> /* |@!waitpid| */
-#include <unistd.h> /* |@!STDIN_FILENO|, |@!STDOUT_FILENO|, |@!_exit|, |@!close|,
-  |@!dup2|, |@!execl|, |@!fork|, |@!ftruncate|, |@!pipe|, |@!read| */
+#include <unistd.h> /* |@!STDIN_FILENO|, |@!STDOUT_FILENO|, |@!close|,
+  |@!dup2|, |@!execl|, |@!fork|, |@!ftruncate|, |@!getpid|, |@!pause|, |@!pipe|, |@!read| */
