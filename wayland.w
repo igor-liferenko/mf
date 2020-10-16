@@ -131,9 +131,7 @@ if (pid == 0) {
 close(write_end);
 
 @ @<Wait ...@>=
-byte = 'x';
-read(read_end, &byte, 1);
-if (byte == 'x') kill(getpid(), SIGABRT), pause();
+if (!read(read_end, &byte, 1)) kill(getpid(), SIGABRT), pause();
 
 @ @<Header files@>=
 #include <signal.h> /* |@!SIGABRT|, |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|,
