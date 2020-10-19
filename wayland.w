@@ -86,7 +86,7 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 sends |SIGUSR1|. On receiving this signal, wayland process
 checks if it is in foreground.
 If yes, it updates the screen and writes |'1'| to pipe.
-If no or it is dead, |byte| will be |'0'|.
+If no or it is dead or it was not started yet, |byte| will be |'0'|.
 
 @d read_end fd[0]
 @d write_end fd[1]
@@ -126,7 +126,7 @@ if (pid == 0) {
   signal(SIGINT, SIG_IGN);
   prctl(PR_SET_PDEATHSIG, SIGTERM);
   execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-  exit(1);
+  exit(0);
 }
 close(write_end);
 
