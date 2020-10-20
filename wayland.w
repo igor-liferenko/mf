@@ -82,11 +82,12 @@ void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
   } while (k != n);
 }
 
-@ On update, if window exists, metafont process
-sends |SIGUSR1|. On receiving this signal, wayland process
-checks if it is in foreground.
-If yes, it updates the screen and writes |'1'| to pipe.
-If no or it is dead or it was not started yet, |byte| will be |'0'|.
+@ Here |SIGUSR1| is sent to wayland process.
+On receiving this signal
+wayland process updates the screen (if it is in
+foreground) and writes the result to pipe.
+Killing and starting wayland process is used as a
+means of bringing it to foreground.
 
 @d read_end fd[0]
 @d write_end fd[1]
