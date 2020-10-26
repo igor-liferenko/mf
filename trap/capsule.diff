@@ -1,5 +1,8 @@
-This is taken from texk/web2c/triptrap/mftrap.diffs
-See also texk/web2c/mftraptest.test
+From web2c/triptrap/README:
+
+  For trap, additionally, the capsule numbers will be different.  We
+  believe this is because the master trap.log was not updated completed
+  after the 2.7182818 (2014) tune-up, and have asked Knuth to review.
 
 3693,3695c3693,3695
 < xpart %CAPSULE1359=xx
