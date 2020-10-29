@@ -1,6 +1,7 @@
 \let\lheader\rheader
 \noinx
 
+\input identifiers
 \font\logo=manfnt
 
 @* Online graphics display for {\logo METAFONT}.
@@ -24,7 +25,8 @@ bool init_screen(void)
   @#@t\8@> /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
-  int screen_size = @!screen_width * @!screen_depth * 4;
+  int screen_size = @t\0@>@=screen_width@>@:screen_width@> *
+                    @t\0@>@=screen_depth@>@:screen_depth@> * 4;
   if (ftruncate(screen_fd, screen_size) == -1) {
     close(screen_fd);
     return false;
@@ -39,7 +41,8 @@ bool init_screen(void)
 
   @#@t\8@> /* initialize the memory */
   int *pixel = screen_data;
-  for (int n = 0; n < screen_width * screen_depth; n++)
+  for (int n = 0; n < @t\0@>@=screen_width@>@:screen_width@> *
+                      @t\0@>@=screen_depth@>@:screen_depth@>; n++)
     *pixel++ = 0xffffff;
 
   return true;
@@ -56,7 +59,7 @@ void blank_rectangle(screen_col left_col, screen_col right_col,
   int *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
     pixel = screen_data;
-    pixel += screen_width*r + left_col;
+    pixel += @t\0@>@=screen_width@>@:screen_width@>*r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
       *pixel++ = 0xffffff;
   }
@@ -69,7 +72,7 @@ typedef uint8_t pixel_color; /* specifies one of the two pixel values */
 void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
-  pixel += screen_width*r + a[0];
+  pixel += @t\0@>@=screen_width@>@:screen_width@>*r + a[0];
   int k = 0;
   screen_col c = a[0];
   do {
