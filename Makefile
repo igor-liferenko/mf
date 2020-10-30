@@ -13,4 +13,4 @@ trapmf:
 	/bin/ctangle mf-goto mf mf
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
-CHF=format.ch arg.ch path.ch interrupt.ch output.ch editor.ch time.ch
+CHF=format.ch arg.ch path.ch interrupt.ch output.ch editor.ch name.ch time.ch
