@@ -1,5 +1,3 @@
-NOTE: implementation here is similar to tex/editor.ch - see there for additional explanations
-
 @x
 @<Global variables@>@;
 @y
@@ -13,12 +11,10 @@ int edit_line;
 @.You want to edit file x@>
   slow_print(input_stack[file_ptr].name_field);
   print_str(" at line ");print_int(line);@/
-  interaction=scroll_mode;jump_out();
 @y
 { ed_name_start = str_start[input_stack[file_ptr].name_field];
   ed_name_end = str_start[input_stack[file_ptr].name_field+1] - 1;
   edit_line = line;
-  jump_out();
 @z
 
 @x
