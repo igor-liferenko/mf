@@ -122,8 +122,8 @@ if (pid != -1) {
 }
 
 @ @<Start ...@>=
-if (pipe(fd) == -1) kill(getpid(), SIGABRT), pause();
-if ((pid = fork()) == -1) kill(getpid(), SIGABRT), pause();
+assert(pipe(fd) != -1);
+assert((pid = fork()) != -1);
 if (pid == 0) {
   dup2(screen_fd, STDIN_FILENO);
   dup2(write_end, STDOUT_FILENO);
@@ -135,10 +135,11 @@ if (pid == 0) {
 close(write_end);
 
 @ @<Wait ...@>=
-if (!read(read_end, &byte, 1)) kill(getpid(), SIGABRT), pause();
+assert(read(read_end, &byte, 1));
 
 @ @<Header files@>=
-#include <signal.h> /* |@!SIGABRT|, |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|,
+#include <assert.h> /* |assert| */
+#include <signal.h> /* |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|,
   |@!signal| */
 #include <stdbool.h> /* |@!false|, |@!true| */
 #include <stdint.h> /* |@!uint8_t|, |@!uint16_t| */
@@ -148,4 +149,4 @@ if (!read(read_end, &byte, 1)) kill(getpid(), SIGABRT), pause();
 #include <sys/syscall.h> /* |@!SYS_memfd_create|, |@!syscall| */
 #include <sys/wait.h> /* |@!waitpid| */
 #include <unistd.h> /* |@!STDIN_FILENO|, |@!STDOUT_FILENO|, |@!close|,
-  |@!dup2|, |@!execl|, |@!fork|, |@!ftruncate|, |@!getpid|, |@!pause|, |@!pipe|, |@!read| */
+  |@!dup2|, |@!execl|, |@!fork|, |@!ftruncate|, |@!pipe|, |@!read| */
