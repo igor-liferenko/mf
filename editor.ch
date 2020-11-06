@@ -1,4 +1,12 @@
 @x
+@h
+@y
+#include <assert.h>
+#include <unistd.h>
+@h
+@z
+
+@x
   {@+print_nl("You want to edit file ");
 @.You want to edit file x@>
   slow_print(input_stack[file_ptr].name_field);
