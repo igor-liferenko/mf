@@ -1,4 +1,4 @@
-TODO: put from wayland.w here directly
+TODO: after you do ./TODO, put from wayland.w here directly
 
 @x
 @h
