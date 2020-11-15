@@ -749,24 +749,24 @@ bool w_open_out(@!word_file *@!f)
 {@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
 } 
 
-@ Files can be closed with the \ph\ routine `|close(f)|', which
+@ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
 @:PASCAL H}{\ph@>
 @^system dependencies@>
 should be used when all input or output with respect to |f| has been completed.
 This makes |f| available to be opened again, if desired; and if |f| was used for
-output, the |close| operation makes the corresponding external file appear
+output, the |pascal_close| operation makes the corresponding external file appear
 on the user's area, ready to be read.
 
 @p void a_close(@!alpha_file *@!f) /*close a text file*/ 
-{@+close((*f));
+{@+pascal_close((*f));
 } 
 @#
 void b_close(@!byte_file *@!f) /*close a binary file*/ 
-{@+close((*f));
+{@+pascal_close((*f));
 } 
 @#
 void w_close(@!word_file *@!f) /*close a word file*/ 
-{@+close((*f));
+{@+pascal_close((*f));
 } 
 
 @ Binary input and output are done with \PASCAL's ordinary |get| and |put|
@@ -956,11 +956,11 @@ if the system permits them.
 @p bool init_terminal(void) /*gets the terminal input started*/ 
 {@+
 t_open_in;
-loop@+{@+wake_up_terminal;write(term_out,"**");update_terminal;
+loop@+{@+wake_up_terminal;pascal_write(term_out,"**");update_terminal;
 @.**@>
   if (!input_ln(&term_in, true))  /*this shouldn't happen*/ 
     {@+write_ln(term_out);
-    write(term_out,"! End of file on the terminal... why?");
+    pascal_write(term_out,"! End of file on the terminal... why?");
 @.End of file on the terminal@>
     return false;
     } 
@@ -1265,7 +1265,7 @@ else bad_pool("! I can't read MF.POOL.")
 @ @<Read one string...@>=
 {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
 @.MF.POOL has no check sum@>
-read(pool_file, m, n); /*read two digits of string length*/ 
+pascal_read(pool_file, m, n); /*read two digits of string length*/ 
 if (m== '*' ) @<Check the pool check sum@>@;
 else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
       (xord[n] < '0')||(xord[n] > '9')) 
@@ -1276,7 +1276,7 @@ else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
     bad_pool("! You have to increase POOLSIZE.");
 @.You have to increase POOLSIZE@>
   for (k=1; k<=l; k++) 
-    {@+if (eoln(pool_file)) m= ' ' ;@+else read(pool_file, m);
+    {@+if (eoln(pool_file)) m= ' ' ;@+else pascal_read(pool_file, m);
     append_char(xord[m]);
     } 
   read_ln(pool_file);g=make_string();str_ref[g]=max_str_ref;
@@ -1295,7 +1295,7 @@ loop@+{@+if ((xord[n] < '0')||(xord[n] > '9'))
 @.MF.POOL check sum...@>
   a=10*a+xord[n]-'0';
   if (k==9) goto done;
-  incr(k);read(pool_file, n);
+  incr(k);pascal_read(pool_file, n);
   } 
 done: if (a!=0) bad_pool("! MF.POOL doesn't match; TANGLE me again.");
 @.MF.POOL doesn't match@>
@@ -1371,10 +1371,10 @@ for terminal output, and it is possible to adhere to those conventions
 by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
 @^system dependencies@>
 
-@d wterm(X)	write(term_out, X)
+@d wterm(X)	pascal_write(term_out, X)
 @d wterm_ln(...)	write_ln(term_out,__VA_ARGS__)
 @d wterm_cr	write_ln(term_out)
-@d wlog(...)	write(log_file,__VA_ARGS__)
+@d wlog(...)	pascal_write(log_file,__VA_ARGS__)
 @d wlog_ln(...)	write_ln(log_file,__VA_ARGS__)
 @d wlog_cr	write_ln(log_file)
 
@@ -21574,7 +21574,7 @@ for (k=bc; k<=ec; k++) if (char_exists[k])
 @ Finally we're ready to actually write the \.{TFM} information.
 Here are some utility routines for this purpose.
 
-@d tfm_out(X)	write(tfm_file, X) /*output one byte to |tfm_file|*/ 
+@d tfm_out(X)	pascal_write(tfm_file, X) /*output one byte to |tfm_file|*/ 
 
 @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
 {@+tfm_out(x/256);tfm_out(x%256);
@@ -22128,7 +22128,7 @@ output an array of words with one system call.
 @<Declare generic font output procedures@>=
 void write_gf(gf_index @!a, gf_index @!b)
 {@+int k;
-for (k=a; k<=b; k++) write(gf_file, gf_buf[k]);
+for (k=a; k<=b; k++) pascal_write(gf_file, gf_buf[k]);
 } 
 
 @ To put a byte in the buffer without paying the cost of invoking a procedure
@@ -23075,13 +23075,13 @@ int @!k, @!l, @!m, @!n;
 loop{@+wake_up_terminal;
   print_nl("debug # (-1 to exit):");update_terminal;
 @.debug \#@>
-  read(term_in, m);
+  pascal_read(term_in, m);
   if (m < 0) return;
   else if (m==0) 
     {@+goto breakpoint; /*go to every label at least once*/ 
     breakpoint: m=0;/*'BREAKPOINT'*/
     } 
-  else{@+read(term_in, n);
+  else{@+pascal_read(term_in, n);
     switch (m) {
     @t\4@>@<Numbered cases for |debug_help|@>@;
     default:print_str("?");
@@ -23104,7 +23104,7 @@ case 9: show_token_list(n, null, 100000, 0);@+break;
 case 10: slow_print(n);@+break;
 case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
 case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
-case 13: {@+read(term_in, l);print_cmd_mod(n, l);
+case 13: {@+pascal_read(term_in, l);print_cmd_mod(n, l);
   } @+break;
 case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
 case 15: panicking=!panicking;@+break;
