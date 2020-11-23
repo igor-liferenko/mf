@@ -138,7 +138,7 @@ close(write_end);
 assert(read(read_end, &byte, 1));
 
 @ @<Header files@>=
-#include <assert.h> /* |assert| */
+#include <assert.h> /* |@!assert| */
 #include <signal.h> /* |@!SIGINT|, |@!SIGTERM|, |@!SIGUSR1|, |@!SIG_IGN|, |@!kill|,
   |@!signal| */
 #include <stdbool.h> /* |@!false|, |@!true| */
