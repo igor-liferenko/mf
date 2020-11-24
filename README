@@ -3,7 +3,7 @@ See http://mruckert.userweb.mwn.de/hint/web2w.html
 Add the following to .bashrc:
   export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o "[0-9]\+x[0-9]\+")
 and use the companion repo http://github.com/igor-liferenko/mf-wayland
-(set path to it in wayland.w)
+(set path to it in screen.ch)
 
 Run as "exec /path/to/mf/plain"
 
