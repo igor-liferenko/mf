@@ -284,7 +284,7 @@ Arithmetic overflow will be detected in all cases.
 #include <math.h>
 
 #define odd(X)       ((X)&1)
-#define chr(X)       ((unsigned char)(X))
+#define chr(X)       (X)
 #define ord(X)       ((int)(X))
 #define abs(X)       ((X)>-(X)?(X):-(X)) /* FIXME: is it needed? */
 
@@ -502,7 +502,7 @@ that are analogous to \PASCAL's |ord| and |chr| functions.
 @<Glob...@>=
 ASCII_code @!xord[256];
    /*specifies conversion of input characters*/ 
-uint8_t @!xchr[256];
+text_char @!xchr[256];
    /*specifies conversion of output characters*/ 
 
 @ Since we are assuming that our \PASCAL\ system is able to read and
@@ -701,7 +701,7 @@ implement \MF\ can open a file whose external name is specified by
 @^system dependencies@>
 
 @<Glob...@>=
-uint8_t @!name_of_file0[file_name_size+1]={0}, *const @!name_of_file = @!name_of_file0-1;@;@/
+char @!name_of_file0[file_name_size+1]={0}, *const @!name_of_file = @!name_of_file0-1;@;@/
    /*on some systems this may be a \&{record} variable*/ 
 uint8_t @!name_length;@/ /*this many characters are actually
   relevant in |name_of_file| (the rest are blank)*/ 
@@ -15681,7 +15681,7 @@ and extensions related to base files.
 @d base_extension_str	".base" /*the extension, as a \.{WEB} constant*/ 
 
 @<Glob...@>=
-ASCII_code @!MF_base_default[1+base_default_length+1]=" MFbases/plain.base";
+char @!MF_base_default[]=" MFbases/plain.base";
 @.MFbases@>
 @.plain@>
 @^system dependencies@>
@@ -15888,7 +15888,7 @@ it catch up to what has previously been printed on the terminal.
 int @!k; /*index into |months| and |buffer|*/ 
 uint16_t @!l; /*end of first input line*/ 
 int @!m; /*the current month*/ 
-@!ASCII_code @!months[]=" JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC"; /*abbreviations of month names*/ 
+char @!months[]=" JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC"; /*abbreviations of month names*/ 
 old_setting=selector;
 if (job_name==0) job_name=@[@<|"mfput"|@>@];
 @.mfput@>

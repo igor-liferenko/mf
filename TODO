@@ -14,7 +14,3 @@ with
   make -C web2w
   patch -so mf.w web2w/cmf.w goto.patch
 and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle and remove mf-goto.w from .gitignore and add mf.w to .gitignore
-
-change:
-ASCII_code @!MF_base_default[1+base_default_length+1] -> char @!MF_base_default[]
-@!ASCII_code @!months[] -> char @!months[]
