@@ -20,9 +20,9 @@ else{@+if (c=='/')
 @z
 
 @x
-ASCII_code @!MF_base_default[1+base_default_length+1]=" MFbases/plain.base";
+char @!MF_base_default[]=" MFbases/plain.base";
 @y
-ASCII_code @!MF_base_default[1+base_default_length+1]=" /home/user/mf/MFbases/plain.base";
+char @!MF_base_default[]=" /home/user/mf/MFbases/plain.base";
 @z
 
 @x
