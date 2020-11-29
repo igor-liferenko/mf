@@ -128,7 +128,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
   int *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
     pixel = screen_data;
-    pixel += @t\0@>@=screen_width@>@:screen_width@>*r + left_col;
+    pixel += screen_width*r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
       *pixel++ = 0xffffff;
   }
@@ -154,7 +154,7 @@ wlog_ln(")");
 @p void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   int *pixel = screen_data;
-  pixel += @t\0@>@=screen_width@>@:screen_width@>*r + a[0];
+  pixel += screen_width*r + a[0];
   int k = 0;
   screen_col c = a[0];
   do {
