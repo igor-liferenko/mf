@@ -488,9 +488,9 @@ that |text_char| consists of the elements |chr(first_text_char)| through
 adjusted if necessary.
 @^system dependencies@>
 
-@d text_char	unsigned char /*the data type of characters in text files*/ 
+@d text_char	char /*the data type of characters in text files*/ 
 @d first_text_char	0 /*ordinal number of the smallest element of |text_char|*/ 
-@d last_text_char	255 /*ordinal number of the largest element of |text_char|*/ 
+@d last_text_char	127 /*ordinal number of the largest element of |text_char|*/ 
 
 @<Local variables for init...@>=
 int @!i;
@@ -500,7 +500,7 @@ the user's external character set by means of arrays |xord| and |xchr|
 that are analogous to \PASCAL's |ord| and |chr| functions.
 
 @<Glob...@>=
-ASCII_code @!xord[256];
+ASCII_code @!xord[128];
    /*specifies conversion of input characters*/ 
 text_char @!xchr[256];
    /*specifies conversion of output characters*/ 
@@ -735,6 +735,7 @@ cannot be found, or if such a file cannot be opened for some other reason
 @p bool a_open_in(@!alpha_file *@!f)
    /*open a text file for input*/ 
 {@+reset((*f), name_of_file,"r");return reset_OK((*f));
+{@+if(((*f).f=fopen(name_of_file+1,"r"))!=NULL)get((*f));return reset_OK((*f));
 } 
 @#
 bool a_open_out(@!alpha_file *@!f)
