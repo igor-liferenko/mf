@@ -735,7 +735,6 @@ cannot be found, or if such a file cannot be opened for some other reason
 @p bool a_open_in(@!alpha_file *@!f)
    /*open a text file for input*/ 
 {@+reset((*f), name_of_file,"r");return reset_OK((*f));
-{@+if(((*f).f=fopen(name_of_file+1,"r"))!=NULL)get((*f));return reset_OK((*f));
 } 
 @#
 bool a_open_out(@!alpha_file *@!f)
