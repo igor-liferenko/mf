@@ -4125,7 +4125,7 @@ fuss with. Every such parameter has an identifying code number, defined here.
 @d year	14 /*the current year (e.g., 1984)*/ 
 @d month	15 /*the current month (e.g., 3 $\equiv$ March)*/ 
 @d day	16 /*the current day of the month*/ 
-@d time	17 /*the number of minutes past midnight when this job started*/ 
+@d internal_time	17 /*the number of minutes past midnight when this job started*/ 
 @d char_code	18 /*the number of the next character to be output*/ 
 @d char_ext	19 /*the extension code of the next character to be output*/ 
 @d char_wd	20 /*the width of the next character to be output*/ 
@@ -4202,7 +4202,7 @@ primitive(@[@<|"month"|@>@], internal_quantity, month);@/
 @!@:month_}{\&{month} primitive@>
 primitive(@[@<|"day"|@>@], internal_quantity, day);@/
 @!@:day_}{\&{day} primitive@>
-primitive(@[@<|"time"|@>@], internal_quantity, time);@/
+primitive(@[@<|"time"|@>@], internal_quantity, internal_time);@/
 @!@:time_}{\&{time} primitive@>
 primitive(@[@<|"charcode"|@>@], internal_quantity, char_code);@/
 @!@:char_code_}{\&{charcode} primitive@>
@@ -4273,7 +4273,7 @@ int_name[tracing_online]=@[@<|"tracingonline"|@>@];
 int_name[year]=@[@<|"year"|@>@];
 int_name[month]=@[@<|"month"|@>@];
 int_name[day]=@[@<|"day"|@>@];
-int_name[time]=@[@<|"time"|@>@];
+int_name[internal_time]=@[@<|"time"|@>@];
 int_name[char_code]=@[@<|"charcode"|@>@];
 int_name[char_ext]=@[@<|"charext"|@>@];
 int_name[char_wd]=@[@<|"charwd"|@>@];
@@ -4310,7 +4310,7 @@ Note that the values are |scaled| integers. Hence \MF\ can no longer
 be used after the year 32767.
 
 @p void fix_date_and_time(void)
-{@+internal[time]=12*60*unity; /*minutes since midnight*/ 
+{@+internal[internal_time]=12*60*unity; /*minutes since midnight*/ 
 internal[day]=4*unity; /*fourth day of the month*/ 
 internal[month]=7*unity; /*seventh month of the year*/ 
 internal[year]=1776*unity; /*Anno Domini*/ 
@@ -15932,7 +15932,7 @@ print_int(round_unscaled(internal[day]));print_char(' ');
 m=round_unscaled(internal[month]);
 for (k=3*m-2; k<=3*m; k++) wlog("%c",months[k]);
 print_char(' ');print_int(round_unscaled(internal[year]));print_char(' ');
-m=round_unscaled(internal[time]);
+m=round_unscaled(internal[internal_time]);
 print_dd(m/60);print_char(':');print_dd(m%60);
 } 
 
@@ -22273,7 +22273,7 @@ old_setting=selector;selector=new_string;print_str(" METAFONT output ");
 print_int(round_unscaled(internal[year]));print_char('.');
 print_dd(round_unscaled(internal[month]));print_char('.');
 print_dd(round_unscaled(internal[day]));print_char(':');@/
-t=round_unscaled(internal[time]);
+t=round_unscaled(internal[internal_time]);
 print_dd(t/60);print_dd(t%60);@/
 selector=old_setting;gf_out(cur_length);
 gf_string(0, make_string());decr(str_ptr);
@@ -23058,7 +23058,7 @@ if ((base_ident==0)||(buffer[loc]=='&'))
   while ((loc < limit)&&(buffer[loc]==' ')) incr(loc);
   } 
 buffer[limit]='%';@/
-fix_date_and_time();init_randoms((internal[time]/unity)+internal[day]);@/
+fix_date_and_time();init_randoms((internal[internal_time]/unity)+internal[day]);@/
 @<Initialize the print |selector|...@>;
 if (loc < limit) if (buffer[loc]!='\\') start_input(); /*\&{input} assumed*/ 
 } 

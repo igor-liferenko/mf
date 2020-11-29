@@ -14,5 +14,3 @@ with
   make -C web2w
   patch -so mf.w web2w/cmf.w goto.patch
 and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle and remove mf-goto.w from .gitignore and add mf.w to .gitignore
-
-After you do above, add time->internal_time to web2w.w and simplify time.ch
