@@ -1,11 +1,4 @@
-Ensure that input consists only of BMP characters and is valid UTF-8.
-
-@x
-@h
-@y
-#include <errno.h>
-@h
-@z
+Ensure that input consists only of ASCII characters.
 
 @x
 {@+reset((*f), name_of_file,"r");return reset_OK((*f));
