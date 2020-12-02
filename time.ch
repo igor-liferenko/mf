@@ -11,11 +11,11 @@ internal[day]=4*unity; /*fourth day of the month*/
 internal[month]=7*unity; /*seventh month of the year*/
 internal[year]=1776*unity; /*Anno Domini*/
 @y
-{ time_t timestamp = time(NULL);
-  struct tm *tm = localtime(&timestamp);
+{ time_t $ = time(NULL);
+  struct tm *t = localtime(&$);
 
-  internal[internal_time] = (tm->tm_hour * 60 + tm->tm_min) * unity;
-  internal[day] = tm->tm_mday * unity;
-  internal[month] = (tm->tm_mon + 1) * unity;
-  internal[year] = (tm->tm_year + 1900) * unity;
+  internal[internal_time] = (t->tm_hour * 60 + t->tm_min) * unity;
+  internal[day] = t->tm_mday * unity;
+  internal[month] = (t->tm_mon + 1) * unity;
+  internal[year] = (t->tm_year + 1900) * unity;
 @z
