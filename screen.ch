@@ -72,6 +72,9 @@ foreground) and writes the result to pipe.
 Killing and starting wayland process is used as a
 means of bringing it to foreground. */
 
+#define read_end fd[0]
+#define write_end fd[1]
+
 void update_screen(void)
 {
   static pid_t pid = -1;
@@ -80,14 +83,14 @@ void update_screen(void)
   char byte = '0';
   if (pid != -1) {
     kill(pid, SIGUSR1);
-    read(fd[0], &byte, 1);
+    read(read_end, &byte, 1);
   }
   if (byte == '0') {
     /* stop wayland process if it is already running */
     if (pid != -1) {
       kill(pid, SIGTERM);
       waitpid(pid, NULL, 0);
-      close(fd[0]);
+      close(read_end);
     }
 
     /* start wayland process */
@@ -95,16 +98,16 @@ void update_screen(void)
     assert((pid = fork()) != -1);
     if (pid == 0) {
       dup2(screen_fd, STDIN_FILENO);
-      dup2(fd[1], STDOUT_FILENO);
+      dup2(write_end, STDOUT_FILENO);
       signal(SIGINT, SIG_IGN);
       prctl(PR_SET_PDEATHSIG, SIGTERM);
       execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
       exit(0);
     }
-    close(fd[1]);
+    close(write_end);
 
     /* wait until wayland process is initialized */
-    assert(read(fd[0], &byte, 1));
+    assert(read(read_end, &byte, 1));
   }
 }
 @z
