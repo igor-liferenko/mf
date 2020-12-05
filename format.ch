@@ -3,7 +3,9 @@ NOTE: gdb adds path automatically, so run via full path too
 @p int main(int argc, char **argv) {
 @y
 @p int main(int argc, char **argv) {
+#ifndef INIT
 assert(*argv[0] == '/');
+#endif
 @z
 
 NOTE: this code was taken verbatim from @<Get the first line...@> (except that open_base_file is replaced with w_open_in)
