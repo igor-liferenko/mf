@@ -13,5 +13,5 @@ if (gftopk == 0) {
   execl("/bin/gftopk", "gftopk", fname, (char *) NULL);
   exit(1);
 }
-int exit_status; waitpid(gftopk, &exit_status, 0); assert(exit_status == 0);
+int wstatus; waitpid(gftopk, &wstatus, 0); assert(wstatus == 0);
 @z
