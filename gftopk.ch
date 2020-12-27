@@ -13,5 +13,6 @@ if (gftopk == 0) {
   execl("/bin/gftopk", "gftopk", fname, (char *) NULL);
   exit(1);
 }
-int wstatus; waitpid(gftopk, &wstatus, 0); assert(wstatus == 0);
+int wstatus; waitpid(gftopk, &wstatus, 0); assert(wstatus == 0); /* TODO: check if child exits by
+  signal wstatus will be non-zero and if yes, rm signal() from here */
 @z
