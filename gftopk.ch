@@ -10,7 +10,7 @@ pid_t gftopk = fork();
 assert(gftopk != -1);
 if (gftopk == 0) {
   signal(SIGINT, SIG_IGN);
-  execl("/bin/gftopk", "gftopk", fname, (char *) NULL);
+  execlp("gftopk", "gftopk", fname, (char *) NULL);
   exit(1);
 }
 int wstatus; waitpid(gftopk, &wstatus, 0); assert(wstatus == 0);
