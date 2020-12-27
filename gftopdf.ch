@@ -15,7 +15,7 @@ pid_t dvipdfm = fork();
 assert(dvipdfm != -1);
 if (dvipdfm == 0) {
   signal(SIGINT, SIG_IGN);
-  execl("/bin/dvipdfm", "dvipdfm", fname, (char *) NULL);
+  execlp("dvipdfm", "dvipdfm", fname, (char *) NULL);
   exit(1);
 }
 waitpid(dvipdfm, &wstatus, 0); assert(wstatus == 0);
