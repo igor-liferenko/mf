@@ -1,3 +1,5 @@
+Automatically run gftopk.
+
 @x
 b_close(&gf_file);
 @y
