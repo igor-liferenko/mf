@@ -8,7 +8,6 @@ Screen data is stored in memory, which is shared among the processes.
 #include <sys/mman.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
-#include <sys/wait.h>
 @h
 @z
 

@@ -1,4 +1,9 @@
-Automatically run gftopk.
+@x
+@h
+@y
+#include <sys/wait.h>
+@h
+@z
 
 @x
 b_close(&gf_file);
