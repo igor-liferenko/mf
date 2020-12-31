@@ -6,12 +6,6 @@
 @z
 
 @x
-  print_str("gf");gf_ext=make_string();selector=old_setting;
-@y
-  print_str("pk");gf_ext=make_string();selector=old_setting;
-@z
-
-@x
 b_close(&gf_file);
 @y
 char tmp[30];
@@ -27,10 +21,4 @@ if (gftopk == 0) {
   exit(1);
 }
 int wstatus; waitpid(gftopk, &wstatus, 0); assert(wstatus == 0);
-@z
-
-@x
-@d str_468 ".gf"
-@y
-@d str_468 ".pk"
 @z
