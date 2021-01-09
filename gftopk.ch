@@ -20,5 +20,5 @@ if (gftopk_pid == 0) {
   execlp("gftopk", "gftopk", fname, (char *) NULL);
   exit(1);
 }
-int wstatus; waitpid(gftopk_pid, &wstatus, 0); assert(wstatus == 0);
+int gftopk; waitpid(gftopk_pid, &gftopk, 0); assert(gftopk == 0);
 @z
