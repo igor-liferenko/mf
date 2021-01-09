@@ -15,4 +15,6 @@ with
   patch -so mf.w web2w/cmf.w goto.patch
 and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle and remove mf-goto.w from .gitignore and add mf.w to .gitignore
 
+Run "cweave mf.w mf.ch" and check that section numbers match with mf.web (if need one more section, in screen.ch "#define read_end ..." may be changed to @d ...)
+
 See tex/TODO
