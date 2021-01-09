@@ -76,26 +76,26 @@ means of bringing it to foreground. */
 
 void update_screen(void)
 {
-  static pid_t pid = -1;
+  static pid_t screen_pid = -1;
   static int fd[2];
 
   char byte = '0';
-  if (pid != -1) {
-    kill(pid, SIGUSR1);
+  if (screen_pid != -1) {
+    kill(screen_pid, SIGUSR1);
     read(read_end, &byte, 1);
   }
   if (byte == '0') {
     /* stop wayland process if it is already running */
-    if (pid != -1) {
-      kill(pid, SIGTERM);
-      waitpid(pid, NULL, 0);
+    if (screen_pid != -1) {
+      kill(screen_pid, SIGTERM);
+      waitpid(screen_pid, NULL, 0);
       close(read_end);
     }
 
     /* start wayland process */
     assert(pipe(fd) != -1);
-    assert((pid = fork()) != -1);
-    if (pid == 0) {
+    assert((screen_pid = fork()) != -1);
+    if (screen_pid == 0) {
       dup2(screen_fd, STDIN_FILENO);
       dup2(write_end, STDOUT_FILENO);
       signal(SIGINT, SIG_IGN);
