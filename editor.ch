@@ -1,5 +1,5 @@
-Editor must be full-screen (like vi, not like ed) - otherwise
-output from editor will interfere with TeX's output.
+NOTE: editor must be full-screen (like vi, not like ed) - otherwise
+output from editor will interfere with TeX's output
 
 @x
 @h
