@@ -956,11 +956,11 @@ if the system permits them.
 @p bool init_terminal(void) /*gets the terminal input started*/ 
 {@+
 t_open_in;
-loop@+{@+wake_up_terminal;pascal_write(term_out,"**");update_terminal;
+loop@+{@+wake_up_terminal;write(term_out,"**");update_terminal;
 @.**@>
   if (!input_ln(&term_in, true))  /*this shouldn't happen*/ 
     {@+write_ln(term_out);
-    pascal_write(term_out,"! End of file on the terminal... why?");
+    write(term_out,"! End of file on the terminal... why?");
 @.End of file on the terminal@>
     return false;
     } 
@@ -1371,10 +1371,10 @@ for terminal output, and it is possible to adhere to those conventions
 by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
 @^system dependencies@>
 
-@d wterm(X)	pascal_write(term_out, X)
+@d wterm(X)	write(term_out, X)
 @d wterm_ln(...)	write_ln(term_out,__VA_ARGS__)
 @d wterm_cr	write_ln(term_out)
-@d wlog(...)	pascal_write(log_file,__VA_ARGS__)
+@d wlog(...)	write(log_file,__VA_ARGS__)
 @d wlog_ln(...)	write_ln(log_file,__VA_ARGS__)
 @d wlog_cr	write_ln(log_file)
 
@@ -21574,7 +21574,7 @@ for (k=bc; k<=ec; k++) if (char_exists[k])
 @ Finally we're ready to actually write the \.{TFM} information.
 Here are some utility routines for this purpose.
 
-@d tfm_out(X)	pascal_write(tfm_file, X) /*output one byte to |tfm_file|*/ 
+@d tfm_out(X)	write(tfm_file, X) /*output one byte to |tfm_file|*/ 
 
 @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
 {@+tfm_out(x/256);tfm_out(x%256);
@@ -22128,7 +22128,7 @@ output an array of words with one system call.
 @<Declare generic font output procedures@>=
 void write_gf(gf_index @!a, gf_index @!b)
 {@+int k;
-for (k=a; k<=b; k++) pascal_write(gf_file, gf_buf[k]);
+for (k=a; k<=b; k++) write(gf_file, gf_buf[k]);
 } 
 
 @ To put a byte in the buffer without paying the cost of invoking a procedure
