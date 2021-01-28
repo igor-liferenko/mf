@@ -2433,7 +2433,6 @@ SYM_PTR("time")->name="time_of_day";
 @#
 SYM_PTR("exit")->name="end";
 SYM_PTR("free")->name="is_free";
-/* to avoid conflict with the C library functions in screen.ch */
 SYM_PTR("read")->name="pascal_read";
 SYM_PTR("close")->name="pascal_close";
 @#
