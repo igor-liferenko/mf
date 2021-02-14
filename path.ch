@@ -5,6 +5,7 @@ enum {@+@!file_name_size=40@+}; /*file names shouldn't be longer than this*/
 enum {@+@!file_name_size=255@+}; /*file names shouldn't be longer than this*/
 @z
 
+FIXME: what is it useful for?
 @x
 else{@+if ((c=='>')||(c==':')) 
 @y
