@@ -1,5 +1,5 @@
 Always put .tfm to TeXfonts/
-(prevents naming local font file as any file in TeXfonts/).
+(prevents naming local font file as any file in TeXfonts/ - useful for mktexpk wrapper).
 
 @x
 @p void pack_job_name(str_number @!s) /*|s==@[@<|".log"|@>@]|, |@[@<|".gf"|@>@]|,
