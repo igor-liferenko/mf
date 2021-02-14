@@ -1,3 +1,6 @@
+Always put .tfm to TeXfonts/
+(prevents naming local font file as any file in TeXfonts/).
+
 @x
 @p void pack_job_name(str_number @!s) /*|s==@[@<|".log"|@>@]|, |@[@<|".gf"|@>@]|,
   |@[@<|".tfm"|@>@]|, or |base_extension|*/
