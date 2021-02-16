@@ -1,0 +1,1 @@
+/usr/share/texlive/texmf-dist/fonts/source/public/latex-fonts/lcmssi8.mf
