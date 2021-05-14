@@ -22,6 +22,8 @@ if (gftodvi_pid == 0) {
   exit(1);
 }
 int gftodvi; waitpid(gftodvi_pid, &gftodvi, 0); assert(gftodvi == 0);
+unlink(fname);
+{ char *p = strrchr(fname, '.'); *++p = 'd'; *++p = 'v'; *++p = 'i'; *++p = '\0'; }
 pid_t dvipdfm_pid = fork();
 assert(dvipdfm_pid != -1);
 if (dvipdfm_pid == 0) {
