@@ -1,6 +1,6 @@
 all:
 	patch -so mf-goto.w mf.w goto.patch
-	tie -c mf.ch mf-goto.w constants.ch gftopk.ch screen.ch $(CHF) >/dev/null
+	tie -c mf.ch mf-goto.w constants.ch gftodvi.ch gftopk.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf-goto mf mf
 	gcc -O3 -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
