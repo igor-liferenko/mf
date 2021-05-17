@@ -17,7 +17,7 @@ pid_t gftodvi_pid = fork();
 assert(gftodvi_pid != -1);
 if (gftodvi_pid == 0) {
   signal(SIGINT, SIG_IGN);
-  putenv("TFMFONTS=/home/user/tex/TeXfonts"); /* same as in bin/dvipdfmx */
+  putenv("TFMFONTS=/home/user/tex/TeXfonts");
   execlp("gftodvi", "gftodvi", fname, (char *) NULL);
   exit(1);
 }
