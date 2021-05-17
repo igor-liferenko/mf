@@ -23,7 +23,7 @@ if (gftodvi_pid == 0) {
 }
 int gftodvi; waitpid(gftodvi_pid, &gftodvi, 0); assert(gftodvi == 0);
 unlink(fname);
-{ char *p = strrchr(fname, '.'); *++p = 'd'; *++p = 'v'; *++p = 'i'; *++p = '\0'; }
+char *p = strrchr(fname, '.'); *p = '\0'; strcat(fname, ".dvi");
 pid_t dvipdfm_pid = fork();
 assert(dvipdfm_pid != -1);
 if (dvipdfm_pid == 0) {
