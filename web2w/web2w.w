@@ -629,7 +629,7 @@ but by itself not capable of tracking
 nested structures.
 
 \subsection{Tokens}
-The parser creates a representation of the \WEB/ file as a list
+The scanner creates a representation of the \WEB/ file as a list
 of tokens\index{token}. Later the parser will build a parse tree with tokens
 as leaf nodes. Because \CEE/ lacks object orientation,
 I define |token| as a |union| of leaf nodes\index{leaf node} 
