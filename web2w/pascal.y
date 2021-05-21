@@ -243,7 +243,9 @@ labeldecl: NMACRO  {IGN($1); SYM($1)->obsolete=1; }
          | labeldecl PPLUS PINTEGER  {IGN($2); IGN($3); } 
          ; 
 
-constants: PCONST constdefinitions conststringdefinition constdefinitions
+constants: 
+         | PCONST constdefinitions
+         | PCONST constdefinitions conststringdefinition constdefinitions
          ; 
 
 constdefinitions:  constdefinition
@@ -729,7 +731,6 @@ file_var: variable PUP
 expression: simple_expr {$$=$1; }
           | simple_expr relop simple_expr {$$=$3; }
           | simple_expr PEQ STRING {$$=$3; }
-          | simple_expr PNOTEQ STRING {$$=$3; }
           ;
 
 relop: PEQ | PNOTEQ | PLESS | PLESSEQ | PGREATER | PGREATEREQ;
