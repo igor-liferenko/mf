@@ -1,0 +1,1 @@
+sed -i 's/^\(%token [A-Z_]\+\) .*/\1/;s/^%token PEOF$/& 0/' pascal.y
