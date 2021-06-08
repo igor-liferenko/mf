@@ -731,6 +731,7 @@ file_var: variable PUP
 expression: simple_expr {$$=$1; }
           | simple_expr relop simple_expr {$$=$3; }
           | simple_expr PEQ STRING {$$=$3; }
+          | simple_expr PNOTEQ STRING {$$=$3; }
           ;
 
 relop: PEQ | PNOTEQ | PLESS | PLESSEQ | PGREATER | PGREATEREQ;
