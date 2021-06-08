@@ -664,6 +664,7 @@ case_labels: case_label
            ;
 
 case_label: PINTEGER { winsert_after($1->previous,CCASE,"case "); }
+          | PMINUS PINTEGER { winsert_after($1->previous,CCASE,"case "); }
           | NMACRO { winsert_after($1->previous,CCASE,"case "); }
           | PINTEGER PPLUS NMACRO  
             {winsert_after($1->previous,CCASE,"case "); }
