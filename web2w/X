@@ -1,1 +1,1 @@
-sed -i 's/^\(%token .*\)".*/\1/' pascal.y
+sed -i 's/^\(%token .*\)".*"/\1/' pascal.y
