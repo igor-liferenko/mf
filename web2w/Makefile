@@ -24,7 +24,7 @@ all:
 	@# 2:
 	@# 3:
 	@# 4:
-	sed -n '/\/\*<<<\*\//,/\/\*>>>\*\//{/\/\*>>>\*\//q;p}' mf.w | sed 1d >tmp.ww
+	awk '/\/\*<<<\*\//{print;getline;while($$0!~/\/\*>>>\*\//){print;getline}exit}' mf.w | sed 1d >tmp.ww
 	sed -i '/\/\*<<<\*\//,/\/\*>>>\*\//d' mf.w
 	sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' mf.w; rm tmp.ww
 	@# 5:
