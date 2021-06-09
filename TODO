@@ -1,3 +1,5 @@
 Run "cweave mf.w mf.ch" and check that section numbers match with mf.web (if need one more section, in screen.ch "#define read_end ..." may be changed to @d ...) - reset to commit 528f0cce83dd3f1b02fad49fdf9292f877f8a2cc in "tex" repo where appropriate "cweave" was compiled
 
+Understand why there is no analog of "max_str_ref" in cmf.patch to ctex.patch
+
 See tex/TODO

@@ -1,5 +1,5 @@
---- web2w/mf.w	2021-06-09 14:43:45.266095361 +0700
-+++ mf.w	2021-06-09 13:39:44.774153430 +0700
+--- mf.w
++++ mf.w
 @@ -276,11 +276,19 @@
  @^overflow in arithmetic@>
  
@@ -661,21 +661,7 @@
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
-@@ -19128,9 +19145,10 @@
-   if (a > l) a=l;
-   } 
- str_room(b-a);
--if (reversed) 
--  for (k=str_start[s]+b-1; k>=str_start[s]+a; k--) append_char(so(str_pool[k]))@;
--else for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));
-+if (reversed)
-+  {for (k=str_start[s]+b-1; k>=str_start[s]+a; k--) append_char(so(str_pool[k]));}
-+else
-+  {for (k=str_start[s]+a; k<=str_start[s]+b-1; k++) append_char(so(str_pool[k]));}
- cur_exp=make_string();delete_str_ref(s);
- } 
- 
-@@ -21547,7 +21565,7 @@
+@@ -21547,7 +21564,7 @@
  
  @p void fix_check_sum(void)
  {@+
@@ -684,7 +670,7 @@
  eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
  int @!x; /*hash value used in check sum computation*/ 
  if (header_byte[1] < 0) if (header_byte[2] < 0) 
-@@ -21572,7 +21590,7 @@
+@@ -21572,7 +21589,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
  
@@ -693,7 +679,7 @@
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
  {@+tfm_out(x/256);tfm_out(x%256);
-@@ -21731,14 +21749,14 @@
+@@ -21731,14 +21748,14 @@
    } 
  
  @ @<Log the subfile sizes of the \.{TFM} file@>=
@@ -715,7 +701,7 @@
  } 
  
  @* Generic font file format.
-@@ -22126,7 +22144,7 @@
+@@ -22126,7 +22143,7 @@
  @<Declare generic font output procedures@>=
  void write_gf(gf_index @!a, gf_index @!b)
  {@+int k;
@@ -724,7 +710,7 @@
  } 
  
  @ To put a byte in the buffer without paying the cost of invoking a procedure
-@@ -22538,7 +22556,7 @@
+@@ -22538,7 +22555,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
  @d too_small(X)	{@+wake_up_terminal;
@@ -733,7 +719,7 @@
  @.Must increase the x@>
    goto off_base;
    } 
-@@ -22842,14 +22860,15 @@
+@@ -22842,14 +22859,14 @@
  if (ready_already==314159) goto start_of_MF;
  @<Check the ``constant'' values...@>@;
  if (bad > 0) 
@@ -747,12 +733,11 @@
  initialize(); /*set global variables to their starting values*/ 
  #ifdef @!INIT
 -if (!get_strings_started()) exit(0);
-+for (int i = 0; i < str_ptr; i++) str_ref[i] = max_str_ref; /* TO FIND OUT: there is no
-+  analogous thing in TeX - why? */
++for (int i = 0; i < str_ptr; i++) str_ref[i] = max_str_ref;
  init_tab(); /*initialize the tables*/ 
  init_prim(); /*call |primitive| for each primitive*/ 
  init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
-@@ -22864,7 +22883,7 @@
+@@ -22864,7 +22881,7 @@
    } 
  main_control(); /*come to life*/ 
  final_cleanup(); /*prepare for death*/ 
@@ -761,7 +746,7 @@
  ready_already=0;
  return 0; }
  
-@@ -22937,28 +22956,28 @@
+@@ -22937,28 +22954,28 @@
  
  @<Output statistics...@>=
  if (log_opened) 
@@ -811,7 +796,7 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23073,13 +23092,13 @@
+@@ -23073,13 +23090,13 @@
  loop{@+wake_up_terminal;
    print_nl("debug # (-1 to exit):");update_terminal;
  @.debug \#@>
@@ -828,7 +813,7 @@
      switch (m) {
      @t\4@>@<Numbered cases for |debug_help|@>@;
      default:print_str("?");
-@@ -23102,7 +23121,7 @@
+@@ -23102,7 +23119,7 @@
  case 10: slow_print(n);@+break;
  case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
  case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
@@ -837,7 +822,7 @@
    } @+break;
  case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
  case 15: panicking=!panicking;@+break;
-@@ -23795,7 +23814,7 @@
+@@ -23795,7 +23812,7 @@
  @d str_464 "final value"
  @<|"final value"|@>=@+464
  @ 
