@@ -17,8 +17,7 @@ all:
 	@# 4:
 	sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
 	@# 5:
-	#!!! sed -i 's/\bvoid\b/XvoidX/g' mf-web2w.web
-	sed -i 's/\bvoid\b/empty/g' mf-web2w.web
+	sed -i 's/\bvoid\b/XvoidX/g' mf-web2w.web
 	./web2w -o mf.w mf-web2w.web ##############################################################
 	@# 1:
 	sed -i 's/@d t_of_the_way_end(X)\tX/@d t_of_the_way_end(X)\tX,t@=)@>/' mf.w
@@ -32,4 +31,4 @@ all:
 	@# 4:
 	sed -i 's/while (!(llll==0));/while (!(lll==0))/' mf.w
 	@# 5:
-	#!!! sed -i 's/XvoidX/void/g' mf.w
+	sed -i 's/XvoidX/vоid/g' mf.w
