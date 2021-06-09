@@ -20,17 +20,18 @@ all:
 	sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
 	@# 5:
 	sed -i 's/\bvoid\b/XvoidX/g' mf-web2w.web
-	./web2w -o mf.w mf-web2w.web ##############################################################
+	./web2w -o cmf.w mf-web2w.web #########################################
 	@# 1:
-	sed -i 's/@d t_of_the_way_end(X)\tX/@d t_of_the_way_end(X)\tX,t@=)@>/' mf.w
-	sed -i 's/@d t_of_the_way(X)\tX-take_fraction-t_of_the_way_end/@d t_of_the_way(X)\tX-take_fraction@=(@>X-t_of_the_way_end/' mf.w
+	sed -i 's/@d t_of_the_way_end(X)\tX/@d t_of_the_way_end(X)\tX,t@=)@>/' cmf.w
+	sed -i 's/@d t_of_the_way(X)\tX-take_fraction-t_of_the_way_end/@d t_of_the_way(X)\tX-take_fraction@=(@>X-t_of_the_way_end/' cmf.w
 	@# 2:
-	sed -i 's/trans_spec/screen_col/' mf.w
+	sed -i 's/trans_spec/screen_col/' cmf.w
 	@# 3:
-	awk '/\/\*<<<\*\//{getline;while($$0!~/\/\*>>>\*\//){print;getline}exit}' mf.w >tmp.ww
-	sed -i '/\/\*<<<\*\//,/\/\*>>>\*\//d' mf.w
-	sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' mf.w; rm tmp.ww
+	awk '/\/\*<<<\*\//{getline;while($$0!~/\/\*>>>\*\//){print;getline}exit}' cmf.w >tmp.ww
+	sed -i '/\/\*<<<\*\//,/\/\*>>>\*\//d' cmf.w
+	sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' cmf.w; rm tmp.ww
 	@# 4:
-	sed -i 's/while (!(llll==0));/while (!(lll==0))/' mf.w
+	sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
 	@# 5:
-	sed -i 's/XvoidX/vоid/g' mf.w
+	sed -i 's/XvoidX/vоid/g' cmf.w
+	patch -s cmf.w cmf.patch

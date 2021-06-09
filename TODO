@@ -1,20 +1,3 @@
-web2w/mf.w has manual changes, which revert mf-web2w.patch - to see them do:
-  make -C web2w
-  git diff web2w/mf.w
-TODO: remove mf-web2w.patch and change pascal-mf.patch and maybe web-mf.patch that the
-diff will be empty, and then do:
-  diff -u web2w/mf.w mf.w >web2w/cmf.patch
-  git add web2w/cmf.patch
-  git rm web2w/mf.w mf.w
-and then in web2w/Makefile change './web2w -o mf.w ...' to './web2w -o cmf.w ...'
-and then patch web2w/cmf.w with cmf.patch in the end of web2w/Makefile and add cmf.w to web2w/.gitignore
-and then in Makefile in two places replace
-  patch -so mf-goto.w mf.w goto.patch
-with
-  make -C web2w
-  patch -so mf.w web2w/cmf.w goto.patch
-and in Makefile change mf-goto to mf everywhere and remove last argument from two lines with /bin/ctangle and remove mf-goto.w from .gitignore and add mf.w to .gitignore
-
 Run "cweave mf.w mf.ch" and check that section numbers match with mf.web (if need one more section, in screen.ch "#define read_end ..." may be changed to @d ...) - reset to commit 528f0cce83dd3f1b02fad49fdf9292f877f8a2cc in "tex" repo where appropriate "cweave" was compiled
 
 See tex/TODO
