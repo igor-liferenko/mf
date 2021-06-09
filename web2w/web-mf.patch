@@ -1,0 +1,13 @@
+diff --git a/web2w/web.l b/web2w/web.l
+index 58f9309..e1070dc 100644
+--- a/web2w/web.l
++++ b/web2w/web.l
+@@ -19,7 +19,7 @@ Martin Ruckert, Hochschule Muenchen, Lothstrasse 64, 80336 Muenchen
+ */
+ %{
+ #include "web2w.h"
+-#include "pascal.tab.h"
++#include "pascal-mf.tab.h"
+ %}
+ 
+ %option prefix="ww"

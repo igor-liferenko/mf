@@ -245,7 +245,7 @@ labeldecl: NMACRO  {IGN($1); SYM($1)->obsolete=1; }
 
 constants: 
          | PCONST constdefinitions
-         | PCONST constdefinitions conststringdefinition constdefinitions
+         | PCONST constdefinitions conststringdefinition
          ; 
 
 constdefinitions:  constdefinition
@@ -664,7 +664,6 @@ case_labels: case_label
            ;
 
 case_label: PINTEGER { winsert_after($1->previous,CCASE,"case "); }
-          | PMINUS PINTEGER { winsert_after($1->previous,CCASE,"case "); }
           | NMACRO { winsert_after($1->previous,CCASE,"case "); }
           | PINTEGER PPLUS NMACRO  
             {winsert_after($1->previous,CCASE,"case "); }
@@ -692,11 +691,6 @@ for_stmt: PFOR PID PASSIGN expression PTO varlimit PDO statement
                 DBG(dbgfor,"for variable %s, limit variable in line %d\n",
                 SYM($2)->name,$2->lineno);
                 $$=join(PFOR,$8,NULL,0);LNK($1,$5);LNK($5,$7); } 
-        | PFOR PID PASSIGN expression PDOWNTO varlimit PDO statement
-              { mark_for_variable($2,$1->lineno,0,VAR_LOOP);
-                DBG(dbgfor,"for variable %s, limit variable in line %d\n",
-                SYM($2)->name,$2->lineno);
-                $$=join(PFOR,$8,NULL,0);LNK($1,$5);LNK($5,$7); }
         | PFOR PID PASSIGN expression PTO iconst PDO statement 
 	      { mark_for_variable($2,$1->lineno,$6->value,TO_LOOP); 
                 DBG(dbgfor,"for variable %s, limit up in line %d\n",
@@ -737,7 +731,6 @@ file_var: variable PUP
 expression: simple_expr {$$=$1; }
           | simple_expr relop simple_expr {$$=$3; }
           | simple_expr PEQ STRING {$$=$3; }
-          | simple_expr PNOTEQ STRING {$$=$3; }
           ;
 
 relop: PEQ | PNOTEQ | PLESS | PLESSEQ | PGREATER | PGREATEREQ;
