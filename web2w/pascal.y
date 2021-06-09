@@ -692,6 +692,11 @@ for_stmt: PFOR PID PASSIGN expression PTO varlimit PDO statement
                 DBG(dbgfor,"for variable %s, limit variable in line %d\n",
                 SYM($2)->name,$2->lineno);
                 $$=join(PFOR,$8,NULL,0);LNK($1,$5);LNK($5,$7); } 
+        | PFOR PID PASSIGN expression PDOWNTO varlimit PDO statement
+              { mark_for_variable($2,$1->lineno,0,VAR_LOOP);
+                DBG(dbgfor,"for variable %s, limit variable in line %d\n",
+                SYM($2)->name,$2->lineno);
+                $$=join(PFOR,$8,NULL,0);LNK($1,$5);LNK($5,$7); }
         | PFOR PID PASSIGN expression PTO iconst PDO statement 
 	      { mark_for_variable($2,$1->lineno,$6->value,TO_LOOP); 
                 DBG(dbgfor,"for variable %s, limit up in line %d\n",
