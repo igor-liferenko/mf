@@ -4,11 +4,10 @@ all:
 	bison --warnings=none -d -v pascal.y
 	gcc -o web2w web2w.c web.lex.c pascal.tab.c
 	cp mf.web mf-web2w.web
+	perl -0777 -i -pe 's/\@{[^{]+screen_pixel\[r,c\].*?\@}//gs' mf-web2w.web
 	@# 1:
 	sed -i 's/@d t_of_the_way_end(#)==#,t@=)@>/@d t_of_the_way_end(#)==#/' mf-web2w.web
 	sed -i 's/@d t_of_the_way(#)==#-take_fraction@=(@>#-t_of_the_way_end/@d t_of_the_way(#)==#-take_fraction-t_of_the_way_end/' mf-web2w.web
-	@# 2:
-	sed -i 's/screen_pixel\[r,c\]/screen_pixel[r]/' mf-web2w.web
 	@# 3:
 	sed -i '/trans_spec=/d;s/row_transition:trans_spec/row_transition:array[screen_col] of screen_col/' mf-web2w.web
 	@# 4:
@@ -25,8 +24,6 @@ all:
 	@# 1:
 	sed -i 's/@d t_of_the_way_end(X)\tX/@d t_of_the_way_end(X)\tX,t@=)@>/' mf.w
 	sed -i 's/@d t_of_the_way(X)\tX-take_fraction-t_of_the_way_end/@d t_of_the_way(X)\tX-take_fraction@=(@>X-t_of_the_way_end/' mf.w
-	@# 2:
-	@# not used (commented out)
 	@# 3:
 	sed -i 's/trans_spec/screen_col/' mf.w
 	@# 4:
