@@ -1,6 +1,7 @@
 all:
 	make -C web2w
 	patch -so mf.w web2w/cmf.w goto.patch
+	patch -s mf.w malloc.patch
 	tie -c mf.ch mf.w constants.ch gftodvi.ch gftopk.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -O3 -DINIT mf.c -o inimf
@@ -10,6 +11,7 @@ all:
 trapmf:
 	make -C web2w
 	patch -so mf.w web2w/cmf.w goto.patch
+	patch -s mf.w malloc.patch
 	tie -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -O3 -DINIT -DSTAT mf.c -o trap/trapmf
