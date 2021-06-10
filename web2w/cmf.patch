@@ -451,14 +451,7 @@
  #endif
  } 
  
-@@ -12171,18 +12193,18 @@
- program (see the commented-out code below).
- @^system dependencies@>
- 
--@p void paint_row(screen_row @!r, pixel_color @!b,@!screen_col *@!a,
-+@p void paint_row(screen_row @!r, pixel_color @!b, screen_col *a,
-   screen_col @!n)
- {@+int @!k; /*an index into |a|*/ 
+@@ -12177,12 +12199,12 @@
  screen_col @!c; /*an index into |screen_pixel|*/ 
  @/
  #ifdef @!INIT
@@ -552,17 +545,16 @@
  } 
  
  @ Here is the only place we use |pack_buffered_name|. This part of the program
-@@ -15719,7 +15736,8 @@
+@@ -15719,7 +15736,7 @@
       /*now try the system base file area*/ 
    if (w_open_in(&base_file)) goto found;
    wake_up_terminal;
 -  wterm_ln("Sorry, I can't find that base;"," will try PLAIN.");
 +  wterm_ln("Sorry, I can't find that base; will try PLAIN.");
-+
  @.Sorry, I can't find...@>
    update_terminal;
    } 
-@@ -15832,17 +15850,17 @@
+@@ -15832,17 +15849,17 @@
  variables |cur_name|, |cur_area|, |cur_ext|, and |name_of_file| are
  ready for another attempt at file opening.
  
@@ -583,7 +575,7 @@
  @.Please type...@>
  if (interaction < scroll_mode) 
    fatal_error("*** (job aborted, file error in nonstop mode)");
-@@ -15870,7 +15888,7 @@
+@@ -15870,7 +15887,7 @@
  int @!k; /*index into |months| and |buffer|*/ 
  uint16_t @!l; /*end of first input line*/ 
  int @!m; /*the current month*/ 
@@ -592,7 +584,7 @@
  old_setting=selector;
  if (job_name==0) job_name=@[@<|"mfput"|@>@];
  @.mfput@>
-@@ -15908,12 +15926,11 @@
+@@ -15908,12 +15925,11 @@
  } 
  
  @ @<Print the banner...@>=
@@ -607,7 +599,7 @@
  print_char(' ');print_int(round_unscaled(internal[year]));print_char(' ');
  m=round_unscaled(internal[time_of_day]);
  print_dd(m/60);print_char(':');print_dd(m%60);
-@@ -16641,7 +16658,7 @@
+@@ -16641,7 +16657,7 @@
  
  @p void bad_exp(str_number @!s)
  {@+uint8_t save_flag;
@@ -616,7 +608,7 @@
  print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
  help4("I'm afraid I need some sort of value in order to continue,")@/
    ("so I've tentatively inserted `0'. You may want to")@/
-@@ -17421,7 +17438,7 @@
+@@ -17421,7 +17437,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -625,7 +617,7 @@
    put_get_flush_error(0);cur_x=0;cur_y=0;
    } 
  else{@+p=value(cur_exp);
-@@ -17441,7 +17458,7 @@
+@@ -17441,7 +17457,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -634,7 +626,7 @@
    put_get_error();recycle_value(x_part_loc(p));cur_x=0;
    } 
  if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
-@@ -17451,7 +17468,7 @@
+@@ -17451,7 +17467,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -643,7 +635,7 @@
    put_get_error();recycle_value(y_part_loc(p));cur_y=0;
    } 
  
-@@ -17526,7 +17543,7 @@
+@@ -17526,7 +17542,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -652,7 +644,7 @@
    put_get_flush_error(0);
    } 
  x=cur_exp;
-@@ -17544,7 +17561,7 @@
+@@ -17544,7 +17560,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -661,7 +653,7 @@
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
-@@ -21547,7 +21564,7 @@
+@@ -21547,7 +21563,7 @@
  
  @p void fix_check_sum(void)
  {@+
@@ -670,7 +662,7 @@
  eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
  int @!x; /*hash value used in check sum computation*/ 
  if (header_byte[1] < 0) if (header_byte[2] < 0) 
-@@ -21572,7 +21589,7 @@
+@@ -21572,7 +21588,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
  
@@ -679,7 +671,7 @@
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
  {@+tfm_out(x/256);tfm_out(x%256);
-@@ -21731,14 +21748,14 @@
+@@ -21731,14 +21747,14 @@
    } 
  
  @ @<Log the subfile sizes of the \.{TFM} file@>=
@@ -701,7 +693,7 @@
  } 
  
  @* Generic font file format.
-@@ -22126,7 +22143,7 @@
+@@ -22126,7 +22142,7 @@
  @<Declare generic font output procedures@>=
  void write_gf(gf_index @!a, gf_index @!b)
  {@+int k;
@@ -710,7 +702,7 @@
  } 
  
  @ To put a byte in the buffer without paying the cost of invoking a procedure
-@@ -22538,7 +22555,7 @@
+@@ -22538,7 +22554,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
  @d too_small(X)	{@+wake_up_terminal;
@@ -719,7 +711,7 @@
  @.Must increase the x@>
    goto off_base;
    } 
-@@ -22842,14 +22859,14 @@
+@@ -22842,14 +22858,14 @@
  if (ready_already==314159) goto start_of_MF;
  @<Check the ``constant'' values...@>@;
  if (bad > 0) 
@@ -737,7 +729,7 @@
  init_tab(); /*initialize the tables*/ 
  init_prim(); /*call |primitive| for each primitive*/ 
  init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
-@@ -22864,7 +22881,7 @@
+@@ -22864,7 +22880,7 @@
    } 
  main_control(); /*come to life*/ 
  final_cleanup(); /*prepare for death*/ 
@@ -746,7 +738,7 @@
  ready_already=0;
  return 0; }
  
-@@ -22937,28 +22954,28 @@
+@@ -22937,28 +22953,28 @@
  
  @<Output statistics...@>=
  if (log_opened) 
@@ -796,7 +788,7 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23073,13 +23090,13 @@
+@@ -23073,13 +23089,13 @@
  loop{@+wake_up_terminal;
    print_nl("debug # (-1 to exit):");update_terminal;
  @.debug \#@>
@@ -813,7 +805,7 @@
      switch (m) {
      @t\4@>@<Numbered cases for |debug_help|@>@;
      default:print_str("?");
-@@ -23102,7 +23119,7 @@
+@@ -23102,7 +23118,7 @@
  case 10: slow_print(n);@+break;
  case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
  case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
@@ -822,7 +814,7 @@
    } @+break;
  case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
  case 15: panicking=!panicking;@+break;
-@@ -23795,7 +23812,7 @@
+@@ -23795,7 +23811,7 @@
  @d str_464 "final value"
  @<|"final value"|@>=@+464
  @ 
