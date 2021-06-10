@@ -1,6 +1,0 @@
-Variable modified array at file scope is not possible.
-
-12385c12385
-< screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/ 
----
-> screen_col @!row_transition[2000]; /*an array of |black|/|white| transitions*/ 
