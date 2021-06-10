@@ -171,8 +171,15 @@ wlog_ln(")");
 @z
 
 @x
+screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/ 
+@y
+screen_col *row_transition; /*an array of |black|/|white| transitions*/ 
+@z
+
+@x
 initialize(); /*set global variables to their starting values*/
 @y
 if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
+assert((row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col))) != NULL);
 initialize(); /*set global variables to their starting values*/
 @z
