@@ -180,6 +180,6 @@ screen_col *row_transition; /*an array of |black|/|white| transitions*/
 initialize(); /*set global variables to their starting values*/
 @y
 if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
-assert((row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col))) != NULL);
+assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 initialize(); /*set global variables to their starting values*/
 @z
