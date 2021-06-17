@@ -13,6 +13,7 @@ all:
 	@patch -sR trap.log capsule.diff
 	@diff mf/trap.log trap.log
 	@sed -i -f trapfot.sed trap.fot
+	@echo >>trap.fot
 	@diff mf/trap.fot trap.fot
 	@tftopl trap.tfm | diff mf/trap.pl -
 	@echo
