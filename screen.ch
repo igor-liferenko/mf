@@ -101,7 +101,7 @@ void update_screen(void)
       signal(SIGINT, SIG_IGN);
       prctl(PR_SET_PDEATHSIG, SIGTERM);
       execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-      exit(0);
+      _exit(0);
     }
     close(write_end);
 
