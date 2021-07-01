@@ -1,20 +1,9 @@
-def mode_param (suffix v) (expr e) =
-  if unknown mode_guard_.v:
-    v := e;
-    mode_guard_.v := 1;
-  fi
-enddef;
-
-def mode_common_setup_ =
-  mode_param (proofing, 0);
-  mode_param (fontmaking, 1);
-  mode_param (tracingtitles, if pixels_per_inch > 1200: 1 else: 0 fi);
-enddef;
-
-mode_def localfont =                   %\[ HP LaserJet 4 (600dpi)
-  mode_param (pixels_per_inch, 600);
-  mode_param (blacker, .25);
-  mode_param (fillin, 0);
-  mode_param (o_correction, 1);
-  mode_common_setup_;
+mode_def localfont =
+  pixels_per_inch := 600;
+  blacker := .25;
+  o_correction := 1;
+  fillin := 0;
+  proofing := 0;
+  fontmaking := 1;
+  tracingtitles := 1;
 enddef;
