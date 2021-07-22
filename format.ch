@@ -7,7 +7,6 @@ assert(*argv[0] == '/');
 #endif
 @z
 
-NOTE: this code was taken verbatim from @<Get the first line...@> (except that open_base_file is replaced with w_open_in)
 @x
 initialize(); /*set global variables to their starting values*/ 
 @y
@@ -17,10 +16,7 @@ strncpy(name_of_file+1, MF_base_default+1, base_area_length);
 strcat(name_of_file+1, strrchr(argv[0], '/') + 1);
 strcat(name_of_file+1, ".base");
 assert(w_open_in(&base_file));
-if (!load_base_file()) {
-  w_close(&base_file);
-  exit(0);
-} 
+term_out.f=fopen("/dev/null","w"); assert(load_base_file()); fclose(term_out.f); term_out.f=stdout;
 w_close(&base_file);
 #endif
 @z
