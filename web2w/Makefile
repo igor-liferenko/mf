@@ -1,8 +1,8 @@
 all:
 	/bin/ctangle web2w web2w-mf
-	patch -so web-mf.l web.l web-mf.patch
+	patch -o web-mf.l web.l web-mf.patch
 	flex -o web.lex.c web-mf.l
-	patch -so pascal-mf.y pascal.y pascal-mf.patch
+	patch -o pascal-mf.y pascal.y pascal-mf.patch
 	bison --warnings=none -d -v pascal-mf.y
 	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	cp mf.web mf-web2w.web
@@ -36,4 +36,4 @@ all:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
 	@# 5:
 	@sed -i 's/XvoidX/vоid/g' cmf.w
-	patch -s cmf.w cmf.patch
+	patch cmf.w cmf.patch
