@@ -5,9 +5,10 @@
 @z
 
 @x
-SYM_PTR("free")->name="is_free";
+SYM_PTR("register")->name="internal_register";
 @y
-SYM_PTR("free")->name="is_free";
+SYM_PTR("register")->name="internal_register";
+SYM_PTR("time")->name="time_of_day";
 SYM_PTR("read")->name="pascal_read";
 SYM_PTR("close")->name="pascal_close";
 @z
