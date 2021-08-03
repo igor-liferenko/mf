@@ -18,8 +18,6 @@ all:
 	@sed -i '/@<Other local variables for |fill_envelope|@>@;/r tmp.ww' mf-web2w.web; rm tmp.ww
 	@# 4:
 	@sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
-	@# 5:
-	@sed -i 's/\bvoid\b/XvoidX/g' mf-web2w.web
 	@######################################################################
 	./web2w -o cmf.w mf-web2w.web
 	@######################################################################
@@ -34,6 +32,4 @@ all:
 	@sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' cmf.w; rm tmp.ww
 	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
-	@# 5:
-	@sed -i 's/XvoidX/vоid/g' cmf.w
 	patch cmf.w cmf.patch

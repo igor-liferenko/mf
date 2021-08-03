@@ -11,6 +11,7 @@ SYM_PTR("register")->name="internal_register";
 SYM_PTR("time")->name="time_of_day";
 SYM_PTR("read")->name="pascal_read";
 SYM_PTR("close")->name="pascal_close";
+SYM_PTR("void")->name="v\320\276id";
 @z
 
 @x
