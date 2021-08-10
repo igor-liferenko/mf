@@ -5,4 +5,4 @@ Add the following to .bashrc:
 and use the companion repo http://github.com/igor-liferenko/mf-wayland
 (set path to it in screen.ch)
 
-To use debugger, compile with "-g -Og" flags and run "gdb plain"
+To use debugger, change "-O3" to "-g -Og" and run "gdb plain"
