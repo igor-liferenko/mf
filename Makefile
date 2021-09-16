@@ -4,7 +4,7 @@ all:
 	tie -c mf.ch mf.w constants.ch pk+dvi.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -O3 -DINIT mf.c -o inimf
-	@echo 'plain; input ljfour; dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -O3 -DSTAT mf.c -o virmf
 
 trapmf:
