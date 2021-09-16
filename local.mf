@@ -1,16 +1,1 @@
-% Points to consider:
-% 1) settings here must be the same as in mode selected from modes.mf (mktexpk is called automatically, although this is not necessary because fonts may be pre-generated manually as said on p.17 in TeXbook)
-% 2) except metafont mode, resolution must be set in dvips config and in dvipdfmx config
-% 3) dvipdfmx only works with 600dpi (option -r does not work)
-% 4) automatic mode detection of mktexpk detects ljfour for 600dpi although there are many modes which have 600dpi in modes.mf (dvips calls mktexpk with `--mfmode ljfour', but dvipdfmx leaves the choice of mode to mktexpk, because dvipdfmx calls mktexpk with `--mfmode /')
-% 5) ljfour is aliased to localfont in modes.mf - don't know if it is critical
-% 6) if you need to change values here, make the same changes also in modes.mf for ljfour mode and regenerate metafont base file in post-install.sh, but ensure that there are no pk-files in TeXfonts when base file is about to be regenerated
-mode_def localfont =
-  pixels_per_inch := 600;
-  blacker := .25;
-  o_correction := 1;
-  fillin := 0;
-  proofing := 0;
-  fontmaking := 1;
-  tracingtitles := 1;
-enddef;
+/usr/local/share/texmf/metafont/modes.mf
