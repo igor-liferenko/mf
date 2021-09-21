@@ -21,13 +21,4 @@ if (gftopk_pid == 0) {
   _exit(1);
 }
 int gftopk; waitpid(gftopk_pid, &gftopk, 0); assert(gftopk == 0);
-pid_t gftodvi_pid = fork();
-assert(gftodvi_pid != -1);
-if (gftodvi_pid == 0) {
-  signal(SIGINT, SIG_IGN);
-  execlp("gftodvi", "gftodvi", fname, (char *) NULL);
-  _exit(1);
-}
-int gftodvi; waitpid(gftodvi_pid, &gftodvi, 0); assert(gftodvi == 0);
-unlink(fname);
 @z

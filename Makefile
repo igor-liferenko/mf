@@ -1,7 +1,7 @@
 all:
 	make -C web2w
 	cp web2w/cmf.w mf.w
-	tie -c mf.ch mf.w constants.ch pk+dvi.ch screen.ch $(CHF) >/dev/null
+	tie -c mf.ch mf.w constants.ch pk.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -O3 -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
