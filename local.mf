@@ -1,1 +1,9 @@
-/usr/local/share/texmf/metafont/modes.mf
+mode_def localfont =
+  pixels_per_inch := 600;
+  blacker := .25;
+  o_correction := 1;
+  fillin := 0;
+  proofing := 0;
+  fontmaking := 1;
+  tracingtitles := 1;
+enddef;
