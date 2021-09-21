@@ -6,6 +6,12 @@ enum {@+@!file_name_size=255@+}; /*file names shouldn't be longer than this*/
 @z
 
 @x
+else{@+if ((c=='>')||(c==':')) 
+@y
+else{@+if (c=='/')
+@z
+
+@x
 @d base_default_length	18 /*length of the |MF_base_default| string*/ 
 @d base_area_length	8 /*length of its area part*/ 
 @y
