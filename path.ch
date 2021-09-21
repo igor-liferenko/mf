@@ -6,7 +6,7 @@ enum {@+@!file_name_size=255@+}; /*file names shouldn't be longer than this*/
 @z
 
 @x
-else{@+if ((c=='>')||(c==':')) 
+else{@+if ((c=='>')||(c==':'))
 @y
 else{@+if (c=='/')
 @z
