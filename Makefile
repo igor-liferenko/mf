@@ -4,7 +4,7 @@ all:
 	tie -c mf.ch mf.w constants.ch pk.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -O3 -DINIT mf.c -o inimf
-	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/ # TODO: change "local" to "/usr/local/mode" and create it in post-install.sh values specific for a given installation
 	gcc -O3 -DSTAT mf.c -o virmf
 
 trapmf:
