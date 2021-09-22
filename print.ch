@@ -4,7 +4,7 @@ Print "MFinputs/" instead of full path to it in log file and on terminal.
 else{@+for (k=1; k<=name_length; k++) append_char(xord[name_of_file[k]]);
 @y
 else {
-  char EXT_area[length(MF_area)+1];
+  char EXT_area[length(MF_area)+1]; /* MF_area in external encoding */
   for (k=0; k<length(MF_area); k++)
     EXT_area[k] = xchr[so(str_pool[str_start[MF_area]+k])];
   EXT_area[k] = '\0';
