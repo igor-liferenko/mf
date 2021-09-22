@@ -13,10 +13,10 @@
 @y
 @<|" (INIMF)"|@>=@+549
 @
-@d str_550 "/usr/share/texlive/texmf-dist/fonts/source/public/cm/"
+@d str_550 "/usr/share/texlive/texmf-dist/fonts/source/lh/base/"
 @d MF_area_2 550
 @
-@d str_551 "/usr/share/texlive/texmf-dist/fonts/source/lh/base/"
+@d str_551 "/usr/share/texlive/texmf-dist/fonts/source/public/cm/"
 @d MF_area_3 551
 @z
 
