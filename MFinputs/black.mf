@@ -1,6 +1,6 @@
 if mode<>localfont: errmessage "This file is for localfont only"; fi
 
-font_identifier "BLACKLOCAL";
+font_identifier "myBLACK";
 picture pix_picture; pix_wd := pix_ht := 8;
 pix_picture := unitpixel scaled 8;
 
