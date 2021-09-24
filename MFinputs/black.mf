@@ -4,4 +4,4 @@ font_identifier "myBLACK";
 picture pix_picture; pix_wd := pix_ht := 8;
 pix_picture := unitpixel scaled 8;
 
-input /usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/grayf
+input grayf

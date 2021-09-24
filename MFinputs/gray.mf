@@ -2,4 +2,4 @@ if mode<>localfont: errmessage "This file is for localfont only"; fi
 
 font_identifier "myGRAY";
 
-input /usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/grayf
+input grayf
