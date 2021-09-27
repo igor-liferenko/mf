@@ -1,5 +1,3 @@
-% see "texdoc modes" how to adjust values for blacker and o_correction
-% resolution cannot be changed - see issue 1 in bin/dvipdfmx
 mode_def localfont =
   pixels_per_inch := 600;
   blacker := .25;
