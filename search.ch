@@ -9,17 +9,17 @@
 @z
 
 @x
-@<|" (INIMF)"|@>=@+549
+@d str_549 " (INIMF)"
 @y
-@<|" (INIMF)"|@>=@+549
-@ @d str_550 "/usr/local/share/texmf/fonts/source/rgrrg10/"
-@ @d str_551 "/usr/share/texlive/texmf-dist/fonts/source/lh/base/"
-@ @d str_552 "/usr/share/texlive/texmf-dist/fonts/source/lh/lh-lcy/"
-@ @d str_553 "/usr/share/texlive/texmf-dist/fonts/source/public/amsfonts/cmextra/"
-@ @d str_554 "/usr/share/texlive/texmf-dist/fonts/source/public/cm/"
-@ @d str_555 "/usr/share/texlive/texmf-dist/fonts/source/public/cmcyr/"
-@ @d str_556 "/usr/share/texlive/texmf-dist/fonts/source/public/cmextra/"
-@ @d str_557 "/usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/"
+@d str_549 " (INIMF)"
+@d str_550 "/usr/local/share/texmf/fonts/source/rgrrg10/"
+@d str_551 "/usr/share/texlive/texmf-dist/fonts/source/lh/base/"
+@d str_552 "/usr/share/texlive/texmf-dist/fonts/source/lh/lh-lcy/"
+@d str_553 "/usr/share/texlive/texmf-dist/fonts/source/public/amsfonts/cmextra/"
+@d str_554 "/usr/share/texlive/texmf-dist/fonts/source/public/cm/"
+@d str_555 "/usr/share/texlive/texmf-dist/fonts/source/public/cmcyr/"
+@d str_556 "/usr/share/texlive/texmf-dist/fonts/source/public/cmextra/"
+@d str_557 "/usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/"
 @z
 
 @x
