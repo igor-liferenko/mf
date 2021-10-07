@@ -37,8 +37,9 @@ str_start_554, str_start_555, str_start_556, str_start_557, str_start_558
 @z
 
 @x
-str_start_end } str_starts;
+str_start_550=str_start_549+sizeof(str_549)-1,@/
 @y
+str_start_550=str_start_549+sizeof(str_549)-1,@/
 str_start_551=str_start_550+sizeof(str_550)-1,@/
 str_start_552=str_start_551+sizeof(str_551)-1,@/
 str_start_553=str_start_552+sizeof(str_552)-1,@/
@@ -47,7 +48,6 @@ str_start_555=str_start_554+sizeof(str_554)-1,@/
 str_start_556=str_start_555+sizeof(str_555)-1,@/
 str_start_557=str_start_556+sizeof(str_556)-1,@/
 str_start_558=str_start_557+sizeof(str_557)-1,@/
-str_start_end } str_starts;
 @z
 
 @x
