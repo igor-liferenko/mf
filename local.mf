@@ -1,12 +1,10 @@
 % TODO: set resolution to 300
 mode_def localfont =
-  pixels_per_inch := 600; % if this is changed, gray.tfm and black.tfm must be regenerated
-  blacker := .25; % if this is changed, `rm ~/tex/TeXfonts/*pk'
-  o_correction := 1; % if this is changed, `rm ~/tex/TeXfonts/*pk'
+  pixels_per_inch := 600; % regenerate gray.tfm and black.tfm
+  blacker := .25;         % rm ~/tex/TeXfonts/*pk
+  o_correction := 1;      % rm ~/tex/TeXfonts/*pk
   fillin := 0;
   proofing := 0;
   fontmaking := 1;
   tracingtitles := 1;
 enddef;
-
-% if you change something here, run `make' 
