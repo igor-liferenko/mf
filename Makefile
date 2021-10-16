@@ -6,6 +6,9 @@ all:
 	gcc -O3 -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -O3 -DSTAT mf.c -o virmf
+	@rm -f /home/user/tex/TeXfonts/*pk
+	@printf '\\mode:=localfont; nonstopmode; input gray\n' | /home/user/mf/plain >/dev/null && mv gray.tfm /home/user/tex/TeXfonts/ && rm gray.*
+	@printf '\\mode:=localfont; nonstopmode; input black\n' | /home/user/mf/plain >/dev/null && mv black.tfm /home/user/tex/TeXfonts/ && rm black.*
 
 trapmf:
 	make -C web2w
