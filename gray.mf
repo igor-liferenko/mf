@@ -1,5 +1,3 @@
-if mode<>localfont: errmessage "This file is for localfont only"; fi
-
+mode:=localfont;
 font_identifier "myGRAY";
-
 input grayf
