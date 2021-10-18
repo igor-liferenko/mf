@@ -5,3 +5,11 @@ virmf
 plain.log
 .gdb_history
 mf.w
+gray.tfm
+gray.log
+gray.*pk
+gray.*gf
+black.tfm
+black.log
+black.*pk
+black.*gf
