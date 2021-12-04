@@ -3,12 +3,7 @@ mf.ch
 mf.c
 inimf
 virmf
-plain.log
-gray.tfm
-gray.log
-gray.600pk
-gray.600gf
-black.tfm
-black.log
-black.600pk
-black.600gf
+*.log
+*.tfm
+*.600pk
+*.600gf
