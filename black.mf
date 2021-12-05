@@ -1,3 +1,4 @@
+% tfm-file depends on mode resolution
 mode:=localfont;
 font_identifier "myBLACK";
 picture pix_picture; pix_wd := pix_ht := 8;
