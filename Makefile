@@ -6,8 +6,8 @@ all:
 	gcc -O3 -DINIT mf.c -o inimf
 	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
 	gcc -O3 -DSTAT mf.c -o virmf
-	@/home/user/mf/plain gray >/dev/null && rm gray.*gf
-	@/home/user/mf/plain black >/dev/null && rm black.*gf
+	@/home/user/mf/plain gray >/dev/null ; rm gray.log gray.*pk gray.*gf
+	@/home/user/mf/plain black >/dev/null ; rm black.log black.*pk black.*gf
 	@rm -f /home/user/tex/TeXfonts/*pk
 
 trapmf:

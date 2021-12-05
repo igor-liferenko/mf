@@ -3,6 +3,5 @@ mf.ch
 mf.c
 inimf
 virmf
-*.log
+plain.log
 *.tfm
-*.600pk
