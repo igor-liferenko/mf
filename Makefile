@@ -8,7 +8,8 @@ all:
 	gcc -O3 -DSTAT mf.c -o virmf
 	@/home/user/mf/plain gray >/dev/null ; rm gray.log gray.*pk gray.*gf
 	@/home/user/mf/plain black >/dev/null ; rm black.log black.*pk black.*gf
-	@rm -f /home/user/tex/TeXfonts/*pk
+	@/home/user/mf/plain slant6 >/dev/null ; rm slant6.log slant6.*pk slant6.*gf
+	@rm -f /usr/local/share/texmf/fonts/pk/*
 
 trapmf:
 	make -C web2w
