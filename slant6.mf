@@ -1,5 +1,6 @@
-% Slant font for Cheapo with slope 1/6
+% tfm-file depends on mode resolution
 mode:=localfont;
+mode_setup;
 s=1/6;    % the slant ratio
 n=30;     % the number of characters
 r#=.4pt#; % thickness of the rules
