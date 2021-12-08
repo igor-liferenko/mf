@@ -1,4 +1,5 @@
 % tfm-file depends on mode resolution
 mode:=localfont;
 font_identifier "myGRAY";
+%boolean lightweight;
 input grayf
