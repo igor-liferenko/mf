@@ -1,4 +1,3 @@
-% tfm-file depends on mode resolution
 mode:=localfont;
 mode_setup;
 font_identifier "myGRAY";
