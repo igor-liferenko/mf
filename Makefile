@@ -4,7 +4,7 @@ all:
 	tie -c mf.ch mf.w constants.ch pk.ch screen.ch $(CHF) >/dev/null
 	/bin/ctangle mf mf
 	gcc -DINIT mf.c -o inimf
-	@echo 'plain; input local; dump' | ./inimf >/dev/null; mv plain.base MFbases/
+	@./inimf 'plain; input local; dump' >/dev/null; mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
 	@mf '\mode:=localfont; input gray' >/dev/null; rm gray.log gray.*pk gray.*gf
 	@mf '\mode:=localfont; input black' >/dev/null; rm black.log black.*pk black.*gf
