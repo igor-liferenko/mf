@@ -1,4 +1,4 @@
-See http://mruckert.userweb.mwn.de/hint/web2w.html
+https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 
 Add the following to .bashrc:
   export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o "[0-9]\+x[0-9]\+")
