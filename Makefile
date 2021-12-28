@@ -6,9 +6,9 @@ all:
 	gcc -DINIT mf.c -o inimf
 	@./inimf 'plain; input local; dump' >/dev/null; mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
-	@/home/user/mf/plain '\mode:=localfont; input gray' >/dev/null; rm gray.log gray.*gf gray.*pk
-	@/home/user/mf/plain '\mode:=localfont; input black' >/dev/null; rm black.log black.*gf black.*pk
-	@/home/user/mf/plain '\mode:=localfont; input slant6' >/dev/null; rm slant6.log slant6.*gf slant6.*pk
+	@mf '\mode:=localfont; input gray' >/dev/null; rm gray.log gray.*gf gray.*pk
+	@mf '\mode:=localfont; input black' >/dev/null; rm black.log black.*gf black.*pk
+	@mf '\mode:=localfont; input slant6' >/dev/null; rm slant6.log slant6.*gf slant6.*pk
 	@rm -f /usr/local/share/texmf/fonts/pk/*
 
 trapmf:
