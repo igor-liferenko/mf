@@ -1,3 +1,0 @@
-See commit 2dd4ff and check this:
-"SCREEN_SIZE is not set in wrapper because we want that online display will work when gdb is used"
-and if this is correct, add it to README
