@@ -1,6 +1,6 @@
 Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 
-Add the following to .bashrc:
+Add the following to .bashrc (if it is not added, MF will not be allowed to use online display):
   export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o "[0-9]\+x[0-9]\+")
 and use the companion repo http://github.com/igor-liferenko/mf-wayland
 (set path to it in screen.ch)
