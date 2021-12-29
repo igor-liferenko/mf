@@ -10,7 +10,6 @@ all:
 	@sed -i -f traptyp.sed trap.typ
 	@diff mf/trap.typ trap.typ
 	@sed -i -f traplog.sed trap.log
-	@patch -sR trap.log capsule.diff
 	@diff mf/trap.log trap.log
 	@sed -i -f trapfot.sed trap.fot
 	@echo >>trap.fot
