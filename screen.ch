@@ -15,7 +15,7 @@ Screen data is stored in memory, which is shared among the processes.
 enum {@+@!screen_width=768@+}; /*number of pixels in each row of screen display*/
 enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen display*/
 @y
-int screen_width, screen_depth;
+int screen_width=768, screen_depth=1024;
 @z
 
 @x
@@ -29,6 +29,10 @@ void *screen_data;
 bool init_screen(void)
 {
   if (!getenv("SCREEN_SIZE")) return false;
+
+  /* allocate memory */
+  if ((row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col))) == NULL)
+    return false;
 
   /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
@@ -180,6 +184,5 @@ screen_col *row_transition; /*an array of |black|/|white| transitions*/
 initialize(); /*set global variables to their starting values*/
 @y
 if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
-assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 initialize(); /*set global variables to their starting values*/
 @z
