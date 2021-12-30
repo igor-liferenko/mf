@@ -8,10 +8,10 @@
 SYM_PTR("register")->name="internal_register";
 @y
 SYM_PTR("register")->name="internal_register";
-SYM_PTR("time")->name="time_of_day";
-SYM_PTR("read")->name="pascal_read";
-SYM_PTR("close")->name="pascal_close";
-SYM_PTR("void")->name="v\320\276id";
+SYM_PTR("void")->name="v\320\276id"; /* reserved word in C */
+SYM_PTR("time")->name="time_of_day"; /* for ../time.ch */
+SYM_PTR("read")->name="pascal_read"; /* for ../screen.ch */
+SYM_PTR("close")->name="pascal_close"; /* for ../screen.ch */
 @z
 
 @x
