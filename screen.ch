@@ -31,8 +31,8 @@ bool init_screen(void)
   if (!getenv("SCREEN_SIZE")) return false;
 
   /* allocate memory */
-  if ((row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col))) == NULL)
-    return false;
+  row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
+  if (row_transition == NULL) return false;
 
   /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
@@ -51,9 +51,7 @@ bool init_screen(void)
   }
 
   /* initialize the memory */
-  int *pixel = screen_data;
-  for (int n = 0; n < screen_width * screen_depth; n++)
-    *pixel++ = 0xffffff;
+  memset(screen_data, 0xff, screen_size);
 
   return true;
 }
