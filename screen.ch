@@ -24,6 +24,7 @@ int screen_width=768, screen_depth=1024;
 } 
 @y
 @p
+typedef int32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
 int screen_fd;
 void *screen_data;
 bool init_screen(void)
@@ -37,7 +38,7 @@ bool init_screen(void)
   /* allocate memory and associate file descriptor with it */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
   if (screen_fd == -1) return false;
-  int screen_size = screen_width * screen_depth * 4;
+  int screen_size = screen_width * screen_depth * sizeof (pixel_t);
   if (ftruncate(screen_fd, screen_size) == -1) {
     close(screen_fd);
     return false;
@@ -51,7 +52,9 @@ bool init_screen(void)
   }
 
   /* initialize the memory */
-  memset(screen_data, 0xff, screen_size);
+  pixel_t *pixel = screen_data;
+  for (int n = 0; n < screen_width * screen_depth; n++)
+    *pixel++ = 0xffffff;
 
   return true;
 }
@@ -129,7 +132,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
 {
-  int *pixel;
+  pixel_t *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
     pixel = screen_data;
     pixel += screen_width*r + left_col;
@@ -157,7 +160,7 @@ wlog_ln(")");
 @y
 @p void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
-  int *pixel = screen_data;
+  pixel_t *pixel = screen_data;
   pixel += screen_width*r + a[0];
   int k = 0;
   screen_col c = a[0];
