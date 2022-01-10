@@ -179,8 +179,8 @@ screen_col *row_transition; /*an array of |black|/|white| transitions*/
 @z
 
 @x
-initialize(); /*set global variables to their starting values*/
+@p int main(void) {@! /*|start_here|*/
 @y
+@p int main(void) {@! /*|start_here|*/
 if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
-initialize(); /*set global variables to their starting values*/
 @z
