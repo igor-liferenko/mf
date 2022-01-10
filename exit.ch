@@ -1,3 +1,5 @@
+NOTE: web2w replaces "goto final_end" with "exit", but I would like to stick to the original
+
 @x
   {@+write_ln(term_out,"Buffer size exceeded!");exit(0);
 @y
@@ -13,29 +15,29 @@
 @x
 if (!init_terminal(argc,argv)) exit(0);
 @y
-if (!init_terminal(argc,argv)) exit(1);
+if (!init_terminal(argc,argv)) goto final_end;
 @z
 
 @x
   exit(0);
 @y
-  exit(1);
+  goto final_end;
 @z
 
 @x
 return 0; }
 @y
-if (history <= warning_issued) return 0; else return 1; }
+final_end: if (history <= warning_issued) return 0; else return 1; }
 @z
 
 @x
   if (!open_base_file()) exit(0);
 @y
-  if (!open_base_file()) exit(1);
+  if (!open_base_file()) goto final_end;
 @z
 
 @x
     {@+w_close(&base_file);exit(0);
 @y
-    {@+w_close(&base_file);exit(1);
+    {@+w_close(&base_file);goto final_end;
 @z
