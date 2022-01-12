@@ -445,7 +445,7 @@
  } 
  
 @@ -12372,7 +12395,7 @@
- unsorted(p)=vоid; /*this time we'll paint, but maybe not next time*/ 
+ unsorted(p)=void_; /*this time we'll paint, but maybe not next time*/ 
  @<Set up the parameters needed for |paint_row|; but |goto done| if no painting is
  needed after all@>;
 -paint_row(r, b, &row_transition, n);
