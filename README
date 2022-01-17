@@ -1,5 +1,13 @@
 Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 
+Add script this `mf' script to PATH:
+
+    #!/bin/sh
+    /home/user/mf/plain "$@"
+    ret=$?
+    [ $ret != 134 ] && echo
+    exit $ret
+
 Add the following to .bashrc:
   export SCREEN_SIZE=$(xrandr 2>/dev/null|grep connected|grep -o '[0-9]\+x[0-9]\+')
 and use the companion repo http://github.com/igor-liferenko/mf-wayland
