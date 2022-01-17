@@ -20,9 +20,9 @@ else{@+if (c=='/')
 @z
 
 @x
-char @!MF_base_default[]=" MFbases/plain.base";
+strcpy(MF_base_default+1, "MFbases/plain.base");
 @y
-char @!MF_base_default[]=" /home/user/mf/MFbases/plain.base";
+strcpy(MF_base_default+1, "/home/user/mf/MFbases/plain.base");
 @z
 
 @x
