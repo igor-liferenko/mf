@@ -555,11 +555,11 @@
  uint16_t @!l; /*end of first input line*/ 
  int @!m; /*the current month*/ 
 -uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
-+char @!months[]=" JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC"; /*abbreviations of month names*/ 
++char @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
  old_setting=selector;
  if (job_name==0) job_name=@[@<|"mfput"|@>@];
  @.mfput@>
-@@ -15918,11 +15939,10 @@
+@@ -15918,11 +15939,11 @@
  } 
  
  @ @<Print the banner...@>=
@@ -569,11 +569,12 @@
  print_int(sys_day);print_char(' ');
 -months="JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 -for (k=3*sys_month-2; k<=3*sys_month; k++) wlog(months[k]);
++strcpy(months+1,"JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC");
 +for (k=3*sys_month-2; k<=3*sys_month; k++) wlog("%c",months[k]);
  print_char(' ');print_int(sys_year);print_char(' ');
  print_dd(sys_time/60);print_char(':');print_dd(sys_time%60);
  } 
-@@ -16652,7 +16672,7 @@
+@@ -16652,7 +16673,7 @@
  
  @p void bad_exp(str_number @!s)
  {@+uint8_t save_flag;
@@ -582,7 +583,7 @@
  print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
  help4("I'm afraid I need some sort of value in order to continue,")@/
    ("so I've tentatively inserted `0'. You may want to")@/
-@@ -17432,7 +17452,7 @@
+@@ -17432,7 +17453,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -591,7 +592,7 @@
    put_get_flush_error(0);cur_x=0;cur_y=0;
    } 
  else{@+p=value(cur_exp);
-@@ -17452,7 +17472,7 @@
+@@ -17452,7 +17473,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -600,7 +601,7 @@
    put_get_error();recycle_value(x_part_loc(p));cur_x=0;
    } 
  if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
-@@ -17462,7 +17482,7 @@
+@@ -17462,7 +17483,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -609,7 +610,7 @@
    put_get_error();recycle_value(y_part_loc(p));cur_y=0;
    } 
  
-@@ -17537,7 +17557,7 @@
+@@ -17537,7 +17558,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -618,7 +619,7 @@
    put_get_flush_error(0);
    } 
  x=cur_exp;
-@@ -17555,7 +17575,7 @@
+@@ -17555,7 +17576,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -627,7 +628,7 @@
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
-@@ -21558,7 +21578,7 @@
+@@ -21558,7 +21579,7 @@
  
  @p void fix_check_sum(void)
  {@+
@@ -636,7 +637,7 @@
  eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
  int @!x; /*hash value used in check sum computation*/ 
  if (header_byte[1] < 0) if (header_byte[2] < 0) 
-@@ -21583,7 +21603,7 @@
+@@ -21583,7 +21604,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
  
@@ -645,7 +646,7 @@
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
  {@+tfm_out(x/256);tfm_out(x%256);
-@@ -21742,14 +21762,14 @@
+@@ -21742,14 +21763,14 @@
    } 
  
  @ @<Log the subfile sizes of the \.{TFM} file@>=
@@ -667,7 +668,7 @@
  } 
  
  @* Generic font file format.
-@@ -22137,7 +22157,7 @@
+@@ -22137,7 +22158,7 @@
  @<Declare generic font output procedures@>=
  void write_gf(gf_index @!a, gf_index @!b)
  {@+int k;
@@ -676,7 +677,7 @@
  } 
  
  @ To put a byte in the buffer without paying the cost of invoking a procedure
-@@ -22549,7 +22569,7 @@
+@@ -22549,7 +22570,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
  @d too_small(X)	{@+wake_up_terminal;
@@ -685,7 +686,7 @@
  @.Must increase the x@>
    goto off_base;
    } 
-@@ -22855,14 +22875,14 @@
+@@ -22855,14 +22876,14 @@
  if (ready_already==314159) goto start_of_MF;
  @<Check the ``constant'' values...@>@;
  if (bad > 0) 
@@ -703,7 +704,7 @@
  init_tab(); /*initialize the tables*/ 
  init_prim(); /*call |primitive| for each primitive*/ 
  init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
-@@ -22877,7 +22897,7 @@
+@@ -22877,7 +22898,7 @@
    } 
  main_control(); /*come to life*/ 
  final_cleanup(); /*prepare for death*/ 
@@ -712,7 +713,7 @@
  ready_already=0;
  return 0; }
  
-@@ -22951,28 +22971,28 @@
+@@ -22951,28 +22972,28 @@
  
  @<Output statistics...@>=
  if (log_opened) 
@@ -762,7 +763,7 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23088,13 +23108,13 @@
+@@ -23088,13 +23109,13 @@
    loop{@+wake_up_terminal;
    print_nl("debug # (-1 to exit):");update_terminal;
  @.debug \#@>
@@ -779,7 +780,7 @@
      switch (m) {
      @t\4@>@<Numbered cases for |debug_help|@>@;
      default:print_str("?");
-@@ -23117,7 +23137,7 @@
+@@ -23117,7 +23138,7 @@
  case 10: slow_print(n);@+break;
  case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
  case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
@@ -788,7 +789,7 @@
    } @+break;
  case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
  case 15: panicking=!panicking;@+break;
-@@ -23810,7 +23830,7 @@
+@@ -23810,7 +23831,7 @@
  @d str_464 "final value"
  @<|"final value"|@>=@+464
  @ 
