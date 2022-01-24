@@ -9,7 +9,7 @@ all:
 	@mf '\mode:=localfont; input gray' >/dev/null; rm gray.log gray.*gf gray.*pk
 	@mf '\mode:=localfont; input black' >/dev/null; rm black.log black.*gf black.*pk
 	@mf '\mode:=localfont; input slant6' >/dev/null; rm slant6.log slant6.*gf slant6.*pk
-	@rm -f /usr/local/share/texmf/fonts/pk/*
+	@rm -f /usr/local/PKfonts/*
 
 trapmf:
 	make -C web2w
