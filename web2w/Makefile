@@ -1,5 +1,5 @@
 all:
-	/bin/ctangle web2w web2w-mf
+	ctangle web2w web2w-mf
 	patch -o web-mf.l web.l web-mf.patch
 	flex -o web.lex.c web-mf.l
 	patch -o pascal-mf.y pascal.y pascal-mf.patch
