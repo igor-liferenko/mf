@@ -15692,7 +15692,7 @@ and extensions related to base files.
 @d base_extension_str	".base" /*the extension, as a \.{WEB} constant*/ 
 
 @<Glob...@>=
-char @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
+uint8_t @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
 
 @ @<Set init...@>=
 strcpy(MF_base_default+1, "MFbases/plain.base");
