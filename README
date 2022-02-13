@@ -3,7 +3,7 @@ Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 Add this `mf' script to PATH:
 
     #!/bin/sh
-    /home/user/mf/plain "$@"
+    /path/to/mf/plain "$@"
     ret=$?
     [ $ret != 134 ] && echo
     exit $ret
@@ -14,3 +14,20 @@ and use the companion repo http://github.com/igor-liferenko/mf-wayland
 (set path to it in screen.ch)
 
 To use debugger, add "-g -Og" and run "gdb plain"
+
+Compile ctangle (using common.patch and ctangle.patch) and wmerge from:
+
+    http://ftp.cs.stanford.edu/pub/cweb/cweb-3.64ag.tgz
+
+Adjust format_default_length, format_area_length and paths in path.ch
+
+Change-files are for Linux; `em' editor is needed:
+
+    https://github.com/igor-liferenko/em
+
+-----------------------------------
+
+Other WEB programs converted to CWEB:
+
+    https://github.com/igor-liferenko/tex
+    https://github.com/igor-liferenko/dvitype
