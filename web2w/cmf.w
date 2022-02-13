@@ -15901,7 +15901,7 @@ it catch up to what has previously been printed on the terminal.
 int @!k; /*index into |months| and |buffer|*/ 
 uint16_t @!l; /*end of first input line*/ 
 int @!m; /*the current month*/ 
-char @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
+uint8_t @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
 old_setting=selector;
 if (job_name==0) job_name=@[@<|"mfput"|@>@];
 @.mfput@>
