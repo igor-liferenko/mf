@@ -1,7 +1,7 @@
 all:
 	cp web2w/cmf.w mf.w
 	for i in constants.ch pk.ch screen.ch $(CHF); do \
-	  wmerge -h mf.w $$i >out.w || exit; mv out.w mf.w; done
+	  wmerge mf.w $$i >out.w || exit; mv out.w mf.w; done
 	ctangle mf
 	gcc -DINIT mf.c -o inimf
 	@./inimf 'plain; input local; dump' >/dev/null; mv plain.base MFbases/
