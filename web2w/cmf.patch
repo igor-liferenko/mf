@@ -498,7 +498,7 @@
  
  @<Glob...@>=
 -uint8_t @!MF_base_default0[base_default_length], *const @!MF_base_default = @!MF_base_default0-1;
-+char @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
++uint8_t @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
  
  @ @<Set init...@>=
 -MF_base_default="MFbases:plain.base";
