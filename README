@@ -20,7 +20,7 @@ Compile ctangle (using common.patch and ctangle.patch) and wmerge from:
     http://ftp.cs.stanford.edu/pub/cweb/cweb-3.64ag.tgz
 
 Adjust base_default_length, base_area_length and paths in path.ch
-Adjust path to TeXfonts in Makefile
+Adjust path to TeXfonts/ in Makefile
 
 Change-files are for Linux; `em' editor is needed:
 
