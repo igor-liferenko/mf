@@ -1,8 +1,8 @@
 all:
 	ctangle web2w web2w-mf
-	patch -o web-mf.l web.l web-mf.patch
+	patch -so web-mf.l web.l web-mf.patch
 	flex -o web.lex.c web-mf.l
-	patch -o pascal-mf.y pascal.y pascal-mf.patch
+	patch -so pascal-mf.y pascal.y pascal-mf.patch
 	bison --warnings=none -d -v pascal-mf.y
 	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	cp mf.web mf-web2w.web
@@ -33,4 +33,4 @@ all:
 	@sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' cmf.w; rm tmp.ww
 	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
-	patch cmf.w cmf.patch
+	patch -s cmf.w cmf.patch
