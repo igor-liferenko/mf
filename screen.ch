@@ -71,11 +71,11 @@ wlog_ln("Calling UPDATESCREEN");
 @y
 /* Here |SIGUSR1| is sent to wayland process.
 On receiving this signal
-wayland process updates the screen (if it is in
-foreground) and writes the result to pipe.
+wayland process updates the window (if it is on top)
+and writes the result to pipe (1 means on top, 0 --- not on top).
 Killing and starting wayland process is used as a
-means of bringing it to foreground.
-We assume that graphics window may be closed by user. In such case we
+means of bringing its window on top.
+We assume that the window may be closed by user. In such case we
 re-create it. */
 
 #define read_end fd[0]
@@ -89,7 +89,9 @@ void update_screen(void)
   char byte = '0';
   if (screen_pid != -1) {
     kill(screen_pid, SIGUSR1);
-    read(read_end, &byte, 1); /* notice that |byte| is not changed if child exited by itself */
+    read(read_end, &byte, 1); /* notice that |byte| is not changed (i.e., stays 0) if
+                                 child exited by itself --- this case is regarded the same
+                                 as if the window is not on top */
   }
   if (byte == '0') {
     /* stop wayland process if it is already running */
