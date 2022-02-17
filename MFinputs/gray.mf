@@ -1,4 +1,4 @@
 mode_setup;
-font_identifier "myGRAY";
+font_identifier "GRAY";
 boolean lightweight;
 input grayf
