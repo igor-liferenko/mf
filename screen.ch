@@ -74,7 +74,9 @@ On receiving this signal
 wayland process updates the screen (if it is in
 foreground) and writes the result to pipe.
 Killing and starting wayland process is used as a
-means of bringing it to foreground. */
+means of bringing it to foreground.
+We assume that graphics window may be closed by user. In such case we
+re-create it. */
 
 #define read_end fd[0]
 #define write_end fd[1]
@@ -87,7 +89,7 @@ void update_screen(void)
   char byte = '0';
   if (screen_pid != -1) {
     kill(screen_pid, SIGUSR1);
-    read(read_end, &byte, 1);
+    read(read_end, &byte, 1); /* notice that |byte| is not changed if child exited by itself */
   }
   if (byte == '0') {
     /* stop wayland process if it is already running */
