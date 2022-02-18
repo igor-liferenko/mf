@@ -54,7 +54,7 @@ bool init_screen(void)
   /* initialize the memory */
   pixel_t *pixel = screen_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
-    *pixel++ = 0xffffff;
+    *pixel++ = -1;
 
   return true;
 }
@@ -141,7 +141,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
     pixel = screen_data;
     pixel += screen_width*r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
-      *pixel++ = 0xffffff;
+      *pixel++ = -1;
   }
 }
 @z
@@ -171,7 +171,7 @@ wlog_ln(")");
   do {
     k++;
     do {
-      *pixel++ = b ? 0x000000 : 0xffffff;
+      *pixel++ = b ? 0 : -1;
       c++;
     } while (c != a[k]);
     b = !b;
