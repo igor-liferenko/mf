@@ -3,5 +3,5 @@ mf.ch
 mf.c
 inimf
 virmf
-plain.log
+*.log
 *.tfm
