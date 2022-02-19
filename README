@@ -19,9 +19,7 @@ Adjust base_default_length, base_area_length and paths in path.ch
 Adjust path to TeXfonts/ in Makefile
 Change search.ch as needed
 
-Change-files are for Linux; `em' editor is needed:
-
-    https://github.com/igor-liferenko/em
+Change-files are for Linux
 
 -----------------------------------
 
