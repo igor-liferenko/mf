@@ -14,6 +14,7 @@ all:
 	@rm -f /home/user/tex/TeXfonts/*pk
 
 trapmf:
+	@[ $(MAKELEVEL) = 1 ] || exit
 	make -C web2w
 	cp web2w/cmf.w mf.w
 	tie -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
