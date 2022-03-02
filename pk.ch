@@ -8,8 +8,8 @@
 @x
 b_close(&gf_file);
 @y
-char tmp[30];
-assert(snprintf(tmp, sizeof tmp, "/proc/self/fd/%d", fileno(gf_file.f)) < sizeof tmp);
+char tmp[50];
+sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
 char fname[500] = {};
 assert(readlink(tmp, fname, sizeof fname) != -1 && fname[sizeof fname - 1] == 0);
 b_close(&gf_file);
