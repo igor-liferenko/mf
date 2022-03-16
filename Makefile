@@ -11,7 +11,7 @@ all:
 	@./plain '\mode:=localfont; mode_setup; input black' >/dev/null
 	@./plain '\mode:=localfont; mode_setup; input slant6' >/dev/null
 	@rm *gf *pk
-	@rm -f /home/user/tex/TeXfonts/*pk
+	@rm -f /home/user/tex/TeXfonts/*gf /home/user/tex/TeXfonts/*pk
 
 trapmf:
 	@[ $(MAKELEVEL) != 0 ]
