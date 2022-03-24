@@ -1,9 +1,11 @@
 Ensure that input consists only of ASCII characters.
 
 @x
-{@+reset((*f), name_of_file);return reset_OK(*f);
+   /*open a text file for input*/
+{@+reset(*f, name_of_file);return reset_OK(*f);
 @y
-{@+reset((*f), name_of_file);
+   /*open a text file for input*/
+{@+reset(*f, name_of_file);
   if (f->f && !eof(*f) && !ferror(f->f)) assert(f->d >= 0);
   return reset_OK(*f);
 @z
