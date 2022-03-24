@@ -13,14 +13,14 @@ Ensure that input consists only of ASCII characters.
 @x
 if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
-if (bypass_eoln) if (!eof((*f)))
+if (bypass_eoln) if (!eof(*f))
   if (get(*f)) assert(f->d >= 0);
 @z
 
 @x
     buffer[last]=xord[(*f).d];get((*f));incr(last);
 @y
-    buffer[last]=xord[(*f).d];
+    buffer[last]=xord[f->d];
     if (get(*f)) assert(f->d >= 0);
     incr(last);
 @z
