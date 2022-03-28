@@ -166,12 +166,12 @@
 +                             (file).f!=NULL?get(file):0@]
 +#define rewrite(file,name) @[(file).f=fopen(name+1,"w")@]
 +#define pascal_close(file)    @[fclose((file).f)@]
-+#define eof(file)    @[feof((file).f)@]
++#define eof(file)    @[(file.f==NULL||feof((file).f))@]
 +#define eoln(file)    @[((file).d=='\n'||eof(file))@]
 +#define erstat(file)   @[((file).f==NULL?-1:ferror((file).f))@]
 +
 +#define pascal_read(file,x) @[((x)=(file).d,get(file))@]
-+#define read_ln(file)  @[do get(file); while (!eoln(file))@]
++#define read_ln(file)  @[do { while (!eoln(file)) get(file); get(file); } while (0)@]
 +
 +#define write(file, format,...)    @[fprintf(file.f,format,## __VA_ARGS__)@]
 +#define write_ln(file,...)	   @[write(file,__VA_ARGS__"\n")@]
