@@ -8,8 +8,8 @@
 @x
 b_close(&gf_file);
 @y
-char tmp[50], fname[500] = {};
-sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
+char tmp[50]; sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
+char fname[500] = {};
 assert(readlink(tmp, fname, sizeof fname) != -1 && fname[sizeof fname - 1] == 0);
 b_close(&gf_file);
 pid_t gftopk_pid = fork();
