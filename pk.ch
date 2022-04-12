@@ -1,6 +1,7 @@
 @x
 @h
 @y
+#include <limits.h>
 #include <sys/wait.h>
 @h
 @z
