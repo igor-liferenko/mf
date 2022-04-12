@@ -8,9 +8,9 @@
 @x
 b_close(&gf_file);
 @y
-char tmp[50]; sprintf(tmp, "/proc/self/fd/%d", fileno(gf_file.f));
-char fname[500] = {};
-assert(readlink(tmp, fname, sizeof fname) != -1 && fname[sizeof fname - 1] == 0);
+char fname[PATH_MAX];
+sprintf(fname, "/proc/self/fd/%d", fileno(gf_file.f));
+assert(realpath(fname, fname));
 b_close(&gf_file);
 pid_t gftopk_pid = fork();
 assert(gftopk_pid != -1);
