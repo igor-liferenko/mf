@@ -19,7 +19,7 @@
 @d str_554 "/usr/share/texlive/texmf-dist/fonts/source/public/cmcyr/"
 @d str_555 "/usr/share/texlive/texmf-dist/fonts/source/public/cmextra/"
 @d str_556 "/usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/"
-@d str_557 "/usr/share/texlive/texmf-dist/fonts/source/public/levy/digits.mf
+@d str_557 "/usr/share/texlive/texmf-dist/fonts/source/public/levy/"
 @d str_558 "/usr/share/texlive/texmf-dist/fonts/source/public/yannisgr/"
 @z
 
