@@ -4,15 +4,12 @@ all:
 	tie -c mf.ch mf.w constants.ch pk.ch screen.ch $(CHF) >/dev/null
 	ctangle mf mf
 	gcc -DINIT mf.c -o inimf
-	@rm -f *.tfm *pk *.log
 	@./inimf 'plain; input local; dump' >/dev/null; mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
-	@./plain '\mode:=localfont; mode_setup; input gray' >/dev/null
-	@./plain '\mode:=localfont; mode_setup; input black' >/dev/null
-	@./plain '\mode:=localfont; mode_setup; input slant6' >/dev/null
-	@rm *gf
+	@for i in `ls black.mf gray.mf slant*.mf | sed 's/\.mf//'`; do \
+	   ./plain '\mode=localfont; input '$$i >/dev/null || exit; \
+	   rm $$i.log $$i.*gf $$i.*pk; done # make tfm files correspond to resolution in local.mf
 	@rm -f /home/user/tex/TeXfonts/*pk
-	@mv *pk /home/user/tex/TeXfonts/
 
 trapmf:
 	@[ $(MAKELEVEL) != 0 ]
