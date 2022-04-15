@@ -11,7 +11,7 @@ b_close(&gf_file);
 @y
 char fname[PATH_MAX];
 sprintf(fname, "/proc/self/fd/%d", fileno(gf_file.f));
-assert(realpath(fname, fname));
+assert(realpath(strdup(fname), fname));
 b_close(&gf_file);
 pid_t gftopk_pid = fork();
 assert(gftopk_pid != -1);
