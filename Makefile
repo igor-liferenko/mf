@@ -8,8 +8,8 @@ all:
 	gcc -DSTAT mf.c -o virmf
 	@for i in `ls black.mf gray.mf slant*.mf | sed 's/\.mf//'`; do \
 	   ./plain '\mode=localfont; input '$$i >/dev/null || exit; \
-	   rm $$i.log $$i.*gf $$i.*pk; done # make tfm files correspond to resolution in local.mf
-	@rm -f /home/user/tex/TeXfonts/*pk
+	   rm $$i.log $$i.*gf $$i.*pk; done # ensure that tfm files correspond to local.mf
+	@rm -f /home/user/tex/TeXfonts/*pk # ensure that pk files correspond to local.mf
 
 trapmf:
 	@[ $(MAKELEVEL) != 0 ]
