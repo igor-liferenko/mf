@@ -3,5 +3,5 @@ s=1/6;    % the slant ratio
 n=30;     % the number of characters
 r#=.4pt#; % thickness of the rules
 u=1;      % vertical unit
-font_identifier "SLANT6LOCAL";
+font_identifier "SLANT6";
 input slant
