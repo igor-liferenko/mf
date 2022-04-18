@@ -6,7 +6,7 @@ all:
 	gcc -DINIT mf.c -o inimf
 	@./inimf 'plain; input local; dump' >/dev/null; mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
-	@for i in gray.mf black.mf slant*mf; do ./plain '\mode=localfont; input '$$i >/dev/null \
+	@for i in gray.mf black.mf slant*.mf; do ./plain '\mode=localfont; input' $$i >/dev/null \
         || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # ensure that tfm files correspond to local.mf
 	@rm -f ~/tex/TeXfonts/*pk # ensure that pk files correspond to local.mf
 
