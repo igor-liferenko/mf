@@ -5,7 +5,7 @@ Ensure that input consists only of ASCII characters.
 @y
 { if ((f->f=fopen(name_of_file+1,"r"))!=NULL) {
     get(*f);
-    if (!feof(f->f) && !ferror(f->f)) assert(f->d >= 0);
+    if (!ferror(f->f) && !feof(f->f)) assert(f->d >= 0);
   }
   return reset_OK(*f);
 @z
@@ -15,7 +15,7 @@ if (bypass_eoln) if (!eof((*f))) get((*f));
 @y
 if (bypass_eoln) if (!eof(*f)) {
   get(*f);
-  if (!feof(f->f) && !ferror(f->f)) assert(f->d >= 0);
+  if (!feof(f->f)) assert(f->d >= 0);
 }
 @z
 
@@ -24,6 +24,6 @@ if (bypass_eoln) if (!eof(*f)) {
 @y
     buffer[last]=xord[f->d];
     get(*f);
-    if (!feof(f->f) && !ferror(f->f)) assert(f->d >= 0);
+    if (!feof(f->f)) assert(f->d >= 0);
     incr(last);
 @z
