@@ -736,27 +736,27 @@ cannot be found, or if such a file cannot be opened for some other reason
 
 @p bool a_open_in(@!alpha_file *@!f)
    /*open a text file for input*/ 
-{ reset(*f, name_of_file, "r"); return reset_OK(*f);
+{@+reset(*f, name_of_file, "r"); return reset_OK(*f);
 } 
 @#
 bool a_open_out(@!alpha_file *@!f)
    /*open a text file for output*/ 
-{ rewrite(*f, name_of_file, "w"); return rewrite_OK(*f);
+{@+rewrite(*f, name_of_file, "w"); return rewrite_OK(*f);
 } 
 @#
 bool b_open_out(@!byte_file *@!f)
    /*open a binary file for output*/ 
-{ rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
+{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
 } 
 @#
 bool w_open_in(@!word_file *@!f)
    /*open a word file for input*/ 
-{ reset(*f, name_of_file, "rb"); return reset_OK(*f);
+{@+reset(*f, name_of_file, "rb"); return reset_OK(*f);
 } 
 @#
 bool w_open_out(@!word_file *@!f)
    /*open a word file for output*/ 
-{ rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
+{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
 } 
 
 @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
