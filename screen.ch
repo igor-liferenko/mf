@@ -1,6 +1,5 @@
-We need to run metafont and wayland processes in parallel,
-because a Wayland application runs in an endless loop.
-Screen data is stored in memory, which is shared among the processes.
+Screen contents are displayed by a separate process.
+Shared memory is used to access the screen contents.
 
 @x
 @h
@@ -74,18 +73,18 @@ void update_screen(void)
 {
   static pid_t screen_pid = -1;
 
-    if (screen_pid != -1) {
-      kill(screen_pid, SIGTERM);
-      waitpid(screen_pid, NULL, 0);
-    }
+  if (screen_pid != -1) {
+    kill(screen_pid, SIGTERM);
+    waitpid(screen_pid, NULL, 0);
+  }
 
-    assert((screen_pid = fork()) != -1);
-    if (screen_pid == 0) {
-      dup2(screen_fd, STDIN_FILENO);
-      signal(SIGINT, SIG_IGN);
-      execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
-      _exit(0);
-    }
+  assert((screen_pid = fork()) != -1);
+  if (screen_pid == 0) {
+    dup2(screen_fd, STDIN_FILENO);
+    signal(SIGINT, SIG_IGN);
+    execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
+    _exit(0);
+  }
 }
 @z
 
@@ -103,7 +102,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 } 
 @y
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
-  screen_row @!top_row, screen_row @!bot_row)
+                        screen_row @!top_row, screen_row @!bot_row)
 {
   pixel_t *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
