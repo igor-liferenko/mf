@@ -1275,7 +1275,7 @@ else bad_pool("! I can't read MF.POOL.")
 @ @<Read one string...@>=
 {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
 @.MF.POOL has no check sum@>
-pascal_read(pool_file, m);@+pascal_read(pool_file, n); /*read two digits of string length*/ 
+read(pool_file, m);@+read(pool_file, n); /*read two digits of string length*/
 if (m== '*' ) @<Check the pool check sum@>@;
 else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
       (xord[n] < '0')||(xord[n] > '9')) 
@@ -1286,7 +1286,7 @@ else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
     bad_pool("! You have to increase POOLSIZE.");
 @.You have to increase POOLSIZE@>
   for (k=1; k<=l; k++) 
-    {@+if (eoln(pool_file)) m= ' ' ;@+else pascal_read(pool_file, m);
+    {@+if (eoln(pool_file)) m= ' ' ;@+else read(pool_file, m);
     append_char(xord[m]);
     } 
   read_ln(pool_file);g=make_string();str_ref[g]=max_str_ref;
@@ -1305,7 +1305,7 @@ loop@+{@+if ((xord[n] < '0')||(xord[n] > '9'))
 @.MF.POOL check sum...@>
   a=10*a+xord[n]-'0';
   if (k==9) goto done;
-  incr(k);pascal_read(pool_file, n);
+  incr(k);read(pool_file, n);
   } 
 done: if (a!=0) bad_pool("! MF.POOL doesn't match; TANGLE me again.");
 @.MF.POOL doesn't match@>
@@ -1393,7 +1393,7 @@ by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
 #define eoln(file)    @[((file).d=='\n'||eof(file))@]
 #define erstat(file)   @[((file).f==NULL?-1:ferror((file).f))@]
 
-#define pascal_read(file,x) @[((x)=(file).d,get(file))@]
+#define read(file,x) @[((x)=(file).d,get(file))@]
 #define read_ln(file)  @[do { while (!eoln(file)) get(file); get(file); } while (0)@]
 
 #define write(file, format,...)    @[fprintf(file.f,format,## __VA_ARGS__)@]

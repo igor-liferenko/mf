@@ -6,7 +6,6 @@ Screen data is stored in memory, which is shared among the processes.
 @h
 @y
 #include <sys/mman.h>
-#include <sys/prctl.h>
 #include <sys/syscall.h>
 @h
 @z
@@ -56,6 +55,8 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1;
 
+  system("pkill hello-wayland");
+
   return true;
 }
 @z
@@ -69,54 +70,22 @@ wlog_ln("Calling UPDATESCREEN");
  /*for testing only*/ 
 } 
 @y
-/* Here |SIGUSR1| is sent to wayland process.
-On receiving this signal
-wayland process updates the window (if it is on top)
-and writes the result to pipe (1 means on top, 0 --- not on top).
-Killing and starting wayland process is used as a
-means of bringing its window on top.
-We assume that the window may be closed by user. In such case we
-re-create it. */
-
-#define read_end fd[0]
-#define write_end fd[1]
-
 void update_screen(void)
 {
   static pid_t screen_pid = -1;
-  static int fd[2];
 
-  char byte = '0';
-  if (screen_pid != -1) {
-    kill(screen_pid, SIGUSR1);
-    read(read_end, &byte, 1); /* notice that |byte| is not changed (i.e., stays 0) if
-                                 child exited by itself --- this case is regarded the same
-                                 as if the window is not on top */
-  }
-  if (byte == '0') {
-    /* stop wayland process if it is already running */
     if (screen_pid != -1) {
       kill(screen_pid, SIGTERM);
       waitpid(screen_pid, NULL, 0);
-      close(read_end);
     }
 
-    /* start wayland process */
-    assert(pipe(fd) != -1);
     assert((screen_pid = fork()) != -1);
     if (screen_pid == 0) {
       dup2(screen_fd, STDIN_FILENO);
-      dup2(write_end, STDOUT_FILENO);
       signal(SIGINT, SIG_IGN);
-      prctl(PR_SET_PDEATHSIG, SIGTERM);
       execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
       _exit(0);
     }
-    close(write_end);
-
-    /* wait until wayland process is initialized */
-    assert(read(read_end, &byte, 1));
-  }
 }
 @z
 
