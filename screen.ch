@@ -13,7 +13,8 @@ Shared memory is used to access the screen contents.
 enum {@+@!screen_width=768@+}; /*number of pixels in each row of screen display*/
 enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen display*/
 @y
-int screen_width=768, screen_depth=1024;
+int screen_width=768; /*number of pixels in each row of screen display*/
+int screen_depth=1024; /*number of pixels in each column of screen display*/
 @z
 
 @x
@@ -69,7 +70,7 @@ wlog_ln("Calling UPDATESCREEN");
  /*for testing only*/ 
 } 
 @y
-void update_screen(void)
+void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 {
   static pid_t screen_pid = -1;
 
@@ -101,8 +102,8 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 #endif
 } 
 @y
-@p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
-                        screen_row @!top_row, screen_row @!bot_row)
+@p void blank_rectangle(screen_col @!left_col, screen_col @!right_col, screen_row @!top_row,
+  screen_row @!bot_row)
 {
   pixel_t *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
