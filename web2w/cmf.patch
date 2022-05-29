@@ -144,7 +144,7 @@
  {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
  @.MF.POOL has no check sum@>
 -read(pool_file, m, n); /*read two digits of string length*/ 
-+read(pool_file, m);@+read(pool_file, n); /*read two digits of string length*/
++read(pool_file, m);@+read(pool_file, n); /*read two digits of string length*/ 
  if (m== '*' ) @<Check the pool check sum@>@;
  else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
        (xord[n] < '0')||(xord[n] > '9')) 
@@ -445,7 +445,7 @@
  } 
  
 @@ -12372,7 +12395,7 @@
- unsorted(p)=void_; /*this time we'll paint, but maybe not next time*/ 
+ unsorted(p)=v0id; /*this time we'll paint, but maybe not next time*/ 
  @<Set up the parameters needed for |paint_row|; but |goto done| if no painting is
  needed after all@>;
 -paint_row(r, b, &row_transition, n);
