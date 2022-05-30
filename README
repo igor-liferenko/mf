@@ -3,7 +3,7 @@ Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 Add this `mf' script to PATH:
 
     #!/bin/sh
-    export SCREEN_SIZE=...
+    export SCREEN_SIZE=WIDTHxHEIGHT
     /path/to/mf/plain "$@"
     ret=$?
     [ $ret != 134 ] && echo
