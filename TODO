@@ -1,3 +1,0 @@
-For each `showit' update_screen is called once.
-Exception is the first `showit' - for it update_screen is called twice.
-Find place in code where it is done.
