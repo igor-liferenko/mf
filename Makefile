@@ -8,6 +8,7 @@ all:
 	gcc -DSTAT mf.c -o virmf
 	@for i in gray.mf black.mf slant?*.mf; do ./plain '\mode=localfont; input '$$i >/dev/null \
         || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # ensure that tfm files correspond to local.mf
+	@mv *.tfm ~/tex/TeXfonts/
 	@rm -f ~/tex/TeXfonts/*pk # ensure that pk files correspond to local.mf
 
 trapmf:
