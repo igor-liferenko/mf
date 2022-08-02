@@ -1,11 +1,28 @@
-NOTE: it is assumed that terminal supports alternate screen
+@x
+@<Global variables@>@;
+@y
+@<Global variables@>@;
+bool want_edit;
+@z
 
 @x
 @h
 @y
-#include <assert.h>
 #include <unistd.h>
 @h
+@z
+
+@x
+{@+ close_files_and_terminate(); exit(1);
+@y
+{@+ close_files_and_terminate();
+  if (want_edit) {
+    char editor[50];
+    sprintf(editor, "vi +%d /proc/%ld/fd/%d", line, (long) getpid(),
+      fileno(input_file[input_stack[file_ptr].index_field].f));
+    system(editor);
+  }
+  exit(1);
 @z
 
 @x
@@ -14,8 +31,5 @@ NOTE: it is assumed that terminal supports alternate screen
   slow_print(input_stack[file_ptr].name_field);
   print_str(" at line ");print_int(line);@/
 @y
-{ char editor[50];
-  sprintf(editor, "vi +%d /proc/%ld/fd/%d", line, (long) getpid(),
-    fileno(input_file[input_stack[file_ptr].index_field].f));
-  assert(system(editor) == 0);
+{ want_edit = 1;
 @z
