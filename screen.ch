@@ -1,5 +1,5 @@
 Screen contents are displayed by a separate process.
-Shared memory is used to access the screen contents.
+Screen contents are in shared memory.
 
 @x
 @h
@@ -102,8 +102,8 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 #endif
 } 
 @y
-@p void blank_rectangle(screen_col @!left_col, screen_col @!right_col, screen_row @!top_row,
-  screen_row @!bot_row)
+@p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
+  screen_row @!top_row, screen_row @!bot_row)
 {
   pixel_t *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
