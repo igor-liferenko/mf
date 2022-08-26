@@ -6,6 +6,8 @@ Screen contents are in shared memory.
 @y
 #include <sys/mman.h>
 #include <sys/syscall.h>
+#include <sys/wait.h>
+#include <unistd.h>
 @h
 @z
 
