@@ -1,5 +1,3 @@
-This is useful if we would want to do post-processing.
-
 @x
 @h
 @y
@@ -10,14 +8,14 @@ This is useful if we would want to do post-processing.
 @x
 b_close(&gf_file);
 @y
-if (getenv("tmpfile")) {
+if (getenv("mf_tmp")) {
   char fname[PATH_MAX];
   sprintf(fname, "/proc/self/fd/%d", fileno(gf_file.f));
   assert(realpath(strdup(fname), fname));
-  FILE *tmpfile;
-  assert(tmpfile = fopen(getenv("tmpfile"), "w"));
-  fprintf(tmpfile, "%s", fname);
-  fclose(tmpfile);
+  FILE *stream;
+  assert(stream = fopen(getenv("mf_tmp"), "w"));
+  fprintf(stream, "%s", fname);
+  fclose(stream);
 }
 b_close(&gf_file);
 @z
