@@ -7,3 +7,13 @@ mode_def localfont =
   fontmaking := 1;
   tracingtitles := 1;
 enddef;
+
+mode_def hires =
+  pixels_per_inch := 1200;
+  blacker := 3;
+  o_correction := 1;
+  fillin := 0;
+  proofing := 0;
+  fontmaking := 1;
+  tracingtitles := 1;
+enddef;
