@@ -7,8 +7,8 @@ all:
 	./inimf 'plain; input local; dump' >/dev/null && mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf
 	@for i in gray.mf black.mf slant?*.mf; do ./plain '\mode=localfont; batchmode; input '$$i \
-	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done
-	@rm -f ~/tex/TeXfonts/*pk
+	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
+	@rm -f ~/tex/TeXfonts/*pk # ensure that pk files are re-generated
 
 trapmf:
 	@[ $(MAKELEVEL) != 0 ]
