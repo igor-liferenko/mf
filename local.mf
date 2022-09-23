@@ -8,7 +8,7 @@ mode_def localfont =
   tracingtitles := 1;
 enddef;
 
-mode_def hires =
+mode_def screen =
   pixels_per_inch := 1200;
   blacker := 3;
   o_correction := 1;
