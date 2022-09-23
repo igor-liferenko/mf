@@ -3,6 +3,7 @@
 @y
 #include <limits.h>
 @h
+bool font_making;
 @z
 
 @x
@@ -16,6 +17,15 @@ if (getenv("name")) {
   assert(f = fopen(getenv("name"), "w"));
   fprintf(f, "%s", s2);
   fclose(f);
+  if (font_making) chmod(getenv("name"), S_IRUSR | S_IWUSR | S_IXUSR);
+  else             chmod(getenv("name"), S_IRUSR | S_IWUSR);
 }
 b_close(&gf_file);
+@z
+
+@x
+    internal[fontmaking]=0; /*avoid loop in case of fatal error*/ 
+@y
+    internal[fontmaking]=0; /*avoid loop in case of fatal error*/ 
+    font_making=1;
 @z
