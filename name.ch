@@ -2,6 +2,7 @@
 @h
 @y
 #include <limits.h>
+#include <sys/stat.h>
 @h
 bool font_making;
 @z
