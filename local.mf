@@ -5,7 +5,7 @@ mode_def localfont =
   fillin := 0;
   proofing := 0;
   fontmaking := 1;
-  tracingtitles := 1;
+  tracingtitles := 0;
 enddef;
 
 mode_def screen =
@@ -15,5 +15,5 @@ mode_def screen =
   fillin := 0;
   proofing := 0;
   fontmaking := 1;
-  tracingtitles := 1;
+  tracingtitles := 0;
 enddef;
