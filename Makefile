@@ -8,7 +8,7 @@ all:
 	gcc -DSTAT mf.c -o virmf
 	@for i in gray.mf black.mf slant?*.mf; do ./plain '\mode=screen; batchmode; input '$$i \
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
-	@rm -f ~/tex/TeXfonts/*pk # ...
+	@rm -f ~/tex/TeXfonts/*pk # mode parameters could change
 
 trapmf:
 	@[ $(MAKELEVEL) != 0 ]
