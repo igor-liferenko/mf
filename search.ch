@@ -16,7 +16,7 @@
 @d str_551 "/usr/share/texlive/texmf-dist/fonts/source/lh/lh-lcy/"
 @d str_552 "/usr/share/texlive/texmf-dist/fonts/source/public/amsfonts/cmextra/"
 @d str_553 "/home/user/mf/MFinputs/cm/"
-@d str_554 "/usr/share/texlive/texmf-dist/fonts/source/public/cmcyr/"
+@d str_554 "/home/user/mf/MFinputs/cmcyr/"
 @d str_555 "/usr/share/texlive/texmf-dist/fonts/source/public/cmextra/"
 @d str_556 "/usr/share/texlive/texmf-dist/fonts/source/public/knuth-lib/"
 @d str_557 "/usr/share/texlive/texmf-dist/fonts/source/public/levy/"
