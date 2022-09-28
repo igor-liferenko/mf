@@ -1,3 +1,13 @@
+mode_def proof =
+ proofing:=2;
+ fontmaking:=0;
+ tracingtitles:=0;              % redefine plain.mf
+ pixels_per_inch:=2601.72;
+ blacker:=0;
+ fillin:=0;
+ o_correction:=1;
+enddef;
+
 mode_def localfont =
   pixels_per_inch := 600;
   blacker := .25;
