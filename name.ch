@@ -16,7 +16,7 @@ if (getenv("name")) {
   assert(realpath(s1, s2));
   FILE *f;
   assert(f = fopen(getenv("name"), "a"));
-  fprintf(f, "%s", s2);
+  fprintf(f, "%s\n", s2);
   fclose(f);
 }
 b_close(&tfm_file)
@@ -31,7 +31,7 @@ if (getenv("name")) {
   assert(realpath(s1, s2));
   FILE *f;
   assert(f = fopen(getenv("name"), "a"));
-  fprintf(f, "%s", s2);
+  fprintf(f, "%s\n", s2);
   fclose(f);
 }
 b_close(&gf_file);
