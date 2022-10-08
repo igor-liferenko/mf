@@ -1,6 +1,5 @@
 % Caps and Small Caps in Computer Modern Cyrillic
 
-let cmchar=message; % `|cmchar|' should precede each character
 
 font_coding_scheme:=if ligs=0: "TeX typewriter text"
  else: "TeX text without f-ligatures" fi;

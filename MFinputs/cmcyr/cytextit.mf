@@ -1,6 +1,5 @@
 % The Computer Modern Cyrillic Text Italic family
 
-let cmchar=message; % `|cmchar|' should precede each character
 
 mode_setup; font_setup;
 input coding;
