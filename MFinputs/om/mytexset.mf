@@ -20,7 +20,7 @@ input tset;  % remaining special symbols of extended ASCII
 
 input cyru;  % upper case (majuscules)
 input cyrl;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+input cyrsymb; % three additional char
 
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking

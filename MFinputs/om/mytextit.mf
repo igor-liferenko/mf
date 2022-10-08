@@ -34,7 +34,7 @@ input accent;  % accents common to roman and italic text
 
 input cyru;  % upper case (majuscules)
 input citall;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+input cyrsymb; % three additional char
 
 if ligs>0: input comlig; fi  % ligatures common with roman text
 if ligs<=1: input romsub; fi  % substitutes for ligatures
