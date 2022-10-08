@@ -1,6 +1,6 @@
 string driver_name;
 input cmbase;
-vardef generate @# = driver_name:=str @#; endgroup enddef;
+vardef generate @# = driver_name:=str @#; enddef;
 
 string param_base;
 param_base = jobname;
