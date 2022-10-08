@@ -4,7 +4,6 @@ Screen contents are in shared memory.
 @x
 @h
 @y
-#include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
@@ -21,10 +20,13 @@ int screen_depth=1024; /*number of pixels in each column of screen display*/
 @z
 
 @x
-{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
+#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode),\
+                             (file).f!=NULL?get(file):0@]
+#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode)@]
 @y
-{@+rewrite(*f, name_of_file, "wb"); if (rewrite_OK(*f))
-  { fcntl(fileno(f->f), F_SETFD, FD_CLOEXEC); return true; } return false;
+#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode"e"),\
+                             (file).f!=NULL?get(file):0@]
+#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode"e")@]
 @z
 
 @x
