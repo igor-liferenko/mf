@@ -1,6 +1,5 @@
 % The Computer Modern Cyrillic family of fonts (by N.Glonti)
 
-
 font_coding_scheme:="TeX text";
 input coding;
 
