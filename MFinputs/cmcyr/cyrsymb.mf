@@ -1,5 +1,5 @@
 cmchar "open cyrillic quote (looks like <<)";
-beginchar(oct"035",10u#,x_height#,0);
+beginchar(CYR_flqq,10u#,x_height#,0);
 adjust_fit(if monospace:-u#,-u# else: 0,0 fi); pickup rule.nib;
 lft x2=hround u-epsilon; x1=x3=.55w;
 y1=h; y3=0; y2=.5[y1,y3];
@@ -14,7 +14,7 @@ draw z4--z5'--z6;  % right diagonals
 labels(1,2,3,4,5,6); endchar;
 
 cmchar "close cyrillic quote (looks like >>)";
-beginchar(oct"036",10u#,x_height#,0);
+beginchar(CYR_frqq,10u#,x_height#,0);
 adjust_fit(if monospace:-u#,-u# else: 0,0 fi); pickup rule.nib;
 lft x2=.55w; x1=x3=hround u-epsilon;
 y1=.9h; y3=.1h; y2=.5[y1,y3];
@@ -31,7 +31,7 @@ labels(1,2,3,4,5,6);
 endchar;
 
 cmchar "The number mark";
-beginchar(oct"031",17u#,cap_height#,0);
+beginchar(CYR_No,17u#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 numeric thin_stem,letter_w,light_bulb; letter_w=14u;
