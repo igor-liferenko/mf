@@ -1,27 +1,27 @@
 % THIS IS THE OFFICIAL COMPUTER MODERN SOURCE FILE texset.mf BY D E KNUTH.
 % IT MUST NOT BE MODIFIED IN ANY WAY UNLESS THE FILE NAME IS CHANGED!
- 
+
 % Special version of Computer Modern for \TeX's extended ASCII character set
- 
+
 font_coding_scheme:="TeX extended ASCII";
- 
+
 mode_setup; font_setup; mono_charic#:=0;
- 
+
 input tsetsl;  % special symbols to be slanted
 slant:=0;  % the remaining characters will not be slanted
 currenttransform:=identity yscaled aspect_ratio scaled granularity;
- 
+
 input romanu;  % upper case (majuscules)
 input romanl;  % lower case (minuscules)
 input romand;  % numerals
 input romanp;  % ampersand, question marks, currency sign
 input punct;  % punctuation symbols common to roman and italic text
 input tset;  % remaining special symbols of extended ASCII
- 
+
 input cyru;  % upper case (majuscules)
 input cyrl;  % lower case (minuscules)
 input mycyrsymb; % three additional char
- 
+
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
  font_quad 18u#;

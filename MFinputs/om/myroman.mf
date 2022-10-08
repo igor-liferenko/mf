@@ -1,16 +1,16 @@
 % THIS IS THE OFFICIAL COMPUTER MODERN SOURCE FILE roman.mf BY D E KNUTH.
 % IT MUST NOT BE MODIFIED IN ANY WAY UNLESS THE FILE NAME IS CHANGED!
- 
+
 % The Computer Modern Roman family of fonts (by D. E. Knuth, 1979--1985)
- 
+
 if ligs>1: font_coding_scheme:="TeX text";
  spanish_shriek=oct"074"; spanish_query=oct"076";
 else: font_coding_scheme:=if ligs=0: "TeX typewriter text"
   else: "TeX text without f-ligatures" fi;
  spanish_shriek=oct"016"; spanish_query=oct"017"; fi
- 
+
 mode_setup; font_setup;
- 
+
 input romanu;  % upper case (majuscules)
 input romanl;  % lower case (minuscules)
 input greeku;  % upper case Greek letters
@@ -20,15 +20,15 @@ input romspl;  % lowercase specials (dotless \i, ligature \ae, etc.)
 input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
- 
+
 input cyru;  % upper case (majuscules)
 input cyrl;  % lower case (minuscules)
 input mycyrsymb; % three additional char
- 
+
 if ligs>1: input romlig; fi  % letter ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic text
 if ligs<=1: input romsub; fi  % substitutes for ligatures
- 
+
 ligtable "!": "`" =: spanish_shriek;
 ligtable "?": "`" =: spanish_query;
 font_slant slant; font_x_height x_height#;
@@ -39,14 +39,14 @@ else: font_normal_space 6u#+2letter_fit#;
  font_normal_stretch 3u#; font_normal_shrink 2u#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#;
- 
+
 % BEGIN of kern data from cyrillic.mf
- 
+
 % k#:=.5u#; kk#:=.75u#; kkk#:=1.5u#; kkkk#:=-2u#;
- 
+
  k#:=.25u#; kk#:=.5u#; kkk#:=0.75u#; kkkk#:=-1.25
 u#;
- 
+
 %k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
 %k#:=2u#; kk#:=u#; kkk#:=3u#; kkkk#:=-5u#;
  ligtable CYR_a:                             % a
@@ -54,7 +54,7 @@ u#;
                     CYR_u kern -kk#,         % u
                     CYR_de kern  k#,          % d
                     CYR_che kern -kk#;         % ch
- 
+
  ligtable CYR_be:                             % b
                     CYR_ve kern -k#,        % ve
                     CYR_ghe kern -k#,        % ghe
@@ -75,7 +75,7 @@ u#;
                     CYR_yeru kern -k#,        % yeru
                     CYR_shcha kern -k#,        % shcha
                     CYR_tse kern -k#;        % tse
- 
+
  ligtable CYR_tse: CYR_sha: CYR_shcha:
           CYR_en: CYR_em: CYR_pe:
                     CYR_be kern -k#,          % be
@@ -84,7 +84,7 @@ u#;
                     CYR_ef kern -k#,        % ef
                     CYR_es kern -k#,          % ie
                     CYR_de kern k#;          % d
- 
+
  ligtable CYR_de:                             % d
                     CYR_be kern -kkk#,          % be
                     CYR_o kern -kkk#,          % o
@@ -92,7 +92,7 @@ u#;
                     CYR_ef kern -kk#,          % ef
                     CYR_es kern -kkk#,          % ie
                     CYR_de kern kk#;          % d
- 
+
  ligtable CYR_ie:                             % e
                     CYR_be kern kkk#,         % b
                     CYR_de kern -kk#,         % d
@@ -104,7 +104,7 @@ u#;
 %                    CYR_es kern -k#,          % s
 %                    CYR_te kern -k#,           % t
                     CYR_u kern -k#;          % u
- 
+
  ligtable CYR_ef:                             % f
                     CYR_ie kern k#,          % e
                     CYR_ha kern -kk#,         % x
@@ -115,32 +115,32 @@ u#;
                     CYR_o kern k#,          % o
                     CYR_es kern k#,          % s
                     CYR_te kern -k#;           % t
- 
+
  ligtable CYR_ghe:                             % g
                     CYR_be kern -k#,           % b
                     CYR_ie kern -kkk#,           % e
                     CYR_o kern -kkk#,           % o
                     CYR_es kern -kkk#;           % s
- 
+
  ligtable CYR_ha:                             % kh
                     CYR_ie kern -kk#,         % e
                     CYR_o kern -kk#,         % o
                     CYR_ef kern -kk#,          %
                     CYR_es kern -kk#;         % s
- 
+
  ligtable CYR_ka:                             % k
                     CYR_ie kern -kk#,         % e
                     CYR_ef kern -kk#,         % f
                     CYR_o kern -kk#,         % o
                     CYR_es kern -kk#,         % s
                     CYR_u kern -k#;          % u
- 
+
  ligtable CYR_el:                             % l
                     CYR_ie kern -kk#,         % e
                     CYR_ef kern -kk#,         % f
                     CYR_o kern -kk#,         % o
                     CYR_es kern -kk#;         % s
- 
+
  ligtable CYR_o:                             % o
 %                   CYR_be kern -k#,         % b  (was kkkk AS)
                     CYR_ve kern -kk#,         % ve
@@ -160,7 +160,7 @@ u#;
                     CYR_shcha kern -kk#,           %
                     CYR_che kern -kkk#,           %
                     CYR_zhe kern -kk#;         % zh
- 
+
  ligtable CYR_er:                             % p
 %                   CYR_be kern -k#,         % b (kkkk -> -kkk AS)
 %                   CYR_ie kern -k#,          % e(kkkk -> -kkk AS)
@@ -168,7 +168,7 @@ u#;
 %                   CYR_o kern -k#,          % o (kkkk -> -kkk AS)
 %                   CYR_es kern -kk#,          % s (kkkk -> -kkk AS)
                     CYR_te kern -k#;           % t
- 
+
 %ligtable CYR_es:                             % s
 %                   CYR_be kern -k#,           % b
 %                   CYR_ie kern -k#,           % e
@@ -190,25 +190,25 @@ u#;
                    CYR_ef kern -kk#,          %
                    CYR_o kern -kk#,          % o
                    CYR_es kern -kk#;          % s
- 
+
  ligtable CYR_ve:                             % w
                     CYR_te kern -k#;          % d
- 
+
 %ligtable CYR_ze:                             % z
 %                   CYR_be kern -k#,          % b
 %                   CYR_ie kern -k#,          % e
 %                   CYR_o kern -k#,          % o
 %                   CYR_es kern -k#;          % s
- 
+
  ligtable CYR_A:                             % A
                     CYR_u kern -kk#,           %
                     CYR_CHE kern -kkk#;        % ch
- 
+
  ligtable CYR_BE:                             % B
                     CYR_O kern -k#,           % o
                     CYR_ES kern -k#,           % s
                     CYR_U kern -kk#;           % u
- 
+
  ligtable CYR_GHE: CYR_U:                   % G   U
                     CYR_A kern -kk#,        % a
 %                    CYR_ve kern -kk#,        % w
@@ -238,7 +238,7 @@ u#;
 %                    CYR_SHCHA kern -kk#,        % shch
 %                    CYR_CHE kern -kk#;        % ch
 %                    CYR_HARD_SIGN kern -k#;        % ''
- 
+
  ligtable CYR_O: CYR_ES: CYR_EF:
                     CYR_de kern -kkk#,           %
                     CYR_A kern -kkk#,        %
@@ -255,13 +255,13 @@ u#;
                     CYR_SHA kern -kkk#,        %
                     CYR_SHCHA kern -kkk#,        %
                     CYR_SHORT_I kern -kkk#;       % j
- 
+
  ligtable CYR_EN: CYR_EM: CYR_ER: CYR_PE:
           CYR_ZHE: CYR_KA: CYR_DE: CYR_HA:
                     CYR_O kern -kkk#,        %
                     CYR_ES kern -kkk#,        %
                     CYR_EF kern -kkk#;        %
- 
+
  ligtable CYR_TE:                             % T
                     CYR_A kern -kkk#,        % a
 %                   CYR_VE kern -kkk#,        % w
@@ -292,7 +292,7 @@ u#;
 %                   CYR_CHE kern -kk#,        % ch
 %                    CYR_HARD_SIGN kern -kk#;        %
 % END of kern data from cyrillic.mf
- 
+
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "k": if serifs: "v": "a" kern -u#, fi\\"w": "e" kern k#,
   "a" kern k#, "o" kern k#, "c" kern k#;
