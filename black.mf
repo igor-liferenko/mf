@@ -1,4 +1,4 @@
-if mode<>screen: errmessage "This file is for screen only"; fi
+if mode<>localfont: errmessage "This file is for localfont only"; fi
 font_identifier "BLACK";
 picture pix_picture; pix_wd := pix_ht := 8;
 pix_picture := unitpixel scaled 8;
