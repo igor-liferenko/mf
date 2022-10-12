@@ -68,5 +68,5 @@ CYR_E := oct"174";
 CYR_YU := oct"140";
 CYR_YA := oct"161";
 CYR_flqq := oct"035";
-CYR_frqq := oct"036"
+CYR_frqq := oct"036";
 CYR_No := oct"031";
