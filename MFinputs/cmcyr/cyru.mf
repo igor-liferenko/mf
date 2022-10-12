@@ -172,10 +172,15 @@ if serifs: nodish_serif(1,2,a,1/3,cap_jut,b,1/3,.5cap_jut);  % upper serif
  nodish_serif(2,1,c,1/3,cap_jut,d,1/3,.5cap_jut); fi  % lower serif
 math_fit(0,.5ic#); penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
+numeric full_h#,full_h;
+full_h#=1.3cap_height#; 
+define_whole_vertical_pixels(full_h);
+
 cmchar "The cyrillic letter YO";
 numeric dot_diam#,dot_diam;
 dot_diam#=max(dot_size#,cap_curve#);
-beginchar(CYR_YO,12u#-width_adj#,1.3cap_height#,0);
+beginchar(CYR_YO,12u#-width_adj#,cap_height#,0);
+h:=full_h;
 dot_diam=max(tiny.breadth,hround(max(dot_size,cap_curve)-2stem_corr));
 italcorr cap_height#*slant-beak_jut#-.5u#;
 adjust_fit(cap_serif_fit#,0);
@@ -339,7 +344,8 @@ math_fit(0,max(.5ic#-.5u#,0));
 penlabels(1,2,2',3,3',4,5,6,7); endchar;
 
 cmchar "The cyrillic letter SHORT I";
-beginchar(CYR_SHORT_I,13u#+width_adj#,1.3cap_height#,0);
+beginchar(CYR_SHORT_I,13u#+width_adj#,cap_height#,0);
+h:=full_h;
 italcorr 1.3cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem',0); pos2(cap_stem',0);
