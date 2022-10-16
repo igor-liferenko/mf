@@ -33,7 +33,7 @@ input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
 
 input mycyru;  % upper case (majuscules)
-input citall;  % lower case (minuscules)
+input mycitall;  % lower case (minuscules)
 input mycyrsymb; % three additional char
 
 if ligs>0: input comlig; fi  % ligatures common with roman text
