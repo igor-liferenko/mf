@@ -5,7 +5,7 @@ vardef generate @# = driver_name:=str @#; enddef;
 string param_base;
 param_base = jobname;
 param_base := "c" & substring(1,100) of param_base;
-scantokens("input " & param_base); % parameter files are the same in cm and cmcyr (TODO: diff all of them to check)
+scantokens("input " & param_base);
 
 CYR_a  := hex"a0";
 CYR_be := hex"a1";
