@@ -11,7 +11,7 @@ all:
 	@rm -f ~/tex/TeXfonts/*pk # mode parameters could change
 
 trapmf:
-	@[ $(MAKELEVEL) != 0 ]
+	@[ $(MAKELEVEL) = 1 ]
 	make -C web2w
 	cp web2w/cmf.w mf.w
 	tie -c mf.ch mf.w trap/constants.ch trap/screen.ch $(CHF) >/dev/null
