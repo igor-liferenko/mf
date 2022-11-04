@@ -6,7 +6,7 @@ Add this `mf' script to PATH:
     export SCREEN_SIZE=WIDTHxHEIGHT
     /path/to/mf/plain "$@"
     ret=$?
-    [ $ret != 134 ] && echo
+    [ $ret = 134 ] || echo
     exit $ret
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
