@@ -3,6 +3,8 @@
 
 % The Computer Modern Text Italic family (by D. E. Knuth, 1979--1985)
 
+string extra_endchar_old;
+
 mode_setup; font_setup;
 
 input itall;  % lower case (minuscules)
@@ -32,9 +34,14 @@ input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
 
-input mycyru;  % upper case (majuscules)
-input mycitall;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+extra_endchar_old:=extra_endchar;
+extra_endchar:=extra_endchar_old&"charht:=0;chardp:=0;";
+input cyru;  % upper case (majuscules)
+input citall;  % lower case (minuscules)
+extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
+code_offset:=225;
+input cyrsymb; % three additional char
+extra_endchar:=extra_endchar_old;
 
 if ligs>0: input comlig; fi  % ligatures common with roman text
 if ligs<=1: input romsub; fi  % substitutes for ligatures

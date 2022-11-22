@@ -176,7 +176,6 @@ cmchar "The cyrillic letter YO";
 numeric dot_diam#,dot_diam;
 dot_diam#=max(dot_size#,cap_curve#);
 beginchar(CYR_YO,12u#-width_adj#,1.3cap_height#,0);
-charht:=cap_height#;
 dot_diam=max(tiny.breadth,hround(max(dot_size,cap_curve)-2stem_corr));
 italcorr cap_height#*slant-beak_jut#-.5u#;
 adjust_fit(cap_serif_fit#,0);
@@ -341,7 +340,6 @@ penlabels(1,2,2',3,3',4,5,6,7); endchar;
 
 cmchar "The cyrillic letter SHORT I";
 beginchar(CYR_SHORT_I,13u#+width_adj#,1.3cap_height#,0);
-charht:=cap_height#;
 italcorr 1.3cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem',0); pos2(cap_stem',0);

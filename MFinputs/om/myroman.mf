@@ -9,6 +9,8 @@ else: font_coding_scheme:=if ligs=0: "TeX typewriter text"
   else: "TeX text without f-ligatures" fi;
  spanish_shriek=oct"016"; spanish_query=oct"017"; fi
 
+string extra_endchar_old;
+
 mode_setup; font_setup;
 
 input romanu;  % upper case (majuscules)
@@ -21,9 +23,14 @@ input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
 
-input mycyru;  % upper case (majuscules)
-input mycyrl;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+extra_endchar_old:=extra_endchar;
+extra_endchar:=extra_endchar_old&"charht:=0;chardp:=0;";
+input cyru;  % upper case (majuscules)
+input cyrl;  % lower case (minuscules)
+extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
+code_offset:=225;
+input cyrsymb; % three additional char
+extra_endchar:=extra_endchar_old;
 
 if ligs>1: input romlig; fi  % letter ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic text

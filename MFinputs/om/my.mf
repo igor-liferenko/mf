@@ -73,8 +73,5 @@ CYR_SOFT_SIGN := hex"9c";
 CYR_E := hex"9d";
 CYR_YU := hex"9e";
 CYR_YA := hex"9f";
-CYR_flqq := hex"fd";
-CYR_frqq := hex"fe";
-CYR_No := hex"fc";
 
 scantokens("input " & "my" & driver_name);

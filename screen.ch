@@ -40,7 +40,7 @@ int screen_fd;
 void *screen_data;
 bool init_screen(void)
 {
-  if (!getenv("SCREEN_SIZE")) return false;
+  if (!getenv("screen_size")) return false;
 
   /* allocate memory */
   row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
@@ -171,5 +171,5 @@ screen_col *row_transition; /*an array of |black|/|white| transitions*/
 @p int main(void) {@! /*|start_here|*/
 @y
 @p int main(void) {@! /*|start_here|*/
-if (getenv("SCREEN_SIZE")) sscanf(getenv("SCREEN_SIZE"), "%dx%d", &screen_width, &screen_depth);
+if (getenv("screen_size")) sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
 @z

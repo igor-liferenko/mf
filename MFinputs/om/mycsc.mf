@@ -7,6 +7,8 @@ font_coding_scheme:=if ligs=0: "TeX typewriter text"
  else: "TeX text without f-ligatures" fi;
 spanish_shriek=oct"016"; spanish_query=oct"017";
 
+string extra_endchar_old;
+
 mode_setup; font_setup;
 input romanu;  % upper case (majuscules)
 input greeku;  % upper case greek letters
@@ -15,8 +17,13 @@ input romanp;  % ampersand, question marks, currency sign
 input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to all roman and italic
 input accent;  % accents common to roman and italic text
-input mycyru;
-input mycyrsymb;
+extra_endchar_old:=extra_endchar;
+extra_endchar:=extra_endchar_old&"charht:=0;chardp:=0;";
+input cyru;
+extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
+code_offset:=225;
+input cyrsymb;
+extra_endchar:=extra_endchar_old;
 input romsub;  % substitutes for ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic
 
@@ -94,7 +101,10 @@ CYR_SOFT_SIGN := CYR_soft_sign;
 CYR_E := CYR_e;
 CYR_YU := CYR_yu;
 CYR_YA := CYR_ya;
-input mycyru;  % majuscules (in lowercase positions)
+extra_endchar_old:=extra_endchar;
+extra_endchar:=extra_endchar_old&"charht:=0;chardp:=0;";
+input cyru;  % majuscules (in lowercase positions)
+extra_endchar:=extra_endchar_old;
 if not monospace:
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "p": "t": "y": "a" kern kk#;

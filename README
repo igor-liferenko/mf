@@ -3,10 +3,13 @@ Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 Add this `mf' script to PATH:
 
     #!/bin/sh
-    export SCREEN_SIZE=WIDTHxHEIGHT
+    export screen_size=WIDTHxHEIGHT
+    export edit=/tmp/edit.$$
     /path/to/mf/plain "$@"
     ret=$?
-    [ $ret = 134 ] || echo
+    [ $ret != 134 ] && echo
+    [ -e $edit ] && sed 's/\(.*\) \(.*\)/You want to edit file \1 at line \2\n/' $edit
+    rm -f $edit
     exit $ret
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
@@ -17,8 +20,6 @@ To use debugger, add "-g -Og" and run "gdb plain"
 Adjust base_default_length, base_area_length and paths in path.ch
 Adjust path to TeXfonts/ in Makefile
 Change search.ch as needed
-
-Change-files are for Linux
 
 -----------------------------------
 
