@@ -5,8 +5,6 @@
 
 font_coding_scheme:="TeX extended ASCII";
 
-string extra_endchar_old;
-
 mode_setup; font_setup; mono_charic#:=0;
 
 input tsetsl;  % special symbols to be slanted
@@ -20,14 +18,12 @@ input romanp;  % ampersand, question marks, currency sign
 input punct;  % punctuation symbols common to roman and italic text
 input tset;  % remaining special symbols of extended ASCII
 
-extra_endchar_old:=extra_endchar;
-extra_endchar:=extra_endchar_old&"charht:=0;chardp:=0;";
+extra_beginchar:="charht:=0;chardp:=0;";
 input cyru;  % upper case (majuscules)
 input cyrl;  % lower case (minuscules)
-extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
-code_offset:=225;
+extra_beginchar:=extra_beginchar&"charcode:=charcode+225;";
 input cyrsymb; % three additional char
-extra_endchar:=extra_endchar_old;
+extra_beginchar:="";
 
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
