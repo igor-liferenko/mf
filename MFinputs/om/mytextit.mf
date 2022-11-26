@@ -32,13 +32,9 @@ input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
 
-extra_beginchar:="charht:=0;chardp:=0;";
-input cyru;  % upper case (majuscules)
-input citall;  % lower case (minuscules)
-input italyo;
-extra_beginchar:=extra_beginchar&"charcode:=charcode+225;";
-input cyrsymb; % three additional char
-extra_beginchar:="";
+input mycyru;  % upper case (majuscules)
+input mycitall;  % lower case (minuscules)
+input mycyrsymb; % three additional char
 
 if ligs>0: input comlig; fi  % ligatures common with roman text
 if ligs<=1: input romsub; fi  % substitutes for ligatures
