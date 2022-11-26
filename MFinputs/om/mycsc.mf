@@ -15,8 +15,8 @@ input romanp;  % ampersand, question marks, currency sign
 input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to all roman and italic
 input accent;  % accents common to roman and italic text
-input mycyru;
-input mycyrsymb;
+input cyru;
+input cyrsymb;
 input romsub;  % substitutes for ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic
 
@@ -94,7 +94,7 @@ CYR_SOFT_SIGN := CYR_soft_sign;
 CYR_E := CYR_e;
 CYR_YU := CYR_yu;
 CYR_YA := CYR_ya;
-input mycyru;  % majuscules (in lowercase positions)
+input cyru;  % majuscules (in lowercase positions)
 if not monospace:
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "p": "t": "y": "a" kern kk#;

@@ -18,9 +18,9 @@ input romanp;  % ampersand, question marks, currency sign
 input punct;  % punctuation symbols common to roman and italic text
 input tset;  % remaining special symbols of extended ASCII
 
-input mycyru;  % upper case (majuscules)
-input mycyrl;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+input cyru;  % upper case (majuscules)
+input cyrl;  % lower case (minuscules)
+input cyrsymb; % three additional char
 
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking

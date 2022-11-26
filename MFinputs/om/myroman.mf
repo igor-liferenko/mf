@@ -21,9 +21,9 @@ input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to roman and italic text
 input accent;  % accents common to roman and italic text
 
-input mycyru;  % upper case (majuscules)
-input mycyrl;  % lower case (minuscules)
-input mycyrsymb; % three additional char
+input cyru;  % upper case (majuscules)
+input cyrl;  % lower case (minuscules)
+input cyrsymb; % three additional char
 
 if ligs>1: input romlig; fi  % letter ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic text
