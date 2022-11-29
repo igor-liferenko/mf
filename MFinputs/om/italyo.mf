@@ -1,6 +1,6 @@
 cmchar "Cyrillic italic letter yo";
 beginchar(CYR_yo,8u#,x_height#,0);
-charht:=x_height#;
+%charht:=x_height#;
 italcorr max(1/3x_height#*slant,x_height#*slant+.5(.2[hair#,stem#])-u#);
 adjust_fit(0,0); pickup fine.nib;
 numeric heavy_hair; heavy_hair=hround .2[hair,stem];
