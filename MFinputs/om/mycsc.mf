@@ -8,6 +8,8 @@ font_coding_scheme:=if ligs=0: "TeX typewriter text"
 spanish_shriek=oct"016"; spanish_query=oct"017";
 
 mode_setup; font_setup;
+input cyrsymb;
+input cyru;
 input romanu;  % upper case (majuscules)
 input greeku;  % upper case greek letters
 input romand;  % numerals
@@ -15,8 +17,6 @@ input romanp;  % ampersand, question marks, currency sign
 input romspu;  % uppercase specials (\AE, \OE, \O)
 input punct;  % punctuation symbols common to all roman and italic
 input accent;  % accents common to roman and italic text
-input cyru;
-input cyrsymb;
 input romsub;  % substitutes for ligatures
 if ligs>0: input comlig; fi  % ligatures common with italic
 
@@ -30,6 +30,7 @@ else: font_normal_space 6u#+2letter_fit#;
  font_normal_stretch 3u#; font_normal_shrink 2u#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#;
+ input ccsc;
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "P": "T": "Y": "a" kern kk#, "A" kern kk#;
  ligtable "F": "V": "W": if serifs: "a" kern kkk#, "A" kern kkk#,
@@ -46,21 +47,6 @@ else: font_normal_space 6u#+2letter_fit#;
  ligtable "I": "I" kern -k#; fi % Richard III
 % ligature programs for |"-"|, |"`"|, and |"'"| are in the {\tt comlig} file
 
-%%% fine lower
-forsuffixes $= u, width_adj, cap_serif_fit, letter_fit,
- body_height, cap_height, x_height, bar_height, comma_depth,
- flare, cap_hair, stem, cap_stem, cap_curve, cap_ess,
- cap_jut, beak_jut, beak, slab, cap_bar, cap_band, cap_notch_cut,
- o, apex_o:  $.#:=lower.$.#; endfor
-fudge:=lower.fudge;
-font_setup; % now try again with |lower| settings
-extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
-code_offset:=ASCII"a" - ASCII"A";
-input romanu;  % majuscules (in lowercase positions)
-code_offset:=-3;
-input romspu;  % \AE, \OE, \O\ (in positions of \ae, \oe, \o)
-code_offset:=0;
-input cscspu;  % substitutes for the remaining characters of romspl
 CYR_A := CYR_a;
 CYR_BE := CYR_be;
 CYR_VE := CYR_ve;
@@ -94,7 +80,24 @@ CYR_SOFT_SIGN := CYR_soft_sign;
 CYR_E := CYR_e;
 CYR_YU := CYR_yu;
 CYR_YA := CYR_ya;
-input cyru;  % majuscules (in lowercase positions)
+
+%%% fine lower
+forsuffixes $= u, width_adj, cap_serif_fit, letter_fit,
+ body_height, cap_height, x_height, bar_height, comma_depth,
+ flare, cap_hair, stem, cap_stem, cap_curve, cap_ess,
+ cap_jut, beak_jut, beak, slab, cap_bar, cap_band, cap_notch_cut,
+ o, apex_o:  $.#:=lower.$.#; endfor
+fudge:=lower.fudge;
+font_setup; % now try again with |lower| settings
+extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
+code_offset:=0;
+input cyru;
+code_offset:=ASCII"a" - ASCII"A";
+input romanu;  % majuscules (in lowercase positions)
+code_offset:=-3;
+input romspu;  % \AE, \OE, \O\ (in positions of \ae, \oe, \o)
+code_offset:=0;
+input cscspu;  % substitutes for the remaining characters of romspl
 if not monospace:
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "p": "t": "y": "a" kern kk#;

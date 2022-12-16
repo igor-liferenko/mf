@@ -1,28 +1,3 @@
-% The Computer Modern Cyrillic family of fonts (by N.Glonti)
-
-let cmchar=message; % `|cmchar|' should precede each character
-
-font_coding_scheme:="TeX text";
-input coding;
-
-mode_setup; font_setup;
-
-
-input cyru;  % upper case (majuscules)
-input cyrl;  % lower case (minuscules)
-input cyrsymb; % three additional char
-
-font_slant slant;
-font_x_height x_height#;
-if monospace: font_normal_space 9u#; % no stretching or shrinking
- font_quad 18u#;
- font_extra_space 9u#;
-else: font_normal_space 6u#+2letter_fit#;
- font_normal_stretch 3u#; font_normal_shrink 2u#;
- font_quad 18u#+4letter_fit#;
- font_extra_space 2u#;
-
-
 % k#:=.5u#; kk#:=.75u#; kkk#:=1.5u#; kkkk#:=-2u#;
 
  k#:=.25u#; kk#:=.5u#; kkk#:=0.75u#; kkkk#:=-1.25
@@ -272,5 +247,3 @@ u#;
 %                   CYR_SHCHA kern -kk#,        % shch
 %                   CYR_CHE kern -kk#,        % ch
 %                    CYR_HARD_SIGN kern -kk#;        %
-fi;
-bye.

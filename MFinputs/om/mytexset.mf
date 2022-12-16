@@ -11,16 +11,15 @@ input tsetsl;  % special symbols to be slanted
 slant:=0;  % the remaining characters will not be slanted
 currenttransform:=identity yscaled aspect_ratio scaled granularity;
 
+input cyrsymb;
+input cyru;
 input romanu;  % upper case (majuscules)
+input cyrl;
 input romanl;  % lower case (minuscules)
 input romand;  % numerals
 input romanp;  % ampersand, question marks, currency sign
 input punct;  % punctuation symbols common to roman and italic text
 input tset;  % remaining special symbols of extended ASCII
-
-input cyru;  % upper case (majuscules)
-input cyrl;  % lower case (minuscules)
-input cyrsymb; % three additional char
 
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking

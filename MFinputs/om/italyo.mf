@@ -15,8 +15,8 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 numeric dot_diam;
 dot_diam=max(tiny.breadth,hround(max(dot_size,cap_curve)-2stem_corr));
 pos7(dot_diam,0); pos8(dot_diam,90);
-x7=x8=2.5u; top y8r=1.4h+1;
-if bot y8l<h+o+slab: y8l:=min(y8r-eps,h+o+slab+.5tiny); fi
+x7=x8=2.75u; top y8r=1.4h+1;
+if bot y8l<x_height+o+slab: y8l:=min(y8r-eps,x_height+o+slab+.5tiny); fi
 y7=.5[y8l,y8r]; dot(7,8);  % left dot
 pos9(dot_diam,0); penpos10(y8r-y8l,90); y9=y10=y7; x9=x10=w-x7;
 dot(9,10);  % right dot
