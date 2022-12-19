@@ -1,7 +1,7 @@
 if mode<>localfont: errmessage "This file is for localfont only"; fi
-s=1/6;    % the slant ratio
+s=0.16667;    % the slant ratio
 n=30;     % the number of characters
 r#=.4pt#; % thickness of the rules
 u=1;      % vertical unit
-font_identifier "SLANT6";
+font_identifier "SLANT";
 input slant

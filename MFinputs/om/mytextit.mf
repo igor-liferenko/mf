@@ -5,7 +5,6 @@
 
 mode_setup; font_setup;
 
-input cyrsymb;
 input citall; input italyo;
 input itall;  % lower case (minuscules)
 input italsp;  % lowercase specials (dotless \i, ligature \ae, etc.)
@@ -26,6 +25,7 @@ else: font_normal_space 6u#+2letter_fit#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#; fi
 
+input cyrsymb;
 input cyru;
 input romanu;  % upper case (majuscules)
 input greeku;  % upper case greek letters
