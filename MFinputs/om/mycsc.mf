@@ -55,8 +55,7 @@ forsuffixes $= u, width_adj, cap_serif_fit, letter_fit,
  o, apex_o:  $.#:=lower.$.#; endfor
 fudge:=lower.fudge;
 font_setup; % now try again with |lower| settings
-input mycharcode;
-input cyru;
+input uppertolower; input cyru;
 extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
 code_offset:=ASCII"a" - ASCII"A";
 input romanu;  % majuscules (in lowercase positions)
