@@ -20,8 +20,8 @@ else{@+if (c=='/')
 @d base_default_length	18 /*length of the |MF_base_default| string*/ 
 @d base_area_length	8 /*length of its area part*/ 
 @y
-@d base_default_length 32 /*length of the |MF_base_default| string*/ 
-@d base_area_length 22 /*length of its area part*/ 
+@d base_default_length 32 /*length of the |MF_base_default| string*/
+@d base_area_length 22 /*length of its area part*/
 @z
 
 @x
