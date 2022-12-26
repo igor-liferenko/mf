@@ -12,9 +12,7 @@ Add this `mf' script to PATH:
     rm -f $edit
     exit $ret
 
-Adjust base_default_length, base_area_length and paths in path.ch
-Adjust path to TeXfonts/ in Makefile
-Change search.ch as needed
+Adjust path.ch and search.ch
 
 Use the companion repo http://github.com/igor-liferenko/mf-wayland
 and set path to it in screen.ch
