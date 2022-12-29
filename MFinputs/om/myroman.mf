@@ -37,7 +37,6 @@ else: font_normal_space 6u#+2letter_fit#;
  font_normal_stretch 3u#; font_normal_shrink 2u#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#;
- input cyrillic;
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "k": if serifs: "v": "a" kern -u#, fi\\"w": "e" kern k#,
   "a" kern k#, "o" kern k#, "c" kern k#;
@@ -65,7 +64,9 @@ else: font_normal_space 6u#+2letter_fit#;
   "C" kern k#, "O" kern k#, "G" kern k#, "U" kern k#, "Q" kern k#,
   "L": "T" kern kk#, "Y" kern kk#, "V" kern kkk#, "W" kern kkk#;
  ligtable "g": "j" kern -k#; % logjam
- ligtable "I": "I" kern -k#; fi % Richard III
+ ligtable "I": "I" kern -k#; % Richard III
+ input cyrillic; % TODO: purge comments and put it here directly, and use CYR.a
+fi
  % there are ligature/kern programs for |"f"| in the {\tt romlig} file
  % and for |"-"|, |"`"|, and |"'"| in the {\tt comlig} file
 bye.

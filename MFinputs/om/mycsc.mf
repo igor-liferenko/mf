@@ -30,7 +30,6 @@ else: font_normal_space 6u#+2letter_fit#;
  font_normal_stretch 3u#; font_normal_shrink 2u#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#;
- input ccsc;
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "P": "T": "Y": "a" kern kk#, "A" kern kk#;
  ligtable "F": "V": "W": if serifs: "a" kern kkk#, "A" kern kkk#,
@@ -65,6 +64,8 @@ code_offset:=0;
 input cscspu;  % substitutes for the remaining characters of romspl
 if not monospace:
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
+ % the following kernings were obtained by copying uppercase-uppercase kernings from above
+ % and changing uppercase characters to lowercase; one more kern was added: "L": "'" kern kk#
  ligtable "p": "t": "y": "a" kern kk#;
  ligtable "f": "v": "w": "a" kern if serifs: kkk# else: kk#\\fi,
   "k": "x": "o" kern k#, "c" kern k#, "g" kern k#, "q" kern k#;

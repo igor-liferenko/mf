@@ -41,7 +41,6 @@ ligtable "!": "`" =: spanish_shriek;
 ligtable "?": "`" =: spanish_query;
 
 if not monospace:
- input cytextit;
  k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
  ligtable "d": "w": "l": "l" kern +u#;
  ligtable "F": "V": "o" kern kk#, "e" kern kk#,

@@ -56,5 +56,6 @@ else: font_normal_space 6u#+2letter_fit#;
   "C" kern k#, "O" kern k#, "G" kern k#, "U" kern k#, "Q" kern k#,
   "L": "T" kern kk#, "Y" kern kk#, "V" kern kkk#, "W" kern kkk#;
  ligtable "g": "j" kern -k#; % logjam
- ligtable "I": "I" kern -k#; fi % Richard III
+ ligtable "I": "I" kern -k#; % Richard III
+fi;
 bye.
