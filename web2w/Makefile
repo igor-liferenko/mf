@@ -14,9 +14,7 @@ all:
 	@# 2:
 	@sed -i '/trans_spec=/d;s/row_transition:trans_spec/row_transition:array[screen_col] of screen_col/' mf-web2w.web
 	@# 3:
-	@sed -n '/@<Other local variables for |fill_envelope|@>=/,/^$$/p' mf-web2w.web | sed '1s/.*/{<<<}/' | sed '$$s/.*/{>>>}/' >tmp.ww
-	@awk -i inplace '/@<Other local variables for \|fill_envelope\|@>=/{print;getline;while($$0!~/^$$/){getline}}1' mf-web2w.web
-	@sed -i '/@<Other local variables for |fill_envelope|@>@;/r tmp.ww' mf-web2w.web; rm tmp.ww
+	@sed -i -e '/@<Other local variables for |fill_envelope|@>=/,/^$$/{//!{w /dev/stdout' -e 'd}}' mf-web2w.web >tmp.hack
 	@# 4:
 	@sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
 	@######################################################################
@@ -28,9 +26,8 @@ all:
 	@# 2:
 	@sed -i 's/trans_spec/screen_col/' cmf.w
 	@# 3:
-	@awk '/\/\*<<<\*\//{getline;while($$0!~/\/\*>>>\*\//){print;getline}exit}' cmf.w >tmp.ww
-	@sed -i '/\/\*<<<\*\//,/\/\*>>>\*\//d' cmf.w
-	@sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.ww' cmf.w; rm tmp.ww
+	@sed -i 's%{%/*%;s%}%*/%;s/\(.*\):\(\w*\)/\2 \1/;s/eger//;s/0..move_size/uint16_t/' tmp.hack
+	@sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.hack' cmf.w; rm tmp.hack
 	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
 	patch -s cmf.w cmf.patch
