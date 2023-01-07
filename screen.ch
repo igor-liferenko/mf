@@ -42,32 +42,23 @@ bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
-  /* allocate memory */
   row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
-  if (row_transition == NULL) return false;
+  assert(row_transition != NULL);
 
-  /* allocate memory and associate file descriptor with it */
+  /* associate file descriptor with memory and allocate the memory */
   screen_fd = syscall(SYS_memfd_create, "metafont", 0);
-  if (screen_fd == -1) return false;
+  assert(screen_fd != -1);
   int screen_size = screen_width * screen_depth * sizeof (pixel_t);
-  if (ftruncate(screen_fd, screen_size) == -1) {
-    close(screen_fd);
-    return false;
-  }
+  assert(ftruncate(screen_fd, screen_size) != -1);
 
   /* get address of memory, referred to by the file descriptor */
   screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, screen_fd, 0);
-  if (screen_data == MAP_FAILED) {
-    close(screen_fd);
-    return false;
-  }
+  assert(screen_data != MAP_FAILED);
 
   /* initialize the memory */
   pixel_t *pixel = screen_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1;
-
-  system("pkill hello-wayland");
 
   return true;
 }
