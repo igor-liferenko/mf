@@ -65,7 +65,7 @@ else: font_normal_space 6u#+2letter_fit#;
   "L": "T" kern kk#, "Y" kern kk#, "V" kern kkk#, "W" kern kkk#;
  ligtable "g": "j" kern -k#; % logjam
  ligtable "I": "I" kern -k#; % Richard III
- input cyrillic; % TODO: purge comments and put it here directly, and use CYR.a
+ input cyrillic;
 fi
  % there are ligature/kern programs for |"f"| in the {\tt romlig} file
  % and for |"-"|, |"`"|, and |"'"| in the {\tt comlig} file
