@@ -26,7 +26,9 @@ all:
 	@# 2:
 	@sed -i 's/trans_spec/screen_col/' cmf.w
 	@# 3:
-	@sed -i 's%{%/*%;s%}%*/%;s/\(.*\):\(\w*\)/\2 \1/;s/eger//;s/0..move_size/uint16_t/' tmp.hack
+	@sed -i 's%{%/*%;s%}%*/%;s/\(.*\):\([^;]*\)/\2 \1/;s/eger//;s/0..move_size/uint16_t/' tmp.hack
+
+x:
 	@sed -i '/@<Other local variables for |fill_envelope|@>=/r tmp.hack' cmf.w; rm tmp.hack
 	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
