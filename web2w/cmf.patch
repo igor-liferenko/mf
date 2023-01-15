@@ -90,7 +90,7 @@
 +{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
  } 
  
- @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
+ @ Files can be closed with the \ph\ routine `|close(f)|', which
 @@ -861,9 +869,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
@@ -165,7 +165,7 @@
 +#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode),\
 +                             (file).f!=NULL?get(file):0@]
 +#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode)@]
-+#define pascal_close(file)    @[fclose((file).f)@]
++#define close(file)    @[fclose((file).f)@]
 +#define eof(file)    @[((file).f==NULL||feof((file).f))@]
 +#define eoln(file)    @[((file).d=='\n'||eof(file))@]
 +#define erstat(file)   @[((file).f==NULL?-1:ferror((file).f))@]

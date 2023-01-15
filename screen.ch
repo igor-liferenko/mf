@@ -4,8 +4,8 @@ Screen contents are in shared memory.
 @x
 @h
 @y
+#include <fcntl.h>
 #include <sys/mman.h>
-#include <sys/syscall.h>
 #include <sys/wait.h>
 #include <unistd.h>
 @h
@@ -36,29 +36,24 @@ int screen_depth=1024; /*number of pixels in each column of screen display*/
 @y
 @p
 typedef int32_t pixel_t; /* color is set in XRGB format (X byte is not used for anything) */
-int screen_fd;
+int shm_fd;
 void *screen_data;
 bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
-  row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
-  assert(row_transition != NULL);
+  assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 
-  /* associate file descriptor with memory and allocate the memory */
-  screen_fd = syscall(SYS_memfd_create, "metafont", 0);
-  assert(screen_fd != -1);
+  assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
+  assert(shm_unlink("/metafont") != -1);
   int screen_size = screen_width * screen_depth * sizeof (pixel_t);
-  assert(ftruncate(screen_fd, screen_size) != -1);
+  assert(ftruncate(shm_fd, screen_size) != -1);
 
-  /* get address of memory, referred to by the file descriptor */
-  screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, screen_fd, 0);
-  assert(screen_data != MAP_FAILED);
+  assert((screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, shm_fd, 0)) != MAP_FAILED);
 
-  /* initialize the memory */
   pixel_t *pixel = screen_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
-    *pixel++ = -1;
+    *pixel++ = -1; /* initialize the memory */
 
   return true;
 }
@@ -84,8 +79,7 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 
   assert((screen_pid = fork()) != -1);
   if (screen_pid == 0) {
-    dup2(screen_fd, STDIN_FILENO);
-    close(screen_fd);
+    dup2(shm_fd, STDIN_FILENO);
     signal(SIGINT, SIG_IGN);
     execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
     _exit(0);

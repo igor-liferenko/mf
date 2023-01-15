@@ -10,7 +10,6 @@ SYM_PTR("register")->name="internal_register";
 SYM_PTR("register")->name="internal_register";
 SYM_PTR("void")->name="v0id"; /* reserved word in C */
 SYM_PTR("time")->name="time_of_day"; /* for ../time.ch */
-SYM_PTR("close")->name="pascal_close"; /* for ../screen.ch */
 @z
 
 @x
