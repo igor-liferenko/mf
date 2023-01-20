@@ -7,7 +7,6 @@ Screen contents are in shared memory.
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
-#include <unistd.h>
 @h
 @z
 
@@ -42,10 +41,12 @@ bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
-  assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
+  row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
+  assert(row_transition != NULL);
 
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
+
   int screen_size = screen_width * screen_depth * sizeof (pixel_t);
   assert(ftruncate(shm_fd, screen_size) != -1);
 

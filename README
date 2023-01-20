@@ -4,29 +4,21 @@ Add this `mf' script to PATH:
 
     #!/bin/sh
     trap '' INT
+    export enabled_color=
+    export default_color=
     export edit=/tmp/edit.$$
     export screen_size=WIDTHxHEIGHT
     pkill hello-wayland
     /path/to/mf/plain "$@"
     ret=$?
     [ $ret != 134 ] && echo
-    printf '\e]112\e\\'
+    [ -t 1 ] && printf $default_color
     [ -e $edit ] && sed 's/\(.*\) \(.*\)/You want to edit file \1 at line \2\n/' $edit
     rm -f $edit
     exit $ret
 
 Adjust path.ch and search.ch
 
-Use the companion repo http://github.com/igor-liferenko/mf-wayland
-and set path to it in screen.ch
-
-To use debugger, add "-g -Og" and run "gdb plain"
-
------------------------------------
-
-Other WEB programs converted to CWEB:
-
-    https://github.com/igor-liferenko/tex
-    https://github.com/igor-liferenko/dvitype
-    https://github.com/igor-liferenko/gftodvi
-    https://github.com/igor-liferenko/gftopk
+Use either companion repo http://github.com/igor-liferenko/mf-wayland
+or hello-wayland from http://github.com/igor-liferenko/rstex
+(set path to hello-wayland in screen.ch)
