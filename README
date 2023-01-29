@@ -3,16 +3,12 @@ Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 Add this `mf' script to PATH:
 
     #!/bin/sh
-    trap '' INT
-    export enabled_color=
-    export default_color=
     export edit=/tmp/edit.$$
     export screen_size=WIDTHxHEIGHT
     pkill hello-wayland
     /path/to/mf/plain "$@"
     ret=$?
-    [ $ret != 134 ] && echo
-    [ -t 1 ] && printf $default_color
+    /path/to/tex/newline
     [ -e $edit ] && sed 's/\(.*\) \(.*\)/You want to edit file \1 at line \2\n/' $edit
     rm -f $edit
     exit $ret
