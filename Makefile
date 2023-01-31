@@ -11,7 +11,7 @@ all:
 	@rm -f ~/tex/TeXfonts/*pk # mode parameters could change
 	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do \
 	sed '/font_identifier/s/"CM/"OM/;s/generate /input mybase;\n&my/' MFinputs/cm/$$i \
-	>MFinputs/om/$${i/cm/om}; done
+	>MFinputs/om/om$${i#cm}; done
 
 trapmf:
 	@[ $(MAKELEVEL) = 1 ]
