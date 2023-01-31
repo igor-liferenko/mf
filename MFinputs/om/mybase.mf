@@ -1,12 +1,3 @@
-string driver_name;
-input cmbase;
-vardef generate @# = driver_name:=str @#; enddef;
-
-string param_base;
-param_base = jobname;
-param_base := "c" & substring(1,100) of param_base;
-scantokens("input " & param_base);
-
 CYR_a  := hex"a0";
 CYR_be := hex"a1";
 CYR_ve := hex"a2";
@@ -76,5 +67,3 @@ CYR_YA := hex"9f";
 CYR_flqq := hex"fd";
 CYR_frqq := hex"fe";
 CYR_No := hex"fc";
-
-scantokens("input " & "my" & driver_name);
