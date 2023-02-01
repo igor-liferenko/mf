@@ -17,7 +17,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6,7); endchar;
 
 cmchar "Cyrillic italic letter be";
-beginchar(CYR_be,9u#,asc_height#,0);
+beginchar(CYR_b,9u#,asc_height#,0);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos1(vair,90); pos2(curve,180); pos3(vair,270); pos4(curve,360);
@@ -31,7 +31,7 @@ filldraw stroke pulled_arc.e(6,5'); filldraw stroke pulled_arc.e(5,2');
 math_fit(-.3x_height#*slant+.5curve#-u#,ic#); penlabels(1,2,3,4); endchar;
 
 cmchar "Cyrillic italic letter ve";
-beginchar(CYR_ve,9u#,x_height#,0);
+beginchar(CYR_v,9u#,x_height#,0);
 italcorr max(1/3x_height#*slant,x_height#*slant+.5(.2[hair#,stem#])-u#);
 adjust_fit(0,0); pickup fine.nib;
 numeric heavy_hair; heavy_hair=hround .2[hair,stem];
@@ -48,7 +48,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6); endchar;
 
 cmchar "Cyrillic italic letter ghe";
-beginchar(CYR_ghe,8u#,x_height#,0);
+beginchar(CYR_g,8u#,x_height#,0);
 italcorr if math_fitting:1/3x_height#*slant else:x_height#*slant-u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos2(hair,140); pos3(vair,90); pos4(curve,0);
@@ -67,7 +67,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6); endchar;
 
 cmchar "Cyrillic italic letter de";
-beginchar(CYR_de,9u#,asc_height#,0);
+beginchar(CYR_d,9u#,asc_height#,0);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos1(vair,150); pos2(vair,90); pos3(curve,0);
@@ -87,7 +87,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(1,2,3,4,5,6,7); endchar;
 
 cmchar "Cyrillic italic letter ie";
-beginchar(CYR_ie,8u#,x_height#,0);
+beginchar(CYR_e,8u#,x_height#,0);
 italcorr max(1/3x_height#*slant,x_height#*slant+.5(.2[hair#,stem#])-u#);
 adjust_fit(0,0); pickup fine.nib;
 numeric heavy_hair; heavy_hair=hround .2[hair,stem];
@@ -103,7 +103,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6); endchar;
 
 cmchar "Cyrillic italic letter zhe";
-beginchar(CYR_zhe,17u#,x_height#,0);
+beginchar(CYR_zh,17u#,x_height#,0);
 italcorr if math_fitting:1/3x_height#*slant else:x_height#*slant-u# fi;
 adjust_fit(0,0); pickup fine.nib;
 numeric arc_width; arc_width=7u;
@@ -132,7 +132,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15); endchar;
 
 cmchar "Cyrillic italic letter ze";
-beginchar(CYR_ze,8u#,x_height#,0);
+beginchar(CYR_z,8u#,x_height#,0);
 italcorr if math_fitting:1/3x_height#*slant else:x_height#*slant-u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos1(hair,140); pos2(cap_band,90); pos4(vair,-90);
@@ -177,7 +177,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter short i";
-beginchar(CYR_short_i,9.5u#,x_height#+3.5u#,0);
+beginchar(CYR_i_shrt,9.5u#,x_height#+3.5u#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib; interim superness:=more_super;
 x0=0; x2=x3+.25u; pos3(stem,-180); lft x3r=hround(2.5u-.5stem);
@@ -199,7 +199,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13); endchar;
 
 cmchar "Cyrillic italic letter ka";
-beginchar(CYR_ka,9.5u#,x_height#,0);
+beginchar(CYR_k,9.5u#,x_height#,0);
 italcorr x_height#*slant;
 adjust_fit(0,0); pickup fine.nib;
 x0=0; x1=x2; pos2(stem,0); lft x2l=hround(2.5u-.5stem); y2-.5stem=-oo;
@@ -220,7 +220,7 @@ math_fit(0,1/3x_height#*slant+.5hair#+.5u#);
 penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter el";
-beginchar(CYR_el,9u#,x_height#,0);
+beginchar(CYR_l,9u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib;
 pos6(stem,0); rt x6r=hround(w-2.5u+.5stem);
@@ -237,7 +237,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter em";
-beginchar(CYR_em,12u#,x_height#,0);
+beginchar(CYR_m,12u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib;
 numeric stem[]; % thicknesses of the four strokes
@@ -263,7 +263,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13); endchar;
 
 cmchar "Cyrillic italic letter en";
-beginchar(CYR_en,9.5u#,x_height#,0);
+beginchar(CYR_n,9.5u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib;
 x0=0; x1=x2; pos2(stem,0); lft x2l=hround(2.5u-.5stem); y2-.5stem=-oo;
@@ -289,7 +289,7 @@ filldraw stroke pulled_arc.e(1,2) & pulled_arc.e(2,3)
 math_fit(-.3x_height#*slant+.5curve#-u#,ic#); penlabels(1,2,3,4); endchar;
 
 cmchar "Cyrillic italic letter pe";
-beginchar(CYR_pe,10u#,x_height#,0);
+beginchar(CYR_p,10u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib;
 x0=0; x1=x2; pos2(stem,0); lft x2l=hround(2.5u-.5stem); y2-.5stem=-oo;
@@ -302,7 +302,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,a,1,2,3,4,5,6,7); endchar;
 
 cmchar "Cyrillic italic letter er";
-beginchar(CYR_er,9u#,x_height#,desc_depth#);
+beginchar(CYR_r,9u#,x_height#,desc_depth#);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup fine.nib;
 x0=0; x2-.5stem=hround(2.5u-.5stem); hook_in(0,1,2);  % opening hook
@@ -319,7 +319,7 @@ math_fit(-min(2/3x_height#*slant-.5hair#-.5u#,
 penlabels(0,1,2,3,4,5,6,7); endchar;
 
 cmchar "Cyrillic italic letter es";
-beginchar(CYR_es,8u#,x_height#,0);
+beginchar(CYR_s,8u#,x_height#,0);
 italcorr if math_fitting:1/3x_height#*slant else:x_height#*slant-u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos0(flare,0); pos1(hair,0); pos2(vair,90);
@@ -335,7 +335,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6); endchar;
 
 cmchar "Cyrillic italic letter te";
-beginchar(CYR_te,15u#,x_height#,0);
+beginchar(CYR_t,15u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(if monospace:-1.5u#,-2u# else: 0,0 fi); pickup fine.nib;
 numeric shaved_stem; shaved_stem=mfudged.stem;
@@ -358,7 +358,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,a,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter ef";
-beginchar(CYR_ef,12u#,asc_height#,desc_depth#);
+beginchar(CYR_f,12u#,asc_height#,desc_depth#);
 italcorr asc_height#*slant+.75u#;
 adjust_fit(if monospace:u#,u# else: 0,0 fi); pickup fine.nib;
 numeric theta; z88=(.5w-.5u,h); z89=(.5w+.5u,-d); theta=angle(z88-z89);
@@ -409,7 +409,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#-1/3x_height#*slant);
 penlabels(0,1,2,3,4,5,6,7,8,9,10); endchar;
 
 cmchar "Cyrillic italic letter ha";
-beginchar(CYR_ha,6.5u#+max(1.5u#,flare#),x_height#,0);
+beginchar(CYR_h,6.5u#+max(1.5u#,flare#),x_height#,0);
 italcorr max(1/3x_height#*slant+.5hair#+.5u#,x_height#*slant+.25u#);
 adjust_fit(0,0); pickup fine.nib;
 pos0(hair,180); pos1(vair,90); pos2(stem,0);
@@ -434,7 +434,7 @@ filldraw stroke z2'e---z16e...{left}z17e; bulb(17,18,19); % lower link and bulb
 math_fit(0,ic#); penlabels(0,1,2,3,4,5,6,7,8,9,16,17,18,19); endchar;
 
 cmchar "Cyrillic italic letter tse";
-beginchar(CYR_tse,9.5u#,x_height#,desc_depth#-u#);
+beginchar(CYR_c,9.5u#,x_height#,desc_depth#-u#);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib; interim superness:=more_super;
 x0=0; x2=x3+.25u; pos3(stem,-180); lft x3r=hround(2.5u-.5stem);
@@ -463,7 +463,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12); endchar;
 
 cmchar "Cyrillic italic letter che";
-beginchar(CYR_che,9.5u#,x_height#,0);
+beginchar(CYR_ch,9.5u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib; interim superness:=more_super;
 x0=0; x2=x3+.2u; pos3(stem,-180); lft x3r=hround(2.5u-.5stem);
@@ -480,7 +480,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter sha";
-beginchar(CYR_sha,14.5u#,x_height#,0);
+beginchar(CYR_sh,14.5u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib; interim superness:=more_super;
 x0=0; x2=x3+.25u; pos3(stem,-180); lft x3r=hround(2.5u-.5stem);
@@ -501,7 +501,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13); endchar;
 
 cmchar "Cyrillic italic letter shcha";
-beginchar(CYR_shcha,14.5u#,x_height#,desc_depth#-u#);
+beginchar(CYR_shch,14.5u#,x_height#,desc_depth#-u#);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
 adjust_fit(0,0); pickup fine.nib; interim superness:=more_super;
 x0=0; x2=x3+.25u; pos3(stem,-180); lft x3r=hround(2.5u-.5stem);
@@ -534,7 +534,7 @@ math_fit(-2/3x_height#*slant+.5hair#+.5u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16); endchar;
 
 cmchar "Cyrillic italic letter soft_sign";
-beginchar(CYR_soft_sign,8u#,x_height#,0);
+beginchar(CYR_sftsn,8u#,x_height#,0);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup tiny.nib;
 numeric x_bowl; x_bowl=2/3h;
@@ -552,7 +552,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5); endchar;
 
 cmchar "Cyrillic italic letter hard_sign";
-beginchar(CYR_hard_sign,12u#,x_height#,0);
+beginchar(CYR_hrdsn,12u#,x_height#,0);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup tiny.nib;
 numeric x_bowl; x_bowl=.52h;
@@ -573,7 +573,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6,7); endchar;
 
 cmchar "Cyrillic italic letter yeru";
-beginchar(CYR_yeru,12u#,x_height#,0);
+beginchar(CYR_ery,12u#,x_height#,0);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi;
 adjust_fit(0,0); pickup tiny.nib;
 numeric x_bowl; x_bowl=2/3h;
@@ -596,7 +596,7 @@ math_fit(-.3x_height#*slant+.5curve#-u#,ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Cyrillic italic letter e";
-beginchar(CYR_e,8u#,x_height#,0);
+beginchar(CYR_erev,8u#,x_height#,0);
 italcorr if math_fitting:1/3x_height#*slant else:x_height#*slant-u# fi;
 adjust_fit(0,0); pickup fine.nib;
 pos0(flare,180); pos1(hair,180); pos2(vair,-90);

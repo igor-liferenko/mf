@@ -8,242 +8,242 @@ u#;
  ligtable CYR_a:                             % a
                     CYR_ya kern -kk#,         % ya
                     CYR_u kern -kk#,         % u
-                    CYR_de kern  k#,          % d
-                    CYR_che kern -kk#;         % ch
+                    CYR_d kern  k#,          % d
+                    CYR_ch kern -kk#;         % ch
 
- ligtable CYR_be:                             % b
-                    CYR_ve kern -k#,        % ve
-                    CYR_ghe kern -k#,        % ghe
-                    CYR_ie kern  k#,         % e
-                    CYR_zhe kern  -k#,         % zhe
+ ligtable CYR_b:                             % b
+                    CYR_v kern -k#,        % ve
+                    CYR_g kern -k#,        % ghe
+                    CYR_e kern  k#,         % e
+                    CYR_zh kern  -k#,         % zhe
                     CYR_i kern -k#,          % i
-                    CYR_ka kern -k#,          % ka
-                    CYR_em kern -k#,          % em
-                    CYR_en kern -k#,          % en
-                    CYR_pe kern -k#,          % pe
-                    CYR_er kern -k#,          % er
-%                   CYR_ef kern -k#,         % (was -kk# AS)  f
-                    CYR_ha kern -k#,          % x
+                    CYR_k kern -k#,          % ka
+                    CYR_m kern -k#,          % em
+                    CYR_n kern -k#,          % en
+                    CYR_p kern -k#,          % pe
+                    CYR_r kern -k#,          % er
+%                   CYR_f kern -k#,         % (was -kk# AS)  f
+                    CYR_h kern -k#,          % x
 %                   CYR_o kern  -k#,         % o  (-kkkk -> -kkk AS)
-                    CYR_es kern  -k#,         % s (-kkkk -> -kkk AS)
+                    CYR_s kern  -k#,         % s (-kkkk -> -kkk AS)
                     CYR_u kern -k#,         % u
-                    CYR_soft_sign kern -k#,    % soft_sign
-                    CYR_yeru kern -k#,        % yeru
-                    CYR_shcha kern -k#,        % shcha
-                    CYR_tse kern -k#;        % tse
+                    CYR_sftsn kern -k#,    % soft_sign
+                    CYR_ery kern -k#,        % yeru
+                    CYR_shch kern -k#,        % shcha
+                    CYR_c kern -k#;        % tse
 
- ligtable CYR_tse: CYR_sha: CYR_shcha:
-          CYR_en: CYR_em: CYR_pe:
-                    CYR_be kern -k#,          % be
+ ligtable CYR_c: CYR_sh: CYR_shch:
+          CYR_n: CYR_m: CYR_p:
+                    CYR_b kern -k#,          % be
                     CYR_o kern -k#,          % o
-                    CYR_ie kern -k#,          % es
-                    CYR_ef kern -k#,        % ef
-                    CYR_es kern -k#,          % ie
-                    CYR_de kern k#;          % d
+                    CYR_e kern -k#,          % es
+                    CYR_f kern -k#,        % ef
+                    CYR_s kern -k#,          % ie
+                    CYR_d kern k#;          % d
 
- ligtable CYR_de:                             % d
-                    CYR_be kern -kkk#,          % be
+ ligtable CYR_d:                             % d
+                    CYR_b kern -kkk#,          % be
                     CYR_o kern -kkk#,          % o
-                    CYR_ie kern -kkk#,          % es
-                    CYR_ef kern -kk#,          % ef
-                    CYR_es kern -kkk#,          % ie
-                    CYR_de kern kk#;          % d
+                    CYR_e kern -kkk#,          % es
+                    CYR_f kern -kk#,          % ef
+                    CYR_s kern -kkk#,          % ie
+                    CYR_d kern kk#;          % d
 
- ligtable CYR_ie:                             % e
-                    CYR_be kern kkk#,         % b
-                    CYR_de kern -kk#,         % d
-%                    CYR_ie kern -k#,          % e
-                    CYR_zhe kern -kk#,          % e
-%                    CYR_ef kern -k#,          % f
-                    CYR_ha kern -kk#,         % x
+ ligtable CYR_e:                             % e
+                    CYR_b kern kkk#,         % b
+                    CYR_d kern -kk#,         % d
+%                    CYR_e kern -k#,          % e
+                    CYR_zh kern -kk#,          % e
+%                    CYR_f kern -k#,          % f
+                    CYR_h kern -kk#,         % x
 %                    CYR_o kern -k#,          % o
-%                    CYR_es kern -k#,          % s
-%                    CYR_te kern -k#,           % t
+%                    CYR_s kern -k#,          % s
+%                    CYR_t kern -k#,           % t
                     CYR_u kern -k#;          % u
 
- ligtable CYR_ef:                             % f
-                    CYR_ie kern k#,          % e
-                    CYR_ha kern -kk#,         % x
+ ligtable CYR_f:                             % f
+                    CYR_e kern k#,          % e
+                    CYR_h kern -kk#,         % x
                     CYR_i kern -kk#,         % i
-                    CYR_en kern -k#,          %
-                    CYR_pe kern -k#,          %
-                    CYR_er kern -k#,          %
+                    CYR_n kern -k#,          %
+                    CYR_p kern -k#,          %
+                    CYR_r kern -k#,          %
                     CYR_o kern k#,          % o
-                    CYR_es kern k#,          % s
-                    CYR_te kern -k#;           % t
+                    CYR_s kern k#,          % s
+                    CYR_t kern -k#;           % t
 
- ligtable CYR_ghe:                             % g
-                    CYR_be kern -k#,           % b
-                    CYR_ie kern -kkk#,           % e
+ ligtable CYR_g:                             % g
+                    CYR_b kern -k#,           % b
+                    CYR_e kern -kkk#,           % e
                     CYR_o kern -kkk#,           % o
-                    CYR_es kern -kkk#;           % s
+                    CYR_s kern -kkk#;           % s
 
- ligtable CYR_ha:                             % kh
-                    CYR_ie kern -kk#,         % e
+ ligtable CYR_h:                             % kh
+                    CYR_e kern -kk#,         % e
                     CYR_o kern -kk#,         % o
-                    CYR_ef kern -kk#,          %
-                    CYR_es kern -kk#;         % s
+                    CYR_f kern -kk#,          %
+                    CYR_s kern -kk#;         % s
 
- ligtable CYR_ka:                             % k
-                    CYR_ie kern -kk#,         % e
-                    CYR_ef kern -kk#,         % f
+ ligtable CYR_k:                             % k
+                    CYR_e kern -kk#,         % e
+                    CYR_f kern -kk#,         % f
                     CYR_o kern -kk#,         % o
-                    CYR_es kern -kk#,         % s
+                    CYR_s kern -kk#,         % s
                     CYR_u kern -k#;          % u
 
- ligtable CYR_el:                             % l
-                    CYR_ie kern -kk#,         % e
-                    CYR_ef kern -kk#,         % f
+ ligtable CYR_l:                             % l
+                    CYR_e kern -kk#,         % e
+                    CYR_f kern -kk#,         % f
                     CYR_o kern -kk#,         % o
-                    CYR_es kern -kk#;         % s
+                    CYR_s kern -kk#;         % s
 
  ligtable CYR_o:                             % o
-%                   CYR_be kern -k#,         % b  (was kkkk AS)
-                    CYR_ve kern -kk#,         % ve
-                    CYR_de kern -kkk#,         % de
-%                   CYR_ie kern -k#,          % e (was kkkk AS)
-                    CYR_ha kern -kk#,         % x
+%                   CYR_b kern -k#,         % b  (was kkkk AS)
+                    CYR_v kern -kk#,         % ve
+                    CYR_d kern -kkk#,         % de
+%                   CYR_e kern -k#,          % e (was kkkk AS)
+                    CYR_h kern -kk#,         % x
 %                   CYR_o kern -k#,          % o (was kkkk AS)
-%                   CYR_es kern -kk#,          % s (was kkkk AS)
-                    CYR_em kern -kk#,          %
-                    CYR_en kern -kk#,           %
-                    CYR_pe kern -kk#,           %
+%                   CYR_s kern -kk#,          % s (was kkkk AS)
+                    CYR_m kern -kk#,          %
+                    CYR_n kern -kk#,           %
+                    CYR_p kern -kk#,           %
                     CYR_i kern -kk#,           %
-                    CYR_short_i kern -kk#,           %
-                    CYR_ka kern -kk#,           %
-                    CYR_er kern -kk#,           %
-                    CYR_sha kern -kk#,           %
-                    CYR_shcha kern -kk#,           %
-                    CYR_che kern -kkk#,           %
-                    CYR_zhe kern -kk#;         % zh
+                    CYR_i_shrt kern -kk#,           %
+                    CYR_k kern -kk#,           %
+                    CYR_r kern -kk#,           %
+                    CYR_sh kern -kk#,           %
+                    CYR_shch kern -kk#,           %
+                    CYR_ch kern -kkk#,           %
+                    CYR_zh kern -kk#;         % zh
 
- ligtable CYR_er:                             % p
-%                   CYR_be kern -k#,         % b (kkkk -> -kkk AS)
-%                   CYR_ie kern -k#,          % e(kkkk -> -kkk AS)
-                    CYR_ha kern -kk#,         % x
+ ligtable CYR_r:                             % p
+%                   CYR_b kern -k#,         % b (kkkk -> -kkk AS)
+%                   CYR_e kern -k#,          % e(kkkk -> -kkk AS)
+                    CYR_h kern -kk#,         % x
 %                   CYR_o kern -k#,          % o (kkkk -> -kkk AS)
-%                   CYR_es kern -kk#,          % s (kkkk -> -kkk AS)
-                    CYR_te kern -k#;           % t
+%                   CYR_s kern -kk#,          % s (kkkk -> -kkk AS)
+                    CYR_t kern -k#;           % t
 
-%ligtable CYR_es:                             % s
-%                   CYR_be kern -k#,           % b
-%                   CYR_ie kern -k#,           % e
-%                   CYR_ef kern -k#,           % f
+%ligtable CYR_s:                             % s
+%                   CYR_b kern -k#,           % b
+%                   CYR_e kern -k#,           % e
+%                   CYR_f kern -k#,           % f
 %                   CYR_o kern -k#,           % o
-%                   CYR_es kern -k#;           % s
- ligtable CYR_te:                             % t
-                    CYR_en kern -k#,           %
-                    CYR_es kern -k#,           %
-                    CYR_ie kern -k#,           % e
+%                   CYR_s kern -k#;           % s
+ ligtable CYR_t:                             % t
+                    CYR_n kern -k#,           %
+                    CYR_s kern -k#,           %
+                    CYR_e kern -k#,           % e
                     CYR_o kern -k#;           % o
  ligtable CYR_u:                             % u
-                    CYR_de kern -k#,         % d
-                    CYR_el kern -kk#,           %
+                    CYR_d kern -k#,         % d
+                    CYR_l kern -kk#,           %
                     CYR_a kern -k#;         % s
- ligtable CYR_zhe:                             % zh
-                   CYR_be kern -kk#,          % b
-                   CYR_ie kern -kk#,          %
-                   CYR_ef kern -kk#,          %
+ ligtable CYR_zh:                             % zh
+                   CYR_b kern -kk#,          % b
+                   CYR_e kern -kk#,          %
+                   CYR_f kern -kk#,          %
                    CYR_o kern -kk#,          % o
-                   CYR_es kern -kk#;          % s
+                   CYR_s kern -kk#;          % s
 
- ligtable CYR_ve:                             % w
-                    CYR_te kern -k#;          % d
+ ligtable CYR_v:                             % w
+                    CYR_t kern -k#;          % d
 
-%ligtable CYR_ze:                             % z
-%                   CYR_be kern -k#,          % b
-%                   CYR_ie kern -k#,          % e
+%ligtable CYR_z:                             % z
+%                   CYR_b kern -k#,          % b
+%                   CYR_e kern -k#,          % e
 %                   CYR_o kern -k#,          % o
-%                   CYR_es kern -k#;          % s
+%                   CYR_s kern -k#;          % s
 
  ligtable CYR_A:                             % A
                     CYR_u kern -kk#,           %
-                    CYR_CHE kern -kkk#;        % ch
+                    CYR_CH kern -kkk#;        % ch
 
- ligtable CYR_BE:                             % B
+ ligtable CYR_B:                             % B
                     CYR_O kern -k#,           % o
-                    CYR_ES kern -k#,           % s
+                    CYR_S kern -k#,           % s
                     CYR_U kern -kk#;           % u
 
- ligtable CYR_GHE: CYR_U:                   % G   U
+ ligtable CYR_G: CYR_U:                   % G   U
                     CYR_A kern -kk#,        % a
-%                    CYR_ve kern -kk#,        % w
-%                    CYR_GHE kern -kk#,        % g
-                    CYR_DE kern -kk#,        % d
-%                    CYR_IE kern -kk#,        % e
-                    CYR_EF kern -kk#,          % f
-                    CYR_HA kern -kk#,        % kh
+%                    CYR_v kern -kk#,        % w
+%                    CYR_G kern -kk#,        % g
+                    CYR_D kern -kk#,        % d
+%                    CYR_E kern -kk#,        % e
+                    CYR_F kern -kk#,          % f
+                    CYR_H kern -kk#,        % kh
 %                    CYR_I kern -kk#,        % i
-%                    CYR_SHORT_I kern -kk#,        % j
-%                    CYR_KA kern -kk#,        % k
-                    CYR_EL kern -kk#,        % l
-%                    CYR_EM kern -kk#,        % m
-%                    CYR_EN kern -kk#,        % n
+%                    CYR_I_shrt kern -kk#,        % j
+%                    CYR_K kern -kk#,        % k
+                    CYR_L kern -kk#,        % l
+%                    CYR_M kern -kk#,        % m
+%                    CYR_N kern -kk#,        % n
 %                    CYR_O kern -kk#,        % o
-%                    CYR_PE kern -kk#,        % p
+%                    CYR_P kern -kk#,        % p
                     CYR_YA kern -kk#,        % ya
-%                    CYR_ER kern -kk#,        % r
-                    CYR_ES kern -kk#,        % s
-                    CYR_TE kern -kk#,        % t
+%                    CYR_R kern -kk#,        % r
+                    CYR_S kern -kk#,        % s
+                    CYR_T kern -kk#,        % t
                     CYR_U kern -kk#;        % u
-%                    CYR_VE kern -kk#,        % w
-%                    CYR_SOFT_SIGN kern -kk#,        % '
-%                    CYR_YERU kern -kk#,        % y
-%                    CYR_ZE kern -kk#,        % z
-%                    CYR_SHA kern -kk#,        % sh
-%                    CYR_SHCHA kern -kk#,        % shch
-%                    CYR_CHE kern -kk#;        % ch
-%                    CYR_HARD_SIGN kern -k#;        % ''
+%                    CYR_V kern -kk#,        % w
+%                    CYR_SFTSN kern -kk#,        % '
+%                    CYR_ERY kern -kk#,        % y
+%                    CYR_Z kern -kk#,        % z
+%                    CYR_SH kern -kk#,        % sh
+%                    CYR_SHCH kern -kk#,        % shch
+%                    CYR_CH kern -kk#;        % ch
+%                    CYR_HRDSN kern -k#;        % ''
 
- ligtable CYR_O: CYR_ES: CYR_EF:
-                    CYR_de kern -kkk#,           %
+ ligtable CYR_O: CYR_S: CYR_F:
+                    CYR_d kern -kkk#,           %
                     CYR_A kern -kkk#,        %
-                    CYR_VE kern -kkk#,        %
-                    CYR_GHE kern -kkk#,        %
-                    CYR_ER kern -kkk#,        %
-                    CYR_PE kern -kkk#,        %
-                    CYR_EN kern -kkk#,          %
-                    CYR_E kern -kkk#,          %
-                    CYR_HA kern -kkk#,        %
+                    CYR_V kern -kkk#,        %
+                    CYR_G kern -kkk#,        %
+                    CYR_R kern -kkk#,        %
+                    CYR_P kern -kkk#,        %
+                    CYR_N kern -kkk#,          %
+                    CYR_EREV kern -kkk#,          %
+                    CYR_H kern -kkk#,        %
                     CYR_I kern -kkk#,        %
-                    CYR_KA kern -kkk#,        %
-                    CYR_EM kern -kkk#,          %
-                    CYR_SHA kern -kkk#,        %
-                    CYR_SHCHA kern -kkk#,        %
-                    CYR_SHORT_I kern -kkk#;       % j
+                    CYR_K kern -kkk#,        %
+                    CYR_M kern -kkk#,          %
+                    CYR_SH kern -kkk#,        %
+                    CYR_SHCH kern -kkk#,        %
+                    CYR_I_shrt kern -kkk#;       % j
 
- ligtable CYR_EN: CYR_EM: CYR_ER: CYR_PE:
-          CYR_ZHE: CYR_KA: CYR_DE: CYR_HA:
+ ligtable CYR_N: CYR_M: CYR_R: CYR_P:
+          CYR_ZH: CYR_K: CYR_D: CYR_H:
                     CYR_O kern -kkk#,        %
-                    CYR_ES kern -kkk#,        %
-                    CYR_EF kern -kkk#;        %
+                    CYR_S kern -kkk#,        %
+                    CYR_F kern -kkk#;        %
 
- ligtable CYR_TE:                             % T
+ ligtable CYR_T:                             % T
                     CYR_A kern -kkk#,        % a
-%                   CYR_VE kern -kkk#,        % w
-%                   CYR_GHE kern -kkk#,        % g
-                    CYR_DE kern -kkk#,        % d
-                    CYR_IE kern -kkk#,        % e
-                    CYR_EF kern -kkk#,          % f
-                    CYR_HA kern -kkk#,        % kh
+%                   CYR_V kern -kkk#,        % w
+%                   CYR_G kern -kkk#,        % g
+                    CYR_D kern -kkk#,        % d
+                    CYR_E kern -kkk#,        % e
+                    CYR_F kern -kkk#,          % f
+                    CYR_H kern -kkk#,        % kh
                     CYR_I kern -kkk#,        % i
-                    CYR_SHORT_I kern -kkk#,        % j
-                    CYR_KA kern -kkk#,        % k
-                    CYR_EL kern -kkk#,        % l
-%                   CYR_EM kern -kkk#,        % m
-%                   CYR_EN kern -kkk#,        % n
+                    CYR_I_shrt kern -kkk#,        % j
+                    CYR_K kern -kkk#,        % k
+                    CYR_L kern -kkk#,        % l
+%                   CYR_M kern -kkk#,        % m
+%                   CYR_N kern -kkk#,        % n
                     CYR_O kern -kkk#,        % o
-%                   CYR_PE kern -kkk#,        % p
+%                   CYR_P kern -kkk#,        % p
                     CYR_YA kern -kkk#,        % ya
-%                   CYR_ER kern -kkk#,        % r
-                    CYR_ES kern -kkk#,        % s
-                    CYR_TE kern -kkk#,        % t
+%                   CYR_R kern -kkk#,        % r
+                    CYR_S kern -kkk#,        % s
+                    CYR_T kern -kkk#,        % t
                     CYR_U kern -kkk#,        % u
-%                   CYR_VE kern -kkk#,        %
-%                   CYR_SOFT_SIGN kern -kkk#,        %
-%                   CYR_YERU kern -kkk#,        % y
-                    CYR_ZE kern -kkk#;       % z
-%                   CYR_SHA kern -kk#,        % sh
-%                   CYR_SHCHA kern -kk#,        % shch
-%                   CYR_CHE kern -kk#,        % ch
-%                    CYR_HARD_SIGN kern -kk#;        %
+%                   CYR_V kern -kkk#,        %
+%                   CYR_SFTSN kern -kkk#,        %
+%                   CYR_ERY kern -kkk#,        % y
+                    CYR_Z kern -kkk#;       % z
+%                   CYR_SH kern -kk#,        % sh
+%                   CYR_SHCH kern -kk#,        % shch
+%                   CYR_CH kern -kk#,        % ch
+%                    CYR_HRDSN kern -kk#;        %
