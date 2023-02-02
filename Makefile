@@ -10,7 +10,7 @@ all:
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
 	@rm -f ~/tex/TeXfonts/*pk # mode parameters could change
 	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do \
-	sed '/font_identifier/s/"CM/"OM/;s/generate /input mybase;\n&my/' MFinputs/cm/$$i \
+	sed '/font_identifier/s/"CM/"OM/;s/generate /input lhcodes;\n&ld/' MFinputs/cm/$$i \
 	>MFinputs/om/om$${i#cm}; done
 
 trapmf:

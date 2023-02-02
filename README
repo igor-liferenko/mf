@@ -15,6 +15,5 @@ Add this `mf' script to PATH:
 
 Adjust path.ch and search.ch
 
-Use either companion repo http://github.com/igor-liferenko/mf-wayland
-or hello-wayland from http://github.com/igor-liferenko/rstex
+Use either hello-wayland or http://github.com/igor-liferenko/mf-wayland
 (set path to hello-wayland in screen.ch)

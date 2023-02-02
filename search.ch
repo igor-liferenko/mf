@@ -14,7 +14,7 @@
 @d str_549 " (INIMF)"
 @d str_550 "/home/user/mf/MFinputs/cm/"
 @d str_551 "/home/user/mf/MFinputs/om/"
-@d str_552 "/home/user/mf/MFinputs/cmcyr/"
+@d str_552 "/home/user/mf/MFinputs/lh/"
 @z
 
 @x

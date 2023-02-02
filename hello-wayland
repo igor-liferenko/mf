@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+# https://stackoverflow.com/questions/42570214/displaying-image-using-a-label
+# requires 'python3-pyqt5' package; works on X (not Wayland)
+import sys
+import mmap
+import os
+f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+width, height = map(int, os.environ.get('screen_size').split('x'))
+mm = mmap.mmap(0, width*height*4)
+app = QApplication(sys.argv)
+qImg = QImage(mm,width,height,width*4,QImage.Format_RGB32)
+pixmap01 = QPixmap.fromImage(qImg)
+pixmap_image = QPixmap(pixmap01)
+label_imageDisplay = QLabel()
+label_imageDisplay.setPixmap(pixmap_image)
+label_imageDisplay.setAlignment(Qt.AlignCenter)
+label_imageDisplay.setScaledContents(True)
+label_imageDisplay.setMinimumSize(width,height)
+label_imageDisplay.showMinimized()
+sys.exit(app.exec_())
