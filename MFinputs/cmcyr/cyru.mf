@@ -29,7 +29,7 @@ if serifs: numeric inner_jut; pickup tiny.nib;
 penlabels(0,1,2,3,4,5,6); endchar;
 
 cmchar "The cyrillic letter BE";
-beginchar(CYR_B,12.5u#,cap_height#,0);
+beginchar(CYR_BE,12.5u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 numeric left_stem,right_curve;
@@ -53,7 +53,7 @@ nodish_serif(2,1,c,1/3,cap_jut,d,1/3,.5cap_jut); fi  % lower serif
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter VE";
-beginchar(CYR_V,12.5u#,cap_height#,0);
+beginchar(CYR_VE,12.5u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 numeric left_stem,right_curve,middle_weight;
@@ -81,7 +81,7 @@ if serifs: nodish_serif(1,2,a,1/3,cap_jut,b,1/3,.5cap_jut);  % upper serif
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9,10,11,12); endchar;
 
 cmchar "The cyrillic letter GHE";
-beginchar(CYR_G,11.5u#-width_adj#,cap_height#,0);
+beginchar(CYR_GHE,11.5u#-width_adj#,cap_height#,0);
 italcorr cap_height#*slant-beak_jut#-.25u#;
 adjust_fit(cap_serif_fit#,0);
 h:=vround(h-stem_corr);
@@ -96,7 +96,7 @@ if serifs: nodish_serif(1,2,a,1/3,cap_jut,b,1/3,.5cap_jut);  % upper serif
 math_fit(0,ic#-2.5u#); penlabels(1,2,3,4); endchar;
 
 cmchar "The cyrillic letter DE";
-beginchar(CYR_D,13u#,cap_height#,comma_depth#);
+beginchar(CYR_DE,13u#,cap_height#,comma_depth#);
 italcorr cap_height#*slant-cap_serif_fit#
  +.75cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(0,cap_serif_fit#);
@@ -147,7 +147,7 @@ math_fit(0,.5ic#-.5u#);
 penlabels(0,1,1',2,3,3',4,5,6,7,8,9,12,21); endchar;
 
 cmchar "The cyrillic letter IE";
-beginchar(CYR_E,12u#-width_adj#,cap_height#,0);
+beginchar(CYR_IE,12u#-width_adj#,cap_height#,0);
 italcorr cap_height#*slant-beak_jut#-.5u#;
 adjust_fit(cap_serif_fit#,0);
 h:=vround(h-stem_corr);
@@ -210,7 +210,7 @@ math_fit(0,.5ic#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13); endchar;
 
 cmchar "The cyrillic letter ZHE";
-beginchar(CYR_ZH,21u#,cap_height#,0);
+beginchar(CYR_ZHE,21u#,cap_height#,0);
 italcorr cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 numeric right_jut,stem[],alpha[];
@@ -254,7 +254,7 @@ if serifs: numeric inner_jut;
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter ZE";
-beginchar(CYR_Z,11u#,cap_height#,0);
+beginchar(CYR_ZE,11u#,cap_height#,0);
 italcorr cap_height#*slant-.5u#;
 adjust_fit(0,0);pickup fine.nib;
 if serifs: pos1(cap_hair,180); pos2(cap_band,90);
@@ -339,7 +339,7 @@ math_fit(0,max(.5ic#-.5u#,0));
 penlabels(1,2,2',3,3',4,5,6,7); endchar;
 
 cmchar "The cyrillic letter SHORT I";
-beginchar(CYR_I_shrt,13u#+width_adj#,1.3cap_height#,0);
+beginchar(CYR_SHORT_I,13u#+width_adj#,1.3cap_height#,0);
 italcorr 1.3cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem',0); pos2(cap_stem',0);
@@ -390,7 +390,7 @@ math_fit(0,max(.5ic#-.5u#,0));
 penlabels(1,2,2',3,3',4,5,6,7,8,9,10,11);  endchar;
 
 cmchar "The cyrillic letter KA";
-beginchar(CYR_K,13.5u#,cap_height#,0);
+beginchar(CYR_KA,13.5u#,cap_height#,0);
 italcorr cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 numeric right_jut,stem[],alpha[];
@@ -427,7 +427,7 @@ if serifs: numeric inner_jut;
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6); endchar;
 
 cmchar "The cyrillic letter EL";
-beginchar(CYR_L,13u#,cap_height#,0);
+beginchar(CYR_EL,13u#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#
  +.75cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(0,cap_serif_fit#);
@@ -460,7 +460,7 @@ math_fit(0,.5ic#-.5u#);
 penlabels(1,1',2,3,4,5,5',6,7); endchar;
 
 cmchar "The cyrillic letter EM";
-beginchar(CYR_M,16u#+width_adj#,cap_height#,0);
+beginchar(CYR_EM,16u#+width_adj#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 numeric stem[]; % thicknesses of the four strokes
@@ -503,7 +503,7 @@ penlabels(0,1,1',2,3,3',4,5,6,7,8); endchar;
 
 
 cmchar "The cyrillic letter EN";
-beginchar(CYR_N,13u#+width_adj#,cap_height#,0);
+beginchar(CYR_EN,13u#+width_adj#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem,0); pos2(cap_stem,0);
@@ -543,7 +543,7 @@ penstroke pulled_super_arc.e(1,2)(.5superpull)
 math_fit(-.3cap_height#*slant-.5u#,ic#-.5u#); penlabels(1,2,3,4); endchar;
 
 cmchar "The cyrillic letter PE";
-beginchar(CYR_P,13u#+width_adj#,cap_height#,0);
+beginchar(CYR_PE,13u#+width_adj#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem,0); pos2(cap_stem,0);
@@ -566,7 +566,7 @@ else: pos5(slab,90); pos6(slab,90);
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6); endchar;
 
 cmchar "The cyrillic letter ER";
-beginchar(CYR_R,12u#,cap_height#,0);
+beginchar(CYR_ER,12u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 pickup tiny.nib; penpos1(cap_stem'-tiny,0); penpos2(cap_stem-tiny,0);
@@ -586,7 +586,7 @@ if serifs: nodish_serif(1,0,a,1/3,cap_jut,b,1/3,.5cap_jut);  % upper serif
 math_fit(0,ic#-2.5u#); penlabels(0,1,2,3,4,5,6,7); endchar;
 
 cmchar "The cyrillic letter ES";
-if serifs: beginchar(CYR_S,13u#,cap_height#,0);
+if serifs: beginchar(CYR_ES,13u#,cap_height#,0);
  italcorr cap_height#*slant-.5u#;
  adjust_fit(0,0);
  pickup fine.nib; pos1(cap_hair,0); pos2(cap_band,90);
@@ -604,7 +604,7 @@ if serifs: beginchar(CYR_S,13u#,cap_height#,0);
  path upper_arc; upper_arc=z1{x2-x1,10(y2-y1)}..z2{left};
  numeric t; t=xpart(upper_arc intersectiontimes (z6l--z1'));
  filldraw z1r--z6r--z6l--subpath(t,0) of upper_arc--cycle; % barb
-else: beginchar(CYR_S,11.5u#,cap_height#,0);
+else: beginchar(CYR_ES,11.5u#,cap_height#,0);
  italcorr cap_height#*slant-.5u#;
  adjust_fit(0,0);
  pickup fine.nib; pos1(1.2flare,80); pos2(slab,90);
@@ -619,7 +619,7 @@ math_fit(-.3cap_height#*slant-.5u#,.5ic#);
 penlabels(1,1',2,3,4,5,6); endchar;
 
 cmchar "The cyrillic letter TE";
-beginchar(CYR_T,13u#-width_adj#,cap_height#,0);
+beginchar(CYR_TE,13u#-width_adj#,cap_height#,0);
 italcorr cap_height#*slant-beak_jut#-.25u#;
 adjust_fit(0,0);
 h:=vround(h-2stem_corr);
@@ -679,7 +679,7 @@ else: penpos6(right_stem,-90); x6=4.75u; y6r=-o;
 math_fit(0,.5ic#); penlabels(0,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter EF";
-beginchar(CYR_F,14u#-width_adj#,cap_height#,0);
+beginchar(CYR_EF,14u#-width_adj#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 pickup tiny.nib; penpos1(cap_stem'-tiny,0); penpos2(cap_stem-tiny,0);
@@ -700,7 +700,7 @@ math_fit(0,ic#-2.5u#);
 penlabels(0,1,2,3,4,5,6,7,8,9,10); endchar;
 
 cmchar "The cyrillic letter HA";
-beginchar(CYR_H,13u#,cap_height#,0);
+beginchar(CYR_HA,13u#,cap_height#,0);
 italcorr cap_height#*slant-.25u#;
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 numeric stem[],outer_jut,xjut,alpha[];
@@ -741,7 +741,7 @@ if serifs: numeric inner_jut[]; pickup tiny.nib;
 math_fit(0,.5ic#); penlabels(0,1,2,3,4,12,13,24,34); endchar;
 
 cmchar "The cyrillic letter TSE";
-beginchar(CYR_C,13u#+width_adj#,cap_height#,comma_depth#);
+beginchar(CYR_TSE,13u#+width_adj#,cap_height#,comma_depth#);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem,0); pos2(cap_stem,0);
@@ -772,7 +772,7 @@ fi
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6); endchar;
 
 cmchar "The cyrillic letter CHE";
-beginchar(CYR_CH,13u#,cap_height#,0);    % [AS]
+beginchar(CYR_CHE,13u#,cap_height#,0);    % [AS]
 italcorr cap_height#*slant-serif_fit#+.5cap_stem#-2u#;
 adjust_fit(cap_serif_fit#+stem_shift#,cap_serif_fit#-stem_shift#);
 pickup tiny.nib; pos1(cap_stem,0); pos2(cap_stem,0);
@@ -798,7 +798,7 @@ if serifs: numeric inner_jut;
 penlabels(1,2,2',3,4,5,6); endchar;
 
 cmchar "The cyrillic letter SHA";
-beginchar(CYR_SH,18u#,cap_height#,0);  
+beginchar(CYR_SHA,18u#,cap_height#,0);  
 italcorr cap_height#*slant-.25u#;
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem',0); pos2(cap_stem',0);
@@ -828,7 +828,7 @@ fi
 math_fit(0,.5ic#); penlabels(1,2,2',3,4,5,6,6'); endchar;
 
 cmchar "The cyrillic letter SHCHA";
-beginchar(CYR_SHCH,18u#,cap_height#,comma_depth#); 
+beginchar(CYR_SHCHA,18u#,cap_height#,comma_depth#); 
 italcorr cap_height#*slant-.25u#;
 adjust_fit(cap_serif_fit#,cap_serif_fit#);
 pickup tiny.nib; pos1(cap_stem',0); pos2(cap_stem',0);
@@ -865,7 +865,7 @@ fi
 math_fit(0,.5ic#); penlabels(1,2,2',3,4,5,6,6',7,8); endchar;
 
 cmchar "The cyrillic letter HARD_SIGN";
-beginchar(CYR_HRDSN,16u#,cap_height#,0);
+beginchar(CYR_HARD_SIGN,16u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 numeric left_stem,right_curve,middle_weight;
@@ -889,7 +889,7 @@ if serifs: nodish_serif(1,2,a,0,cap_jut,b,1/3,cap_jut);  % upper serif
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter YERU";
-beginchar(CYR_ERY,17.5u#,cap_height#,0);
+beginchar(CYR_YERU,17.5u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 numeric left_stem,right_curve,middle_weight;
@@ -917,7 +917,7 @@ labels(1,2,3,4,5,6,7,8,9);
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter SOFT_SIGN";
-beginchar(CYR_SFTSN,12.5u#,cap_height#,0);
+beginchar(CYR_SOFT_SIGN,12.5u#,cap_height#,0);
 italcorr .75cap_height#*slant-.5u#;
 adjust_fit(cap_serif_fit#,0);
 numeric left_stem,right_curve,middle_weight;
@@ -938,7 +938,7 @@ if serifs: dish_serif(1,2,a,1/3,cap_jut,b,1/3,cap_jut);  % upper serif
 math_fit(0,.5ic#); penlabels(1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "The cyrillic letter E";
-if serifs: beginchar(CYR_EREV,13u#,cap_height#,0);
+if serifs: beginchar(CYR_E,13u#,cap_height#,0);
  italcorr cap_height#*slant-.5u#;
  adjust_fit(0,0);
  pickup fine.nib; pos1(cap_hair,180); pos2(cap_band,90);
@@ -956,7 +956,7 @@ if serifs: beginchar(CYR_EREV,13u#,cap_height#,0);
  path upper_arc; upper_arc=z1{x2-x1,10(y2-y1)}..z2{right};
  numeric t; t=xpart(upper_arc intersectiontimes (z6l--z1'));
  filldraw z1r--z6r--z6l--subpath(t,0) of upper_arc--cycle; % barb
-else: beginchar(CYR_EREV,11.5u#,cap_height#,0);
+else: beginchar(CYR_E,11.5u#,cap_height#,0);
  italcorr cap_height#*slant-.5u#;
  adjust_fit(0,0);
  pickup fine.nib; pos1(1.2flare,110); pos2(slab,90);
