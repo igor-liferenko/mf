@@ -11,10 +11,10 @@ input tsetsl;  % special symbols to be slanted
 slant:=0;  % the remaining characters will not be slanted
 currenttransform:=identity yscaled aspect_ratio scaled granularity;
 
-input cyrsymb;
-input cyru;
+input lgcyrsym;
+input lgrusu;
 input romanu;  % upper case (majuscules)
-input cyrl;
+input lgrusl;
 input romanl;  % lower case (minuscules)
 input romand;  % numerals
 input romanp;  % ampersand, question marks, currency sign

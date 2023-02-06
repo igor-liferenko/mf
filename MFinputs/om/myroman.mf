@@ -11,10 +11,10 @@ else: font_coding_scheme:=if ligs=0: "TeX typewriter text"
 
 mode_setup; font_setup;
 
-input cyrsymb;
-input cyru;
+input lgcyrsym;
+input lgrusu;
 input romanu;  % upper case (majuscules)
-input cyrl;
+input lgrusl;
 input romanl;  % lower case (minuscules)
 input greeku;  % upper case Greek letters
 input romand;  % numerals

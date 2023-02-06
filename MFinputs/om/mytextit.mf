@@ -5,7 +5,7 @@
 
 mode_setup; font_setup;
 
-input citall; input italyo;
+input lgrusi;
 input itall;  % lower case (minuscules)
 input italsp;  % lowercase specials (dotless \i, ligature \ae, etc.)
 if ligs>1: font_coding_scheme:="TeX text";
@@ -25,8 +25,8 @@ else: font_normal_space 6u#+2letter_fit#;
  font_quad 18u#+4letter_fit#;
  font_extra_space 2u#; fi
 
-input cyrsymb;
-input cyru;
+input lgcyrsym;
+input lgrusu;
 input romanu;  % upper case (majuscules)
 input greeku;  % upper case greek letters
 input itald;  % numerals

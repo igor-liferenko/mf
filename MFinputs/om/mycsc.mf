@@ -8,8 +8,8 @@ font_coding_scheme:=if ligs=0: "TeX typewriter text"
 spanish_shriek=oct"016"; spanish_query=oct"017";
 
 mode_setup; font_setup;
-input cyrsymb;
-input cyru;
+input lgcyrsym;
+input lgrusu;
 input romanu;  % upper case (majuscules)
 input greeku;  % upper case greek letters
 input romand;  % numerals
@@ -55,8 +55,8 @@ forsuffixes $= u, width_adj, cap_serif_fit, letter_fit,
 fudge:=lower.fudge;
 font_setup; % now try again with |lower| settings
 extra_endchar:=extra_endchar&"charcode:=charcode+code_offset;";
-code_offset:=CYR_a - CYR_A;
-input cyru;
+code_offset:=CYR_.a - CYR_.A;
+input lgrusu;
 code_offset:=ASCII"a" - ASCII"A";
 input romanu;  % majuscules (in lowercase positions)
 code_offset:=-3;
