@@ -9,7 +9,7 @@ all:
 	@for i in gray.mf black.mf slant?*.mf; do ./plain '\mode=localfont; batchmode; input '$$i \
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
 	@rm -f ~/tex/TeXfonts/*pk # mode parameters could change
-	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do sed "/font_identifier/s/CM/OM/;s/generate /&ld/;/generate/i def LHver_check(expr e,f)=enddef;\nebbase:=0;\nboolean roman_ec; roman_ec:=false;\ninput lcyrbeg;\ngensize:=$$(echo $$i|tr -dc 0-9);\ninput lhcodes;\ninput lcyrdefs;\ninput lxpseudo;" MFinputs/cm/$$i >MFinputs/om/om$${i#cm}; done # fikparm.mf equivalent (except that 'input lxpseudo' was moved from drivers)
+	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do sed "/font_identifier/s/CM/OM/;s/generate /&ld/;/generate/i def LHver_check(expr e,f)=enddef;\nebbase:=0;\nboolean roman_ec; roman_ec:=false;\ninput lcyrbeg;\ngensize:=`echo $$i|tr -dc 0-9`;\ninput lhcodes;\ninput lcyrdefs;\ninput lxpseudo;" MFinputs/cm/$$i >MFinputs/om/om$${i#cm}; done # fikparm.mf equivalent (except that 'input lxpseudo' was moved from drivers)
 
 trapmf:
 	@[ $(MAKELEVEL) = 1 ]
