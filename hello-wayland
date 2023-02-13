@@ -4,7 +4,7 @@
 import sys
 import mmap
 import os
-#os.system("ls -l /proc/$PPID/fd | sed -E '1s/.*/\\n/;s/.*\\b([0-9]+ -> .*)/\\1/'") # this can be used to check if glibc version >= 2.7 - only 0,1,2 are printed; if glibc version < 2.7, then in mf/screen.ch instead of "e" flag to 'fopen' use 'fcntl'
+#os.system("ls -l /proc/$PPID/fd | sed -E '1s/.*/\\n/;s/.*\\b([0-9]+ -> .*)/\\1/'") # this can be used to check if glibc version >= 2.7 - only 0,1,2 are printed; if glibc version < 2.7, then in screen.ch instead of "e" flag to 'fopen' use 'fcntl'
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
