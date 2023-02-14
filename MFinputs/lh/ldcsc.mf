@@ -16,17 +16,17 @@ if altcoding:
  input romanp;      % ampersand, question marks, currency sign
  input romspu;      % uppercase specials (\AE, \OE, \O)
  input punct;       % punctuation symbols common to all roman and italic
- input accent;	    % accents common to roman and italic text
- input romsub;	    % substitutes for ligatures
+ input accent;            % accents common to roman and italic text
+ input romsub;            % substitutes for ligatures
 fi
 
 if not vfcoding:  % ligs for both altcoding and wncoding (dashes & quotes)
    if ligs>0: input comlig; fi  % ligatures common with italic
 fi
 
-input lgcyru;	    % input uppercase shapes
-input lgcyrsym;	    % <<, >>, No
-input lgcyracc;	    % Cyrillic accents
+input lgcyru;            % input uppercase shapes
+input lgcyrsym;            % <<, >>, No
+input lgcyracc;            % Cyrillic accents
 if old_cyr:
    input lgocyrac; % Cyrillic Old Slav accents & signs
 fi
@@ -59,52 +59,52 @@ else: font_normal_space 6u#+2letter_fit#;
    TITLEfont:=false; SmallCapsfont:=true; ROMANfont:=false;
    if altcoding:
       ligtable "P": "T": "Y":
-		    "a" kern kk#,
-		    "A" kern kk#;
+                    "a" kern kk#,
+                    "A" kern kk#;
       ligtable "F": "V": "W":
-		    if serifs:  "a" kern kkk#,
-				"A" kern kkk#,
-			 else:  "a" kern kk#,
-				"A" kern kk#, fi
-	       "K": "X":
-		    "o" kern k#,
-		    "O" kern k#,
-		    "c" kern k#,
-		    "C" kern k#,
-		    "g" kern k#,
-		    "G" kern k#,
-		    "q" kern k#,
-		    "Q" kern k#;
+                    if serifs:  "a" kern kkk#,
+                                "A" kern kkk#,
+                         else:  "a" kern kk#,
+                                "A" kern kk#, fi
+               "K": "X":
+                    "o" kern k#,
+                    "O" kern k#,
+                    "c" kern k#,
+                    "C" kern k#,
+                    "g" kern k#,
+                    "G" kern k#,
+                    "q" kern k#,
+                    "Q" kern k#;
       ligtable "O": "D":
-		    "x" kern k#,
-		    "X" kern k#,
-		    "w" kern k#,
-		    "W" kern k#,
-		    "a" kern k#,
-		    "A" kern k#,
-		    "v" kern k#,
-		    "V" kern k#,
-		    "y" kern k#,
-		    "Y" kern k#;
+                    "x" kern k#,
+                    "X" kern k#,
+                    "w" kern k#,
+                    "W" kern k#,
+                    "a" kern k#,
+                    "A" kern k#,
+                    "v" kern k#,
+                    "V" kern k#,
+                    "y" kern k#,
+                    "Y" kern k#;
       ligtable "A": if serifs: "R": fi
-		    "c" kern k#,
-		    "C" kern k#,
-		    "o" kern k#,
-		    "O" kern k#,
-		    "g" kern k#,
-		    "G" kern k#,
-		    "u" kern k#,
-		    "U" kern k#,
-		    "q" kern k#,
-		    "Q" kern k#,
-	       "L": "T" kern kk#,
-		    "t" kern kk#,
-		    "Y" kern kk#,
-		    "y" kern kk#,
-		    "V" kern kkk#,
-		    "v" kern kkk#,
-		    "W" kern kkk#,
-		    "w" kern kkk#;
+                    "c" kern k#,
+                    "C" kern k#,
+                    "o" kern k#,
+                    "O" kern k#,
+                    "g" kern k#,
+                    "G" kern k#,
+                    "u" kern k#,
+                    "U" kern k#,
+                    "q" kern k#,
+                    "Q" kern k#,
+               "L": "T" kern kk#,
+                    "t" kern kk#,
+                    "Y" kern kk#,
+                    "y" kern kk#,
+                    "V" kern kkk#,
+                    "v" kern kkk#,
+                    "W" kern kkk#,
+                    "w" kern kkk#;
       ligtable "I": "I" kern -k#; %fi % Richard III
       %
       %% ligature programs for |"-"|, |"`"|, and |"'"| are in the {\tt comlig} file
@@ -122,7 +122,7 @@ forsuffixes $= u, width_adj, cap_serif_fit, letter_fit,
 fudge:=lower.fudge;
 
 if is_small_cap:
-   cap_sbeak#  	:= 7/8 if serifs: max(beak#,desc_depth#) else: desc_depth# fi;
+   cap_sbeak#          := 7/8 if serifs: max(beak#,desc_depth#) else: desc_depth# fi;
    define_pixels(cap_sbeak);
 fi
 
@@ -155,31 +155,31 @@ if not monospace:
    %
    if altcoding:
       ligtable "p": "t": "y":
-		    "a" kern kk#;
+                    "a" kern kk#;
       ligtable "f": "v": "w":
-		    "a" kern if serifs: kkk# else: kk#\\fi,
-	       "k": "x":
-		    "o" kern k#,
-		    "c" kern k#,
-		    "g" kern k#,
-		    "q" kern k#;
+                    "a" kern if serifs: kkk# else: kk#\\fi,
+               "k": "x":
+                    "o" kern k#,
+                    "c" kern k#,
+                    "g" kern k#,
+                    "q" kern k#;
       ligtable "o": "d":
-		    "x" kern k#,
-		    "w" kern k#,
-		    "a" kern k#,
-	            "v" kern k#,
-		    "y" kern k#;
+                    "x" kern k#,
+                    "w" kern k#,
+                    "a" kern k#,
+                    "v" kern k#,
+                    "y" kern k#;
       ligtable "a": if serifs: "r": fi
-		    "c" kern k#,
-		    "o" kern k#,
-	            "g" kern k#,
-		    "u" kern k#,
-		    "q" kern k#,
-	       "l": "'" kern kk#,
-		    "t" kern kk#,
-		    "y" kern kk#,
-		    "v" kern kkk#,
-		    "w" kern kkk#;
+                    "c" kern k#,
+                    "o" kern k#,
+                    "g" kern k#,
+                    "u" kern k#,
+                    "q" kern k#,
+               "l": "'" kern kk#,
+                    "t" kern kk#,
+                    "y" kern kk#,
+                    "v" kern kkk#,
+                    "w" kern kkk#;
       ligtable "i": "i" kern -k#;  % skiing
    fi
    %

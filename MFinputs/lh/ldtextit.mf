@@ -42,10 +42,10 @@ fi
 if altcoding:
    input romanu;   % upper case (majuscules)
    input greeku;   % upper case Greek letters
-   input itald;	   % numerals
-   input italp;	   % ampersand, question marks, currency sign
+   input itald;           % numerals
+   input italp;           % ampersand, question marks, currency sign
    input romspu;   % uppercase specials (\AE, \OE, \O)
-   input punct;	   % punctuation symbols common to roman and italic text
+   input punct;           % punctuation symbols common to roman and italic text
    input accent;   % accents common to roman and italic text
    if ligs<=1:
       input romsub; % substitutes for ligatures
@@ -56,15 +56,15 @@ if not vfcoding: % ligs for both altcoding and wncoding (dashes & quotes)
    if ligs>0: input comlig; fi % ligatures common with roman text
 fi
 
-input lgcyru;	   % input common shapes
-input lgcyrsym;	   % <<, >>, No
-input lgcyracc;	   % Cyrillic accents
+input lgcyru;           % input common shapes
+input lgcyrsym;           % <<, >>, No
+input lgcyracc;           % Cyrillic accents
 if old_cyr:
    input lgocyrac; % Cyrillic Old Slav accents & signs
 fi
 
 if wncoding: %Part used in WNCYR
-   input itald;	   % numerals
+   input itald;           % numerals
    input lgpunct;  % excerpts from punct.mf
    input lgitalp;  % italic question mark
 fi
@@ -83,61 +83,61 @@ else:
    TITLEfont:=false; SmallCapsfont:=false; ROMANfont:=false;
    if altcoding:
       ligtable "d": "w": "l":
-		    "l" kern +u#;
+                    "l" kern +u#;
       ligtable "F": "V":
-		    "o" kern kk#,
-		    "e" kern kk#,
-		    "u" kern kk#,
-		    "r" kern kk#,
-		    "a" kern kk#,
-		    "A" kern kkk#,
-	  "K": "X": "O" kern k#,
-		    "C" kern k#,
-		    "G" kern k#,
-		    "Q" kern k#;
+                    "o" kern kk#,
+                    "e" kern kk#,
+                    "u" kern kk#,
+                    "r" kern kk#,
+                    "a" kern kk#,
+                    "A" kern kkk#,
+          "K": "X": "O" kern k#,
+                    "C" kern k#,
+                    "G" kern k#,
+                    "Q" kern k#;
       ligtable "T": "y" kern kk#,
-	       "Y": "e" kern kk#,
-		    "o" kern kk#,
-		    "r" kern kk#,
-		    "a" kern kk#,
-		    "u" kern kk#,
-	  "P": "W": "A" kern kk#;
+               "Y": "e" kern kk#,
+                    "o" kern kk#,
+                    "r" kern kk#,
+                    "a" kern kk#,
+                    "u" kern kk#,
+          "P": "W": "A" kern kk#;
       ligtable "O": "D":
-		    "X" kern k#,
-		    "W" kern k#,
-		    "A" kern k#,
-		    "V" kern k#,
-		    "Y" kern k#;
+                    "X" kern k#,
+                    "W" kern k#,
+                    "A" kern k#,
+                    "V" kern k#,
+                    "Y" kern k#;
       ligtable "A": "R":
-		    "n" kern k#,
-		    "l" kern k#,
-		    "r" kern k#,
-		    "u" kern k#,
-		    "m" kern k#,
-		    "t" kern k#,
-		    "i" kern k#,
-		    "C" kern k#,
-		    "O" kern k#,
-		    "G" kern k#,
-		    "h" kern k#,
-		    "b" kern k#,
-		    "U" kern k#,
-		    "k" kern k#,
-		    "v" kern k#,
-		    "w" kern k#,
-		    "Q" kern k#,
-	       "L": "T" kern kk#,
-		    "Y" kern kk#,
-		    "V" kern kkk#,
-		    "W" kern kkk#,
+                    "n" kern k#,
+                    "l" kern k#,
+                    "r" kern k#,
+                    "u" kern k#,
+                    "m" kern k#,
+                    "t" kern k#,
+                    "i" kern k#,
+                    "C" kern k#,
+                    "O" kern k#,
+                    "G" kern k#,
+                    "h" kern k#,
+                    "b" kern k#,
+                    "U" kern k#,
+                    "k" kern k#,
+                    "v" kern k#,
+                    "w" kern k#,
+                    "Q" kern k#,
+               "L": "T" kern kk#,
+                    "Y" kern kk#,
+                    "V" kern kkk#,
+                    "W" kern kkk#,
        "b": "c": "e": "o": "p": "r":
-		    "e" kern -u#,
-		    "a" kern -u#,
-		    "o" kern -u#,
-		    "d" kern -u#,
-		    "c" kern -u#,
-		    "g" kern -u#,
-		    "q" kern -u#;
+                    "e" kern -u#,
+                    "a" kern -u#,
+                    "o" kern -u#,
+                    "d" kern -u#,
+                    "c" kern -u#,
+                    "g" kern -u#,
+                    "q" kern -u#;
       ligtable "n": "'" kern kkk#;
       %
       % there are ligature/kern programs for |"f"| in the {\tt italig} file

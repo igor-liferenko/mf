@@ -131,7 +131,7 @@ cyrchar(D,13.5u#,cap_height#,cap_sbeak#); % DL_width:N_width
 if is_small_cap: getcharcode(d); fi
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(cap_serif_fit# if not serifs:
-	+\\.5(cap_stem#-u#),.5(cap_stem#-u#)+ else:,fi\\ cap_serif_fit#); %D_adj
+        +\\.5(cap_stem#-u#),.5(cap_stem#-u#)+ else:,fi\\ cap_serif_fit#); %D_adj
 pickup tiny.nib; pos1(cap_stem,0); pos2(cap_stem,0);
 rt x1r=rt x2r=w-hround max(2u,3u-.5cap_stem); top y1=h; bot y2=0;
 filldraw stroke z1e--z2e; %right stem
@@ -1254,8 +1254,8 @@ _one:=5; _two:=6; _three:=7; _four:=8;
 %
 pickup tiny.nib; pos[_one](cap_stem,0); pos[_two](cap_stem,0);%pos
 lft x[_one]l=lft x[_two]l=
-	l+letter_fit+if monospace:-.35u else: cap_serif_fit fi
-	+hround max(2u,3u-.5cap_stem);
+        l+letter_fit+if monospace:-.35u else: cap_serif_fit fi
+        +hround max(2u,3u-.5cap_stem);
 top y[_one]=h; bot y[_two]=0;
 filldraw stroke z[_one]e--z[_two]e; % stem
 x[_three]=x[_one]; y[_three]=y[_zero];

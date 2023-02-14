@@ -70,11 +70,11 @@ pickup fine.nib;
 numeric the_shift,shift_corr;
 the_shift=hround(max(3u,1.7stem)); shift_corr=the_shift-3u;
 pos1(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
 pos2(max(fine.breadth,if serifs: 
          if hefty: qvair else: stem fi else:7/8[vair,fudged.hair] fi),0);
 pos3(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
 rt x1r=rt x3r=
     hround(if hefty: .6 else: 2/3 fi w-shift_corr)-eps;
 lft x2l=hround(if not monospace: 2 fi\\ u-shift_corr)-eps;
@@ -88,11 +88,11 @@ if hefty:
    filldraw stroke z1'e--z2'e--z3'e; % inner <
 else:
    pos1'(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
    pos2'(max(fine.breadth,if serifs: 
          2/3[vair,fudged.stem] else: 7/8[vair,fudged.hair] fi),0);
    pos3'(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
    z2'=z2+the_shift*right;
    y1'-y2'=y2'-y3'=.8(y1-y2);
    z1'=z2'+whatever*(z1r-z2r); z3'=z2'+whatever*(z2r-z3r);
@@ -118,11 +118,11 @@ pickup fine.nib;
 numeric the_shift,shift_corr;
 the_shift=hround(max(3u,1.7stem)); shift_corr=the_shift-3u;
 pos1(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
 pos2(max(fine.breadth,if serifs: 
          if hefty: qvair else: stem fi else:7/8[vair,fudged.hair] fi),0);
 pos3(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
 lft x1l=lft x3l=w-
     hround(if hefty: .6 else: 2/3 fi w-shift_corr)+eps;
 rt x2r=w-hround(if not monospace: 2 fi\\ u-shift_corr)+eps;
@@ -136,11 +136,11 @@ if hefty:
    filldraw stroke z1'e--z2'e--z3'e; % inner <
 else:
    pos1'(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
    pos2'(max(fine.breadth,if serifs: 
          2/3[vair,fudged.stem] else: 7/8[vair,fudged.hair] fi),0);
    pos3'(max(fine.breadth,
-	 if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
+         if serifs: qvair else: 7/8[vair,fudged.hair]-3stem_corr fi),0);
    z2'=z2+the_shift*left;
    y1'-y2'=y2'-y3'=.8(y1-y2);
    z1'=z2'+whatever*(z1l-z2l); z3'=z2'+whatever*(z2l-z3l);

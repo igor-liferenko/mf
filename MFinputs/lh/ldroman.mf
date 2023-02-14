@@ -36,10 +36,10 @@ if not vfcoding: % ligs for both altcoding and wncoding (dashes & quotes)
    if ligs>0: input comlig; fi  % ligatures common with italic text
 fi
 
-input lgcyru;	   % Cyrillic upper case (majuscules)
-input lgcyrl;	   % Cyrillic lower case (minuscules)
+input lgcyru;           % Cyrillic upper case (majuscules)
+input lgcyrl;           % Cyrillic lower case (minuscules)
 input lgcyrsym;    % << >> ,, No
-input lgcyracc;	   % Cyrillic accents
+input lgcyracc;           % Cyrillic accents
 if old_cyr:
    input lgocyrac; % Cyrillic Old Slav accents & signs
 fi
@@ -69,84 +69,84 @@ else: font_normal_space 6u#+2letter_fit#;
    TITLEfont:=false; SmallCapsfont:=false; ROMANfont:=true;
    if altcoding:
       ligtable "k":
-	 if serifs: "v":
-		    "a" kern -u#, fi\\
-	       "w": "e" kern k#,
-		    "a" kern k#,
-		    "o" kern k#,
-		    "c" kern k#;
+         if serifs: "v":
+                    "a" kern -u#, fi\\
+               "w": "e" kern k#,
+                    "a" kern k#,
+                    "o" kern k#,
+                    "c" kern k#;
       ligtable "P": "A" kern kk#,
-	       "y": "o" kern k#,
-		    "e" kern k#,
-		    "a" kern k#,
-		    "." kern kk#,
-		    "," kern kk#;
+               "y": "o" kern k#,
+                    "e" kern k#,
+                    "a" kern k#,
+                    "." kern kk#,
+                    "," kern kk#;
       ligtable "F": "V": "W":
-	 if serifs: "o" kern kk#,
-		    "e" kern kk#,
-		    "u" kern kk#,
-		    "r" kern kk#,
-		    "a" kern kk#,
-		    "A" kern kkk#,
-	      else: "o" kern k#,
-		    "e" kern k#,
-		    "u" kern k#,
-		    "r" kern k#,
-		    "a" kern k#,
-		    "A" kern kk#, fi
-	  "K": "X": "O" kern k#,
-		    "C" kern k#,
-		    "G" kern k#,
-		    "Q" kern k#;
+         if serifs: "o" kern kk#,
+                    "e" kern kk#,
+                    "u" kern kk#,
+                    "r" kern kk#,
+                    "a" kern kk#,
+                    "A" kern kkk#,
+              else: "o" kern k#,
+                    "e" kern k#,
+                    "u" kern k#,
+                    "r" kern k#,
+                    "a" kern k#,
+                    "A" kern kk#, fi
+          "K": "X": "O" kern k#,
+                    "C" kern k#,
+                    "G" kern k#,
+                    "Q" kern k#;
       ligtable "T": "y" kern if serifs: k# else: kk# fi,
-	       "Y": "e" kern kk#,
-		    "o" kern kk#,
-		    "r" kern kk#,
-		    "a" kern kk#,
-		    "A" kern kk#,
-		    "u" kern kk#;
+               "Y": "e" kern kk#,
+                    "o" kern kk#,
+                    "r" kern kk#,
+                    "a" kern kk#,
+                    "A" kern kk#,
+                    "u" kern kk#;
       ligtable "O": "D":
-		    "X" kern k#,
-		    "W" kern k#,
-		    "A" kern k#,
-		    "V" kern k#,
-		    "Y" kern k#;
+                    "X" kern k#,
+                    "W" kern k#,
+                    "A" kern k#,
+                    "V" kern k#,
+                    "Y" kern k#;
       if serifs:
-	 ligtable "h": "m": "n":
-		    "t" kern k#,
-		    "u" kern k#,
-		    "b" kern k#,
-		    "y" kern k#,
-		    "v" kern k#,
-		    "w" kern k#;
+         ligtable "h": "m": "n":
+                    "t" kern k#,
+                    "u" kern k#,
+                    "b" kern k#,
+                    "y" kern k#,
+                    "v" kern k#,
+                    "w" kern k#;
          ligtable "c":
-		    "h" kern k#,
-		    "k" kern k#;
+                    "h" kern k#,
+                    "k" kern k#;
       fi
       ligtable "o": "b": "p":
-		    "e" kern -k#,
-		    "o" kern -k#,
-		    "x" kern k#,
-		    "d" kern -k#,
-		    "c" kern -k#,
-		    "q" kern -k#,
-	       "a": if serifs:
-			  "v" kern k#,
-			  "j" kern u#,
-		    else: "r" kern k#, fi
-		    "t": "y" kern k#,
-	       "u": "w" kern k#;
+                    "e" kern -k#,
+                    "o" kern -k#,
+                    "x" kern k#,
+                    "d" kern -k#,
+                    "c" kern -k#,
+                    "q" kern -k#,
+               "a": if serifs:
+                          "v" kern k#,
+                          "j" kern u#,
+                    else: "r" kern k#, fi
+                    "t": "y" kern k#,
+               "u": "w" kern k#;
       ligtable "A": if serifs: "R": fi\\
-		    "t" kern k#,
-		    "C" kern k#,
-		    "O" kern k#,
-		    "G" kern k#,
-		    "U" kern k#,
-		    "Q" kern k#,
-	       "L": "T" kern kk#,
-		    "Y" kern kk#,
-		    "V" kern kkk#,
-		    "W" kern kkk#;
+                    "t" kern k#,
+                    "C" kern k#,
+                    "O" kern k#,
+                    "G" kern k#,
+                    "U" kern k#,
+                    "Q" kern k#,
+               "L": "T" kern kk#,
+                    "Y" kern kk#,
+                    "V" kern kkk#,
+                    "W" kern kkk#;
       ligtable "g": "j" kern -k#; % logjam
       ligtable "I": "I" kern -k#;  % Richard III
       %

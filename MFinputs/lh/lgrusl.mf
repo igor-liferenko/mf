@@ -120,9 +120,9 @@ fill stroke z8e..super_arc.e(9,10) &
  {{if not serifs:interim superness:=hein_super; fi super_arc.e(10,11)..z12e}};  % lower lobe
 if serifs:
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- nodish_serif(1,2,a,1/3,jut,b,1/3,.5jut);	% upper serif
+ nodish_serif(1,2,a,1/3,jut,b,1/3,.5jut);        % upper serif
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi	% lower serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi        % lower serif
 penlabels(1,2,3,4,5,6,7,8,9,10,11,12); endchar;
 
 lhchar "Lowercase Russian letter g (looks like Gamma)";
@@ -138,9 +138,9 @@ top y3r=h; x3=x1; rt x4r=hround(w-.45u); y4=good.y(y3l-beak/1.4)-eps;
 arm(3,4,e,beak_darkness,.4beak_jut);  % upper arm and beak
 if serifs:
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- nodish_serif(1,2,a,1/3,jut,b,1/3,.5jut);	% upper serif
+ nodish_serif(1,2,a,1/3,jut,b,1/3,.5jut);        % upper serif
  slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,jut,d,1/3,1.25jut); fi	% lower serif
+ dish_serif(2,1,c,1/3,jut,d,1/3,1.25jut); fi        % lower serif
 %%%%%
 penlabels(1,2,3,4); endchar;
 
@@ -269,7 +269,7 @@ filldraw stroke z1e--z2e; % stem
 save slab; % lower.slab
 if serifs:
  slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,jut);	% upper stem serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,jut);        % upper stem serif
  slab:=vair; % lower.slab
  dish_serif(2,1,c,1/3,jut,d,1/3,jut); fi% lower stem serif
 % k_rbowl;zh%monospace:+.25u
@@ -423,11 +423,11 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x3l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x3l-inner_jut; fi
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
- dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi	% lower right serif
+ dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
+ dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi        % lower right serif
 %%%%%
 penlabels(1,2,3,4,5,6); endchar;
 
@@ -476,11 +476,11 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x3l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x3l-inner_jut; fi
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
- dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi	% lower right serif
+ dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
+ dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi        % lower right serif
 %%%%%
 % the accent
 h:=full_h; cbreve(.5w,0, 7,8,9,10,11,12,13);
@@ -502,7 +502,7 @@ filldraw stroke z1e--z2e; % stem
 save slab; % lower.slab
 if serifs:
  slab:=Vround(vair-vair_corr);%lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,jut);	% upper stem serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,jut);        % upper stem serif
  slab:=vair; % lower.slab
  dish_serif(2,1,c,1/3,jut,d,1/3,jut); fi% lower stem serif
 % k_rbowl;
@@ -634,8 +634,8 @@ if serifs:
  if rt x2r+jut+.5u+1+eps+.5stem3<=lft x4l-.5stem3-jut: inner_jut=jut;
   else: rt x2r+inner_jut+.5u+1+eps+.5stem3=lft x4l-.5stem3-inner_jut; fi
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- serif(1,2,a,1/3,-jut);	% upper left serif
- serif(3,4,d,1/3,jut);	% upper right serif
+ serif(1,2,a,1/3,-jut);        % upper left serif
+ serif(3,4,d,1/3,jut);        % upper right serif
  slab:=vair; % lower.slab
  dish_serif(2,1,b,1/2,jut,c,1/2,jut)(dark); % lower left serif
  dish_serif(4,3,e,1/3,jut,f,1/3,jut); fi    % lower right serif
@@ -661,11 +661,11 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x3l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x3l-inner_jut; fi
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
- dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi	% lower right serif
+ dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
+ dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut); fi        % lower right serif
 %%%%%
 penlabels(1,2,3,4,5,6); endchar;
 
@@ -701,8 +701,8 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x3l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x3l-inner_jut; fi
  save slab; slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
- dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut);	% lower right serif
+ dish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
+ dish_serif(4,3,g,1/3,inner_jut,h,1/3,jut);        % lower right serif
  inner_jut:=min(.5(lft x3l-rt x1r)-eps,.5jut);
  slab:=Vround(vair-vair_corr); % lower.slab
  nodish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);   % upper left serif
@@ -797,9 +797,9 @@ arm(3,5,f,beak_darkness,-.4beak_jut);  % left arm and beak
 %%%
 if serifs:
  save slab; slab:=vair; % lower.slab
- dish_serif(2,1,c,1/3,1.414jut,d,1/3,1.414jut);	% lower serif
+ dish_serif(2,1,c,1/3,1.414jut,d,1/3,1.414jut);        % lower serif
  slab:=Vround(vair-vair_corr); % lower.slab
- nodish_serif(1,2,a,1/3,.5jut,b,1/3,.5jut); fi	% upper bracketing
+ nodish_serif(1,2,a,1/3,.5jut,b,1/3,.5jut); fi        % upper bracketing
 %%%%%
 penlabels(1,2,3,4,5); endchar;
 
@@ -959,8 +959,8 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x3l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x3l-inner_jut; fi
  slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  inner_jut:=min(.5(lft x3l-rt x1r)-eps,.5jut);
  slab:=vair; % lower.slab
  nodish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);   % lower left serif
@@ -1035,14 +1035,14 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x5l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x5l-inner_jut; fi
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  dish_serif(5,6,i,1/3,inner_jut,j,1/3,inner_jut); % upper center serif
  inner_jut:=min(.5(lft x3l-rt x1r)-eps,.5jut);
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
  nodish_serif(6,5,k,1/3,inner_jut,m,1/3,inner_jut); % lower center serif
- nodish_serif(4,3,g,1/3,inner_jut,h,1/3,jut);	% lower right serif
+ nodish_serif(4,3,g,1/3,inner_jut,h,1/3,jut);        % lower right serif
  filldraw z.d0--z.d1--z.g1--z.g0--cycle; % lower inter_serif bar
 else:
  lft x2'= lft x2l; bot y2'l=0; pos2'(vair,90);
@@ -1072,12 +1072,12 @@ if serifs:
  if rt x1r+jut+.5u+1<=lft x5l-jut: inner_jut=jut;
   else: rt x1r+inner_jut+.5u+1=lft x5l-inner_jut; fi
  slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);	% upper left serif
- dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);	% upper right serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,inner_jut);        % upper left serif
+ dish_serif(3,4,e,1/3,inner_jut,f,1/3,jut);        % upper right serif
  dish_serif(5,6,i,1/3,inner_jut,j,1/3,inner_jut); % upper center serif
  inner_jut:=min(.5(lft x3l-rt x1r)-eps,.5jut);
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);	% lower left serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,inner_jut);        % lower left serif
  nodish_serif(6,5,k,1/3,inner_jut,m,1/3,inner_jut); % lower center serif
 else:
  lft x2'= lft x2l; bot y2'l=0; pos2'(vair,90);
@@ -1107,9 +1107,9 @@ pos4(hair,180); lft x4r=l+letter_fit+hround.45u; y4=good.y(y3l-beak/1.4)-eps;
 arm(3,4,q,beak_darkness,-.4beak_jut);
 if serifs:
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- nodish_serif(1,2,a,1/3,.5jut,b,1/3,.5jut);	% upper serif
+ nodish_serif(1,2,a,1/3,.5jut,b,1/3,.5jut);        % upper serif
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi	% lower serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi        % lower serif
 % lsftsn_bowl(2);
 _zero:=2;
 _one:=5; _two:=6; _three:=7; _four:=8; _five:=9;
@@ -1142,9 +1142,9 @@ lft x1l=lft x2l=hround (2.5u-.5fudged.stem-eps); top y1=h; bot y2=0;
 filldraw stroke z1e--z2e; % stem
 if serifs:
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,jut);		% upper serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,jut);                % upper serif
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi	% lower serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi        % lower serif
 % lsftsn_bowl(2);
 _zero:=2;
 _one:=3; _two:=4; _three:=5; _four:=6; _five:=7;
@@ -1170,7 +1170,7 @@ pos8(fudged.stem,0); pos9(fudged.stem,0);
 filldraw stroke z8e--z9e; % stem
 if serifs:
  slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(8,9,e,1/3,jut,f,1/3,jut);	% upper serif
+ dish_serif(8,9,e,1/3,jut,f,1/3,jut);        % upper serif
  slab:=vair; % lower.slab
  dish_serif(9,8,g,1/3,jut,h,1/3,jut); fi% lower serif
 %%%%%
@@ -1185,9 +1185,9 @@ lft x1l=lft x2l=hround (2.5u-.5fudged.stem); top y1=h; bot y2=0;
 filldraw stroke z1e--z2e; % stem
 if serifs:
  save slab; slab:=Vround(vair-vair_corr); % lower.slab
- dish_serif(1,2,a,1/3,jut,b,1/3,jut);		% upper serif
+ dish_serif(1,2,a,1/3,jut,b,1/3,jut);                % upper serif
  slab:=vair; % lower.slab
- nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi	% lower serif
+ nodish_serif(2,1,c,1/3,jut,d,1/3,.5jut); fi        % lower serif
 % lsftsn_bowl(2);
 _zero:=2;
 _one:=3; _two:=4; _three:=5; _four:=6; _five:=7;

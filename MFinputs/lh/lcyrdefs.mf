@@ -1198,7 +1198,7 @@ enddef;
 
 %
 %                          CYRCROSS ACCESSORIES
-% 		   (redefined L's CROSS ACCESSORIES)
+%                    (redefined L's CROSS ACCESSORIES)
 %
 
 % is_cap checked by modifier
