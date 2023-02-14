@@ -374,7 +374,7 @@ filldraw stroke z4e{down}..{-u,-x_height}z5e;  % right stem
 penlabels(0,a,1,2,3,4,5,6,7); endchar;
 
 cmchar "Italic Russian letter r (looks like p)";
-beginchar(CYR_.r,if monospace:9u# else:9.25u# fi,x_height#,desc_depth#); % !rusw
+beginchar(CYR_.r,if monospace:9u# else:9.25u# fi,x_height#,desc_depth#);
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi; %p
 adjust_fit(0,if monospace:0 else:-.35u#fi);
 % ital_r;
@@ -434,7 +434,7 @@ filldraw stroke z7e{down}..{-u,-x_height}z8e;  % right stem
 penlabels(0,a,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Italic Russian letter u (looks like y)";
-beginchar(CYR_.u,if monospace:8.5u# else:9u# fi,x_height#,desc_depth#); % !rusw
+beginchar(CYR_.u,if monospace:8.5u# else:9u# fi,x_height#,desc_depth#);
 italcorr x_height#*slant+.5stem#-u#; %y
 adjust_fit(0,0);
 % ital_u;
@@ -496,7 +496,7 @@ penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
 endchar;
 
 cmchar "Italic Russian letter h - kha (looks like x)";
-beginchar(CYR_.h,if monospace:6.5u# else:7.5u# fi+max(1.5u#,flare#), % !rusw
+beginchar(CYR_.h,if monospace:6.5u# else:7.5u# fi+max(1.5u#,flare#),
  x_height#,0);
 italcorr max(1/3x_height#*slant+.5hair#+.5u#,x_height#*slant+.25u#); %x
 adjust_fit(if monospace: 0,0 else: 0.25u#,0.25u# fi);
