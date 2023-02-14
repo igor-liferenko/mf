@@ -1,5 +1,5 @@
-lhchar "Cyrillic symbol No.";
-cyrchar(No,14.5u#+width_adj#,cap_height#,0);
+cmchar "Cyrillic symbol No.";
+beginchar(CYR_.No,14.5u#+width_adj#,cap_height#,0);
 italcorr cap_height#*slant-cap_serif_fit#+cap_jut#-2.5u#+min(.5cap_stem#,u#);
 adjust_fit(if monospace: 0,0 else: cap_serif_fit#
   if serifs: +.5(flare#+(cap_stem#-stem#))-.25u#,cap_serif_fit# else:,0 fi fi);
@@ -60,7 +60,7 @@ lft x81=x72r-.25fine; rt x82=x74r+.25fine; y81=y82=.8x_height-3u;
 filldraw stroke z81e--z82e;
 penlabels(1,1',2,3,4,4',5,6,7, 21,22,23, 31',32,33); endchar;
 
-lhchar "Cyrillic `French Opening Quotes' (looks like <<)";
+cmchar "Cyrillic `French Opening Quotes' (looks like <<)";
 cyrchar_twice( % compilation of A.Shen's and ec (polish: pl_cud) quotes
  if not hefty: flqq,10u#,2bar_height#,0 % ec metrics
  else:         flqq,12u#,2bar_height#,0
@@ -108,7 +108,7 @@ corrital z1'r;
 repeat_once;
 penlabels(1,2,3,1',2',3'); endchar;
 
-lhchar "Cyrillic `French closing quotes'";
+cmchar "Cyrillic `French closing quotes'";
 cyrchar_twice( % compilation of A.Shen's and ec (polish: pl_cud) quotes
  if not hefty: frqq,10u#,2bar_height#,0 % ec metrics
  else:         frqq,12u#,2bar_height#,0
