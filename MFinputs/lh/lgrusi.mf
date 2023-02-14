@@ -183,7 +183,6 @@ filldraw stroke z9'e{right}...pulled_arc.e(3',8) & pulled_arc.e(8,4)
 %%%
 penlabels(0,1,2,3,4,5,7,8,9); endchar;
 
-
 cmchar "Italic Russian letter i (looks like u)";
 beginchar(CYR_.i,10u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#; %u
