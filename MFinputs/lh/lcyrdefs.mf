@@ -1,3 +1,5 @@
+boolean roman_ec; roman_ec:=false;
+
 %
 % lcyrdefs.mf
 %
@@ -35,8 +37,6 @@
 % Accents which created with beginchar_twice routine
 %  (borrowed from exaccess)
 %
-
-LHver_check(3,5); % like |version_check| in ec
 
 let lhchar=\; % `|lhchar|' should precede each character
 

@@ -24,8 +24,6 @@
 % parameters with different values at each occuerence (like |theta|).
 %
 
-LHver_check(3,5); % like |version_check| in ec
-
 % Diameters of dots
 %
 numeric idot_diam#,udot_diam#,pdot_diam#;
