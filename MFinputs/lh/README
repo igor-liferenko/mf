@@ -1,0 +1,22 @@
+cd lhfnt35g-source/texmf/source/fonts/lh/tex
+sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */;s/( a/( d/;s/( f0/( a1/' enc-t2.tex
+tex 01cm-lh
+cp wrk/lh-lcy/lhcodes.mf /path/to/mf/MFinputs/lh/
+sed -e '0,/^$/{//{s//\nboolean altcoding,kapitel,concrete;\naltcoding:=true; kapitel:=false; concrete:=false;/;e grep -v ^endinput ../../../../fonts/source/lh/base/lkligtbl.mf' -e '}}' wrk/lh-lcy/lhliker.mf | sed '/LHver_check/{N;d}' >/path/to/mf/MFinputs/lh/lhliker.mf
+
+cd lhfnt35g-source/texmf/fonts/source/lh/base
+cp ldroman.mf ldtextit.mf ldcsc.mf ldtexset.mf lgrus* lgcyrsym.mf lcyrdefs.mf lcyrbeg.mf lxpseudo.mf /path/to/mf/MFinputs/lh
+
+cd /path/to/mf/MFinputs/lh
+sed -i 's/\t/        /g' *
+sed -i '1i ebbase:=0;\n' lcyrbeg.mf
+sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf
+sed -i '/LHver_check/{N;d}' lcyrbeg.mf lcyrdefs.mf lxpseudo.mf
+sed -i '0,/LHver_check/d;/./,$!d' ld*
+sed -i '0,/lhchar/{//!d};:x;N;$!bx;s/\(.*endchar;\).*/\1/' lgrus*
+sed -i -n '/Cyrillic symbol No/,/endchar/{/lhchar/s/ %.*//;p};/French Opening Quotes/,/endchar/{/lhchar/s/^/\n/;p};/French closing quotes/,/endchar/{/lhchar/s/^/\n/;p}' lgcyrsym.mf
+sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./;s/ $//' lg*
+sed -i '/if is_small_cap: getcharcode/d;/if.* \(concrete\|specific\|kapitel\):/d' lgrus*
+sed -i '/beginchar/s/ %[^%]*$//' lgrus*
+{ rm lgrusi.mf; cat -s >lgrusi.mf; } <lgrusi.mf
+Now edit drivers manually
