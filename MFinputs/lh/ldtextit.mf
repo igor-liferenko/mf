@@ -3,31 +3,24 @@ input lxpseudo;
 mode_setup; font_setup;
 pseudo_setup;    % |pseudo_setup| from ec
 
-
+string enc_name; enc_name:="LCY";
 if ligs>1: font_coding_scheme:="TeX text/Cyr - "&enc_name;
-  if altcoding:
     spanish_shriek=oct"074"; spanish_query=oct"076";
     input italig;  % letter ligatures
-  fi
 else: font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - "&enc_name
   else: "TeX text without f-ligs/Cyr - "&enc_name fi;
-  if altcoding:
     spanish_shriek=oct"016"; spanish_query=oct"017";
-  fi
 fi
 
-if altcoding:
    input itall;   % lower case (minuscules)
    input italsp;  % lowercase specials (dotless \i, ligature \ae, etc.)
-fi
 
-input lgcyri;     % Cyrillic lower case (minuscules)
-
-if wncoding: %Part used in WNCYR
-   input lgilig;    % italic dotless i,j
-fi
+altaccent:=true;  % for cyrillic breve
+input lgrusi;     % Cyrillic lower case (minuscules)
 
 font_slant slant; font_x_height x_height#;
+ligtable "!": "`" =: spanish_shriek;
+ligtable "?": "`" =: spanish_query;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
    font_extra_space 9u#;
@@ -39,7 +32,6 @@ else: font_normal_space 6u#+2letter_fit#;
 fi
 
 
-if altcoding:
    input romanu;   % upper case (majuscules)
    input greeku;   % upper case Greek letters
    input itald;           % numerals
@@ -50,29 +42,13 @@ if altcoding:
    if ligs<=1:
       input romsub; % substitutes for ligatures
    fi
-fi
 
-if not vfcoding: % ligs for both altcoding and wncoding (dashes & quotes)
    if ligs>0: input comlig; fi % ligatures common with roman text
-fi
 
-input lgcyru;           % input common shapes
+input lgrusu;           % input common shapes
 input lgcyrsym;           % <<, >>, No
-input lgcyracc;           % Cyrillic accents
-if old_cyr:
-   input lgocyrac; % Cyrillic Old Slav accents & signs
-fi
-
-if wncoding: %Part used in WNCYR
-   input itald;           % numerals
-   input lgpunct;  % excerpts from punct.mf
-   input lgitalp;  % italic question mark
-fi
-
 
 if monospace:
-   if altcoding: input llmligtb; fi % input ligs for quotes
-   if wncoding : input lwnligs;  fi % input ligs for Cyrillic in WNCYR
 else:
    k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
    %
@@ -80,8 +56,8 @@ else:
    %   There are just the same ligs and kerns as in CM
    %   but they are built in more visible form
    %
+   boolean TITLEfont,SmallCapsfont,ROMANfont;
    TITLEfont:=false; SmallCapsfont:=false; ROMANfont:=false;
-   if altcoding:
       ligtable "d": "w": "l":
                     "l" kern +u#;
       ligtable "F": "V":
@@ -142,9 +118,8 @@ else:
       %
       % there are ligature/kern programs for |"f"| in the {\tt italig} file
       % and for |"-"|, |"`"|, and |"'"| in the {\tt comlig} file
-      input llvligtb; % input ligs for quotes
-   fi
-   scantokens("input "&(substring(fonteq-2,fonteq) of param_base)&"liker"); % Cyrillic ligs & kerns
+      ligtable CYR_.frqq: "." kern kk#, "," kern kk#;
+   input lhliker;
 fi
 
 bye.

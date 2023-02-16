@@ -1,15 +1,13 @@
+string enc_name; enc_name:="LCY";
 font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - "&enc_name
  else: "TeX text without f-ligs/Cyr - "&enc_name fi;
-if altcoding:
    spanish_shriek=oct"016"; spanish_query=oct"017";
-fi
 
 input lxpseudo;
 
 mode_setup; font_setup;
 pseudo_setup;    % |pseudo_setup| from ec
 
-if altcoding:
  input romanu;      % upper case (majuscules)
  input greeku;      % upper case greek letters
  input romand;      % numerals
@@ -18,34 +16,21 @@ if altcoding:
  input punct;       % punctuation symbols common to all roman and italic
  input accent;            % accents common to roman and italic text
  input romsub;            % substitutes for ligatures
-fi
 
-if not vfcoding:  % ligs for both altcoding and wncoding (dashes & quotes)
    if ligs>0: input comlig; fi  % ligatures common with italic
-fi
 
-input lgcyru;            % input uppercase shapes
+input lgrusu;            % input uppercase shapes
 input lgcyrsym;            % <<, >>, No
-input lgcyracc;            % Cyrillic accents
-if old_cyr:
-   input lgocyrac; % Cyrillic Old Slav accents & signs
-fi
-
-if wncoding: %Part used in WNCYR
-   input romand;    % numerals
-   input lgpunct;   % excerpts from punct.mf
-   input lgromp;    % roman question mark
-fi
 
 font_slant slant; font_x_height x_height#;
 
 upper.u#:=u#; %save for Cyrillic kerning table
 
+ligtable "!": "`" =: spanish_shriek;
+ligtable "?": "`" =: spanish_query;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
    font_extra_space 9u#;
-   if altcoding: input llmligtb; fi % input ligs for quotes
-   if wncoding:  input lwnligs;  fi % input ligs for Cyrillic in WNCYR
 else: font_normal_space 6u#+2letter_fit#;
    font_normal_stretch 3u#; font_normal_shrink 2u#;
    font_quad 18u#+4letter_fit#;
@@ -56,8 +41,8 @@ else: font_normal_space 6u#+2letter_fit#;
    %   There are just the same ligs and kerns as in CM
    %   but they are built in more visible form
    %
+   boolean TITLEfont,SmallCapsfont,ROMANfont;
    TITLEfont:=false; SmallCapsfont:=true; ROMANfont:=false;
-   if altcoding:
       ligtable "P": "T": "Y":
                     "a" kern kk#,
                     "A" kern kk#;
@@ -108,8 +93,7 @@ else: font_normal_space 6u#+2letter_fit#;
       ligtable "I": "I" kern -k#; %fi % Richard III
       %
       %% ligature programs for |"-"|, |"`"|, and |"'"| are in the {\tt comlig} file
-      input llvligtb;    % input ligs for quotes
-   fi
+      ligtable CYR_.frqq: "." kern kk#, "," kern kk#;
    % uppercase Cyrillic ligs & kerns moved down
 fi
 
@@ -129,7 +113,6 @@ fi
 % now try again with |lower| settings
 font_setup; pseudo_setup; % |pseudo_setup| from ec
 
-if altcoding:
    extra_endchar:=extra_endchar&"charcode:=charcode+code_offset";
    code_offset:=ASCII"a" - ASCII"A";
    input romanu;  % majuscules (in lowercase positions)
@@ -137,14 +120,15 @@ if altcoding:
    input romspu;  % \AE, \OE, \O\ (in positions of \ae, \oe, \o)
    code_offset:=0;
    input cscspu;  % substitutes for the remaining characters of romspl
-fi
 
 is_small_cap:=true;
-input lgcyru;  % Cyrillic majuscules (in lowercase positions)
-
-if wncoding: %Part used in WNCYR
-   input lgcspl;    % FF ligs
-fi
+code_offset:=CYR_.a - CYR_.A;
+%%% fine higher
+% the `higher' values are used while putting accents
+forsuffixes $=u,o,letter_fit,x_height,bar_height,body_height,stem:
+  higher.$.#:=$.#; higher.$:=$;
+endfor
+input lgrusu;  % Cyrillic majuscules (in lowercase positions)
 
 if not monospace:
    k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning
@@ -153,7 +137,6 @@ if not monospace:
    %   There are just the same ligs and kerns as in CM
    %   but they are built in more visible form
    %
-   if altcoding:
       ligtable "p": "t": "y":
                     "a" kern kk#;
       ligtable "f": "v": "w":
@@ -181,11 +164,10 @@ if not monospace:
                     "v" kern kkk#,
                     "w" kern kkk#;
       ligtable "i": "i" kern -k#;  % skiing
-   fi
    %
    u#:=upper.u#;     % restored start u parameter
    k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % repeat three degrees of kerning
-   scantokens("input "&(substring(fonteq-2,fonteq) of param_base)&"liker"); % Cyrillic ligs & kerns
+   input lhliker;
 fi
 
 bye.

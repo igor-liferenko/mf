@@ -1,3 +1,4 @@
+string enc_name; enc_name:="LCY";
 font_coding_scheme:="TeX extended ASCII/Cyr - "&enc_name;
 
 input lxpseudo;
@@ -5,28 +6,20 @@ input lxpseudo;
 mode_setup; font_setup; mono_charic#:=0;
 pseudo_setup;    % |pseudo_setup| from ec
 
-if altcoding:
    input tsetsl;  % special symbols to be slanted
-fi
 slant:=0;      % the remaining characters will not be slanted
 currenttransform:=identity yscaled aspect_ratio scaled granularity;
 
-if altcoding:
    input romanu;  % upper case (majuscules)
    input romanl;  % lower case (minuscules)
    input romand;  % numerals
    input romanp;  % ampersand, question marks, currency sign
    input punct;  % punctuation symbols common to roman and italic text
    input tset;  % remaining special symbols of extended ASCII
-fi
 
-input lgcyru;           % Cyrillic upper case (majuscules)
-input lgcyrl;           % Cyrillic lower case (minuscules)
+input lgrusu;           % Cyrillic upper case (majuscules)
+input lgrusl;           % Cyrillic lower case (minuscules)
 input lgcyrsym;    % << >> ,, No
-input lgcyracc;           % Cyrillic accents
-if old_cyr:
-   input lgocyrac; % Cyrillic Old Slav accents & signs
-fi
 
 font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
@@ -41,8 +34,8 @@ else: font_normal_space 6u#+2letter_fit#;
    % Latin ligs & kerns:
    %   There are just the same ligs and kerns as in CM
    %   but they are built in more visible form
+   boolean TITLEfont,SmallCapsfont,ROMANfont;
    TITLEfont:=false; SmallCapsfont:=false; ROMANfont:=true;
-   if altcoding:
       ligtable "k":
          if serifs: "v": 
                     "a" kern -u#, fi\\
@@ -124,7 +117,6 @@ else: font_normal_space 6u#+2letter_fit#;
                     "W" kern kkk#;
       ligtable "g": "j" kern -k#; % logjam
       ligtable "I": "I" kern -k#; % Richard III
-   fi
-   scantokens("input "&(substring(fonteq-2,fonteq) of param_base)&"liker"); % Cyrillic ligs & kerns
+   input lhliker;
 fi;
 bye.
