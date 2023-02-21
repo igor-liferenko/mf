@@ -5,7 +5,6 @@ Add this `mf' script to PATH:
     #!/bin/sh
     export edit=/tmp/edit.$$
     export screen_size=WIDTHxHEIGHT
-    pkill hello-wayland
     /path/to/mf/plain "$@"
     ret=$?
     /path/to/tex/newline

@@ -31,7 +31,6 @@ else: font_normal_space 6u#+2letter_fit#;
    font_extra_space 2u#;
 fi
 
-
    input romanu;   % upper case (majuscules)
    input greeku;   % upper case Greek letters
    input itald;           % numerals

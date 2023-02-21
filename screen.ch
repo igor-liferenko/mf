@@ -57,6 +57,8 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1; /* initialize the memory */
 
+  system("pkill --parent 1 hello-wayland"); // if you want to keep a screen - do not exit its parent
+
   return true;
 }
 @z
