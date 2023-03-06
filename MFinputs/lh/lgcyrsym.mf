@@ -60,8 +60,6 @@ lft x81=x72r-.25fine; rt x82=x74r+.25fine; y81=y82=.8x_height-3u;
 filldraw stroke z81e--z82e;
 penlabels(1,1',2,3,4,4',5,6,7, 21,22,23, 31',32,33); endchar;
 
-% maybe take << and >> from cmcyr - they are simpler
-
 cmchar "Cyrillic `French Opening Quotes' (looks like <<)";
 cyrchar_twice( % compilation of A.Shen's and ec (polish: pl_cud) quotes
  if not hefty: flqq,10u#,2bar_height#,0 % ec metrics
