@@ -4,7 +4,7 @@ all:
 	tie -c mf.ch mf.w constants.ch screen.ch $(CHF) >/dev/null
 	ctangle mf mf
 	gcc -DINIT mf.c -o inimf -lrt
-	./inimf 'plain; input local; dump' >/dev/null && mv plain.base MFbases/
+	@./inimf 'plain; input local; dump' >/dev/null && mv plain.base MFbases/
 	gcc -DSTAT mf.c -o virmf -lrt
 	@for i in gray.mf black.mf slant?*.mf; do ./plain '\mode=localfont; batchmode; input '$$i \
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
