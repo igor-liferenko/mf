@@ -9,7 +9,7 @@ mode_def proof =
 enddef;
 
 mode_def localfont =
-  pixels_per_inch := 600;
+  pixels_per_inch := 600; % if you change this, change also RESOLUTION
   blacker := .25;
   o_correction := 1;
   fillin := 0;
