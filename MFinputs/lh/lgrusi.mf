@@ -1,3 +1,28 @@
+%
+% lgrusi.mf
+%
+%% Cyrillic font container with T2 encoding beta-support
+%
+% This file is future part of lxfonts package
+% Version 3.5 // Patchlevel=0
+% (c) O.Lapko
+%
+% This package is freeware product under conditions similar to
+% those of D. E. Knuth specified for the Computer Modern family of fonts.
+% In particular, only the authors are entitled to modify this file
+% (and all this package as well) and to save it under the same name.
+%
+% Content:
+%
+% Italic Russian letters from a to ya and yo
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% (there are some letters with common witdh
+% they have comments as: v_width (the witdh of russian letter v)
+% and n_width (russian letter n) at the end of `cyrchar...' line)
+%
+
 cmchar "Italic Russian letter a";
 beginchar(CYR_.a,9u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
@@ -182,6 +207,7 @@ filldraw stroke z9'e{right}...pulled_arc.e(3',8) & pulled_arc.e(8,4)
   ...{direction 1 of p}z5e;  % upper arc
 %%%
 penlabels(0,1,2,3,4,5,7,8,9); endchar;
+
 
 cmchar "Italic Russian letter i (looks like u)";
 beginchar(CYR_.i,10u#,x_height#,0);
@@ -373,7 +399,7 @@ filldraw stroke z4e{down}..{-u,-x_height}z5e;  % right stem
 penlabels(0,a,1,2,3,4,5,6,7); endchar;
 
 cmchar "Italic Russian letter r (looks like p)";
-beginchar(CYR_.r,if monospace:9u# else:9.25u# fi,x_height#,desc_depth#);
+beginchar(CYR_.r,if monospace:9u# else:9.25u# fi,x_height#,desc_depth#); % !rusw
 italcorr .7x_height#*slant+.5curve#-u# if math_fitting:-.5u# fi; %p
 adjust_fit(0,if monospace:0 else:-.35u#fi);
 % ital_r;
@@ -433,7 +459,7 @@ filldraw stroke z7e{down}..{-u,-x_height}z8e;  % right stem
 penlabels(0,a,1,2,3,4,5,6,7,8,9); endchar;
 
 cmchar "Italic Russian letter u (looks like y)";
-beginchar(CYR_.u,if monospace:8.5u# else:9u# fi,x_height#,desc_depth#);
+beginchar(CYR_.u,if monospace:8.5u# else:9u# fi,x_height#,desc_depth#); % !rusw
 italcorr x_height#*slant+.5stem#-u#; %y
 adjust_fit(0,0);
 % ital_u;
@@ -495,7 +521,7 @@ penlabels(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
 endchar;
 
 cmchar "Italic Russian letter h - kha (looks like x)";
-beginchar(CYR_.h,if monospace:6.5u# else:7.5u# fi+max(1.5u#,flare#),
+beginchar(CYR_.h,if monospace:6.5u# else:7.5u# fi+max(1.5u#,flare#), % !rusw
  x_height#,0);
 italcorr max(1/3x_height#*slant+.5hair#+.5u#,x_height#*slant+.25u#); %x
 adjust_fit(if monospace: 0,0 else: 0.25u#,0.25u# fi);
@@ -805,3 +831,6 @@ filldraw stroke z0e{right}...z1e{up}...pulled_arc.e(2,3)
 %the accent
 h:=x_height+acc_height; lowercase_umlaut(0,0,71,72,73,74); %2
 penlabels(0,1,2,3,4,5,6); endchar;
+
+endinput;
+%end of file

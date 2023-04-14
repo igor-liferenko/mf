@@ -1,22 +1,41 @@
-cd lhfnt35g-source/texmf/source/fonts/lh/tex
-sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */;s/( a/( d/;s/( f0/( a1/' enc-t2.tex
-tex 01cm-lh
-cp wrk/lh-lcy/lhcodes.mf /path/to/mf/MFinputs/lh/
-sed -e '0,/^$/{//{s//\nboolean altcoding,kapitel,concrete;\naltcoding:=true; kapitel:=false; concrete:=false;/;e grep -v ^endinput ../../../../fonts/source/lh/base/lkligtbl.mf' -e '}}' wrk/lh-lcy/lhliker.mf | sed '/LHver_check/{N;d}' >/path/to/mf/MFinputs/lh/lhliker.mf
-
-cd lhfnt35g-source/texmf/fonts/source/lh/base
-cp ldroman.mf ldtextit.mf ldcsc.mf ldtexset.mf lgrus* lgcyrsym.mf lcyrdefs.mf lcyrbeg.mf lxpseudo.mf /path/to/mf/MFinputs/lh
-
-cd /path/to/mf/MFinputs/lh
+# Run the following commands to create in /tmp/lh the same files as in this directory:
+cd /tmp; rm -fr lh; mkdir lh
+wget http://mirrors.ctan.org/fonts/cyrillic/lh/lhfnt35g-source.zip
+unzip -j -d lh/tex lhfnt35g-source.zip \*lh/tex/\* -x \*00readme >/dev/null
+unzip -j -d lh/base lhfnt35g-source.zip \*base/\* >/dev/null
+cd lh/tex; mkdir -p wrk/lh-lcy 
+sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */' enc-t2.tex # not used
+sed -i 's/( a/( d/;s/( f0/( a1/'                      enc-t2.tex # for code_offset to work
+sed -i 's/\(SliTeX\|Concrete\|CMBright\)true/\1false/' setter.tex # no garbage in wrk/lh-lcy/
+tex 01cm-lh >/dev/null
+mv wrk/lh-lcy/* ..; cd ../base
+mv ldroman.mf ldtextit.mf ldcsc.mf ldtexset.mf lgrus* lcyrdefs.mf lcyrbeg.mf lxpseudo.mf ..
+sed '/symbol No/,/endchar/!d'                     lgcyrsym.mf  >../lgcyrsym.mf # select №
+sed '/French Opening/,/endchar/!d;/French/e echo' lgcyrsym.mf >>../lgcyrsym.mf # select «
+sed '/French closing/,/endchar/!d;/French/e echo' lgcyrsym.mf >>../lgcyrsym.mf # select »
+sed -i '1e grep -v ^endinput lkligtbl.mf' ../lhliker.mf # merge
+cd ..; rm -r tex base
+sed -i '/% This is lhliker.mf/i\
+boolean altcoding,kapitel,concrete;\
+altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                     # from fikparm.mf
+sed -i '1i ebbase:=0;\n' lcyrbeg.mf                                               # from fikparm.mf
+sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf                      # from fikparm.mf
+sed -i 's/\(.*\)TITLEfont.*/\1boolean TITLEfont,SmallCapsfont,ROMANfont;\n&/' ld* # from fikparm.mf
+sed -i 's/&enc_name//'                                                        ld* # from fikparm.mf
+sed -i '/LHver_check/{N;d}' *                                                     # from fikparm.mf
+sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
+sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
+sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
+sed -i 's/Cyr - /&Unknown/'                                         ld* # font_coding_scheme
+sed -i 's/lgcyrl/lgrusl/'                                           ld* # equivalent
+sed -i 's/\S*input.*liker.*/input lhliker;/'                        ld* # equivalent
+sed -i '/llmligtb/d
+s/input llvligtb.*/ligtable CYR_.frqq: "." kern kk#, "," kern kk#;/
+/font_slant/a ligtable "!": "`" =: spanish_shriek;\
+ligtable "?": "`" =: spanish_query;'                                ld* # equivalent
+sed -i '/input lgcyracc/d'                                          ld* # not used
+sed -i '/input lwnligs/d'                                           ld* # not used
+perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                              ld* # squeeze blank lines
+sed -i '0,/^[^%]/{//!d}'                                            ld* # delete comments
+echo Edit manually:                                                 ld*
 sed -i 's/\t/        /g' *
-sed -i '1i ebbase:=0;\n' lcyrbeg.mf
-sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf
-sed -i '/LHver_check/{N;d}' lcyrbeg.mf lcyrdefs.mf lxpseudo.mf
-sed -i '0,/LHver_check/d;/./,$!d' ld*
-sed -i '0,/lhchar/{//!d};:x;N;$!bx;s/\(.*endchar;\).*/\1/' lgrus*
-sed -i -n '/Cyrillic symbol No/,/endchar/{/lhchar/s/ %.*//;p};/French Opening Quotes/,/endchar/{/lhchar/s/^/\n/;p};/French closing quotes/,/endchar/{/lhchar/s/^/\n/;p}' lgcyrsym.mf
-sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./;s/ $//' lg*
-sed -i '/if is_small_cap: getcharcode/d;/if.* \(concrete\|specific\|kapitel\):/d' lgrus*
-sed -i '/beginchar/s/ %[^%]*$//' lgrus*
-{ rm lgrusi.mf; cat -s >lgrusi.mf; } <lgrusi.mf
-Now edit drivers manually
