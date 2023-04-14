@@ -1,8 +1,7 @@
-string enc_name; enc_name:="LCY";
-if ligs>1: font_coding_scheme:="TeX text/Cyr - "&enc_name;
+if ligs>1: font_coding_scheme:="TeX text/Cyr - Unknown";
     spanish_shriek=oct"074"; spanish_query=oct"076";
-else: font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - "&enc_name
-  else: "TeX text without f-ligs/Cyr - "&enc_name fi;
+else: font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - Unknown"
+  else: "TeX text without f-ligs/Cyr - Unknown" fi;
     spanish_shriek=oct"016"; spanish_query=oct"017";
 fi
 

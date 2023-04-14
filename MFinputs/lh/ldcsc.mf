@@ -1,6 +1,5 @@
-string enc_name; enc_name:="LCY";
-font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - "&enc_name
- else: "TeX text without f-ligs/Cyr - "&enc_name fi;
+font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - Unknown"
+ else: "TeX text without f-ligs/Cyr - Unknown" fi;
    spanish_shriek=oct"016"; spanish_query=oct"017";
 
 input lxpseudo;
@@ -23,11 +22,11 @@ input lgrusu;            % input uppercase shapes
 input lgcyrsym;            % <<, >>, No
 
 font_slant slant; font_x_height x_height#;
+ligtable "!": "`" =: spanish_shriek;
+ligtable "?": "`" =: spanish_query;
 
 upper.u#:=u#; %save for Cyrillic kerning table
 
-ligtable "!": "`" =: spanish_shriek;
-ligtable "?": "`" =: spanish_query;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
    font_extra_space 9u#;

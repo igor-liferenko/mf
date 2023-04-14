@@ -1,5 +1,4 @@
-string enc_name; enc_name:="LCY";
-font_coding_scheme:="TeX extended ASCII/Cyr - "&enc_name;
+font_coding_scheme:="TeX extended ASCII/Cyr - Unknown";
 
 input lxpseudo;
 
