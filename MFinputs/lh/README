@@ -22,20 +22,22 @@ sed -i '1i ebbase:=0;\n' lcyrbeg.mf                                             
 sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf                      # from fikparm.mf
 sed -i 's/\(.*\)TITLEfont.*/\1boolean TITLEfont,SmallCapsfont,ROMANfont;\n&/' ld* # from fikparm.mf
 sed -i 's/&enc_name//'                                                        ld* # from fikparm.mf
-sed -i '/LHver_check/{N;d}' *                                                     # from fikparm.mf
+sed -i '/LHver_check/d' *                                                         # from fikparm.mf
 sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
 sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
-sed -i 's/Cyr - /&Unknown/'                                         ld* # font_coding_scheme
-sed -i 's/lgcyrl/lgrusl/'                                           ld* # equivalent
-sed -i 's/\S*input.*liker.*/input lhliker;/'                        ld* # equivalent
-sed -i '/llmligtb/d
-s/input llvligtb.*/ligtable CYR_.frqq: "." kern kk#, "," kern kk#;/
-/font_slant/a ligtable "!": "`" =: spanish_shriek;\
-ligtable "?": "`" =: spanish_query;'                                ld* # equivalent
-sed -i '/input lgcyracc/d'                                          ld* # not used
-sed -i '/input lwnligs/d'                                           ld* # not used
-perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                              ld* # squeeze blank lines
-sed -i '0,/^[^%]/{//!d}'                                            ld* # delete comments
-echo Edit manually:                                                 ld*
+sed -i '/spanish/,/^$/{/^$/a\
+ligtable "!": "`" =: spanish_shriek;\
+ligtable "?": "`" =: spanish_query;\n
+}
+/input llmligtb/d
+s/input llvligtb.*/ligtable CYR_.frqq: "." kern kk#, "," kern kk#;/' ld* # equivalent
+sed -i 's/Cyr - /&Unknown/'                                          ld* # font_coding_scheme
+sed -i 's/input lgcyrl/input lgrusl/'                                ld* # equivalent
+sed -i 's/\S*input.*liker.*/input lhliker;/'                         ld* # equivalent
+sed -i '/input lgcyracc/d'                                           ld* # not used
+sed -i '/input lwnligs/d'                                            ld* # not used
+perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                               ld* # squeeze blank lines
+sed -i '0,/^[^%]/{//!d}'                                             ld* # delete comments
+echo Edit manually:                                                  ld*
 sed -i 's/\t/        /g' *
