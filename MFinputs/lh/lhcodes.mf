@@ -1,4 +1,4 @@
-% This is lhcodes.mf in text format as of 2023/14/4
+% This is lhcodes.mf in text format
 % created by LHfonts (TeX4MF) version 3.5
 %
 %

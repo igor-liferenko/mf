@@ -24,6 +24,7 @@
 %
 
 
+
 cmchar "Lowercase Russian letter a";
 beginchar(CYR_.a,9u#,x_height#,0);
 bh#:=min(bar_height#,1.14x_height#-bar_height#); define_pixels(bh);

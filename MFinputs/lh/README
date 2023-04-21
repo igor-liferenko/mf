@@ -8,6 +8,7 @@ sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */' enc-t2.tex # not used
 sed -i 's/( a/( d/;s/( f0/( a1/'                      enc-t2.tex # for code_offset to work
 sed -i 's/\(SliTeX\|Concrete\|CMBright\)true/\1false/' setter.tex # no garbage in wrk/lh-lcy/
 tex 01cm-lh >/dev/null
+sed -i 's/ as of .*//' wrk/lh-lcy/* # delete date
 mv wrk/lh-lcy/* ..; cd ../base
 mv ldroman.mf ldtextit.mf ldcsc.mf ldtexset.mf lgrus* lcyrdefs.mf lcyrbeg.mf lxpseudo.mf ..
 sed '/symbol No/,/endchar/!d'                     lgcyrsym.mf  >../lgcyrsym.mf # select №

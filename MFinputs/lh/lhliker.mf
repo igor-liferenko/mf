@@ -18,6 +18,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
 if known loaded_lgligtbl: endinput; fi
 loaded_lgligtbl:=1; % if known this file has been loaded
 
@@ -135,7 +136,7 @@ enddef;
 % end-of-file
 boolean altcoding,kapitel,concrete;
 altcoding:=true; kapitel:=false; concrete:=false;
-% This is lhliker.mf in text format as of 2023/14/4
+% This is lhliker.mf in text format
 % created by LHfonts (TeX4MF) version 3.5
 %
 %

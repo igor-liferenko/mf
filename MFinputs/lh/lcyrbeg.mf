@@ -28,6 +28,7 @@ ebbase:=0;
 %  ** macros for accenting moved in file lcyrdefs.mf
 %
 
+
 if unknown slitex:
    boolean slitex; slitex := false; fi % |true| simulates behaviour of |sroman|
 if unknown one_serif:

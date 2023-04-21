@@ -23,6 +23,7 @@
 % and n_width (russian letter n) at the end of `cyrchar...' line)
 %
 
+
 cmchar "Italic Russian letter a";
 beginchar(CYR_.a,9u#,x_height#,0);
 italcorr 1/3x_height#*slant+.5hair#+.5u#;
