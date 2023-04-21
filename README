@@ -16,3 +16,10 @@ Adjust path.ch and search.ch
 
 Use either hello-wayland or http://github.com/igor-liferenko/mf-wayland
 (set path to hello-wayland in screen.ch)
+
+-------------------------------
+
+Contents of online display remain available after MF exits.
+When subsequent run of MF uses online display, the contents are replaced.
+If you want to prevent contents of online display produced by some run(s) from being replaced,
+do not exit the respective MF instance(s).
