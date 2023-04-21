@@ -1,6 +1,9 @@
 # Run the following commands to create in /tmp/lh the same files as in this directory:
+if ! [ -e /tmp/lhfnt35g-source.zip ]; then
+  echo Download to /tmp http://mirrors.ctan.org/fonts/cyrillic/lh/lhfnt35g-source.zip
+  exit
+fi
 cd /tmp; rm -fr lh; mkdir lh
-wget --quiet http://mirrors.ctan.org/fonts/cyrillic/lh/lhfnt35g-source.zip || echo FAIL
 unzip -j -d lh/tex lhfnt35g-source.zip \*lh/tex/\* -x \*00readme >/dev/null
 unzip -j -d lh/base lhfnt35g-source.zip \*base/\* >/dev/null
 cd lh/tex; mkdir -p wrk/lh-lcy 
