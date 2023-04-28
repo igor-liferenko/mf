@@ -21,12 +21,12 @@ sed -i '1e grep -v ^endinput lkligtbl.mf' ../lhliker.mf # merge
 cd ..; rm -r tex base
 sed -i '/% This is lhliker.mf/i\
 boolean altcoding,kapitel,concrete;\
-altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                     # from fikparm.mf
-sed -i '1i ebbase:=0;\n' lcyrbeg.mf                                               # from fikparm.mf
-sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf                      # from fikparm.mf
-sed -i 's/\(.*\)TITLEfont.*/\1boolean TITLEfont,SmallCapsfont,ROMANfont;\n&/' ld* # from fikparm.mf
-sed -i 's/&enc_name//'                                                        ld* # from fikparm.mf
-sed -i '/LHver_check/d' *                                                         # from fikparm.mf
+altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                # from fikparm.mf
+sed -i '1i ebbase:=0;\n' lcyrbeg.mf                                          # from fikparm.mf
+sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf                 # from fikparm.mf
+sed -i 's/TITLEfont.*/boolean TITLEfont,SmallCapsfont,ROMANfont;\n   &/' ld* # from fikparm.mf
+sed -i 's/&enc_name//'                                                   ld* # from fikparm.mf
+sed -i '/LHver_check/d' *                                                    # from fikparm.mf
 sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
 sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
@@ -42,6 +42,6 @@ sed -i 's/\S*input.*liker.*/input lhliker;/'                         ld* # equiv
 sed -i '/input lgcyracc/d'                                           ld* # not used
 sed -i '/input lwnligs/d'                                            ld* # not used
 perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                               ld* # squeeze blank lines
-sed -i '0,/^[^%]/{//!d}'                                             ld* # delete comments
+sed -i '0,/^[^%]/{//!d}'                    ld* # delete until first non-comment and non-empty line
 echo Edit manually:                                                  ld*
 sed -i 's/\t/        /g' *
