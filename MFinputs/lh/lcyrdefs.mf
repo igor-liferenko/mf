@@ -1,5 +1,4 @@
 boolean roman_ec; roman_ec:=false;
-
 %
 % lcyrdefs.mf
 %

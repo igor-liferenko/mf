@@ -1,5 +1,4 @@
 ebbase:=0;
-
 %
 % lcyrbeg.mf
 %

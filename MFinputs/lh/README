@@ -22,8 +22,8 @@ cd ..; rm -r tex base
 sed -i '/% This is lhliker.mf/i\
 boolean altcoding,kapitel,concrete;\
 altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                # from fikparm.mf
-sed -i '1i ebbase:=0;\n' lcyrbeg.mf                                          # from fikparm.mf
-sed -i '1i boolean roman_ec; roman_ec:=false;\n' lcyrdefs.mf                 # from fikparm.mf
+sed -i '1i ebbase:=0;' lcyrbeg.mf                                            # from fikparm.mf
+sed -i '1i boolean roman_ec; roman_ec:=false;' lcyrdefs.mf                   # from fikparm.mf
 sed -i 's/TITLEfont.*/boolean TITLEfont,SmallCapsfont,ROMANfont;\n   &/' ld* # from fikparm.mf
 sed -i 's/&enc_name//'                                                   ld* # from fikparm.mf
 sed -i '/LHver_check/d' *                                                    # from fikparm.mf
