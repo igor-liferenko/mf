@@ -1,3 +1,33 @@
+%
+% ldroman.mf
+%
+%% Cyrillic font container with T2 encoding beta-support
+%
+% This file is future part of lxfonts package
+% Version 3.5 // Patchlevel=0
+% (c) O.Lapko
+%
+% This package is freeware product under conditions similar to
+% those of D. E. Knuth specified for the Computer Modern family of fonts.
+% In particular, only the authors are entitled to modify this file
+% (and all this package as well) and to save it under the same name.
+%
+% Content:
+%
+% Driver file for Roman and Sans Serif fonts
+% - modified ROMAN.MF in Computer Modern fonts
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% There are also added SliTeX emulation:
+% It differs from ldroman.mf (roman.mf) only in that it has been
+% adjusted to call for sromanu.mf with a special uppercase I
+% for the SLITeX fonts: lcmss8, lcmssb8, and lcmssi8.
+% Written by Pierre A. MacKay, 16 Sept. 1986
+% &
+% There also used special letters UKR_I LAT_I etc in Cyrillic glyphs
+%
+
 if ligs>1: font_coding_scheme:="TeX text/Cyr - Unknown";
     spanish_shriek=oct"074"; spanish_query=oct"076";
 else: font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - Unknown"

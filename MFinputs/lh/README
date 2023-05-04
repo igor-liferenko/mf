@@ -42,6 +42,5 @@ sed -i 's/\S*input.*liker.*/input lhliker;/'                         ld* # equiv
 sed -i '/input lgcyracc/d'                                           ld* # not used
 sed -i '/input lwnligs/d'                                            ld* # not used
 perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                               ld* # squeeze blank lines
-sed -i '0,/^[^%]/{//!d}'                    ld* # delete until first non-comment and non-empty line
 echo Edit manually:                                                  ld*
 sed -i 's/\t/        /g' *
