@@ -36,7 +36,7 @@ ligtable "?": "`" =: spanish_query;\n
 }
 /input llmligtb/d
 s/input llvligtb.*/ligtable CYR_.frqq: "." kern kk#, "," kern kk#;/' ld* # equivalent
-sed -i 's/Cyr - /&Unknown/'                                          ld* # enc_name
+sed -i 's/Cyr - /Local/'                                             ld* # font_coding_scheme
 sed -i 's/input lgcyrl/input lgrusl/'                                ld* # equivalent
 sed -i 's/\S*input.*liker.*/input lhliker;/'                         ld* # equivalent
 sed -i '/input lgcyracc/d'                                           ld* # not used
