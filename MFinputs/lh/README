@@ -25,7 +25,7 @@ altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                # f
 sed -i '1i ebbase:=0;' lcyrbeg.mf                                            # from fikparm.mf
 sed -i '1i boolean roman_ec; roman_ec:=false;' lcyrdefs.mf                   # from fikparm.mf
 sed -i 's/TITLEfont.*/boolean TITLEfont,SmallCapsfont,ROMANfont;\n   &/' ld* # from fikparm.mf
-sed -i 's/&enc_name//'                                                   ld* # from fikparm.mf
+sed -i 's/.Cyr - "&enc_name/"/'                                          ld* # from fikparm.mf
 sed -i '/LHver_check/d' *                                                    # from fikparm.mf
 sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
@@ -37,7 +37,6 @@ ligtable "?": "`" =: spanish_query;\n
 /input llmligtb/d
 /input llvligtb/c\
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;' ld* # equivalent
-sed -i 's/Cyr - /Local/'                               ld* # font_coding_scheme
 sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/\S*input.*liker.*/input lhliker;/'           ld* # equivalent
 sed -i '/input lgcyracc/d'                             ld* # not used
