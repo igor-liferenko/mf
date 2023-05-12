@@ -1,34 +1,13 @@
-%
-% ldtextit.mf
-%
-%% Cyrillic font container with T2 encoding beta-support
-%
-% This file is future part of lxfonts package
-% Version 3.5 // Patchlevel=0
-% (c) O.Lapko
-%
-% This package is freeware product under conditions similar to
-% those of D. E. Knuth specified for the Computer Modern family of fonts.
-% In particular, only the authors are entitled to modify this file
-% (and all this package as well) and to save it under the same name.
-%
-% Content:
-%
-% Driver file for Text Italic fonts
-% - modified TEXTIT.MF in Computer Modern fonts
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 input lxpseudo;
 
 mode_setup; font_setup;
 pseudo_setup;    % |pseudo_setup| from ec
 
-if ligs>1: font_coding_scheme:="TeX text/Cyr - Unknown";
+if ligs>1: font_coding_scheme:="TeX text";
     spanish_shriek=oct"074"; spanish_query=oct"076";
     input italig;  % letter ligatures
-else: font_coding_scheme:=if ligs=0: "TeX typewriter text/Cyr - Unknown"
-  else: "TeX text without f-ligs/Cyr - Unknown" fi;
+else: font_coding_scheme:=if ligs=0: "TeX typewriter text"
+  else: "TeX text without f-ligs" fi;
     spanish_shriek=oct"016"; spanish_query=oct"017";
 fi
 
