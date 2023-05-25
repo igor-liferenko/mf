@@ -36,7 +36,7 @@ ligtable "?": "`" =: spanish_query;\n
 }
 /input llmligtb/d
 /input llvligtb/c\
-      ligtable CYR_.frqq: "." kern kk#, "," kern kk#;' ld* # equivalent
+      ligtable CYR_.frqq: "." kern kk#, "," kern kk#;' ld* # equivalent, except << >> ligs
 sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/\S*input.*liker.*/input lhliker;/'           ld* # equivalent
 sed -i '/input lgcyracc/d'                             ld* # not used
