@@ -5,9 +5,6 @@ else: font_coding_scheme:=if ligs=0: "TeX typewriter text"
     spanish_shriek=oct"016"; spanish_query=oct"017";
 fi
 
-ligtable "!": "`" =: spanish_shriek;
-ligtable "?": "`" =: spanish_query;
-
 input lxpseudo;
 
 mode_setup; font_setup;
@@ -35,6 +32,8 @@ font_slant slant; font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
    font_extra_space 9u#;
+   ligtable "!": "`" =: spanish_shriek;
+   ligtable "?": "`" =: spanish_query;
 else: font_normal_space 6u#+2letter_fit#;
    font_normal_stretch 3u#; font_normal_shrink 2u#;
    font_quad 18u#+4letter_fit#;
@@ -130,6 +129,8 @@ else: font_normal_space 6u#+2letter_fit#;
       %
       % there are ligature/kern programs for |"f"| in the {\tt romlig} file
       % and for |"-"|, |"`"|, and |"'"| in the {\tt comlig} file
+      ligtable "!": "`" =: spanish_shriek;
+      ligtable "?": "`" =: spanish_query;
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;
    input lhliker;
 fi

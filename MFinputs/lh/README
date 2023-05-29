@@ -31,8 +31,8 @@ sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
 sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
 sed -i '/input llmligtb/c\
-ligtable "!": "`" =: spanish_shriek;\
-ligtable "?": "`" =: spanish_query;
+   ligtable "!": "`" =: spanish_shriek;\
+   ligtable "?": "`" =: spanish_query;
 /input llvligtb/c\
       ligtable "!": "`" =: spanish_shriek;\
       ligtable "?": "`" =: spanish_query;\
@@ -41,6 +41,9 @@ sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/\S*input.*liker.*/input lhliker;/'           ld* # equivalent
 sed -i '/input lgcyracc/d'                             ld* # not used
 sed -i '/input lwnligs/d'                              ld* # not used
+sed -i '/^if not vfcoding/,/^fi/{//d}'                 ld* # not used
+sed -i '/^if wncoding/,/fi/d'                          ld* # not used
+sed -i '/^if old_cyr/,/fi/d'                           ld* # not used
 perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                 ld* # squeeze blank lines
 sed -i '0,/^[^%]/{//!d}'                               ld* # no comments until first non-empty line
 echo Edit manually:                                    ld*

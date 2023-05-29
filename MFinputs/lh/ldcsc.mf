@@ -2,9 +2,6 @@ font_coding_scheme:=if ligs=0: "TeX typewriter text"
  else: "TeX text without f-ligs" fi;
    spanish_shriek=oct"016"; spanish_query=oct"017";
 
-ligtable "!": "`" =: spanish_shriek;
-ligtable "?": "`" =: spanish_query;
-
 input lxpseudo;
 
 mode_setup; font_setup;
@@ -31,6 +28,8 @@ upper.u#:=u#; %save for Cyrillic kerning table
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
    font_extra_space 9u#;
+   ligtable "!": "`" =: spanish_shriek;
+   ligtable "?": "`" =: spanish_query;
 else: font_normal_space 6u#+2letter_fit#;
    font_normal_stretch 3u#; font_normal_shrink 2u#;
    font_quad 18u#+4letter_fit#;
@@ -93,6 +92,8 @@ else: font_normal_space 6u#+2letter_fit#;
       ligtable "I": "I" kern -k#; %fi % Richard III
       %
       %% ligature programs for |"-"|, |"`"|, and |"'"| are in the {\tt comlig} file
+      ligtable "!": "`" =: spanish_shriek;
+      ligtable "?": "`" =: spanish_query;
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;
    % uppercase Cyrillic ligs & kerns moved down
 fi
