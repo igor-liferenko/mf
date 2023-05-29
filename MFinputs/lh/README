@@ -30,12 +30,12 @@ sed -i '/LHver_check/d' *                                                    # f
 sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
 sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
-sed -i '/spanish/,/^$/{/^$/a\
+sed -i '/input llmligtb/c\
 ligtable "!": "`" =: spanish_shriek;\
-ligtable "?": "`" =: spanish_query;\n
-}
-/input llmligtb/d
+ligtable "?": "`" =: spanish_query;
 /input llvligtb/c\
+      ligtable "!": "`" =: spanish_shriek;\
+      ligtable "?": "`" =: spanish_query;\
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;' ld* # equivalent, except << >> ligs
 sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/\S*input.*liker.*/input lhliker;/'           ld* # equivalent
