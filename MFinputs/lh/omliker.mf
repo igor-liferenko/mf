@@ -136,12 +136,6 @@ enddef;
 % end-of-file
 boolean altcoding,kapitel,concrete;
 altcoding:=true; kapitel:=false; concrete:=false;
-% This is lhliker.mf in text format
-% created by LHfonts (TeX4MF) version 3.5
-%
-%
-
-
 beginligtable
    labelchar (
           CYR_.HRDSN

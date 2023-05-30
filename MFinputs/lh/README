@@ -7,26 +7,27 @@ cd /tmp; rm -fr lh; mkdir lh
 unzip -j -d lh/tex lhfnt35g-source.zip \*lh/tex/\* -x \*00readme >/dev/null
 unzip -j -d lh/base lhfnt35g-source.zip \*base/\* >/dev/null
 cd lh/tex; mkdir -p wrk/lh-lcy 
-sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */' enc-t2.tex # not used
-sed -i 's/( a/( d/;s/( f0/( a1/'                      enc-t2.tex # for code_offset to work
+sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */' enc-t2.tex # not used (lh -> om)
+sed -i 's/( a/( d/;s/( f0/( a1/'              enc-t2.tex # for code_offset to work (lh -> om)
 sed -i 's/\(SliTeX\|Concrete\|CMBright\)true/\1false/' setter.tex # no garbage in wrk/lh-lcy/
 tex 01cm-lh >/dev/null
-sed -i 's/ as of .*//' wrk/lh-lcy/* # delete date
-mv wrk/lh-lcy/* ..; cd ../base
+sed -i '0,/^[^%]/{//!d}' wrk/lh-lcy/* # no comments until first non-empty line
+mv wrk/lh-lcy/lhcodes.mf ../omcodes.mf; mv wrk/lh-lcy/lhliker.mf ../omliker.mf; cd ../base
 mv ldroman.mf ldtextit.mf ldcsc.mf ldtexset.mf lgrus* lcyrdefs.mf lcyrbeg.mf lxpseudo.mf ..
 sed '/symbol No/,/endchar/!d'                     lgcyrsym.mf  >../lgcyrsym.mf # select №
 sed '/French Opening/,/endchar/!d;/French/e echo' lgcyrsym.mf >>../lgcyrsym.mf # select «
 sed '/French closing/,/endchar/!d;/French/e echo' lgcyrsym.mf >>../lgcyrsym.mf # select »
-sed -i '1e grep -v ^endinput lkligtbl.mf' ../lhliker.mf # merge
+sed -i '1e grep -v ^endinput lkligtbl.mf' ../omliker.mf # merge
 cd ..; rm -r tex base
-sed -i '/% This is lhliker.mf/i\
+sed -i '/end-of-file/a\
 boolean altcoding,kapitel,concrete;\
-altcoding:=true; kapitel:=false; concrete:=false;' lhliker.mf                # from fikparm.mf
-sed -i '1i ebbase:=0;' lcyrbeg.mf                                            # from fikparm.mf
-sed -i '1i boolean roman_ec; roman_ec:=false;' lcyrdefs.mf                   # from fikparm.mf
-sed -i 's/TITLEfont.*/boolean TITLEfont,SmallCapsfont,ROMANfont;\n   &/' ld* # from fikparm.mf
-sed -i 's/.Cyr - "&enc_name/"/'                                          ld* # from fikparm.mf
-sed -i '/LHver_check/d' *                                                    # from fikparm.mf
+altcoding:=true; kapitel:=false; concrete:=false;' omliker.mf # from fikparm.mf
+sed -i '1i ebbase:=0;' lcyrbeg.mf                             # from fikparm.mf
+sed -i '1i boolean roman_ec; roman_ec:=false;' lcyrdefs.mf    # from fikparm.mf
+sed -i '/TITLEfont/i\
+   boolean TITLEfont,SmallCapsfont,ROMANfont;'            ld* # from fikparm.mf
+sed -i 's/.Cyr - "&enc_name/"/'                           ld* # from fikparm.mf
+sed -i '/LHver_check/d' *                                     # from fikparm.mf
 sed -i 's/lhchar/cmchar/;s/cyrchar(/beginchar(CYR_./' lg* # equivalent 
 sed -i '/if.* \(concrete\|specific\|kapitel\):/d'     lg* # not used
 sed -i '/if is_small_cap: getcharcode/d'              lg* # code_offset is used
@@ -37,7 +38,8 @@ sed -i '/input llmligtb/c\
       ligtable "!": "`" =: spanish_shriek;\
       ligtable "?": "`" =: spanish_query;\
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;' ld* # equivalent, except << >> ligs
-sed -i 's/\S*input.*liker.*/input lhliker;/'           ld* # equivalent
+sed -i '/input.*liker/c\
+   input omliker;'                                     ld* # equivalent
 sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/input lgcyru/input lgrusu/'                  ld[rt]* # equivalent
 sed -i '/input lgcyracc/d'                             ld* # not used
@@ -53,5 +55,5 @@ sed -i '/^if altcoding/,/^fi/{//d}
 /^   if altcoding/,/^   fi/{//d}'                      ld* # used
 perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                 ld* # squeeze blank lines
 sed -i '0,/^[^%]/{//!d}'                               ld* # no comments until first non-empty line
-echo Edit manually:                                    ld*
+echo Edit manually:                                    ld????[im]*
 sed -i 's/\t/        /g' *

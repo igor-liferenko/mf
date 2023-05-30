@@ -168,7 +168,7 @@ if not monospace:
    %
    u#:=upper.u#;     % restored start u parameter
    k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % repeat three degrees of kerning
-   input lhliker;
+   input omliker;
 fi
 
 bye.

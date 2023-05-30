@@ -132,7 +132,7 @@ else: font_normal_space 6u#+2letter_fit#;
       ligtable "!": "`" =: spanish_shriek;
       ligtable "?": "`" =: spanish_query;
       ligtable CYR_.frqq: "." kern kk#, "," kern kk#;
-   input lhliker;
+   input omliker;
 fi
 
 bye.

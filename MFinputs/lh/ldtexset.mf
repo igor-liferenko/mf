@@ -116,6 +116,6 @@ else: font_normal_space 6u#+2letter_fit#;
                     "W" kern kkk#;
       ligtable "g": "j" kern -k#; % logjam
       ligtable "I": "I" kern -k#; % Richard III
-   input lhliker;
+   input omliker;
 fi;
 bye.
