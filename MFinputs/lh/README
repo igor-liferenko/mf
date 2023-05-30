@@ -8,7 +8,7 @@ unzip -j -d lh/tex lhfnt35g-source.zip \*lh/tex/\* -x \*00readme >/dev/null
 unzip -j -d lh/base lhfnt35g-source.zip \*base/\* >/dev/null
 cd lh/tex; mkdir -p wrk/lh-lcy 
 sed -i 's/( [^89aef][0-9a-f]/( */;s/( f[^01cde]/( */' enc-t2.tex # not used (lh -> om)
-sed -i 's/( a/( d/;s/( f0/( a1/'              enc-t2.tex # for code_offset to work (lh -> om)
+sed -i 's/( a/( d/;s/( f0/( a1/'                    enc-t2.tex # for code_offset to work (lh -> om)
 sed -i 's/\(SliTeX\|Concrete\|CMBright\)true/\1false/' setter.tex # no garbage in wrk/lh-lcy/
 tex 01cm-lh >/dev/null
 sed -i '0,/^[^%]/{//!d}' wrk/lh-lcy/* # no comments until first non-empty line
