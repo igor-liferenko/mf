@@ -21,6 +21,7 @@ pseudo_setup;    % |pseudo_setup| from ec
 input lgrusu;            % input uppercase shapes
 input lgcyrsym;            % <<, >>, No
 
+
 font_slant slant; font_x_height x_height#;
 
 upper.u#:=u#; %save for Cyrillic kerning table
@@ -130,6 +131,7 @@ forsuffixes $=u,o,letter_fit,x_height,bar_height,body_height,stem:
   higher.$.#:=$.#; higher.$:=$;
 endfor
 input lgrusu;  % Cyrillic majuscules (in lowercase positions)
+
 
 if not monospace:
    k#:=-.5u#; kk#:=-1.5u#; kkk#:=-2u#; % three degrees of kerning

@@ -42,6 +42,7 @@ sed -i '/input.*liker/c\
    input omliker;'                                     ld* # equivalent
 sed -i 's/input lgcyrl/input lgrusl/'                  ld* # equivalent
 sed -i 's/input lgcyru/input lgrusu/'                  ld[rt]* # equivalent
+sed -i '0,/input lgcyru/s//input lgrusu/'              ldcsc.mf # equivalent
 sed -i '/input lgcyracc/d'                             ld* # not used
 sed -i '/input lwnligs/d'                              ld* # not used
 sed -i '/if wncoding/,/fi/d'                           ld* # not used
@@ -53,7 +54,7 @@ sed -i '/^if altcoding/,/^fi/{//d}
 /^ if altcoding/,/^ fi/{//d}
 /^  if altcoding/,/^  fi/{//d}
 /^   if altcoding/,/^   fi/{//d}'                      ld* # used
-perl -i -0777 -pe 's/(?<=^\n$)\n+//mg'                 ld* # squeeze blank lines
 sed -i '0,/^[^%]/{//!d}'                               ld* # no comments until first non-empty line
-echo Edit manually:                                    ld????[im]*
+echo "In ldcsc.mf manually change 'input lgcyru' to 'input lgrusu' using code from lgcyru.mf"
+echo "In ldtextit.mf manually change 'input lgcyri' to 'input lgrusi' using code from lgcyri.mf"
 sed -i 's/\t/        /g' *

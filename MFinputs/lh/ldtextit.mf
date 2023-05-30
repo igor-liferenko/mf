@@ -3,6 +3,7 @@ input lxpseudo;
 mode_setup; font_setup;
 pseudo_setup;    % |pseudo_setup| from ec
 
+
 if ligs>1: font_coding_scheme:="TeX text";
     spanish_shriek=oct"074"; spanish_query=oct"076";
     input italig;  % letter ligatures
@@ -17,6 +18,7 @@ fi
 altaccent:=true;  % for cyrillic breve
 input lgrusi;     % Cyrillic lower case (minuscules)
 
+
 font_slant slant; font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
@@ -27,6 +29,7 @@ else: font_normal_space 6u#+2letter_fit#;
    font_quad 18u#+4letter_fit#;
    font_extra_space 2u#;
 fi
+
 
    input romanu;   % upper case (majuscules)
    input greeku;   % upper case Greek letters
@@ -43,6 +46,8 @@ fi
 
 input lgrusu;           % input common shapes
 input lgcyrsym;           % <<, >>, No
+
+
 
 if monospace:
    ligtable "!": "`" =: spanish_shriek;

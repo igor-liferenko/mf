@@ -28,6 +28,7 @@ input lgrusu;           % Cyrillic upper case (majuscules)
 input lgrusl;           % Cyrillic lower case (minuscules)
 input lgcyrsym;    % << >> ,, No
 
+
 font_slant slant; font_x_height x_height#;
 if monospace: font_normal_space 9u#; % no stretching or shrinking
    font_quad 18u#;
