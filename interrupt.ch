@@ -1,4 +1,4 @@
-Show tab bar or menu bar and hide it back (or vice versa - depending on your settings).
+See comments in tex/interrupt.ch
 
 @x
 @h
@@ -14,7 +14,7 @@ volatile
 int @!interrupt; /*should \MF\ pause for instructions?*/
 void catchint(int signum)
 {
-  interrupt = !interrupt;
+  interrupt = 1;
 }
 @z
 
