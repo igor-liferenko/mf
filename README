@@ -19,7 +19,6 @@ Use either hello-wayland or http://github.com/igor-liferenko/mf-wayland
 
 -------------------------------
 
-Contents of online display remain available after MF exits.
-When subsequent run of MF uses online display, the contents are replaced.
-If you want to prevent contents of online display produced by some run(s) from being replaced,
-do not exit the respective MF instance(s).
+To view online display you must click on it. After mf exits, online
+display, created by it, becomes orphaned, but it remains available.
+Before creating online display, mf destroys orphaned online displays.
