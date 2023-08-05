@@ -42,8 +42,7 @@ bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
-  row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col));
-  assert(row_transition != NULL);
+  assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
@@ -57,7 +56,7 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1; /* initialize the memory */
 
-  system("pkill --parent 1 hello-wayland"); /* if you want to keep a screen - don't exit its parent */
+  system("pkill --parent 1 hello-wayland"); /* destroy orphaned online display(s) - see README */
 
   return true;
 }
