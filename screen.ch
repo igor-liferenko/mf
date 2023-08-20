@@ -42,8 +42,6 @@ bool init_screen(void)
 {
   if (!getenv("screen_size")) return false;
 
-  assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
-
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
 
@@ -160,4 +158,5 @@ screen_col *row_transition; /*an array of |black|/|white| transitions*/
 @y
 @p int main(void) {@! /*|start_here|*/
 if (getenv("screen_size")) sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
+assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 @z
