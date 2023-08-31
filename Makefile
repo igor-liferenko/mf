@@ -10,7 +10,7 @@ all:
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
 	@rm -f ~/tex/TeXfonts/*/* # mode parameters could change
 	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do sed "s/generate /input lcyrbeg;\ngensize:=`echo $$i|tr -dc 0-9`;\ninput omcodes;\ninput lcyrdefs;\n&ld/" MFinputs/cm/$$i >MFinputs/om/om$${i#cm}; done # equivalent to fikparm.mf
-	@for i in `ls MFinputs/om/om*` `ls MFinputs/lh/ld*` MFinputs/lh/lgrusu.mf; do sed 's/generate \([^ ]*\)/generate \U\1/;/lowercase/!s/lgrusu;/\U&/;/CYR_.YO\|CYR_.I_shrt/a charht := cap_height#;' $$i >MFinputs/om/$$(echo $${i##*/}|sed 's/.*\./\U&/'); done # fonts to use with strut-based code
+	@for i in `ls MFinputs/om/om*` `ls MFinputs/lh/ld*` MFinputs/lh/lgrusu.mf; do sed 's/generate \([^ ]*\)/generate \U\1/;/lowercase/!s/lgrusu;/\U&/;/CYR_.YO\|CYR_.I_shrt/a charht:=cap_height#;' $$i >MFinputs/om/$$(echo $${i##*/}|sed 's/.*\./\U&/'); done # fonts to use with strut-based code
 
 trapmf:
 	@[ $(MAKELEVEL) = 1 ]
