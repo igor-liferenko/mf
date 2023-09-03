@@ -10,8 +10,8 @@ all:
 	>/dev/null || exit; rm $${i%mf}log $${i%mf}[0-9]*; done # generate tfm files for gray fonts
 	@rm -f ~/tex/TeXfonts/*/* # mode parameters could change
 	@for i in `cd MFinputs/cm; grep -L Math cm*[0-9]*`; do sed "s/generate /input lcyrbeg;\ngensize:=`echo $$i|tr -dc 0-9`;\ninput omcodes;\ninput lcyrdefs;\n&ld/" MFinputs/cm/$$i >MFinputs/om/om$${i#cm}; done # equivalent to fikparm.mf
-	@for i in `cd MFinputs/om; ls om*`; do sed -n '/generate/w /dev/stdout' MFinputs/om/$$i | sed "s@generate \(\w*\).*@sed 's/generate/%\&/;/generate/e cat MFinputs/lh/\1.mf' MFinputs/om/$$i | sed '0,/.*lgrusu/s//%\&/' >MFinputs/om/$$(echo $${i%.*}|tr a-z A-Z).mf@"; done | sh # fonts to use with strut-based code
-	@sed -i '\|%.*lgrusu|e sed \x27/endinput/d;/CYR_.YO\\|CYR_.I_shrt/a charht:=cap_height#;\x27 MFinputs/lh/lgrusu.mf' MFinputs/om/OM* # make height of uppercase accented characters the same as non-accented ones
+	@for i in `cd MFinputs/om; ls om*`; do sed -n '/generate/w /dev/stdout' MFinputs/om/$$i | sed "s@generate \(\w*\).*@sed 's/generate/%\&/;/generate/e cat MFinputs/lh/\1.mf' MFinputs/om/$$i | sed '0,/.*lgrusu/s//%\&/;/%.*lgrusu/e sed /endinput/d MFinputs/lh/lgrusu.mf' >MFinputs/om/$$(echo $${i%.*}|tr a-z A-Z).mf@"; done | sh # fonts to use with strut-based code
+	@sed -i '/CYR_.YO\|CYR_.I_shrt/a charht:=cap_height#;' MFinputs/om/OM* # make height of uppercase accented characters the same as non-accented ones
 
 trapmf:
 	@[ $(MAKELEVEL) = 1 ]
