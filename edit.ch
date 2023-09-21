@@ -9,7 +9,7 @@
   for (pool_pointer k = str_start[input_stack[file_ptr].name_field];
                     k < str_start[input_stack[file_ptr].name_field+1]; k++)
     fputc(xchr[so(str_pool[k])], f);
-  fprintf(f, " %d", line);
+  fprintf(f, " %d\n", line);
   fclose(f);
 @z
 

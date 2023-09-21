@@ -15,8 +15,8 @@ if (getenv("tfm")) {
   sprintf(s1, "/proc/self/fd/%d", fileno(tfm_file.f));
   assert(realpath(s1, s2));
   FILE *f;
-  assert(f = fopen(getenv("tfm"), "a"));
-  fprintf(f, "%s\n", s2);
+  assert(f = fopen(getenv("tfm"), "w"));
+  fprintf(f, "%s", s2);
   fclose(f);
 }
 b_close(&tfm_file)
@@ -30,8 +30,8 @@ if (getenv("gf")) {
   sprintf(s1, "/proc/self/fd/%d", fileno(gf_file.f));
   assert(realpath(s1, s2));
   FILE *f;
-  assert(f = fopen(getenv("gf"), "a"));
-  fprintf(f, "%s\n", s2);
+  assert(f = fopen(getenv("gf"), "w"));
+  fprintf(f, "%s", s2);
   fclose(f);
 }
 b_close(&gf_file);
