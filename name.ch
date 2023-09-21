@@ -1,4 +1,4 @@
-Get GF, TFM and log file name.
+Get GF and TFM file name.
 
 @x
 @h
@@ -35,19 +35,4 @@ if (getenv("gf")) {
   fclose(f);
 }
 b_close(&gf_file);
-@z
-
-@x
-  a_close(&log_file);selector=selector-2;
-@y
-  if (getenv("log")) {
-    char s1[50], s2[PATH_MAX];
-    sprintf(s1, "/proc/self/fd/%d", fileno(log_file.f));
-    assert(realpath(s1, s2));
-    FILE *f;
-    assert(f = fopen(getenv("log"), "a"));
-    fprintf(f, "%s\n", s2);
-    fclose(f);
-  }
-  a_close(&log_file);selector=selector-2;
 @z
