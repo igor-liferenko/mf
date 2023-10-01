@@ -1,4 +1,4 @@
-Determine if TFM file was created.
+To determine if TFM file was created.
 
 @x
 if (getenv("tfm")) assert(fclose(fopen(getenv("tfm"), "w")) == 0);
