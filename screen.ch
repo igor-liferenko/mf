@@ -7,7 +7,6 @@ Screen contents are in shared memory.
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
-#include <unistd.h>
 @h
 @z
 
