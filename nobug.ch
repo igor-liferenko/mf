@@ -12,6 +12,6 @@ case 'E': if (file_ptr > 0) assert(input_stack[file_ptr].name_field >= 256);
 @x
 if (file_ptr > 0) if (input_stack[file_ptr].name_field >= 256) 
 @y
-if (file_ptr > 0) if (input_stack[file_ptr].name_field >= 256) 
+if (file_ptr > 0) assert(input_stack[file_ptr].name_field >= 256);
 if (file_ptr > 0)
 @z
