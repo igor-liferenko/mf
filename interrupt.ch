@@ -1,38 +1,32 @@
-Run `touch /tmp/mf.interrupt' from another terminal.
+From another terminal run:
+
+    pkill -USR1 -f /mf/ -t tty_name
 
 @x
 @h
 @y
-#include <unistd.h>
+#include <signal.h>
 @h
-@d INTF "/tmp/mf.interrupt"
 @z
 
 @x
-@d check_interrupt	{@+if (interrupt!=0) pause_for_instructions();
+int @!interrupt; /*should \MF\ pause for instructions?*/
 @y
-@d check_interrupt      {@+if (access(INTF, F_OK) == 0) pause_for_instructions();
+volatile
+int @!interrupt; /*should \MF\ pause for instructions?*/
+void catchint(int signum)
+{
+  interrupt = 1;
+}
 @z
 
 @x
-int @!interrupt; /*should \MF\ pause for instructions?*/ 
+initialize(); /*set global variables to their starting values*/ 
 @y
-@z
-
-@x
-interrupt=0;OK_to_interrupt=true;
-@y
-unlink(INTF);OK_to_interrupt=true;
-@z
-
-@x
-  interrupt=0;
-@y
-  unlink(INTF);
-@z
-
-@x
-if (interrupt!=0) if (OK_to_interrupt)
-@y
-if (access(INTF, F_OK) == 0) if (OK_to_interrupt)
+struct sigaction sa;
+sa.sa_handler = catchint;
+sigemptyset(&sa.sa_mask);
+sa.sa_flags = SA_RESTART;
+sigaction(SIGUSR1, &sa, NULL);
+initialize(); /*set global variables to their starting values*/ 
 @z
