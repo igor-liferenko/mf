@@ -1,6 +1,6 @@
 From another terminal run:
 
-    pkill -USR1 -f /mf/ -t tty_name
+    pkill -USR1 -f /mf/ -t TTY
 
 @x
 @h
