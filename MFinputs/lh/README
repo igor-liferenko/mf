@@ -70,7 +70,7 @@ input lgrusu;  % Cyrillic majuscules (in lowercase positions)
 wq
 EOF
 # change 'input lgcyri' to 'input lgrusi' using code from lgcyri.mf:
-ed ldtextit.mf<<'EOF' >/dev/null
+ed ldtextit.mf <<'EOF' >/dev/null
 /input lgcyri/
 c
 altaccent:=true;  % for cyrillic breve
