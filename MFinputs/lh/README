@@ -55,6 +55,27 @@ sed -i '/^if altcoding/,/^fi/{//d}
 /^  if altcoding/,/^  fi/{//d}
 /^   if altcoding/,/^   fi/{//d}'                      ld* # used
 sed -i '0,/^[^%]/{//!d}'                               ld* # no comments until first non-empty line
-echo "In ldcsc.mf manually change 'input lgcyru' to 'input lgrusu' using code from lgcyru.mf"
-echo "In ldtextit.mf manually change 'input lgcyri' to 'input lgrusi' using code from lgcyri.mf"
+# change 'input lgcyru' to 'input lgrusu' using code from lgcyru.mf:
+ed ldcsc.mf <<'EOF' >/dev/null
+/input lgcyru/
+c
+code_offset:=CYR_.a - CYR_.A;
+%%% fine higher
+% the `higher' values are used while putting accents
+forsuffixes $=u,o,letter_fit,x_height,bar_height,body_height,stem:
+  higher.$.#:=$.#; higher.$:=$;
+endfor
+input lgrusu;  % Cyrillic majuscules (in lowercase positions)
+.
+wq
+EOF
+# change 'input lgcyri' to 'input lgrusi' using code from lgcyri.mf:
+ed ldtextit.mf<<'EOF' >/dev/null
+/input lgcyri/
+c
+altaccent:=true;  % for cyrillic breve
+input lgrusi;     % Cyrillic lower case (minuscules)
+.
+wq
+EOF
 sed -i 's/\t/        /g' *
