@@ -15,7 +15,7 @@ all:
 	@# 2:
 	@sed -i '/trans_spec=/d;s/row_transition:trans_spec/row_transition:array[screen_col] of screen_col/' mf-web2w.web
 	@# 3:
-	@sed -i '0,/@<Other local variables for |fill_envelope|@>@;/{//y/<>/{}/}' mf-web2w.web
+	@sed -i '0,/@<Other local variables for |fill_envelope|@>@;/s//@{&@}/' mf-web2w.web
 	@# 4:
 	@sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
 	@######################################################################
@@ -27,7 +27,7 @@ all:
 	@# 2:
 	@sed -i 's/trans_spec/screen_col/' cmf.w
 	@# 3:
-	@sed -i '\%/*Other local variables for |fill_envelope|*/%{s%/*%@<%;s%*/%@>%}' cmf.w
+	@sed -i '/@<Other local variables for |fill_envelope|@>@;/s/[/*]//g' cmf.w
 	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
 	patch -s cmf.w cmf.patch
