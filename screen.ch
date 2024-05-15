@@ -92,6 +92,7 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
   screen_row @!top_row, screen_row @!bot_row)
 {@+screen_row @!r;
 screen_col @!c;
+
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
@@ -118,6 +119,7 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
   screen_col @!n)
 {@+int @!k; /*an index into |a|*/ 
 screen_col @!c; /*an index into |screen_pixel|*/ 
+
 @/
 #ifdef @!INIT
 wlog("Calling PAINTROW(%d,%d;", r, b);
