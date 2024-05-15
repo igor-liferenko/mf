@@ -8,7 +8,7 @@ all:
 	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	cp mf.web mf-web2w.web
 	@sed -i '/@t$$(2^{29}$$@>\*p+q/{s/(//;s/@t/(@t/}' mf-web2w.web # scheduled for 2029 tuneup
-	@sed -i '/@{[^}]*$$/,/@}/{/@{/!d;s%@{.*%@/%}' mf-web2w.web
+	@sed -i '/ @{@+.*/,/.*@}/{//!d;s///}' mf-web2w.web
 	@# 1:
 	@sed -i 's/@d t_of_the_way_end(#)==#,t@=)@>/@d t_of_the_way_end(#)==#/' mf-web2w.web
 	@sed -i 's/@d t_of_the_way(#)==#-take_fraction@=(@>#-t_of_the_way_end/@d t_of_the_way(#)==#-take_fraction-t_of_the_way_end/' mf-web2w.web
