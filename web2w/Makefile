@@ -9,25 +9,15 @@ all:
 	cp mf.web mf-web2w.web
 	@sed -i '/@t$$(2^{29}$$@>\*p+q/{s/(//;s/@t/(@t/}' mf-web2w.web # scheduled for 2029 tuneup
 	@sed -i '/ @{@+.*/,/.*@}/{//!d;s///}' mf-web2w.web
-	@# 1:
 	@sed -i 's/@d t_of_the_way_end(#)==#,t@=)@>/@d t_of_the_way_end(#)==#/' mf-web2w.web
 	@sed -i 's/@d t_of_the_way(#)==#-take_fraction@=(@>#-t_of_the_way_end/@d t_of_the_way(#)==#-take_fraction-t_of_the_way_end/' mf-web2w.web
-	@# 2:
 	@sed -i '/trans_spec=/d;s/row_transition:trans_spec/row_transition:array[screen_col] of screen_col/' mf-web2w.web
-	@# 3:
 	@sed -i '0,/@<Other local variables for |fill_envelope|@>@;/s//@{&@}/' mf-web2w.web
-	@# 4:
 	@sed -i 's/until lll=0$$/until llll=0;/' mf-web2w.web
-	@######################################################################
 	./web2w -o cmf.w mf-web2w.web
-	@######################################################################
-	@# 1:
 	@sed -i 's/@d t_of_the_way_end(X)\tX/@d t_of_the_way_end(X)\tX,t@=)@>/' cmf.w
 	@sed -i 's/@d t_of_the_way(X)\tX-take_fraction-t_of_the_way_end/@d t_of_the_way(X)\tX-take_fraction@=(@>X-t_of_the_way_end/' cmf.w
-	@# 2:
 	@sed -i 's/trans_spec/screen_col/' cmf.w
-	@# 3:
 	@sed -i '/@<Other local variables for |fill_envelope|@>@;/s/[/*]//g' cmf.w
-	@# 4:
 	@sed -i 's/while (!(llll==0));/while (!(lll==0))/' cmf.w
 	patch -s cmf.w cmf.patch
