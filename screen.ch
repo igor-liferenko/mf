@@ -92,7 +92,11 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
   screen_row @!top_row, screen_row @!bot_row)
 {@+screen_row @!r;
 screen_col @!c;
-
+#if 0
+@+for (r=top_row; r<=bot_row-1; r++)
+  for (c=left_col; c<=right_col-1; c++)
+    screen_pixel[r,c]=white;@+
+#endif
 @/
 #ifdef @!INIT
 wlog_cr; /*this will be done only after |init_screen==true|*/ 
@@ -117,9 +121,16 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 @x
 @p void paint_row(screen_row @!r, pixel_color @!b,@!screen_col *@!a,
   screen_col @!n)
-{@+int @!k; /*an index into |a|*/ 
-screen_col @!c; /*an index into |screen_pixel|*/ 
-
+{@+int @!k; /*an index into |a|*/
+screen_col @!c; /*an index into |screen_pixel|*/
+#if 0
+@+k=0;c=(*a)[0];
+@/do@+{incr(k);
+  @/do@+{screen_pixel[r,c]=b;incr(c);
+  }@+ while (!(c==(*a)[k]));
+  b=black-b; /*$|black|\swap|white|$*/
+  }@+ while (!(k==n));@+
+#endif
 @/
 #ifdef @!INIT
 wlog("Calling PAINTROW(%d,%d;", r, b);
