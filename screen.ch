@@ -160,7 +160,7 @@ wlog_ln(")");
 @z
 
 @x
-screen_col @!row_transition; /*an array of |black|/|white| transitions*/
+screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/
 @y
 screen_col *row_transition; /*an array of |black|/|white| transitions*/
 @z
