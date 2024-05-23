@@ -90,8 +90,8 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 @x
 @p void blank_rectangle(screen_col @!left_col, screen_col @!right_col,
   screen_row @!top_row, screen_row @!bot_row)
-{@+screen_row @!r;
-screen_col @!c;
+{@+int @!r;
+int @!c;
 #if 0
 @+for (r=top_row; r<=bot_row-1; r++)
   for (c=left_col; c<=right_col-1; c++)
@@ -160,9 +160,9 @@ wlog_ln(")");
 @z
 
 @x
-screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/ 
+screen_col @!row_transition; /*an array of |black|/|white| transitions*/
 @y
-screen_col *row_transition; /*an array of |black|/|white| transitions*/ 
+screen_col *row_transition; /*an array of |black|/|white| transitions*/
 @z
 
 @x
