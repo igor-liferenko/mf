@@ -121,8 +121,8 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 @x
 @p void paint_row(screen_row @!r, pixel_color @!b,@!screen_col *@!a,
   screen_col @!n)
-{@+int @!k; /*an index into |a|*/
-screen_col @!c; /*an index into |screen_pixel|*/
+{@+int @!k; /*an index into |a|*/ 
+screen_col @!c; /*an index into |screen_pixel|*/ 
 #if 0
 @+k=0;c=(*a)[0];
 @/do@+{incr(k);
@@ -160,9 +160,9 @@ wlog_ln(")");
 @z
 
 @x
-screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/
+screen_col @!row_transition[screen_width+1]; /*an array of |black|/|white| transitions*/ 
 @y
-screen_col *row_transition; /*an array of |black|/|white| transitions*/
+screen_col *row_transition; /*an array of |black|/|white| transitions*/ 
 @z
 
 @x
