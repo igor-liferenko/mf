@@ -11,12 +11,12 @@ all:
 	@sed -i 's/\[r,c\]/[rc]/' mf-web2w.web
 	@sed -i '/t_of_the_way/{s/#,t@=)@>/R/;s/@=(@>#/L/}' mf-web2w.web
 	@sed -i '/trans_spec=/d' mf-web2w.web
-	@sed -i '0,/@<Other local variables for |fill_envelope|@>@;/s//@{&@}/' mf-web2w.web
+	@sed -i '0,/@<Other local variables for |fill.*@;/s//@{&@}/' mf-web2w.web
 	@sed -i '0,/until lll=0/s//&;/' mf-web2w.web
 	./web2w -o cmf.w mf-web2w.web
 	@sed -i 's/\[rc\]/[r,c]/' cmf.w
 	@sed -i '/t_of_the_way/{s/R/X,t@=)@>/;s/L/@=(@>X/}' cmf.w
 	@sed -i '/trans_spec/{s//screen_col/;s/;/[screen_width+1];/}' cmf.w
-	@sed -i '/@<Other local variables for |fill_envelope|@>@;/s/[/*]//g' cmf.w
+	@sed -i '/@<Other local variables for |fill/s/[/*]//g' cmf.w
 	@sed -i '0,/while (!(lll==0))/{//s/;//}' cmf.w
 	patch -s cmf.w cmf.patch
