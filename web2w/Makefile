@@ -17,6 +17,6 @@ all:
 	@sed -i 's/\[rc\]/[r,c]/' cmf.w
 	@sed -i '/t_of_the_way/{s/R/X,t@=)@>/;s/L/@=(@>X/}' cmf.w
 	@sed -i '/trans_spec/{s//screen_col/;s/;/[screen_width+1];/}' cmf.w
-	@sed -i '/@<Other local variables for |fill/s/[/*]//g' cmf.w
+	@sed -i '/@<Other local variables for |fill.*@;/s/[/*]//g' cmf.w
 	@sed -i '0,/while (!(lll==0))/{//s/;//}' cmf.w
 	patch -s cmf.w cmf.patch
