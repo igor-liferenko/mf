@@ -1,0 +1,17 @@
+design_size:=17.28;
+
+if unknown cmbase: input cmbase fi
+
+font_identifier:="CMSL"; font_size design_size * pt#;
+
+% This font is a simple modification of Computer Modern Roman.
+
+input c-cmr;
+
+slant:=1/6;      % tilt ratio $(\Delta x/\Delta y)$
+
+input lcyrbeg;
+gensize:=17;
+input omcodes;
+input lcyrdefs;
+generate ldroman      % switch to the driver file

@@ -1,0 +1,13 @@
+design_size:=17.28;
+
+if unknown cmbase: input cmbase fi
+
+font_identifier:="CMTI"; font_size design_size * pt#;
+
+input c-cmti;
+
+input lcyrbeg;
+gensize:=17;
+input omcodes;
+input lcyrdefs;
+generate ldtextit      % switch to the driver file

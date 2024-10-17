@@ -1,0 +1,13 @@
+design_size:=17.28;
+
+if unknown cmbase: input cmbase fi
+
+font_identifier:="CMBX"; font_size design_size * pt#;
+
+input c-cmbx;
+
+input lcyrbeg;
+gensize:=17;
+input omcodes;
+input lcyrdefs;
+generate ldroman      % switch to the driver file
