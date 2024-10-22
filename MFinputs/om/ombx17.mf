@@ -1,5 +1,6 @@
 design_size:=17.28;
 
+% Computer Modern Bold Extended Roman
 if unknown cmbase: input cmbase fi
 
 font_identifier:="CMBX"; font_size design_size * pt#;

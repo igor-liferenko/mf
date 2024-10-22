@@ -1,5 +1,6 @@
 design_size:=14.4;
 
+% Computer Modern Roman 
 if unknown cmbase: input cmbase fi
 
 font_identifier:="CMR"; font_size design_size*pt#;

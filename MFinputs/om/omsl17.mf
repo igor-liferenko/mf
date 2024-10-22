@@ -1,5 +1,6 @@
 design_size:=17.28;
 
+% Computer Modern Slanted Roman
 if unknown cmbase: input cmbase fi
 
 font_identifier:="CMSL"; font_size design_size * pt#;
