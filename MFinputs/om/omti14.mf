@@ -8,7 +8,11 @@ font_identifier:="CMTI"; font_size design_size * pt#;
 input c-cmti;
 
 input lcyrbeg;
-gensize:=14;
+for i=length(jobname) downto 1:
+  gensize:=i;
+  exitif (substring(i-1,i) of jobname)>"9";
+endfor
+gensize:=scantokens(substring(gensize,infinity) of jobname);
 input omcodes;
 input lcyrdefs;
 generate ldtextit      % switch to the driver file
