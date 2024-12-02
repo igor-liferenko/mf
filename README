@@ -3,9 +3,10 @@ Based on https://w3-o.cs.hm.edu/users/ruckert/public_html/web2w/
 Add this `mf' script to PATH:
 
     #!/bin/sh
+    export base=plain
     export edit=/tmp/edit.$$
     export screen_size=WIDTHxHEIGHT
-    /path/to/mf/plain "$@"
+    /path/to/mf/virmf "$@"
     ret=$?
     if [ -t 0 ] && [ -t 1 ]; then
       stty -icanon -echo
