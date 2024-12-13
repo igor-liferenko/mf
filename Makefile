@@ -8,7 +8,7 @@ all:
 	@rm -rf ~/.PKfonts/ # mode parameters could change (PKFONTS in mytex/dvips)
 	gcc -DSTAT mf.c -o virmf -lrt
 	@for i in gray.mf black.mf slant?*.mf; do base=plain ./virmf \
-	'\mode=localfont; batchmode; input '$$i >/dev/null || exit; done # 'mode' in mytex/mf+,mf-
+	'\mode=localfont; batchmode; input '$$i >/dev/null || exit; done # 'mode' in mytex/mf+,mf- (it must be mode that is used for printing)
 
 trapmf:
 	@[ $(MAKELEVEL) = 1 ]
