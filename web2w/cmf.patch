@@ -489,7 +489,7 @@
  } 
  
  @ A messier routine is also needed, since base file names must be scanned
-@@ -15682,17 +15703,17 @@
+@@ -15682,13 +15703,13 @@
  @d base_default_length	18 /*length of the |MF_base_default| string*/ 
  @d base_area_length	8 /*length of its area part*/ 
  @d base_ext_length	5 /*length of its `\.{.base}' part*/ 
@@ -506,11 +506,6 @@
  @.MFbases@>
  @.plain@>
  @^system dependencies@>
--
-+@ This is a dummy section to preserve numbering with original.
- @ @<Check the ``constant'' values for consistency@>=
- if (base_default_length > file_name_size) bad=41;
- 
 @@ -15719,7 +15740,7 @@
  for (j=base_default_length-base_ext_length+1; j<=base_default_length; j++) 
    append_to_name(xord[MF_base_default[j]]);
