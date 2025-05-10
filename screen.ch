@@ -54,7 +54,7 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1; /* initialize the memory */
 
-  system("pgrep hello-wayland|sed -n \"$(pgrep --parent `pgrep -x virmf|paste -sd,|sed 's/^$/0/'` hello-wayland|sed 'N;$!b;s#\\n#/b;/#g;s#^#/#;s#$#/b;s/^/kill /e#')\""); /* destroy orphaned online display(s) - see README */
+  system("pgrep hello-wayland|sed -n \"$(pgrep --parent `pgrep -x virmf|paste -sd,|sed 's/^$/0/'` hello-wayland|sed '$!N;$!b;s#\\n#/b;/#g;s#^#/#;s#$#/b;s/^/kill /e#')\""); /* destroy orphaned online display(s) - see README */
 
   return true;
 }
