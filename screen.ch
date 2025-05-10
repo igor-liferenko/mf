@@ -54,7 +54,7 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1; /* initialize the memory */
 
-  system("pkill --parent 1 hello-wayland"); /* destroy orphaned online display(s) - see README */
+  system("for i in `pgrep -v -x virmf`; do pkill --parent $i hello-wayland; done"); /* destroy orphaned online display(s) - see README */
 
   return true;
 }
