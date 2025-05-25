@@ -54,8 +54,6 @@ bool init_screen(void)
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = -1; /* initialize the memory */
 
-  system("pgrep hello-wayland | sed -n $(pgrep --parent `pgrep -x virmf | paste -sd,` hello-wayland 2>/dev/null | sed 's#^#-e /^#;s#$#$/b#') -e 's/^/kill /e'"); /* destroy orphaned online display(s) - see README */
-
   return true;
 }
 @z
@@ -73,10 +71,10 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 {
   static pid_t screen_pid = -1;
 
-  if (screen_pid != -1) {
-    kill(screen_pid, SIGTERM);
+  system("pkill hello-wayland");
+
+  if (screen_pid != -1)
     waitpid(screen_pid, NULL, 0);
-  }
 
   assert((screen_pid = fork()) != -1);
   if (screen_pid == 0) {
