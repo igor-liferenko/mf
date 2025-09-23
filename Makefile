@@ -6,7 +6,7 @@ all:
 	gcc -DINIT mf.c -o inimf -lrt
 	@./inimf 'plain; input local; dump' >/dev/null && mv plain.base MFbases/
 	@rm -rf ~/.PKfonts # mode parameters could change
-	gcc -DSTAT mf.c -o virmf -lrt
+	gcc mf.c -o virmf -lrt
 	@for i in gray.mf black.mf slant?*.mf; do base=plain ./virmf \
 	'\mode=localfont; batchmode; input '$$i >/dev/null || exit; done # 'mode' in mytex/mf+,mf- (it must be mode that is used for printing)
 
