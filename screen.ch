@@ -165,9 +165,9 @@ screen_col *row_transition;
 @z
 
 @x
-@p int main(void) {@! /*|start_here|*/
+initialize(); /*set global variables to their starting values*/
 @y
-@p int main(void) {@! /*|start_here|*/
+initialize(); /*set global variables to their starting values*/
 if (getenv("screen_size")) sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
 assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 @z
