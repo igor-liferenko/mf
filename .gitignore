@@ -4,6 +4,4 @@ mf.c
 inimf
 virmf
 *.log
-*.tfm
-*.600gf
 MFinputs/*
