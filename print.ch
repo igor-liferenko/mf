@@ -8,8 +8,9 @@ print_char('(');incr(open_parens);slow_print(name);update_terminal;
 if (length(name) >= length(MF_area) &&
     strncmp(str_pool+str_start[name], str_pool+str_start[MF_area], length(MF_area)) == 0) {
   assert(str_ptr < max_strings);
-  str_start[++str_ptr] = str_start[name+1];
-  str_start[str_ptr-1] = str_start[name] + length(MF_area) - strlen("MFinputs/");
+  str_start[++str_ptr] = str_start[name+1]; /* fake string ends where |name| ends */
+  str_start[str_ptr-1] = str_start[name] + length(MF_area) - strlen("MFinputs/"); /* fake string
+    begins where MFinputs/ begins in |name| */
   if (term_offset+length(str_ptr-1) > max_print_line-2) print_ln();
   else if ((term_offset > 0)||(file_offset > 0)) print_char(' ');
   print_char('(');incr(open_parens);slow_print(str_ptr-1);update_terminal;
