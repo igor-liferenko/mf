@@ -71,10 +71,10 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 {
   static pid_t screen_pid = -1;
 
-  system("pkill hello-wayland");
-
-  if (screen_pid != -1)
+  if (screen_pid != -1) {
+    kill(screen_pid, SIGTERM);
     waitpid(screen_pid, NULL, 0);
+  }
 
   assert((screen_pid = fork()) != -1);
   if (screen_pid == 0) {
