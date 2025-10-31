@@ -7,8 +7,13 @@ import os
 import psutil
 import signal
 
-# destroy orphaned online display(s)
 current_pid = os.getpid()
+
+if psutil.Process(current_pid).open_files():
+  print("ERROR: e modifier to fopen is not supported\n")
+  sys.exit(1)
+
+# destroy orphaned online display(s)
 procs = [p for p in psutil.process_iter() if 'hello-wayland' in p.name() and __file__ in p.cmdline()]
 for proc in procs:
   if current_pid != proc.pid:
@@ -16,7 +21,6 @@ for proc in procs:
     if ppid.name() != "virmf":
       os.kill(proc.pid, signal.SIGTERM)
 
-#os.system("ls -l /proc/$PPID/fd | sed '1s/.*/\\n/;s/.* \\(.* ->\\)/\\1/'") # this can be used to check if glibc version >= 2.7 - only 0,1,2 are printed (if glibc version < 2.7, then in screen.ch instead of "e" flag to 'fopen' use 'fcntl')
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
