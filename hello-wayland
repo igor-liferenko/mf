@@ -4,22 +4,32 @@
 import sys
 import mmap
 import os
-import psutil
 import signal
 
 current_pid = os.getpid()
 
-if psutil.Process(current_pid).open_files():
-  print("ERROR: e modifier to fopen is not supported\n")
-  sys.exit(1)
+# ensure that e modifier to fopen is supported (otherwise rewrite screen.ch using fcntl)
+d = '/proc/' + str(current_pid) + '/fd'
+for p in map(lambda e: os.path.join(d,e), os.listdir(d)):
+  if not os.path.exists(p): continue # skip descriptor used for reading this directory
+  if os.path.isfile(os.readlink(p)):
+    print('TROUBLE')
+    sys.exit()
 
 # destroy orphaned online display(s)
-procs = [p for p in psutil.process_iter() if 'hello-wayland' in p.name() and __file__ in p.cmdline()]
-for proc in procs:
-  if current_pid != proc.pid:
-    ppid = psutil.Process(proc.ppid())
-    if ppid.name() != "virmf":
-      os.kill(proc.pid, signal.SIGTERM)
+for e in os.listdir('/proc'):
+  if not e.isdigit(): continue
+  pid = int(e)
+  if pid == current_pid: continue
+  with open('/proc/' + str(pid) + '/status', 'r') as f:
+    if f.readline().split(':')[1].strip() != 'hello-wayland': continue
+    for line in f:
+      if line.startswith('PPid:'):
+        parent_pid = line.split(':')[1].strip()
+        break
+  with open('/proc/' + str(parent_pid) + '/status', 'r') as f:
+    if f.readline().split(':')[1].strip() != 'virmf':
+      os.kill(pid, signal.SIGTERM)
 
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 from PyQt5.QtCore import *
