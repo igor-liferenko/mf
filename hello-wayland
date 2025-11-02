@@ -22,13 +22,13 @@ for e in os.listdir('/proc'):
   pid = int(e)
   if pid == current_pid: continue
   with open('/proc/' + str(pid) + '/status', 'r') as f:
-    if f.readline().split(':')[1].strip() != 'hello-wayland': continue
+    if f.readline().split(':')[1].strip() != 'hello-wayland': continue # Name:
     for line in f:
       if line.startswith('PPid:'):
         parent_pid = line.split(':')[1].strip()
         break
   with open('/proc/' + str(parent_pid) + '/status', 'r') as f:
-    if f.readline().split(':')[1].strip() != 'virmf':
+    if f.readline().split(':')[1].strip() != 'virmf': # Name:
       os.kill(pid, signal.SIGTERM)
 
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
