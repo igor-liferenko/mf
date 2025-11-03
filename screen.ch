@@ -80,7 +80,11 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
   if (screen_pid == 0) {
     dup2(shm_fd, STDIN_FILENO);
     signal(SIGINT, SIG_IGN);
-    execl("/home/user/mf-wayland/hello-wayland", "hello-wayland", (char *) NULL);
+    char prog_name[] = "online-display";
+    char prog_file[base_area_length + sizeof prog_name] = {};
+    strncpy(prog_file, MF_base_default+1, base_area_length-1);
+    strcpy(strrchr(prog_file, '/') + 1, prog_name);
+    execl(prog_file, prog_name, (char *) NULL);
     _exit(0);
   }
 }
