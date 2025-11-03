@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # https://stackoverflow.com/questions/42570214/displaying-image-using-a-label
-# requires 'python3-pyqt5' package; works on X (not Wayland)
+# requires 'python3-pyqt5' package
 import sys
 import mmap
 import os
@@ -17,12 +17,13 @@ for p in map(lambda e: os.path.join(d,e), os.listdir(d)):
     sys.exit()
 
 # destroy orphaned online display(s)
+with open('/proc/' + str(current_pid) + '/status', 'r') as f: self = f.readline()
 for e in os.listdir('/proc'):
   if not e.isdigit(): continue
   pid = int(e)
   if pid == current_pid: continue
   with open('/proc/' + str(pid) + '/status', 'r') as f:
-    if f.readline().split(':')[1].strip() != 'hello-wayland': continue # Name:
+    if f.readline() != self: continue
     for line in f:
       if line.startswith('PPid:'):
         parent_pid = line.split(':')[1].strip()
