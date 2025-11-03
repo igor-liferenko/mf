@@ -8,8 +8,8 @@ mode_def proof =
  o_correction:=1;
 enddef;
 
-mode_def localfont =
-  pixels_per_inch := 600; % if you change this, change also RESOLUTION
+mode_def localfont =            % for printer
+  pixels_per_inch := 600;
   blacker := .25;
   o_correction := 1;
   fillin := 0;
