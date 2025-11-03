@@ -17,19 +17,19 @@ for p in map(lambda e: os.path.join(d,e), os.listdir(d)):
     sys.exit()
 
 # destroy orphaned online display(s)
-with open('/proc/' + str(current_pid) + '/status', 'r') as f: self = f.readline()
+with open('/proc/' + str(current_pid) + '/status', 'r') as f: name = f.readline()
 for e in os.listdir('/proc'):
   if not e.isdigit(): continue
   pid = int(e)
   if pid == current_pid: continue
   with open('/proc/' + str(pid) + '/status', 'r') as f:
-    if f.readline() != self: continue
+    if f.readline() != name: continue
     for line in f:
       if line.startswith('PPid:'):
         parent_pid = line.split(':')[1].strip()
         break
   with open('/proc/' + str(parent_pid) + '/status', 'r') as f:
-    if f.readline().split(':')[1].strip() != 'virmf': # Name:
+    if f.readline().split(':')[1].strip() != 'virmf':
       os.kill(pid, signal.SIGTERM)
 
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
