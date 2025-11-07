@@ -10,24 +10,27 @@ current_pid = os.getpid()
 
 # ensure that e modifier to fopen is supported (otherwise rewrite screen.ch using fcntl)
 d = '/proc/' + str(current_pid) + '/fd'
-for p in map(lambda e: os.path.join(d,e), os.listdir(d)):
-  if not os.path.exists(p): continue # skip descriptor used for reading this directory
-  if os.path.isfile(os.readlink(p)):
-    print('TROUBLE')
-    sys.exit()
+for e in os.listdir(d):
+  try:
+    if os.path.isfile(os.readlink(os.path.join(d,e))):
+      print('TROUBLE')
+      sys.exit()
+  except Exception: pass
 
 # destroy orphaned online display(s)
-with open('/proc/' + str(current_pid) + '/status', 'r') as f: name = f.readline()
+with open('/proc/' + str(current_pid) + '/status', 'r') as f: c = f.readline()
 for e in os.listdir('/proc'):
   if not e.isdigit(): continue
   pid = int(e)
   if pid == current_pid: continue
-  with open('/proc/' + str(pid) + '/status', 'r') as f:
-    if f.readline() != name: continue
-    for line in f:
-      if line.startswith('PPid:'):
-        parent_pid = line.split(':')[1].strip()
-        break
+  try:
+    with open('/proc/' + str(pid) + '/status', 'r') as f:
+      if f.readline() != c: continue
+      for line in f:
+        if line.startswith('PPid:'):
+          parent_pid = line.split(':')[1].strip()
+          break
+  except Exception: continue
   with open('/proc/' + str(parent_pid) + '/status', 'r') as f:
     if f.readline().split(':')[1].strip() != 'virmf':
       os.kill(pid, signal.SIGTERM)
@@ -35,7 +38,6 @@ for e in os.listdir('/proc'):
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 width, height = map(int, os.environ.get('screen_size').split('x'))
 mm = mmap.mmap(0, width*height*4)
 app = QApplication(sys.argv)
