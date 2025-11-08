@@ -6,18 +6,8 @@ import mmap
 import os
 import signal
 
-current_pid = os.getpid()
-
-# ensure that e modifier to fopen is supported (otherwise rewrite screen.ch using fcntl)
-d = '/proc/' + str(current_pid) + '/fd'
-for e in os.listdir(d):
-  try:
-    if os.path.isfile(os.readlink(os.path.join(d,e))):
-      print('TROUBLE')
-      sys.exit()
-  except Exception: pass
-
 # destroy orphaned online display(s)
+current_pid = os.getpid()
 with open('/proc/' + str(current_pid) + '/status', 'r') as f: c = f.readline()
 for e in os.listdir('/proc'):
   if not e.isdigit(): continue
