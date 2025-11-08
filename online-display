@@ -6,7 +6,7 @@ import mmap
 import os
 import signal
 
-# destroy orphaned online display(s)
+# destroy online display(s), which were created by mf, which finished execution previously
 current_pid = os.getpid()
 with open('/proc/' + str(current_pid) + '/status', 'r') as f: c = f.readline()
 for e in os.listdir('/proc'):
