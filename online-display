@@ -28,6 +28,7 @@ for e in os.listdir('/proc'):
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 width, height = map(int, os.environ.get('screen_size').split('x'))
 mm = mmap.mmap(0, width*height*4)
 app = QApplication(sys.argv)
