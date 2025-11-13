@@ -17,16 +17,47 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 @y
 int screen_width=768; /*number of pixels in each row of screen display*/
 int screen_depth=1024; /*number of pixels in each column of screen display*/
+char *screen_prog, *screen_name = "online-display";
 @z
 
 @x
-#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode),\
-                             (file).f!=NULL?get(file):0@]
-#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode)@]
+{@+reset(*f, name_of_file, "r"); return reset_OK(*f);
 @y
-#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode"e"),\
-                             (file).f!=NULL?get(file):0@]
-#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode"e")@]
+{@+reset(*f, name_of_file, "r");
+if (f->f != NULL) @<Set close-on-exec flag@>
+return reset_OK(*f);
+@z
+
+@x
+{@+rewrite(*f, name_of_file, "w"); return rewrite_OK(*f);
+@y
+{@+rewrite(*f, name_of_file, "w");
+if (f->f != NULL) @<Set close-on-exec flag@>
+return rewrite_OK(*f);
+@z
+
+@x
+{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
+@y
+{@+rewrite(*f, name_of_file, "wb");
+if (f->f != NULL) @<Set close-on-exec flag@>
+return rewrite_OK(*f);
+@z
+
+@x
+{@+reset(*f, name_of_file, "rb"); return reset_OK(*f);
+@y
+{@+reset(*f, name_of_file, "rb");
+if (f->f != NULL) @<Set close-on-exec flag@>
+return reset_OK(*f);
+@z
+
+@x
+{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
+@y
+{@+rewrite(*f, name_of_file, "wb");
+if (f->f != NULL) @<Set close-on-exec flag@>
+return rewrite_OK(*f);
 @z
 
 @x
@@ -80,11 +111,7 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
   if (screen_pid == 0) {
     dup2(shm_fd, STDIN_FILENO);
     signal(SIGINT, SIG_IGN);
-    char prog_name[] = "online-display";
-    char prog_file[base_area_length + sizeof prog_name] = {};
-    strncpy(prog_file, MF_base_default+1, base_area_length-1);
-    strcpy(strrchr(prog_file, '/') + 1, prog_name);
-    execl(prog_file, prog_name, (char *) NULL);
+    execl(screen_prog, screen_name, (char *) NULL);
     _exit(0);
   }
 }
@@ -174,4 +201,20 @@ initialize(); /*set global variables to their starting values*/
 initialize(); /*set global variables to their starting values*/
 if (getenv("screen_size")) sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
 assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
+assert(screen_prog = (char *) malloc(base_area_length + strlen(screen_name)));
+strncpy(screen_prog, MF_base_default+1, base_area_length-1);
+strcpy(strrchr(screen_prog, '/') + 1, screen_name);
+@z
+
+@x
+@ Appendix: Replacement of the string pool file.
+@y
+@ @<Set close-on-exec flag@>= {
+  int fd, flags;
+  assert((fd = fileno(f->f)) != -1);
+  assert((flags = fcntl(fd, F_GETFD)) != -1);
+  assert(fcntl(fd, F_SETFD, flags | FD_CLOEXEC) == 0);
+}
+
+@ Appendix: Replacement of the string pool file.
 @z

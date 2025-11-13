@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # https://stackoverflow.com/questions/42570214/displaying-image-using-a-label
-# requires 'python3-pyqt5' package
+# requires python3-pyqt5 package
 import sys
 import mmap
 import os
-import signal
+f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 
-# destroy online display(s), which were created by mf, which finished execution previously
+# send SIGTERM to other processes with the same name
 current_pid = os.getpid()
 with open('/proc/' + str(current_pid) + '/status', 'r') as f: c = f.readline()
 for e in os.listdir('/proc'):
@@ -16,19 +16,12 @@ for e in os.listdir('/proc'):
   try:
     with open('/proc/' + str(pid) + '/status', 'r') as f:
       if f.readline() != c: continue
-      for line in f:
-        if line.startswith('PPid:'):
-          parent_pid = line.split(':')[1].strip()
-          break
-  except Exception: continue
-  with open('/proc/' + str(parent_pid) + '/status', 'r') as f:
-    if f.readline().split(':')[1].strip() != 'virmf':
-      os.kill(pid, signal.SIGTERM)
+      os.kill(pid, 15)
+  except Exception: pass
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 width, height = map(int, os.environ.get('screen_size').split('x'))
 mm = mmap.mmap(0, width*height*4)
 app = QApplication(sys.argv)
