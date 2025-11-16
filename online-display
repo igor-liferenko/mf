@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# https://stackoverflow.com/questions/42570214/displaying-image-using-a-label
 # requires python3-pyqt5 package
 import sys
 import mmap
@@ -32,7 +31,5 @@ label_imageDisplay = QLabel()
 label_imageDisplay.setPixmap(pixmap_image)
 #print(app.primaryScreen().availableGeometry())
 #label_imageDisplay.setGeometry(...)
-#import time
-#time.sleep(.1) # set this to mnimal value that window will not blink for 'mf cmr10'
-label_imageDisplay.showMaximized()
+label_imageDisplay.show()
 sys.exit(app.exec_())
