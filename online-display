@@ -30,8 +30,9 @@ pixmap01 = QPixmap.fromImage(qImg)
 pixmap_image = QPixmap(pixmap01)
 label_imageDisplay = QLabel()
 label_imageDisplay.setPixmap(pixmap_image)
-label_imageDisplay.setAlignment(Qt.AlignCenter)
-label_imageDisplay.setScaledContents(True)
-label_imageDisplay.setMinimumSize(width,height)
-label_imageDisplay.showMinimized()
+#print(app.primaryScreen().availableGeometry())
+#label_imageDisplay.setGeometry(...)
+#import time
+#time.sleep(.1) # set this to mnimal value that window will not blink for 'mf cmr10'
+label_imageDisplay.showMaximized()
 sys.exit(app.exec_())
