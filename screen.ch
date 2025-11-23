@@ -80,7 +80,6 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 @y
 @d white	0xffffffff /*background pixels*/
 @d black	0x00000000 /*visible pixels*/
-@d swap_color(b) 0xffffffff-b
 @z
 
 @x
@@ -156,7 +155,7 @@ wlog_ln(")");
       *pixel++ = b;
       c++;
     } while (c != a[k]);
-    b = swap_color(b);
+    b = b == black ? white : black;
   } while (k != n);
 }
 @z
