@@ -78,8 +78,8 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 @d white	0 /*background pixels*/
 @d black	1 /*visible pixels*/
 @y
-@d white	0xffffffff /*background pixels*/
-@d black	0x00000000 /*visible pixels*/
+@d white	0x00ffffff /* XRGB format */
+@d black	0x00000000 /* (X byte is not used) */
 @z
 
 @x
@@ -146,7 +146,7 @@ wlog_ln(")");
 @p void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
   pixel_color *pixel = screen_data;
-  pixel += screen_width*r + a[0];
+  pixel += screen_width * r + a[0];
   int k = 0;
   screen_col c = a[0];
   do {
@@ -155,7 +155,7 @@ wlog_ln(")");
       *pixel++ = b;
       c++;
     } while (c != a[k]);
-    b = b == black ? white : black;
+    b = black == b ? white : black;
   } while (k != n);
 }
 @z
