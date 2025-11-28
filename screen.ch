@@ -17,7 +17,7 @@ enum {@+@!screen_depth=1024@+}; /*number of pixels in each column of screen disp
 int screen_width=768; /*number of pixels in each row of screen display*/
 int screen_depth=1024; /*number of pixels in each column of screen display*/
 int shm_fd;
-void *screen_data;
+void *shm_data;
 char *screen_prog, *screen_name = "online-display";
 @z
 
@@ -33,12 +33,12 @@ char *screen_prog, *screen_name = "online-display";
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
 
-  int screen_size = screen_width * screen_depth * sizeof (pixel_color);
-  assert(ftruncate(shm_fd, screen_size) != -1);
+  int shm_size = screen_width * screen_depth * sizeof (pixel_color);
+  assert(ftruncate(shm_fd, shm_size) != -1);
 
-  assert((screen_data = mmap(NULL, screen_size, PROT_WRITE, MAP_SHARED, shm_fd, 0)) != MAP_FAILED);
+  assert((shm_data = mmap(NULL, shm_size, PROT_WRITE, MAP_SHARED, shm_fd, 0)) != MAP_FAILED);
 
-  pixel_color *pixel = screen_data;
+  pixel_color *pixel = shm_data;
   for (int n = 0; n < screen_width * screen_depth; n++)
     *pixel++ = white;
 
@@ -111,8 +111,8 @@ wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 {
   pixel_color *pixel;
   for (screen_row r = top_row; r < bot_row; r++) {
-    pixel = screen_data;
-    pixel += screen_width*r + left_col;
+    pixel = shm_data;
+    pixel += screen_width * r + left_col;
     for (screen_col c = left_col; c < right_col; c++)
       *pixel++ = white;
   }
@@ -145,7 +145,7 @@ wlog_ln(")");
 @y
 @p void paint_row(screen_row r, pixel_color b, screen_col *a, screen_col n)
 {
-  pixel_color *pixel = screen_data;
+  pixel_color *pixel = shm_data;
   pixel += screen_width * r + a[0];
   int k = 0;
   screen_col c = a[0];
@@ -170,10 +170,11 @@ screen_col *row_transition;
 initialize(); /*set global variables to their starting values*/
 @y
 initialize(); /*set global variables to their starting values*/
-if (getenv("screen_size")) sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
-assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
-assert(screen_prog = (char *) calloc(base_area_length + strlen(screen_name), sizeof (char)));
-strncpy(screen_prog, MF_base_default+1, base_area_length-1);
-strcpy(strrchr(screen_prog, '/') + 1, screen_name);
-// TODO: see where screen_width, screen_height, row_transution are used by deleting their declaration and looking compiler warnings and decide if screen_width, screen_height need to be initialized and row_transition set is screen_size is not set
+if (getenv("screen_size")) {
+  sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
+  assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
+  assert(screen_prog = (char *) calloc(base_area_length + strlen(screen_name), sizeof (char)));
+  strncpy(screen_prog, MF_base_default+1, base_area_length-1);
+  strcpy(strrchr(screen_prog, '/') + 1, screen_name);
+}
 @z

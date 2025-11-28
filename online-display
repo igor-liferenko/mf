@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # requires python3-pyqt5 package
-# TODO: see git log -p screen.ch when communication was done via pipes and find out how to do update in pyqt so that game of life will work
+# TODO: see git log -p screen.ch when communication was done via pipes and find out how to redraw
+# QLabel so that exercise 13.24 from METAFONTbook will work
+# (I deleted that from screen.ch because 'mf cmr10' worked slowly, for example, but now I realize
+# that 'mf+ cmr10' or 'mf- cmr10' must be used instead - there envvar screen_size is not set)
+# FIXME: find confirmation in pyqt5 documentation that coordinates are from upper-left to bottom-right
 import sys
 import mmap
 import os
