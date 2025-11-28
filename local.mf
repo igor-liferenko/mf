@@ -1,4 +1,4 @@
-mode_def localfont =            % for printer
+mode_def localfont =
   pixels_per_inch := 600;
   blacker := .25;
   o_correction := 1;
@@ -8,7 +8,7 @@ mode_def localfont =            % for printer
   tracingtitles := 0;
 enddef;
 
-mode_def screen =               % for viewer
+mode_def viewer =
   pixels_per_inch := 1200;
   blacker := 3;
   o_correction := 1;
