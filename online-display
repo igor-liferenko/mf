@@ -4,7 +4,8 @@
 # QLabel so that exercise 13.24 from METAFONTbook will work
 # (I deleted that from screen.ch because 'mf cmr10' worked slowly, for example, but now I realize
 # that 'mf+ cmr10' or 'mf- cmr10' must be used instead - there envvar screen_size is not set)
-# FIXME: find confirmation in pyqt5 documentation that coordinates are from upper-left to bottom-right
+# FIXME: find confirmation in pyqt5 documentation that coordinates are from upper-left to
+# bottom-right (mf.pdf §565)
 import sys
 import mmap
 import os
