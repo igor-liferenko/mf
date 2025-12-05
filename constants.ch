@@ -11,5 +11,5 @@ enum {@+@!mem_max=mem_top@+};
   must be substantially larger than |mem_min|
   and not greater than |mem_max|*/ 
 @y
-@d mem_top	5000000
+@d mem_top	4999999
 @z
