@@ -2204,7 +2204,7 @@ sets |arith_error:=true|. Most of \MF's internal computations have
 been designed to avoid this sort of error.
 
 Notice that if 64-bit integer arithmetic were available,
-we could simply compute |@t$(2^{29}$@>*p+q)div (2*q)|.
+we could simply compute |(@t$2^{29}$@>*p+q)div (2*q)|.
 But when we are restricted to \PASCAL's 32-bit arithmetic we
 must either resort to multiple-precision maneuvering
 or use a simple but slow iteration. The multiple-precision technique

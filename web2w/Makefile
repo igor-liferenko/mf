@@ -7,7 +7,6 @@ all:
 	bison --warnings=none -d -v pascal-mf.y
 	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	cp mf.web mf-web2w.web
-	@sed -i '/@t$$(2^{29}$$@>\*p+q/{s/(//;s/@t/(@t/}' mf-web2w.web # scheduled for 2029 tuneup
 	@sed -i 's/\[r,c\]/[rc]/' mf-web2w.web
 	@sed -i '/t_of_the_way/{s/#,t@=)@>/R/;s/@=(@>#/L/}' mf-web2w.web
 	@sed -i '/@!trans_spec=\(.*;\).*/{s//\1/;h;d};/trans_spec; /{s///;G}' mf-web2w.web
