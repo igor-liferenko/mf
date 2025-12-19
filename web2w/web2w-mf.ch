@@ -8,7 +8,7 @@
 SYM_PTR("register")->name="internal_register";
 @y
 SYM_PTR("register")->name="internal_register";
-SYM_PTR("void")->name="v0id"; /* reserved word in C */
+SYM_PTR("void")->name="internal_void"; /* reserved word in C */
 @z
 
 @x
