@@ -1,5 +1,5 @@
 all:
-	tie -c web2w.ch web2w.w time.ch web2w-mf.ch >/dev/null
+	tie -c web2w.ch web2w.w reserved.ch web2w-mf.ch >/dev/null
 	ctangle web2w web2w
 	patch -so web-mf.l web.l web-mf.patch
 	flex -o web.lex.c web-mf.l

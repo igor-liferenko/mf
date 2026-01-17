@@ -5,13 +5,6 @@
 @z
 
 @x
-SYM_PTR("register")->name="internal_register";
-@y
-SYM_PTR("register")->name="internal_register";
-SYM_PTR("void")->name="internal_void"; /* reserved word in C */
-@z
-
-@x
     else@+ if (t->sym_no==TeXinputs_no) wprint("TEX_area");
 @y
     else@+ if (t->sym_no==TeXinputs_no) wprint("MF_area");
