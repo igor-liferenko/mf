@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 # requires python3-pyqt5 package
 # TODO: see git log -p screen.ch when communication was done via pipes and find out how to redraw
-# QLabel so that exercise 13.24 from METAFONTbook will work
-# (I deleted that from screen.ch in d8536e02c901e7d22639573dc32b4aa1d6d57f93 because 'mf cmr10' worked slowly, for example, but now I realize
-# that 'mf+ cmr10' or 'mf- cmr10' must be used instead - there envvar screen_size is not set)
+# QLabel (maybe just kill instead of redraw) so that exercise 13.24 from METAFONTbook will work
+# (I deleted that from screen.ch in d8536e02c901e7d22639573dc32b4aa1d6d57f93 [it was used with
+# mf-wayland repo] because, e.g., 'mf cmr10'
+# worked slowly, but now I realize that 'mf+ cmr10' or 'mf- cmr10' must be used instead - there
+# environment variable 'screen_size' is not set)
 # FIXME: find confirmation in pyqt5 documentation that coordinates are from upper-left to
 # bottom-right (mf.pdf §565)
 import sys
