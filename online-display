@@ -1,13 +1,5 @@
 #!/usr/bin/python3
 # requires python3-pyqt5 package
-# TODO: see git log -p screen.ch when communication was done via pipes and find out how to redraw
-# QLabel (maybe just kill instead of redraw) so that exercise 13.24 from METAFONTbook will work
-# (I deleted that from screen.ch in d8536e02c901e7d22639573dc32b4aa1d6d57f93 [it was used with
-# mf-wayland repo] because, e.g., 'mf cmr10'
-# worked slowly, but now I realize that 'mf+ cmr10' or 'mf- cmr10' must be used instead - there
-# environment variable 'screen_size' is not set)
-# FIXME: find confirmation in pyqt5 documentation that coordinates are from upper-left to
-# bottom-right (mf.pdf §565)
 import sys
 import mmap
 import os
@@ -26,16 +18,20 @@ for e in os.listdir('/proc'):
       os.kill(pid, 15)
   except Exception: pass
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QApplication, QLabel
 width, height = map(int, os.environ.get('screen_size').split('x'))
 mm = mmap.mmap(0, width*height*4)
 app = QApplication(sys.argv)
 qImg = QImage(mm,width,height,width*4,QImage.Format_RGB32)
 pixmap01 = QPixmap.fromImage(qImg)
 pixmap_image = QPixmap(pixmap01)
-label_imageDisplay = QLabel()
+class MyLabel(QLabel):
+  def showEvent(self, event):
+    super().showEvent(event)
+    QTimer.singleShot(500, lambda: print(1, end='', flush=True))
+label_imageDisplay = MyLabel()
 label_imageDisplay.setPixmap(pixmap_image)
 label_imageDisplay.showMaximized()
 sys.exit(app.exec_())

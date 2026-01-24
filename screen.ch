@@ -58,19 +58,27 @@ wlog_ln("Calling UPDATESCREEN");
 void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 {
   static pid_t screen_pid = -1;
+  static int pipe_fd[2];
 
   if (screen_pid != -1) {
     kill(screen_pid, SIGTERM);
     waitpid(screen_pid, NULL, 0);
+    close(pipe_fd[0]);
   }
 
+  assert(pipe(pipe_fd) != -1);
   assert((screen_pid = fork()) != -1);
   if (screen_pid == 0) {
     dup2(shm_fd, STDIN_FILENO);
+    dup2(pipe_fd[1], STDOUT_FILENO);
     signal(SIGINT, SIG_IGN);
     execl(screen_prog, screen_name, (char *) NULL);
     _exit(0);
   }
+  close(pipe_fd[1]);
+
+  char byte;
+  assert(read(pipe_fd[0], &byte, 1));
 }
 @z
 

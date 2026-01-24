@@ -90,7 +90,7 @@
 +{@+rewrite(*f, name_of_file, "wb"); return rewrite_OK(*f);
  } 
  
- @ Files can be closed with the \ph\ routine `|close(f)|', which
+ @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
 @@ -861,9 +869,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
@@ -143,8 +143,8 @@
  @ @<Read one string...@>=
  {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
  @.MF.POOL has no check sum@>
--read(pool_file, m, n); /*read two digits of string length*/ 
-+read(pool_file, m);@+read(pool_file, n); /*read two digits of string length*/ 
+-pascal_read(pool_file, m, n); /*read two digits of string length*/ 
++pascal_read(pool_file, m);@+pascal_read(pool_file, n); /*read two digits of string length*/ 
  if (m== '*' ) @<Check the pool check sum@>@;
  else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
        (xord[n] < '0')||(xord[n] > '9')) 
@@ -165,12 +165,12 @@
 +#define reset(file,name,mode)   @[(file).f=fopen(name+1,mode),\
 +                             (file).f!=NULL?get(file):0@]
 +#define rewrite(file,name,mode) @[(file).f=fopen(name+1,mode)@]
-+#define close(file)    @[fclose((file).f)@]
++#define pascal_close(file)    @[fclose((file).f)@]
 +#define eof(file)    @[((file).f==NULL||feof((file).f))@]
 +#define eoln(file)    @[((file).d=='\n'||eof(file))@]
 +#define erstat(file)   @[((file).f==NULL?-1:ferror((file).f))@]
 +
-+#define read(file,x) @[((x)=(file).d,get(file))@]
++#define pascal_read(file,x) @[((x)=(file).d,get(file))@]
 +#define read_ln(file) @[do get(file); while (!eoln(file))@]
 +
 +#define write(file, format,...)    @[fprintf(file.f,format,## __VA_ARGS__)@]
@@ -762,7 +762,7 @@
    loop{@+wake_up_terminal;
    print_nl("debug # (-1 to exit):");update_terminal;
  @.debug \#@>
--  read(term_in, m);
+-  pascal_read(term_in, m);
 -  if (m < 0) return;
 +  if (fscanf(term_in.f," %d",&m)<1 ||
 +      m < 0) return;
@@ -770,7 +770,7 @@
      {@+goto breakpoint;@/ /*go to every declared label at least once*/ 
      breakpoint: m=0;/*'BREAKPOINT'*/@/
      } 
--  else{@+read(term_in, n);
+-  else{@+pascal_read(term_in, n);
 +  else{@+fscanf(term_in.f," %d",&n);
      switch (m) {
      @t\4@>@<Numbered cases for |debug_help|@>@;
@@ -779,7 +779,7 @@
  case 10: slow_print(n);@+break;
  case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
  case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
--case 13: {@+read(term_in, l);print_cmd_mod(n, l);
+-case 13: {@+pascal_read(term_in, l);print_cmd_mod(n, l);
 +case 13: {@+fscanf(term_in.f," %d",&l);print_cmd_mod(n, l);
    } @+break;
  case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;

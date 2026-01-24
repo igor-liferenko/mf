@@ -4,4 +4,6 @@ SYM_PTR("remainder")->name="rem";
 SYM_PTR("remainder")->name="rem";
 SYM_PTR("void")->name="internal_void";
 SYM_PTR("time")->name="time_of_day";
+SYM_PTR("read")->name="pascal_read";
+SYM_PTR("close")->name="pascal_close";
 @z
