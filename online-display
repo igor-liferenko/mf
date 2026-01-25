@@ -30,7 +30,7 @@ pixmap_image = QPixmap(pixmap01)
 class MyLabel(QLabel):
   def showEvent(self, event):
     super().showEvent(event)
-    QTimer.singleShot(500, lambda: print(1, end='', flush=True))
+    QTimer.singleShot(1000, lambda: print(1, end='', flush=True))
 label_imageDisplay = MyLabel()
 label_imageDisplay.setPixmap(pixmap_image)
 label_imageDisplay.showMaximized()
