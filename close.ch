@@ -62,5 +62,5 @@ return rewrite_OK(*f);
   assert(fcntl(fd, F_SETFD, flags | FD_CLOEXEC) == 0);
 }
 
-@ Appendix: Replacement of the string pool file.
+@* Index.
 @z
