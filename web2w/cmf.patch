@@ -1,4 +1,4 @@
-@@ -278,11 +278,19 @@
+@@ -278,11 +278,18 @@
  @^overflow in arithmetic@>
  
  @<Compiler directives@>=
@@ -16,14 +16,13 @@
 +
 +#define odd(X)       ((X)&1)
 +#define chr(X)       (X)
-+#define ord(X)       ((int)(X))
 +#define abs(X)       ((X)>-(X)?(X):-(X))
 +
 +@h
  
  @ This \MF\ implementation conforms to the rules of the {\sl Pascal User
  @:PASCAL}{\PASCAL@>
-@@ -496,7 +504,7 @@
+@@ -496,7 +503,7 @@
  @<Glob...@>=
  ASCII_code @!xord[256];
     /*specifies conversion of input characters*/ 
@@ -32,16 +31,16 @@
     /*specifies conversion of output characters*/ 
  
  @ Since we are assuming that our \PASCAL\ system is able to read and
-@@ -695,7 +703,7 @@
+@@ -695,7 +702,7 @@
  @^system dependencies@>
  
  @<Glob...@>=
 -uint8_t @!name_of_file0[file_name_size], *const @!name_of_file = @!name_of_file0-1;@;@/
-+uint8_t @!name_of_file0[file_name_size+1], *const @!name_of_file = @!name_of_file0-1;@;@/
++unsigned char @!name_of_file0[file_name_size+1], *const @!name_of_file = @!name_of_file0-1;@;@/
     /*on some systems this may be a \&{record} variable*/ 
  uint8_t @!name_length;@/ /*this many characters are actually
    relevant in |name_of_file| (the rest are blank)*/ 
-@@ -728,27 +736,27 @@
+@@ -728,27 +735,27 @@
  
  @p bool a_open_in(@!alpha_file *@!f)
     /*open a text file for input*/ 
@@ -74,7 +73,7 @@
  } 
  
  @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
-@@ -861,8 +869,8 @@
+@@ -861,8 +868,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
  
@@ -85,7 +84,7 @@
    /*open the terminal for text output*/ 
  
  @ Sometimes it is necessary to synchronize the input/output mixture that
-@@ -880,8 +888,8 @@
+@@ -880,8 +887,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
  
@@ -96,7 +95,7 @@
  @d wake_up_terminal	do_nothing /*cancel the user's cancellation of output*/ 
  
  @ We need a special routine to read the first line of \MF\ input from
-@@ -1026,10 +1034,11 @@
+@@ -1026,10 +1033,11 @@
  typedef uint8_t packed_ASCII_code; /*elements of |str_pool| array*/ 
  
  @ @<Glob...@>=
@@ -112,7 +111,7 @@
  pool_pointer @!init_pool_ptr; /*the starting value of |pool_ptr|*/ 
  str_number @!init_str_ptr; /*the starting value of |str_ptr|*/ 
  pool_pointer @!max_pool_ptr; /*the maximum so far of |pool_ptr|*/ 
-@@ -1253,7 +1262,7 @@
+@@ -1253,7 +1261,7 @@
    a_close(&pool_file);return false;
    } 
  @<Read the other strings...@>=
@@ -121,7 +120,7 @@
  if (a_open_in(&pool_file)) 
    {@+c=false;
    @/do@+{@<Read one string, but return |false| if the string memory space is getting
-@@ -1267,7 +1276,7 @@
+@@ -1267,7 +1275,7 @@
  @ @<Read one string...@>=
  {@+if (eof(pool_file)) bad_pool("! MF.POOL has no check sum.");
  @.MF.POOL has no check sum@>
@@ -130,7 +129,7 @@
  if (m== '*' ) @<Check the pool check sum@>@;
  else{@+if ((xord[m] < '0')||(xord[m] > '9')||@|
        (xord[n] < '0')||(xord[n] > '9')) 
-@@ -1373,12 +1382,30 @@
+@@ -1373,12 +1381,30 @@
  by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
  @^system dependencies@>
  
@@ -167,7 +166,7 @@
  
  @ To end a line of text output, we call |print_ln|.
  
-@@ -1403,7 +1430,7 @@
+@@ -1403,7 +1429,7 @@
  @<Basic printing...@>=
  void print_char(ASCII_code @!s) /*prints a single character*/ 
  {@+switch (selector) {
@@ -176,7 +175,7 @@
    incr(term_offset);incr(file_offset);
    if (term_offset==max_print_line) 
      {@+wterm_cr;term_offset=0;
-@@ -1412,10 +1439,10 @@
+@@ -1412,10 +1438,10 @@
      {@+wlog_cr;file_offset=0;
      } 
    } @+break;
@@ -189,7 +188,7 @@
    if (term_offset==max_print_line) print_ln();
    } @+break;
  case no_print: do_nothing;@+break;
-@@ -1447,6 +1474,10 @@
+@@ -1447,6 +1473,10 @@
    } 
  } 
  
@@ -200,7 +199,7 @@
  @ Sometimes it's necessary to print a string whose characters
  may not be visible ASCII codes. In that case |slow_print| is used.
  
-@@ -1470,7 +1501,7 @@
+@@ -1470,7 +1500,7 @@
  @^system dependencies@>
  
  @<Initialize the output...@>=
@@ -209,7 +208,7 @@
  if (base_ident==0) wterm_ln(" (no base preloaded)");
  else{@+slow_print(base_ident);print_ln();
    } 
-@@ -1480,10 +1511,10 @@
+@@ -1480,10 +1510,10 @@
  string appears at the beginning of a new line.
  
  @<Basic print...@>=
@@ -222,7 +221,7 @@
  } 
  
  @ An array of digits in the range |0 dotdot 9| is printed by |print_the_digs|.
-@@ -1659,8 +1690,9 @@
+@@ -1659,8 +1689,9 @@
  void clear_for_error_prompt(void);@/
  @t\4\hskip-\fontdimen2\font@>@;
  #ifdef @!DEBUG
@@ -234,7 +233,7 @@
  #endif
  @;@/
  @t\4@>@<Declare the procedure called |flush_string|@>@;
-@@ -1684,7 +1716,7 @@
+@@ -1684,7 +1715,7 @@
  @d help6	@+{@+help_ptr=6;hlp6 /*use this with six help lines*/ 
  
  @<Glob...@>=
@@ -243,7 +242,7 @@
  uint8_t @!help_ptr; /*the number of help lines present*/ 
  bool @!use_err_help; /*should the |err_help| string be shown?*/ 
  str_number @!err_help; /*a string set up by \&{errhelp}*/ 
-@@ -1704,7 +1736,7 @@
+@@ -1704,7 +1735,7 @@
  
  @<Error hand...@>=
  void jump_out(void)
@@ -252,7 +251,7 @@
  } 
  
  @ Here now is the general |error| routine.
-@@ -1844,7 +1876,7 @@
+@@ -1844,7 +1875,7 @@
  else{@+if (help_ptr==0) 
      help2("Sorry, I don't know how to help in this situation.")@/
      @t\kern1em@>("Maybe you should try asking a human?");
@@ -261,7 +260,7 @@
    }@+ while (!(help_ptr==0));
    } 
  help4("Sorry, I already gave what help I could...")@/
-@@ -1894,16 +1926,12 @@
+@@ -1894,16 +1925,12 @@
  @d succumb	{@+if (interaction==error_stop_mode) 
      interaction=scroll_mode; /*no more interaction*/ 
    if (log_opened) error();
@@ -280,7 +279,7 @@
  {@+normalize_selector();@/
  print_err("Emergency stop");help1(s);succumb;
  @.Emergency stop@>
-@@ -1912,11 +1940,11 @@
+@@ -1912,11 +1939,11 @@
  @ Here is the most dreaded error message.
  
  @<Error hand...@>=
@@ -294,7 +293,7 @@
  help2("If you really absolutely need more capacity,")@/
    ("you can ask a wizard to enlarge me.");
  succumb;
-@@ -3266,7 +3294,14 @@
+@@ -3266,7 +3293,14 @@
  
  @<Glob...@>=
  int @!var_used, @!dyn_used; /*how much memory is in use*/ 
@@ -310,7 +309,7 @@
  @ Let's consider the one-word memory region first, since it's the
  simplest. The pointer variable |mem_end| holds the highest-numbered location
  of |mem| that has ever been used. The free locations of |mem| that
-@@ -3311,10 +3346,7 @@
+@@ -3311,10 +3345,7 @@
      } 
    } 
  link(p)=null; /*provide an oft-desired initialization of the new node*/ 
@@ -322,7 +321,7 @@
  return p;
  } 
  
-@@ -3322,10 +3354,7 @@
+@@ -3322,10 +3353,7 @@
  
  @d free_avail(X)	 /*single-word node liberation*/ 
    {@+link(X)=avail;avail=X;
@@ -334,7 +333,7 @@
    } 
  
  @ There's also a |fast_get_avail| routine, which saves the procedure-call
-@@ -3337,10 +3366,7 @@
+@@ -3337,10 +3365,7 @@
    {@+X=avail; /*avoid |get_avail| if possible, to save time*/ 
    if (X==null) X=get_avail();
    else{@+avail=link(X);link(X)=null;
@@ -346,7 +345,7 @@
      } 
    } 
  
-@@ -3562,9 +3588,7 @@
+@@ -3562,9 +3587,7 @@
  if (p >= hi_mem_min) if (p!=sentinel) 
    {@+r=p;
    @/do@+{q=r;r=link(r);
@@ -357,7 +356,7 @@
    if (r < hi_mem_min) goto done;
    }@+ while (!(r==sentinel));
    done:  /*now |q| is the last node on the list*/ 
-@@ -4337,7 +4361,7 @@
+@@ -4337,7 +4360,7 @@
  @<Basic printing...@>=
  void print_diagnostic(str_number @!s, str_number @!t, bool @!nuline)
  {@+begin_diagnostic();
@@ -366,7 +365,7 @@
  print_str(" at line ");print_int(line);
  print(t);print_char(':');
  } 
-@@ -4398,7 +4422,7 @@
+@@ -4398,7 +4421,7 @@
  char_class['?']=14;@/
  char_class['#']=15;
  char_class['&']=15;
@@ -375,7 +374,7 @@
  char_class['$']=15;@/
  char_class['^']=16;
  char_class['~']=16;@/
-@@ -8564,7 +8588,7 @@
+@@ -8564,7 +8587,7 @@
  }@+ while (!(p==f));
  print_char(' ');print_int(left_type(p)-1);
  if (q!=null) @<Print the turns...@>;
@@ -384,7 +383,7 @@
  } 
  
  @ If the segment numbers on the cycle are $t_1$, $t_2$, \dots, $t_m$,
-@@ -12166,8 +12190,8 @@
+@@ -12166,8 +12189,8 @@
  @/
  #ifdef @!INIT
  wlog_cr; /*this will be done only after |init_screen==true|*/ 
@@ -395,7 +394,7 @@
  #endif
  } 
  
-@@ -12200,12 +12224,12 @@
+@@ -12200,12 +12223,12 @@
  #endif
  @/
  #ifdef @!INIT
@@ -411,7 +410,7 @@
  #endif
  } 
  
-@@ -12385,7 +12409,7 @@
+@@ -12385,7 +12408,7 @@
  unsorted(p)=internal_void; /*this time we'll paint, but maybe not next time*/ 
  @<Set up the parameters needed for |paint_row|; but |goto done| if no painting is
  needed after all@>;
@@ -420,7 +419,7 @@
  done: ;} 
  
  @ The transition-specification parameter to |paint_row| is always the same
-@@ -14359,7 +14383,7 @@
+@@ -14359,7 +14382,7 @@
  @!@:quote_}{\&{quote} primitive@>
  primitive(@[@<|"#@@"|@>@], macro_special, macro_prefix);@/
  @!@:]]]\#\AT!_}{\.{\#\AT!} primitive@>
@@ -429,7 +428,7 @@
  @!@:]]]\AT!_}{\.{\AT!} primitive@>
  primitive(@[@<|"@@#"|@>@], macro_special, macro_suffix);@/
  @!@:]]]\AT!\#_}{\.{\AT!\#} primitive@>
-@@ -14367,7 +14391,7 @@
+@@ -14367,7 +14390,7 @@
  @ @<Cases of |print_cmd...@>=
  case macro_special: switch (m) {
    case macro_prefix: print_str("#@@");@+break;
@@ -438,7 +437,7 @@
    case macro_suffix: print_str("@@#");@+break;
    default:print_str("quote");
    } @+break;
-@@ -15594,8 +15618,6 @@
+@@ -15594,8 +15617,6 @@
  system area called |MF_area|.
  This system area name will, of course, vary from place to place.
  @^system dependencies@>
@@ -447,7 +446,7 @@
  @.MFinputs@>
  
  @ Here now is the first of the system-dependent routines for file name scanning.
-@@ -15670,7 +15692,7 @@
+@@ -15670,7 +15691,7 @@
  for (j=str_start[n]; j<=str_start[n+1]-1; j++) append_to_name(so(str_pool[j]));
  for (j=str_start[e]; j<=str_start[e+1]-1; j++) append_to_name(so(str_pool[j]));
  if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
@@ -456,7 +455,7 @@
  } 
  
  @ A messier routine is also needed, since base file names must be scanned
-@@ -15682,13 +15704,13 @@
+@@ -15682,13 +15703,13 @@
  @d base_default_length	18 /*length of the |MF_base_default| string*/ 
  @d base_area_length	8 /*length of its area part*/ 
  @d base_ext_length	5 /*length of its `\.{.base}' part*/ 
@@ -465,7 +464,7 @@
  
  @<Glob...@>=
 -uint8_t @!MF_base_default0[base_default_length], *const @!MF_base_default = @!MF_base_default0-1;
-+uint8_t @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
++unsigned char @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
  
  @ @<Set init...@>=
 -MF_base_default="MFbases:plain.base";
@@ -473,7 +472,7 @@
  @.MFbases@>
  @.plain@>
  @^system dependencies@>
-@@ -15719,7 +15741,7 @@
+@@ -15719,7 +15740,7 @@
  for (j=base_default_length-base_ext_length+1; j<=base_default_length; j++) 
    append_to_name(xord[MF_base_default[j]]);
  if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
@@ -482,7 +481,7 @@
  } 
  
  @ Here is the only place we use |pack_buffered_name|. This part of the program
-@@ -15743,7 +15765,7 @@
+@@ -15743,7 +15764,7 @@
       /*now try the system base file area*/ 
    if (w_open_in(&base_file)) goto found;
    wake_up_terminal;
@@ -491,7 +490,7 @@
  @.Sorry, I can't find...@>
    update_terminal;
    } 
-@@ -15856,17 +15878,17 @@
+@@ -15856,17 +15877,17 @@
  variables |cur_name|, |cur_area|, |cur_ext|, and |name_of_file| are
  ready for another attempt at file opening.
  
@@ -512,16 +511,16 @@
  @.Please type...@>
  if (interaction < scroll_mode) 
    fatal_error("*** (job aborted, file error in nonstop mode)");
-@@ -15894,7 +15916,7 @@
+@@ -15894,7 +15915,7 @@
  int @!k; /*index into |months| and |buffer|*/ 
  uint16_t @!l; /*end of first input line*/ 
  int @!m; /*the current month*/ 
 -uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
-+uint8_t @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
++unsigned char @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
  old_setting=selector;
  if (job_name==0) job_name=@[@<|"mfput"|@>@];
  @.mfput@>
-@@ -15932,11 +15954,11 @@
+@@ -15932,11 +15953,11 @@
  } 
  
  @ @<Print the banner...@>=
@@ -536,7 +535,7 @@
  print_char(' ');print_int(sys_year);print_char(' ');
  print_dd(sys_time/60);print_char(':');print_dd(sys_time%60);
  } 
-@@ -16666,7 +16688,7 @@
+@@ -16666,7 +16687,7 @@
  
  @p void bad_exp(str_number @!s)
  {@+uint8_t save_flag;
@@ -545,7 +544,7 @@
  print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
  help4("I'm afraid I need some sort of value in order to continue,")@/
    ("so I've tentatively inserted `0'. You may want to")@/
-@@ -17446,7 +17468,7 @@
+@@ -17446,7 +17467,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -554,7 +553,7 @@
    put_get_flush_error(0);cur_x=0;cur_y=0;
    } 
  else{@+p=value(cur_exp);
-@@ -17466,7 +17488,7 @@
+@@ -17466,7 +17487,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -563,7 +562,7 @@
    put_get_error();recycle_value(x_part_loc(p));cur_x=0;
    } 
  if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
-@@ -17476,7 +17498,7 @@
+@@ -17476,7 +17497,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -572,7 +571,7 @@
    put_get_error();recycle_value(y_part_loc(p));cur_y=0;
    } 
  
-@@ -17551,7 +17573,7 @@
+@@ -17551,7 +17572,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
@@ -581,7 +580,7 @@
    put_get_flush_error(0);
    } 
  x=cur_exp;
-@@ -17569,7 +17591,7 @@
+@@ -17569,7 +17590,7 @@
      ("The value I found (see above) was no good;")@/
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
@@ -590,7 +589,7 @@
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
-@@ -21572,7 +21594,7 @@
+@@ -21572,7 +21593,7 @@
  
  @p void fix_check_sum(void)
  {@+
@@ -599,7 +598,7 @@
  eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
  int @!x; /*hash value used in check sum computation*/ 
  if (header_byte[1] < 0) if (header_byte[2] < 0) 
-@@ -21597,7 +21619,7 @@
+@@ -21597,7 +21618,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
  
@@ -608,7 +607,7 @@
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
  {@+tfm_out(x/256);tfm_out(x%256);
-@@ -21756,14 +21778,14 @@
+@@ -21756,14 +21777,14 @@
    } 
  
  @ @<Log the subfile sizes of the \.{TFM} file@>=
@@ -630,7 +629,7 @@
  } 
  
  @* Generic font file format.
-@@ -22151,7 +22173,7 @@
+@@ -22151,7 +22172,7 @@
  @<Declare generic font output procedures@>=
  void write_gf(gf_index @!a, gf_index @!b)
  {@+int k;
@@ -639,7 +638,7 @@
  } 
  
  @ To put a byte in the buffer without paying the cost of invoking a procedure
-@@ -22563,7 +22585,7 @@
+@@ -22563,7 +22584,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
  @d too_small(X)	{@+wake_up_terminal;
@@ -648,7 +647,7 @@
  @.Must increase the x@>
    goto off_base;
    } 
-@@ -22869,14 +22891,14 @@
+@@ -22869,14 +22890,14 @@
  if (ready_already==314159) goto start_of_MF;
  @<Check the ``constant'' values...@>@;
  if (bad > 0) 
@@ -666,7 +665,7 @@
  init_tab(); /*initialize the tables*/ 
  init_prim(); /*call |primitive| for each primitive*/ 
  init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
-@@ -22891,7 +22913,7 @@
+@@ -22891,7 +22912,7 @@
    } 
  main_control(); /*come to life*/ 
  final_cleanup(); /*prepare for death*/ 
@@ -675,7 +674,7 @@
  ready_already=0;
  return 0; }
  
-@@ -22965,28 +22987,28 @@
+@@ -22965,28 +22986,28 @@
  
  @<Output statistics...@>=
  if (log_opened) 
@@ -725,7 +724,7 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23102,13 +23124,13 @@
+@@ -23102,13 +23123,13 @@
    loop{@+wake_up_terminal;
    print_nl("debug # (-1 to exit):");update_terminal;
  @.debug \#@>
@@ -742,7 +741,7 @@
      switch (m) {
      @t\4@>@<Numbered cases for |debug_help|@>@;
      default:print_str("?");
-@@ -23131,7 +23153,7 @@
+@@ -23131,7 +23152,7 @@
  case 10: slow_print(n);@+break;
  case 11: check_mem(n > 0);@+break; /*check wellformedness; print new busy locations if |n > 0|*/ 
  case 12: search_mem(n);@+break; /*look for pointers to |n|*/ 
@@ -751,7 +750,7 @@
    } @+break;
  case 14: for (k=0; k<=n; k++) print(buffer[k]);@+break;
  case 15: panicking=!panicking;@+break;
-@@ -23824,7 +23846,7 @@
+@@ -23824,7 +23845,7 @@
  @d str_464 "final value"
  @<|"final value"|@>=@+464
  @ 
