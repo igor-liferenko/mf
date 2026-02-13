@@ -28,8 +28,6 @@ char *screen_prog, *screen_name = "online-display";
 @y
 @p bool init_screen(void)
 {
-  if (!getenv("screen_size")) return false;
-
   assert((shm_fd = shm_open("/metafont", O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR)) != -1);
   assert(shm_unlink("/metafont") != -1);
 
@@ -178,7 +176,7 @@ screen_col *row_transition;
 initialize(); /*set global variables to their starting values*/
 @y
 initialize(); /*set global variables to their starting values*/
-if (getenv("screen_size")) {
+if (getenv("screen_size")) { // for inimf
   sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
   assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
   assert(screen_prog = (char *) calloc(base_area_length + strlen(screen_name), sizeof (char)));
