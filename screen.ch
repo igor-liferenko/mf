@@ -176,7 +176,7 @@ screen_col *row_transition;
 initialize(); /*set global variables to their starting values*/
 @y
 initialize(); /*set global variables to their starting values*/
-#ifdef INIT
+#ifndef INIT
 sscanf(getenv("screen_size"), "%dx%d", &screen_width, &screen_depth);
 assert(row_transition = (screen_col *) malloc((screen_width + 1) * sizeof (screen_col)));
 assert(screen_prog = (char *) calloc(base_area_length + strlen(screen_name), sizeof (char)));
