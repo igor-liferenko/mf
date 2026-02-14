@@ -1,7 +1,7 @@
 all:
 	make -C web2w
 	cp web2w/cmf.w mf.w
-	tie -c mf.ch mf.w $(CHF) constants.ch screen.ch paper+origin.ch >/dev/null
+	tie -c mf.ch mf.w $(CHF) constants.ch screen.ch >/dev/null
 	ctangle mf mf
 	gcc -DINIT mf.c -o inimf -lrt
 	@./inimf 'plain; input local; dump' >/dev/null && mv plain.base MFbases/
@@ -15,4 +15,4 @@ trapmf:
 	ctangle mf mf
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
-CHF=charset.ch path.ch interrupt.ch arg.ch print.ch preload.ch time.ch log.ch edit.ch exit.ch close.ch 64bit.ch
+CHF=charset.ch path.ch interrupt.ch arg.ch print.ch preload.ch time.ch log.ch edit.ch comment.ch exit.ch close.ch 64bit.ch
