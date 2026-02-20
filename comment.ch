@@ -1,1 +1,12 @@
-TODO: if environment variable 'comment' is set, append its value to GF file comment
+If environment variable 'comment' is set, append its value to GF comment.
+
+@x
+print_dd(t/60);print_dd(t%60);@/
+@y
+print_dd(t/60);print_dd(t%60);@/
+char *comment = getenv("comment");
+if (comment && cur_length+1+strlen(comment) <= 255) {
+  print_char(' ');
+  print_str(comment);
+}
+@z
