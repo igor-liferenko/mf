@@ -422,13 +422,13 @@
  {@+
  uint16_t @!k; /*index into |buffer|*/ 
  if (interaction==scroll_mode) wake_up_terminal;
--if (s==@<"input file name"@>) print_err("I can't find file `")@;
+-if (s==@[@<|"input file name"|@>@]) print_err("I can't find file `")@;
 +if (strcmp(s,"input file name")==0) print_err("I can't find file `")
  @.I can't find file x@>
  else print_err("I can't write on file `");
  @.I can't write on file x@>
  print_file_name(cur_name, cur_area, cur_ext);print_str("'.");
- if (e==@<".mf"@>) show_context();
+ if (e==@[@<|".mf"|@>@]) show_context();
 -print_nl("Please type another ");print(s);
 +print_nl("Please type another ");print_str(s);
  @.Please type...@>
@@ -441,7 +441,7 @@
 -uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
 +unsigned char @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
  old_setting=selector;
- if (job_name==0) job_name=@<"mfput"@>;
+ if (job_name==0) job_name=@[@<|"mfput"|@>@];
  @.mfput@>
 @@ -15932,11 +15962,11 @@
  } 
@@ -467,51 +467,6 @@
  print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
  help4("I'm afraid I need some sort of value in order to continue,")@/
    ("so I've tentatively inserted `0'. You may want to")@/
-@@ -17446,7 +17476,7 @@
-     ("so I'll try to keep going by using zero instead.")@/
-     ("(Chapter 27 of The METAFONTbook explains that")@/
- @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
--    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ???' now.)");
-   put_get_flush_error(0);cur_x=0;cur_y=0;
-   } 
- else{@+p=value(cur_exp);
-@@ -17466,7 +17496,7 @@
-     ("so I'll try to keep going by using zero instead.")@/
-     ("(Chapter 27 of The METAFONTbook explains that")@/
- @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
--    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ???' now.)");
-   put_get_error();recycle_value(x_part_loc(p));cur_x=0;
-   } 
- if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
-@@ -17476,7 +17506,7 @@
-     ("The value I found (see above) was no good;")@/
-     ("so I'll try to keep going by using zero instead.")@/
-     ("(Chapter 27 of The METAFONTbook explains that")@/
--    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ???' now.)");
-   put_get_error();recycle_value(y_part_loc(p));cur_y=0;
-   } 
- 
-@@ -17551,7 +17581,7 @@
-     ("so I'll try to keep going by using zero instead.")@/
-     ("(Chapter 27 of The METAFONTbook explains that")@/
- @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
--    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ???' now.)");
-   put_get_flush_error(0);
-   } 
- x=cur_exp;
-@@ -17569,7 +17599,7 @@
-     ("The value I found (see above) was no good;")@/
-     ("so I'll try to keep going by using zero instead.")@/
-     ("(Chapter 27 of The METAFONTbook explains that")@/
--    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ???' now.)");
-   put_get_flush_error(0);
-   } 
- cur_y=cur_exp;cur_x=x;
 @@ -21572,7 +21602,7 @@
  
  @p void fix_check_sum(void)
@@ -640,7 +595,7 @@
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
 @@ -23821,7 +23851,7 @@
  @d str_463 "final value"
- @<"final value"@>=463
+ @<|"final value"|@>=@+463
  @ 
 -@d str_464 "MFinputs:"
 +@d str_464 "MFinputs/"
