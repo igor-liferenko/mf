@@ -45,7 +45,7 @@
 +unsigned char name_of_file0[file_name_size+1], *const name_of_file = name_of_file0-1;
     /*on some systems this may be a \&{record} variable*/ 
 -uint8_t @!name_length;@/ /*this many characters are actually
-+uint16_t name_length; /*this many characters are actually
++uint8_t @!name_length;@/ /*this many characters are actually
    relevant in |name_of_file| (the rest are blank)*/ 
  
  @ The \ph\ compiler with which the present version of \MF\ was prepared has
@@ -358,15 +358,6 @@
  @.MFinputs@>
  
  @ Here now is the first of the system-dependent routines for file name scanning.
-@@ -15610,7 +15634,7 @@
- 
- @p bool more_name(ASCII_code @!c)
- {@+if (c==' ') return false;
--else{@+if ((c=='>')||(c==':')) 
-+else{@+if (c=='/')
-     {@+area_delimiter=pool_ptr;ext_delimiter=0;
-     } 
-   else if ((c=='.')&&(ext_delimiter==0)) ext_delimiter=pool_ptr;
 @@ -15670,7 +15694,7 @@
  for (j=str_start[n]; j<=str_start[n+1]-1; j++) append_to_name(so(str_pool[j]));
  for (j=str_start[e]; j<=str_start[e+1]-1; j++) append_to_name(so(str_pool[j]));
@@ -590,12 +581,3 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23821,7 +23844,7 @@
- @d str_463 "final value"
- @<|"final value"|@>=@+463
- @ 
--@d str_464 "MFinputs:"
-+@d str_464 "MFinputs/"
- @d MF_area 464
- @ 
- @d str_465 ".base"
