@@ -440,6 +440,27 @@
  @.Sorry, I can't find...@>
    update_terminal;
    } 
+@@ -15856,17 +15886,17 @@
+ variables |cur_name|, |cur_area|, |cur_ext|, and |name_of_file| are
+ ready for another attempt at file opening.
+ 
+-@p void prompt_file_name(str_number @!s, str_number @!e)
++@p void prompt_file_name(char *s, str_number e)
+ {@+
+ uint16_t @!k; /*index into |buffer|*/ 
+ if (interaction==scroll_mode) wake_up_terminal;
+-if (s==@[@<|"input file name"|@>@]) print_err("I can't find file `")@;
++if (strcmp(s,"input file name")==0) print_err("I can't find file `")
+ @.I can't find file x@>
+ else print_err("I can't write on file `");
+ @.I can't write on file x@>
+ print_file_name(cur_name, cur_area, cur_ext);print_str("'.");
+ if (e==@[@<|".mf"|@>@]) show_context();
+-print_nl("Please type another ");print(s);
++print_nl("Please type another ");print_str(s);
+ @.Please type...@>
+ if (interaction < scroll_mode) 
+   fatal_error("*** (job aborted, file error in nonstop mode)");
 @@ -15894,7 +15924,7 @@
  int @!k; /*index into |months| and |buffer|*/ 
  uint16_t @!l; /*end of first input line*/ 
@@ -464,20 +485,6 @@
  print_char(' ');print_int(sys_year);print_char(' ');
  print_dd(sys_time/60);print_char(':');print_dd(sys_time%60);
  } 
-@@ -15945,11 +15975,11 @@
- We shall use the macro |set_output_file_name| when it is time to
- crank up the output file.
- 
--@d set_output_file_name	
-+@d set_output_file_name(X)
-   {@+if (job_name==0) open_log_file();
-   pack_job_name(gf_ext);
-   while (!b_open_out(&gf_file)) 
--    prompt_file_name(@[@<|"file name for output"|@>@], gf_ext);
-+    prompt_file_name(X, gf_ext);
-   output_file_name=b_make_name_string(&gf_file);
-   } 
- 
 @@ -16666,7 +16696,7 @@
  
  @p void bad_exp(str_number @!s)
@@ -532,6 +539,15 @@
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
+@@ -21572,7 +21602,7 @@
+ 
+ @p void fix_check_sum(void)
+ {@+
+-eight_bits @!k; /*runs through character codes*/ 
++uint16_t k; /* uint8_t -> uint16_t to avoid overflow (256) */
+ eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
+ int @!x; /*hash value used in check sum computation*/ 
+ if (header_byte[1] < 0) if (header_byte[2] < 0) 
 @@ -21597,7 +21627,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
@@ -572,15 +588,6 @@
  } 
  
  @ To put a byte in the buffer without paying the cost of invoking a procedure
-@@ -22274,7 +22304,7 @@
- gf_min_m=4096;gf_max_m=-4096;gf_min_n=4096;gf_max_n=-4096;
- for (k=0; k<=255; k++) char_ptr[k]=-1;
- @<Determine the file extension, |gf_ext|@>;
--set_output_file_name;
-+set_output_file_name(@<|"file name for output"|@>);
- gf_out(pre);gf_out(gf_id_byte); /*begin to output the preamble*/ 
- old_setting=selector;selector=new_string;print_str(" METAFONT output ");
- print_int(round_unscaled(internal[year]));print_char('.');
 @@ -22563,7 +22593,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
