@@ -640,7 +640,7 @@
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
 @@ -23821,7 +23851,7 @@
  @d str_463 "final value"
- @<|"final value"|@>=@+463
+ @<"final value"@>=463
  @ 
 -@d str_464 "MFinputs:"
 +@d str_464 "MFinputs/"
