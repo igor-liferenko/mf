@@ -472,7 +472,7 @@
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
 -    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ?\?\?' now.)");
++    ("you might want to type `I ???' now.)");
    put_get_flush_error(0);cur_x=0;cur_y=0;
    } 
  else{@+p=value(cur_exp);
@@ -481,7 +481,7 @@
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
 -    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ?\?\?' now.)");
++    ("you might want to type `I ???' now.)");
    put_get_error();recycle_value(x_part_loc(p));cur_x=0;
    } 
  if (type(y_part_loc(p))==known) cur_y=value(y_part_loc(p));
@@ -490,7 +490,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
 -    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ?\?\?' now.)");
++    ("you might want to type `I ???' now.)");
    put_get_error();recycle_value(y_part_loc(p));cur_y=0;
    } 
  
@@ -499,7 +499,7 @@
      ("(Chapter 27 of The METAFONTbook explains that")@/
  @:METAFONTbook}{\sl The {\logos METAFONT\/}book@>
 -    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ?\?\?' now.)");
++    ("you might want to type `I ???' now.)");
    put_get_flush_error(0);
    } 
  x=cur_exp;
@@ -508,7 +508,7 @@
      ("so I'll try to keep going by using zero instead.")@/
      ("(Chapter 27 of The METAFONTbook explains that")@/
 -    ("you might want to type `I ???' now.)");
-+    ("you might want to type `I ?\?\?' now.)");
++    ("you might want to type `I ???' now.)");
    put_get_flush_error(0);
    } 
  cur_y=cur_exp;cur_x=x;
