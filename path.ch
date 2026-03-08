@@ -13,7 +13,7 @@ strcpy(MF_base_default+1, "/home/user/mf/MFbases/plain.base");
 @z
 
 @x
-@d str_464 "MFinputs/"
+@d str_741 "MFinputs/"
 @y
-@d str_464 "/home/user/mf/MFinputs/"
+@d str_741 "/home/user/mf/MFinputs/"
 @z

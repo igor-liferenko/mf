@@ -37,18 +37,15 @@
     /*specifies conversion of output characters*/ 
  
  @ Since we are assuming that our \PASCAL\ system is able to read and
-@@ -695,9 +718,9 @@
+@@ -695,7 +718,7 @@
  @^system dependencies@>
  
  @<Glob...@>=
 -uint8_t @!name_of_file0[file_name_size], *const @!name_of_file = @!name_of_file0-1;@;@/
 +unsigned char name_of_file0[file_name_size+1], *const name_of_file = name_of_file0-1;
     /*on some systems this may be a \&{record} variable*/ 
--uint8_t @!name_length;@/ /*this many characters are actually
-+uint8_t @!name_length;@/ /*this many characters are actually
+ uint8_t @!name_length;@/ /*this many characters are actually
    relevant in |name_of_file| (the rest are blank)*/ 
- 
- @ The \ph\ compiler with which the present version of \MF\ was prepared has
 @@ -728,27 +751,27 @@
  
  @p bool a_open_in(@!alpha_file *@!f)
@@ -220,15 +217,6 @@
  } 
  
  @ Here now is the general |error| routine.
-@@ -1844,7 +1869,7 @@
- else{@+if (help_ptr==0) 
-     help2("Sorry, I don't know how to help in this situation.")@/
-     @t\kern1em@>("Maybe you should try asking a human?");
--  @/do@+{decr(help_ptr);print(help_line[help_ptr]);print_ln();
-+  @/do@+{decr(help_ptr);print_str(help_line[help_ptr]);print_ln();
-   }@+ while (!(help_ptr==0));
-   } 
- help4("Sorry, I already gave what help I could...")@/
 @@ -1895,15 +1920,12 @@
      interaction=scroll_mode; /*no more interaction*/ 
    if (log_opened) error();
@@ -244,22 +232,8 @@
 -void fatal_error(str_number @!s) /*prints |s|, and that's it*/ 
 +void fatal_error(char *@!s) /*prints |s|, and that's it*/
  {@+normalize_selector();@/
- print_err("Emergency stop");help1(s);succumb;
+ print_err(@[@<|"Emergency stop"|@>@]);help1(s);succumb;
  @.Emergency stop@>
-@@ -1912,11 +1934,11 @@
- @ Here is the most dreaded error message.
- 
- @<Error hand...@>=
--void overflow(str_number @!s, int @!n) /*stop due to finiteness*/ 
-+void overflow(char *@!s, int @!n) /*stop due to finiteness*/
- {@+normalize_selector();
- print_err("METAFONT capacity exceeded, sorry [");
- @.METAFONT capacity exceeded ...@>
--print(s);print_char('=');print_int(n);print_char(']');
-+print_str(s);print_char('=');print_int(n);print_char(']');
- help2("If you really absolutely need more capacity,")@/
-   ("you can ask a wizard to enlarge me.");
- succumb;
 @@ -3266,6 +3288,13 @@
  
  @<Glob...@>=
@@ -296,15 +270,6 @@
      } 
    } 
  
-@@ -4337,7 +4362,7 @@
- @<Basic printing...@>=
- void print_diagnostic(str_number @!s, str_number @!t, bool @!nuline)
- {@+begin_diagnostic();
--if (nuline) print_nl(s);@+else print(s);
-+if (nuline) print_nl(""); print(s);
- print_str(" at line ");print_int(line);
- print(t);print_char(':');
- } 
 @@ -8564,7 +8589,7 @@
  }@+ while (!(p==f));
  print_char(' ');print_int(left_type(p)-1);
@@ -401,27 +366,6 @@
  @.Sorry, I can't find...@>
    update_terminal;
    } 
-@@ -15856,17 +15879,17 @@
- variables |cur_name|, |cur_area|, |cur_ext|, and |name_of_file| are
- ready for another attempt at file opening.
- 
--@p void prompt_file_name(str_number @!s, str_number @!e)
-+@p void prompt_file_name(char *s, str_number e)
- {@+
- uint16_t @!k; /*index into |buffer|*/ 
- if (interaction==scroll_mode) wake_up_terminal;
--if (s==@[@<|"input file name"|@>@]) print_err("I can't find file `")@;
-+if (strcmp(s,"input file name")==0) print_err("I can't find file `")
- @.I can't find file x@>
- else print_err("I can't write on file `");
- @.I can't write on file x@>
- print_file_name(cur_name, cur_area, cur_ext);print_str("'.");
- if (e==@[@<|".mf"|@>@]) show_context();
--print_nl("Please type another ");print(s);
-+print_nl("Please type another ");print_str(s);
- @.Please type...@>
- if (interaction < scroll_mode) 
-   fatal_error("*** (job aborted, file error in nonstop mode)");
 @@ -15894,7 +15917,7 @@
  int @!k; /*index into |months| and |buffer|*/ 
  uint16_t @!l; /*end of first input line*/ 
@@ -437,7 +381,7 @@
  @ @<Print the banner...@>=
 -{@+wlog(banner);
 +{@+wlog("%s",banner);
- slow_print(base_ident);print_str("  ");
+ slow_print(base_ident);print(@[@<|"  "|@>@]);
  print_int(sys_day);print_char(' ');
 -months="JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 -for (k=3*sys_month-2; k<=3*sys_month; k++) wlog(months[k]);
@@ -446,15 +390,6 @@
  print_char(' ');print_int(sys_year);print_char(' ');
  print_dd(sys_time/60);print_char(':');print_dd(sys_time%60);
  } 
-@@ -16666,7 +16689,7 @@
- 
- @p void bad_exp(str_number @!s)
- {@+uint8_t save_flag;
--print_err(s);print_str(" expression can't begin with `");
-+print_nl("! ");print(s);print_str(" expression can't begin with `");
- print_cmd_mod(cur_cmd, cur_mod);print_char('\'');
- help4("I'm afraid I need some sort of value in order to continue,")@/
-   ("so I've tentatively inserted `0'. You may want to")@/
 @@ -21572,7 +21595,7 @@
  
  @p void fix_check_sum(void)
