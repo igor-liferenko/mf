@@ -1,12 +1,12 @@
 If environment variable 'comment' is set, append its value to GF comment.
 
- @x
+@x
 print_dd(t/60);print_dd(t%60);@/
- @y
+@y
 print_dd(t/60);print_dd(t%60);@/
 char *comment = getenv("comment");
 if (comment && cur_length+1+strlen(comment) <= 255) {
   print_char(' ');
-  print_str(comment);
+  while (*comment!=0) print_char(*comment++);
 }
- @z
+@z
