@@ -534,3 +534,39 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
+@@ -23206,7 +23226,7 @@
+ @d str_258 "number of strings"
+ @<|"number of strings"|@>=@+258
+ @ 
+-@d str_259 "???"
++@d str_259 "?\?\?"
+ @<|"???"|@>=@+259
+ @ 
+ @d str_260 "End of file on the terminal!"
+@@ -24373,7 +24393,7 @@
+ @d str_647 "I've deleted the partial string; you might want to"
+ @<|"I've deleted the partial string; you might want to"|@>=@+647
+ @ 
+-@d str_648 "insert another by typing, e.g., `I""new string""'."
++@d str_648 "insert another by typing, e.g., `I\"new string\"'."
+ @<|"insert another by typing, e.g., `I""new string""'."|@>=@+648
+ @ 
+ @d str_649 "Enormous number has been reduced"
+@@ -24877,7 +24897,7 @@
+ @d str_815 "(Chapter 27 of The METAFONTbook explains that"
+ @<|"(Chapter 27 of The METAFONTbook explains that"|@>=@+815
+ @ 
+-@d str_816 "you might want to type `I ???' now.)"
++@d str_816 "you might want to type `I ?\?\?' now.)"
+ @<|"you might want to type `I ???' now.)"|@>=@+816
+ @ 
+ @d str_817 "Undefined x coordinate has been replaced by 0"
+@@ -25342,7 +25362,7 @@
+ @d str_970 " is the wrong type ("
+ @<|" is the wrong type ("|@>=@+970
+ @ 
+-@d str_971 "I was looking for a ""known"" picture variable."
++@d str_971 "I was looking for a \"known\" picture variable."
+ @<|"I was looking for a ""known"" picture variable."|@>=@+971
+ @ 
+ @d str_972 "So I'll not change anything just now."
