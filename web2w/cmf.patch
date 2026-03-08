@@ -534,15 +534,6 @@
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
-@@ -23206,7 +23226,7 @@
- @d str_258 "number of strings"
- @<|"number of strings"|@>=@+258
- @ 
--@d str_259 "???"
-+@d str_259 "?\?\?"
- @<|"???"|@>=@+259
- @ 
- @d str_260 "End of file on the terminal!"
 @@ -24373,7 +24393,7 @@
  @d str_647 "I've deleted the partial string; you might want to"
  @<|"I've deleted the partial string; you might want to"|@>=@+647
@@ -557,7 +548,7 @@
  @<|"(Chapter 27 of The METAFONTbook explains that"|@>=@+815
  @ 
 -@d str_816 "you might want to type `I ???' now.)"
-+@d str_816 "you might want to type `I ?\?\?' now.)"
++@d str_816 "you might want to type `I ??\?' now.)"
  @<|"you might want to type `I ???' now.)"|@>=@+816
  @ 
  @d str_817 "Undefined x coordinate has been replaced by 0"
