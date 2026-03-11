@@ -15,4 +15,4 @@ trapmf:
 	ctangle mf mf
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
-CHF=charset.ch PATH.ch interrupt.ch arg.ch print.ch preload.ch time.ch log.ch edit.ch exit.ch close.ch 64bit.ch
+CHF=charset.ch file.ch interrupt.ch arg.ch print.ch preload.ch time.ch log.ch edit.ch exit.ch close.ch 64bit.ch
