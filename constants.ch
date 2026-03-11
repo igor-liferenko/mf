@@ -7,6 +7,12 @@ enum {@+@!mem_max=mem_top@+};
 @z
 
 @x
+enum {@+@!max_strings=2000@+}; /*maximum number of strings; must not exceed |max_halfword|*/ 
+@y
+enum {@+@!max_strings=3000@+}; /*maximum number of strings; must not exceed |max_halfword|*/ 
+@z
+
+@x
 enum {@+@!file_name_size=40@+}; /*file names shouldn't be longer than this*/
 @y
 enum {@+@!file_name_size=256@+}; /*file names shouldn't be longer than this*/
@@ -18,4 +24,10 @@ enum {@+@!file_name_size=256@+}; /*file names shouldn't be longer than this*/
   and not greater than |mem_max|*/ 
 @y
 @d mem_top	4999999
+@z
+
+@x
+uint8_t @!name_length;@/ /*this many characters are actually
+@y
+uint16_t name_length; /*this many characters are actually
 @z
