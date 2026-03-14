@@ -25,9 +25,3 @@ enum {@+@!file_name_size=256@+}; /*file names shouldn't be longer than this*/
 @y
 @d mem_top	4999999
 @z
-
-@x
-uint8_t @!name_length;@/ /*this many characters are actually
-@y
-uint16_t name_length; /*this many characters are actually
-@z

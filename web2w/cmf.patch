@@ -117,15 +117,6 @@
  pool_pointer @!init_pool_ptr; /*the starting value of |pool_ptr|*/ 
  str_number @!init_str_ptr; /*the starting value of |str_ptr|*/ 
  pool_pointer @!max_pool_ptr; /*the maximum so far of |pool_ptr|*/ 
-@@ -1064,7 +1088,7 @@
- @d str_room(X)	 /*make sure that the pool hasn't overflowed*/ 
-   {@+if (pool_ptr+X > max_pool_ptr) 
-     {@+if (pool_ptr+X > pool_size) 
--      overflow(@[@<|"pool size"|@>@], pool_size-init_pool_ptr);
-+      overflow(257, pool_size-init_pool_ptr);
- @:METAFONT capacity exceeded pool size}{\quad pool size@>
-     max_pool_ptr=pool_ptr+X;
-     } 
 @@ -1188,8 +1212,6 @@
  bool @!c; /*check sum has been checked*/ 
  pool_ptr=0;str_ptr=0;max_pool_ptr=0;max_str_ptr=0;str_start[0]=0;
@@ -185,15 +176,6 @@
  if (base_ident==0) wterm_ln(" (no base preloaded)");
  else{@+slow_print(base_ident);print_ln();
    } 
-@@ -1581,7 +1603,7 @@
- @d scroll_mode	2 /*omits error stops*/ 
- @d error_stop_mode	3 /*stops at every opportunity to interact*/ 
- @d print_err(X)	{@+if (interaction==error_stop_mode) wake_up_terminal;
--  print_nl(@[@<|"! "|@>@]);print(X);
-+  print_nl(261);print(X);
- @.!\relax@>
-   } 
- 
 @@ -1704,7 +1726,7 @@
  
  @<Error hand...@>=
@@ -285,24 +267,6 @@
  done: ;} 
  
  @ The transition-specification parameter to |paint_row| is always the same
-@@ -12514,7 +12536,7 @@
- @d s_scale	64 /*the serial numbers are multiplied by this factor*/ 
- @d new_indep(X)	 /*create a new independent variable*/ 
-   {@+if (serial_no > el_gordo-s_scale) 
--      overflow(@[@<|"independent variables"|@>@], serial_no/s_scale);
-+      overflow(588, serial_no/s_scale);
- @:METAFONT capacity exceeded independent variables}{\quad independent variables@>
-   type(X)=independent;serial_no=serial_no+s_scale;
-   value(X)=serial_no;
-@@ -13688,7 +13710,7 @@
- @d push_input	@t@> /*enter a new input level, save the old*/ 
-   {@+if (input_ptr > max_in_stack) 
-     {@+max_in_stack=input_ptr;
--    if (input_ptr==stack_size) overflow(@[@<|"input stack size"|@>@], stack_size);
-+    if (input_ptr==stack_size) overflow(615, stack_size);
- @:METAFONT capacity exceeded input stack size}{\quad input stack size@>
-     } 
-   input_stack[input_ptr]=cur_input; /*stack the record*/ 
 @@ -15595,7 +15617,6 @@
  This system area name will, of course, vary from place to place.
  @^system dependencies@>
@@ -378,45 +342,6 @@
  print_char(' ');print_int(sys_year);print_char(' ');
  print_dd(sys_time/60);print_char(':');print_dd(sys_time%60);
  } 
-@@ -15949,7 +15969,7 @@
-   {@+if (job_name==0) open_log_file();
-   pack_job_name(gf_ext);
-   while (!b_open_out(&gf_file)) 
--    prompt_file_name(@[@<|"file name for output"|@>@], gf_ext);
-+    prompt_file_name(758, gf_ext);
-   output_file_name=b_make_name_string(&gf_file);
-   } 
- 
-@@ -21226,9 +21246,9 @@
- @d cancel_skips(X)	ll=X;
-   @/do@+{lll=qo(skip_byte(ll));skip_byte(ll)=stop_flag;ll=ll-lll;
-   }@+ while (!(lll==0))
--@d skip_error(X)	{@+print_err(@[@<|"Too far to skip"|@>@]);
-+@d skip_error(X)	{@+print_err(1037);
- @.Too far to skip@>
--  help1(@[@<|"At most 127 lig/kern steps can separate skipto1 from 1::."|@>@]);
-+  help1(1038);
-   error();cancel_skips(X);
-   } 
- 
-@@ -21287,7 +21307,7 @@
- @ @d missing_extensible_punctuation(X)	
-   {@+missing_err(X);
- @.Missing `\char`\#'@>
--  help1(@[@<|"I'm processing `extensible c: t,m,b,r'."|@>@]);back_error();
-+  help1(1041);back_error();
-   } 
- 
- @<Define an extensible recipe@>=
-@@ -21572,7 +21592,7 @@
- 
- @p void fix_check_sum(void)
- {@+
--eight_bits @!k; /*runs through character codes*/ 
-+uint16_t k; /*runs through character codes*/
- eight_bits @!b1, @!b2, @!b3, @!b4; /*bytes of the check sum*/ 
- int @!x; /*hash value used in check sum computation*/ 
- if (header_byte[1] < 0) if (header_byte[2] < 0) 
 @@ -21597,7 +21617,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.

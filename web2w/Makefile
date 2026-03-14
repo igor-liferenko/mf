@@ -20,4 +20,5 @@ all:
 	@sed -i 's/trans_spec/screen_col/' cmf.w
 	@sed -i '/@<Other local variables for |fill.*@;/s/[/*]//g' cmf.w
 	@sed -i '0,/while (!(lll==0))/{//s/;//}' cmf.w
+	sed -n -f pool.sed cmf.w | sed -i -f - cmf.w
 	patch -s cmf.w cmf.patch
