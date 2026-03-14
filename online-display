@@ -37,3 +37,17 @@ label_imageDisplay = MyLabel()
 label_imageDisplay.setPixmap(pixmap_image)
 label_imageDisplay.showMaximized()
 sys.exit(app.exec_())
+
+# NOTE:
+# If we want to prevent the online display from blinking, use killing in screen.ch only
+# for bringing the window to top.
+# Updating online display could be done by sending a signal to it in screen.ch instead of
+# killing it in screen.ch
+# (then we will need to find a way to update window contents from signal handler),
+# but we kill in screen.ch anyway in order to bring the window to top, so always use killing in
+# screen.ch.
+# If we use killing in screen.ch only to bring the window to top, then sending a
+# signal in screen.ch can be used for updating online display, but first we need to find a way to
+# tell whether the window is on top (this can be done by sending a signal in screen.ch
+# and reading the answer via pipe, but the question remains how to tell this in online-display
+# script itself).
