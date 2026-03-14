@@ -5,7 +5,9 @@ import mmap
 import os
 f=open('/dev/null','w'); os.dup2(f.fileno(),2); f.close()
 
-# send SIGTERM to other processes with the same name
+# send SIGTERM to another instance of this script
+# (this has effect only when there is an instance created
+# by other mf process than created the current instance)
 current_pid = os.getpid()
 with open('/proc/' + str(current_pid) + '/status', 'r') as f: c = f.readline()
 for e in os.listdir('/proc'):
