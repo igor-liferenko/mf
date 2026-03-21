@@ -1,3 +1,5 @@
+Do not exclude any "-strings from pool (print_str is not used anymore).
+
 @x
 There are, however, a few more exceptions to the general procedure.
 Many of the \WEB/ strings are used simply for printing with
@@ -104,21 +106,6 @@ print_nl_no=predefine("print_nl",PPROCID,0);
 fatal_error_no=predefine("fatal_error",PPROCID,0);
 prompt_file_name_no=predefine("prompt_file_name",PPROCID,0);
 max_reg_help_line_no=predefine("max_reg_help_line",ID,0);
-@y
-@z
-
-@x
-By having introduced the function |print_str|, some
-of them are now plain \CEE/ strings:
-|"pool size"| in line 1184 (|overflow|),
-|"! "| in line 1750 (|print_nl|)
-|"save size"| in line 5910 (|overflow|),
-|"input stack size"| in line 6940 (|overflow|),
-|"Font "| in line 10927 (|print_err|),
-|" at "| in line 10930 (|print|),
-|"pt"| in line 10930 (|print|),
-|" scaled "| in line 10933 (|print|), and
-|" plus "| in line 19250  (|print|).
 @y
 @z
 
