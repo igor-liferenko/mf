@@ -351,12 +351,9 @@
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
  {@+tfm_out(x/256);tfm_out(x%256);
-@@ -21756,14 +21776,14 @@
-   } 
- 
+@@ -21758,12 +21778,12 @@
  @ @<Log the subfile sizes of the \.{TFM} file@>=
--{@+wlog_ln( ' ' );
-+{@+wlog_ln( " " );
+ {@+wlog_ln(" ");
  if (bch_label < undefined_label) decr(nl);
 -wlog_ln("(You used ", nw: 1,"w,",@|nh: 1,"h,",@|nd: 1,"d,",@|ni: 1,"i,",@|
 - nl: 1,"l,",@|nk: 1,"k,",@|ne: 1,"e,",@|
@@ -409,25 +406,23 @@
  init_tab(); /*initialize the tables*/ 
  init_prim(); /*call |primitive| for each primitive*/ 
  init_str_ptr=str_ptr;init_pool_ptr=pool_ptr;@/
-@@ -22965,28 +22985,28 @@
- 
+@@ -22966,27 +22986,27 @@
  @<Output statistics...@>=
  if (log_opened) 
--  {@+wlog_ln( ' ' );
+   {@+wlog_ln(" ");
 -  wlog_ln("Here is how much of METAFONT's memory"," you used:");
-+  {@+wlog_ln( " " );
 +  wlog_ln("Here is how much of METAFONT's memory you used:");
  @.Here is how much...@>
--  wlog( ' ' , max_str_ptr-init_str_ptr: 1," string");
+-  wlog(" ", max_str_ptr-init_str_ptr: 1," string");
 -  if (max_str_ptr!=init_str_ptr+1) wlog( 's' );
 -  wlog_ln(" out of ", max_strings-init_str_ptr: 1);@/
--  wlog_ln( ' ' , max_pool_ptr-init_pool_ptr: 1," string characters out of ",
+-  wlog_ln(" ", max_pool_ptr-init_pool_ptr: 1," string characters out of ",
 -    pool_size-init_pool_ptr: 1);@/
--  wlog_ln( ' ' , lo_mem_max-mem_min+mem_end-hi_mem_min+2: 1,@|
+-  wlog_ln(" ", lo_mem_max-mem_min+mem_end-hi_mem_min+2: 1,@|
 -    " words of memory out of ", mem_end+1-mem_min: 1);@/
--  wlog_ln( ' ' , st_count: 1," symbolic tokens out of ",
+-  wlog_ln(" ", st_count: 1," symbolic tokens out of ",
 -    hash_size: 1);@/
--  wlog_ln( ' ' , max_in_stack: 1,"i,",@|
+-  wlog_ln(" ", max_in_stack: 1,"i,",@|
 -    int_ptr: 1,"n,",@|
 -    max_rounding_ptr: 1,"r,",@|
 -    max_param_stack: 1,"p,",@|
@@ -439,8 +434,8 @@
 -    buf_size: 1, 'b' );
 +  wlog(" %d string", max_str_ptr-init_str_ptr);
 +  if (max_str_ptr!=init_str_ptr+1) wlog( "s" );
-+  wlog_ln( " out of %d", max_strings-init_str_ptr);
-+  wlog_ln( " %d string characters out of %d", max_pool_ptr-init_pool_ptr,
++  wlog_ln(" out of %d", max_strings-init_str_ptr);
++  wlog_ln(" %d string characters out of %d", max_pool_ptr-init_pool_ptr,
 +    pool_size-init_pool_ptr);
 +  wlog_ln(" %d words of memory out of %d", lo_mem_max-mem_min+mem_end-hi_mem_min+2,
 +    mem_end+1-mem_min);
