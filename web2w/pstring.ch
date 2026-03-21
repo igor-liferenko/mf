@@ -1,5 +1,5 @@
 Do not exclude any "-strings from pool (print_str is not used anymore).
-There are also pstring changes in pascal-mf.patch
+There are also pstring changes in the patch of pascal.y
 
 @x
 There are, however, a few more exceptions to the general procedure.
