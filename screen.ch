@@ -81,11 +81,11 @@ void update_screen(void) /*will be called only if |init_screen| returns |true|*/
 @z
 
 @x
-@d white	0 /*background pixels*/
-@d black	1 /*visible pixels*/
+@d white 0 /*background pixels*/
+@d black 1 /*visible pixels*/
 @y
-@d white	0x00ffffff /* XRGB format */
-@d black	0x00000000 /* (X byte is not used) */
+@d white 0x00ffffff /* XRGB format */
+@d black 0x00000000 /* (X byte is not used) */
 @z
 
 @x

@@ -28,9 +28,9 @@ enum {@+@!gf_buf_size=8@+};
 @z
 
 @x
-@d mem_top	30000 /*largest index in the |mem| array dumped by \.{INIMF};
+@d mem_top 30000 /*largest index in the |mem| array dumped by \.{INIMF};
   must be substantially larger than |mem_min|
   and not greater than |mem_max|*/ 
 @y
-@d mem_top      3000
+@d mem_top 3000
 @z

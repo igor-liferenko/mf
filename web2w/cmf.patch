@@ -9,11 +9,10 @@
 +#include <string.h>
 +#include <math.h>
 +
-+#define odd(X) ((X)&1)
-+#define chr(X) (X)
-+
 +@h
 +
++#define odd(X) ((X)&1)
++#define chr(X) (X)
 +#define put(file) fwrite(&((file).d),sizeof((file).d),1,(file).f)
 +#define get(file) fread(&((file).d),sizeof((file).d),1,(file).f)
 +#define reset(file,name,mode) (file).f=fopen(name+1,mode),(file).f!=NULL?get(file):0
@@ -25,6 +24,7 @@
 +#define pascal_read(file,x) ((x)=(file).d,get(file))
 +#define write(file, format,...) fprintf(file.f,format,## __VA_ARGS__)
 +#define write_ln(file,...) write(file,__VA_ARGS__"\n")
++
  /*@&$C-,A+,D-*/ /*no range check, catch arithmetic overflow, no debug overhead*/ 
  #ifdef @!DEBUG
  /*@&$C+,D+*/
@@ -51,31 +51,31 @@
  @p bool a_open_in(@!alpha_file *@!f)
     /*open a text file for input*/ 
 -{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
-+{reset(*f, name_of_file,"r");return reset_OK(*f);
++{  reset(*f,   name_of_file,"r"); return reset_OK(*f);
  } 
  @#
  bool a_open_out(@!alpha_file *@!f)
     /*open a text file for output*/ 
 -{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
-+{rewrite(*f, name_of_file,"w");return rewrite_OK(*f);
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  @#
  bool b_open_out(@!byte_file *@!f)
     /*open a binary file for output*/ 
 -{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
-+{rewrite(*f, name_of_file,"w");return rewrite_OK(*f);
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  @#
  bool w_open_in(@!word_file *@!f)
     /*open a word file for input*/ 
 -{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
-+{reset(*f, name_of_file,"r");return reset_OK(*f);
++{  reset(*f,   name_of_file,"r"); return reset_OK(*f);
  } 
  @#
  bool w_open_out(@!word_file *@!f)
     /*open a word file for output*/ 
 -{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
-+{rewrite(*f, name_of_file,"w");return rewrite_OK(*f);
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  
  @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
@@ -83,8 +83,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
  
--@d t_open_in	reset(term_in,"TTY:","/O/I") /*open the terminal for text input*/ 
--@d t_open_out	rewrite(term_out,"TTY:","/O")
+-@d t_open_in reset(term_in,"TTY:","/O/I") /*open the terminal for text input*/ 
+-@d t_open_out rewrite(term_out,"TTY:","/O")
 +@d t_open_in term_in.f=stdin /*open the terminal for text input*/
 +@d t_open_out term_out.f=stdout
    /*open the terminal for text output*/ 
@@ -94,11 +94,11 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
  
--@d update_terminal	break(term_out) /*empty the terminal output buffer*/ 
--@d clear_terminal	break_in(term_in, true) /*clear the terminal input buffer*/ 
+-@d update_terminal break(term_out) /*empty the terminal output buffer*/ 
+-@d clear_terminal break_in(term_in, true) /*clear the terminal input buffer*/ 
 +@d update_terminal fflush(term_out.f) /*empty the terminal output buffer*/
 +@d clear_terminal fflush(term_in.f) /*clear the terminal input buffer*/
- @d wake_up_terminal	do_nothing /*cancel the user's cancellation of output*/ 
+ @d wake_up_terminal do_nothing /*cancel the user's cancellation of output*/ 
  
  @ We need a special routine to read the first line of \MF\ input from
 @@ -1026,10 +1049,11 @@
@@ -130,12 +130,12 @@
  by changing |wterm|, |wterm_ln|, and |wterm_cr| here.
  @^system dependencies@>
  
--@d wterm(X)	write(term_out, X)
--@d wterm_ln(...)	write_ln(term_out,__VA_ARGS__)
--@d wterm_cr	write_ln(term_out)
--@d wlog(...)	write(log_file,__VA_ARGS__)
--@d wlog_ln(...)	write_ln(log_file,__VA_ARGS__)
--@d wlog_cr	write_ln(log_file)
+-@d wterm(X) write(term_out, X)
+-@d wterm_ln(...) write_ln(term_out,__VA_ARGS__)
+-@d wterm_cr write_ln(term_out)
+-@d wlog(...) write(log_file,__VA_ARGS__)
+-@d wlog_ln(...) write_ln(log_file,__VA_ARGS__)
+-@d wlog_cr write_ln(log_file)
 +@d wterm(format,...) write(term_out,format, ## __VA_ARGS__)
 +@d wterm_ln(format,...) wterm(format "\n", ## __VA_ARGS__)
 +@d wterm_cr write(term_out,"\n")
@@ -150,7 +150,7 @@
  void print_char(ASCII_code @!s) /*prints a single character*/ 
  {@+switch (selector) {
 -case term_and_log: {@+wterm(xchr[s]);wlog(xchr[s]);
-+case term_and_log: {@+wterm("%c",xchr[s]);wlog("%c",xchr[s]);
++case term_and_log: {  wterm("%c",xchr[s]);wlog("%c",xchr[s]);
    incr(term_offset);incr(file_offset);
    if (term_offset==max_print_line) 
      {@+wterm_cr;term_offset=0;
@@ -159,11 +159,11 @@
      } 
    } @+break;
 -case log_only: {@+wlog(xchr[s]);incr(file_offset);
-+case log_only: {@+wlog("%c",xchr[s]);incr(file_offset);
++case log_only: {  wlog("%c",xchr[s]);incr(file_offset);
    if (file_offset==max_print_line) print_ln();
    } @+break;
 -case term_only: {@+wterm(xchr[s]);incr(term_offset);
-+case term_only: {@+wterm("%c",xchr[s]);incr(term_offset);
++case term_only: {  wterm("%c",xchr[s]);incr(term_offset);
    if (term_offset==max_print_line) print_ln();
    } @+break;
  case no_print: do_nothing;@+break;
@@ -210,7 +210,7 @@
  @ Let's consider the one-word memory region first, since it's the
  simplest. The pointer variable |mem_end| holds the highest-numbered location
 @@ -3323,9 +3349,7 @@
- @d free_avail(X)	 /*single-word node liberation*/ 
+ @d free_avail(X)  /*single-word node liberation*/ 
    {@+link(X)=avail;avail=X;
    
 -#ifdef @!STAT
@@ -271,7 +271,7 @@
  This system area name will, of course, vary from place to place.
  @^system dependencies@>
  
--@d MF_area	MF_area
+-@d MF_area MF_area
  @.MFinputs@>
  
  @ Here now is the first of the system-dependent routines for file name scanning.
@@ -285,14 +285,14 @@
  
  @ A messier routine is also needed, since base file names must be scanned
 @@ -15682,13 +15703,12 @@
- @d base_default_length	18 /*length of the |MF_base_default| string*/ 
- @d base_area_length	8 /*length of its area part*/ 
- @d base_ext_length	5 /*length of its `\.{.base}' part*/ 
--@d base_extension	base_extension /*the extension, as a \.{WEB} constant*/ 
+ @d base_default_length 18 /*length of the |MF_base_default| string*/ 
+ @d base_area_length 8 /*length of its area part*/ 
+ @d base_ext_length 5 /*length of its `\.{.base}' part*/ 
+-@d base_extension base_extension /*the extension, as a \.{WEB} constant*/ 
  
  @<Glob...@>=
 -uint8_t @!MF_base_default0[base_default_length], *const @!MF_base_default = @!MF_base_default0-1;
-+unsigned char @!MF_base_default0[base_default_length+1], *const @!MF_base_default = @!MF_base_default0-1;
++unsigned char MF_base_default0[base_default_length+1], *const MF_base_default = MF_base_default0-1;
  
  @ @<Set init...@>=
 -MF_base_default="MFbases:plain.base";
@@ -323,7 +323,7 @@
  uint16_t @!l; /*end of first input line*/ 
  int @!m; /*the current month*/ 
 -uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
-+unsigned char @!months0[36+1], *const @!months = @!months0-1; /*abbreviations of month names*/
++unsigned char months0[36+1], *const months = months0-1; /*abbreviations of month names*/
  old_setting=selector;
  if (job_name==0) job_name=@[@<|"mfput"|@>@];
  @.mfput@>
@@ -346,7 +346,7 @@
  @ Finally we're ready to actually write the \.{TFM} information.
  Here are some utility routines for this purpose.
  
--@d tfm_out(X)	write(tfm_file, X) /*output one byte to |tfm_file|*/ 
+-@d tfm_out(X) write(tfm_file, X) /*output one byte to |tfm_file|*/ 
 +@d tfm_out(X) write(tfm_file, "%c", X) /*output one byte to |tfm_file|*/
  
  @p void tfm_two(int @!x) /*output two bytes to |tfm_file|*/ 
@@ -356,7 +356,7 @@
  
  @ @<Log the subfile sizes of the \.{TFM} file@>=
 -{@+wlog_ln( ' ' );
-+{@+wlog_ln(" ");
++{@+wlog_ln( " " );
  if (bch_label < undefined_label) decr(nl);
 -wlog_ln("(You used ", nw: 1,"w,",@|nh: 1,"h,",@|nd: 1,"d,",@|ni: 1,"i,",@|
 - nl: 1,"l,",@|nk: 1,"k,",@|ne: 1,"e,",@|
@@ -364,11 +364,11 @@
 -wlog_ln("  out of ",@|"256w,16h,16d,64i,",@|
 - lig_table_size: 1,"l,", max_kerns: 1,"k,256e,",@|
 - max_font_dimen: 1,"p)");
-+wlog_ln("(You used %dw,%dh,%dd,%di,%dl,%dk,%de,%dp metric file positions", nw,@|nh,@|nd,@|ni,@|
-+ nl,@|nk,@|ne,@|
++wlog_ln("(You used %dw,%dh,%dd,%di,%dl,%dk,%de,%dp metric file positions", nw,nh,nd,ni,
++ nl,nk,ne,
 + np);
-+wlog_ln("  out of 256w,16h,16d,64i,%dl,%dk,256e,%dp)",@|
-+ lig_table_size, max_kerns,@|
++wlog_ln("  out of 256w,16h,16d,64i,%dl,%dk,256e,%dp)",
++ lig_table_size, max_kerns,
 + max_font_dimen);
  } 
  
@@ -385,7 +385,7 @@
 @@ -22563,7 +22583,7 @@
  incompatible with the present \MF\ table sizes, etc.
  
- @d too_small(X)	{@+wake_up_terminal;
+ @d too_small(X) {@+wake_up_terminal;
 -  wterm_ln("---! Must increase the ", X);
 +  wterm_ln("---! Must increase the %s", X);
  @.Must increase the x@>
@@ -397,7 +397,7 @@
  if (bad > 0) 
 -  {@+wterm_ln("Ouch---my internal constants have been clobbered!",
 -    "---case ", bad: 1);
-+  {@+wterm_ln("Ouch---my internal constants have been clobbered!"
++  {  wterm_ln("Ouch---my internal constants have been clobbered!"
 +    "---case %d", bad);
  @.Ouch...clobbered@>
    exit(0);
@@ -415,7 +415,7 @@
  if (log_opened) 
 -  {@+wlog_ln( ' ' );
 -  wlog_ln("Here is how much of METAFONT's memory"," you used:");
-+  {@+wlog_ln(" ");
++  {@+wlog_ln( " " );
 +  wlog_ln("Here is how much of METAFONT's memory you used:");
  @.Here is how much...@>
 -  wlog( ' ' , max_str_ptr-init_str_ptr: 1," string");
@@ -439,23 +439,23 @@
 -    buf_size: 1, 'b' );
 +  wlog(" %d string", max_str_ptr-init_str_ptr);
 +  if (max_str_ptr!=init_str_ptr+1) wlog( "s" );
-+  wlog_ln( " out of %d", max_strings-init_str_ptr);@/
++  wlog_ln( " out of %d", max_strings-init_str_ptr);
 +  wlog_ln( " %d string characters out of %d", max_pool_ptr-init_pool_ptr,
-+    pool_size-init_pool_ptr);@/
-+  wlog_ln(" %d words of memory out of %d", lo_mem_max-mem_min+mem_end-hi_mem_min+2,@|
-+    mem_end+1-mem_min);@/
-+  wlog_ln(" %d symbolic tokens out of %d", st_count, hash_size);@/
++    pool_size-init_pool_ptr);
++  wlog_ln(" %d words of memory out of %d", lo_mem_max-mem_min+mem_end-hi_mem_min+2,
++    mem_end+1-mem_min);
++  wlog_ln(" %d symbolic tokens out of %d", st_count, hash_size);
 +  wlog_ln(" %di,%dn,%dr,%dp,%db stack positions out of %di,%dn,%dr,%dp,%db",
-+    max_in_stack,@|
-+    int_ptr,@|
-+    max_rounding_ptr,@|
-+    max_param_stack,@|
-+    max_buf_stack+1,@|
++    max_in_stack,
++    int_ptr,
++    max_rounding_ptr,
++    max_param_stack,
++    max_buf_stack+1,
 +    stack_size,
 +    max_internal,
 +    max_wiggle,
 +    param_size,
-+    buf_size );
++    buf_size);
    } 
  
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
