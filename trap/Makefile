@@ -13,4 +13,4 @@ all:
 	@printf '\n' >>trap.fot
 	@diff mf/trap.fot trap.fot
 	@tftopl trap.tfm | diff mf/trap.pl -
-	@printf '\n%s\n' 'Passed.'
+	@printf '\n%s\n\n' 'Passed.'
