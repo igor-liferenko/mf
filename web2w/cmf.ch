@@ -7,7 +7,13 @@ int       name_length;@/ /*this many characters are actually
 @x
 else{@+if ((c=='>')||(c==':'))
 @y
-else{@+if (c=='/')
+else{  if (c=='/')
+@z
+
+@x
+strcpy(MF_base_default+1, "MFbases:plain.base");
+@y
+strcpy(MF_base_default+1, "MFbases/plain.base");
 @z
 
 @x
