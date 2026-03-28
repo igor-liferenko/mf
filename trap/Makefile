@@ -10,9 +10,7 @@ all:
 	@sed -i -f traplog.sed trap.log
 	@diff mf/trap.log trap.log
 	@sed -i -f trapfot.sed trap.fot
-	@echo >>trap.fot
+	@printf '\n' >>trap.fot
 	@diff mf/trap.fot trap.fot
 	@tftopl trap.tfm | diff mf/trap.pl -
-	@echo
-	@echo Passed.
-	@echo
+	@printf '\n%s\n' 'Passed.'
