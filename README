@@ -1,3 +1,6 @@
+TODO: find out where appears string of 7 chars which is adjusted via
+      trap/trapfot.sed and trap/traplog.sed
+
 Add this `mf' script to PATH:
 
     #!/bin/sh
