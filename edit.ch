@@ -50,3 +50,35 @@ if (name==str_ptr-1)  /*conserve string pool space (but see note above)*/
   } 
 @y
 @z
+
+Run tex on this x.tex:
+
+     \input y.idx
+
+This is y.idx:
+
+     \ERROR
+
+The output is:
+
+    (x.tex (y.idx
+    ! Undefined control sequence.
+    l.1 \ERROR
+
+    ?
+
+If we answer `E', we get:
+
+    You want to edit file y at line 1
+
+Notice, that extension was stripped from file name,
+therefore the editor will not be able to open it.
+
+For comparison, use this x.tex
+
+    \ERROR
+
+Notice, that this time extension is present after `E'.
+So, extension is present for master file only and absent for \input files
+(this is because x.tex is followed by x.log in string pool and the
+"if" check is therefore false).
