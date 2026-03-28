@@ -82,3 +82,7 @@ Notice, that this time extension is present after `E'.
 So, extension is present for master file only and absent for \input files
 (this is because x.tex is followed by x.log in string pool and the
 "if" check is therefore false).
+
+--------------------------
+
+For master file extension is present, and for \input files it is not.
