@@ -8,7 +8,7 @@ all:
 	gcc -o web2w web2w.c web.lex.c pascal-mf.tab.c
 	cp mf.web mf-web2w.web
 	@sed -i 's/"@@"/"@"/' mf-web2w.web
-	@sed -i "s/\([,(]\)'\([ ,;)]\)'/\1'\2_'/g" mf-web2w.web
+	@sed -i "s/\([,(]\)'\([ ,;)sb]\)'/\1'\2_'/g" mf-web2w.web
 	@sed -i 's/\[r,c\]/[rc]/' mf-web2w.web
 	@sed -i '/t_of_the_way/{s/#,t@=)@>/R/;s/@=(@>#/L/}' mf-web2w.web
 	@sed -i '/@!trans_spec=\(.*;\).*/{s//\1/;h;d};/trans_spec; /{s///;G}' mf-web2w.web
@@ -16,7 +16,7 @@ all:
 	@sed -i '0,/until lll=0/s//&;/' mf-web2w.web
 	./web2w -o cmf.w mf-web2w.web
 	@sed -i "s/'@'/'@@'/" cmf.w
-	@sed -i 's/"\(.\)_"/"\1"/g' cmf.w
+	@sed -i 's/: 1\b//g;s/,"\(.[^@]\)/, "\1/g;s/"\(.\)_"/"\1"/g' cmf.w
 	@sed -i 's/\[rc\]/[r,c]/' cmf.w
 	@sed -i '/t_of_the_way/{s/R/X,t@=)@>/;s/L/@=(@>X/}' cmf.w
 	@sed -i 's/trans_spec/screen_col/' cmf.w
