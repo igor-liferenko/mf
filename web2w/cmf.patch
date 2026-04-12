@@ -22,7 +22,7 @@
 +#define eoln(file) ((file).d=='\n'||eof(file))
 +#define erstat(file) ((file).f==NULL?-1:ferror((file).f))
 +#define pascal_read(file,x) ((x)=(file).d,get(file))
-+#define write(file, format,...) fprintf(file.f,format,## __VA_ARGS__)
++#define write(file,X,...) fprintf(file.f,X,##__VA_ARGS__)
 +#define write_ln(file,...) write(file,__VA_ARGS__"\n")
 +
  /*@&$C-,A+,D-*/ /*no range check, catch arithmetic overflow, no debug overhead*/ 

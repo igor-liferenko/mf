@@ -21,18 +21,19 @@
           | PPROCID  {CHGTAG($1,PCALLID); $$=$1; }
           | PCALLID  { $$=$1; }
           ;
-@@ -615,9 +615,7 @@
+@@ -615,9 +615,9 @@
  empty_stmt: {$$=join(CEMPTY,NULL,NULL,0); } ;
  
  assign_stmt: variable PASSIGN expression {$$=$2; }
 -           | variable PASSIGN STRING {$$=$2; pstring_assign($1,$3); }
--           | variable PASSIGN POPEN STRING PCLOSE
--             {$$=$2;  pstring_assign($1,$4); }
 +           | variable PASSIGN STRING {$$=$2; }
+            | variable PASSIGN POPEN STRING PCLOSE
+-             {$$=$2;  pstring_assign($1,$4); }
++             {$$=$2; }
             ;
  
  return_stmt: PFUNCID PASSIGN expression  { $$=$1; }
-@@ -665,6 +663,7 @@
+@@ -665,6 +665,7 @@
             ;
  
  case_label: PINTEGER { winsert_after($1->previous,CCASE,"case "); }
@@ -40,7 +41,7 @@
            | NMACRO { winsert_after($1->previous,CCASE,"case "); }
            | PINTEGER PPLUS NMACRO  
              {winsert_after($1->previous,CCASE,"case "); }
-@@ -692,6 +691,11 @@
+@@ -692,6 +693,11 @@
                  DBG(dbgfor,"for variable %s, limit variable in line %d\n",
                  SYM($2)->name,$2->lineno);
                  $$=join(PFOR,$8,NULL,0);LNK($1,$5);LNK($5,$7); } 
@@ -52,7 +53,7 @@
          | PFOR PID PASSIGN expression PTO iconst PDO statement 
  	      { mark_for_variable($2,$1->lineno,$6->value,TO_LOOP); 
                  DBG(dbgfor,"for variable %s, limit up in line %d\n",
-@@ -732,6 +736,7 @@
+@@ -732,6 +738,7 @@
  expression: simple_expr {$$=$1; }
            | simple_expr relop simple_expr {$$=$3; }
            | simple_expr PEQ STRING {$$=$3; }
