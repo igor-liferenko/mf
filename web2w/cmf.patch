@@ -50,32 +50,32 @@
  
  @p bool a_open_in(@!alpha_file *@!f)
     /*open a text file for input*/ 
--{@+reset((*f), name_of_file, "/O");return reset_OK((*f));
-+{  reset(*f,   name_of_file, "r"); return reset_OK(*f);
+-{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
++{  reset(*f,   name_of_file,"r"); return reset_OK(*f);
  } 
  @#
  bool a_open_out(@!alpha_file *@!f)
     /*open a text file for output*/ 
--{@+rewrite((*f), name_of_file, "/O");return rewrite_OK((*f));
-+{  rewrite(*f,   name_of_file, "w"); return rewrite_OK(*f);
+-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  @#
  bool b_open_out(@!byte_file *@!f)
     /*open a binary file for output*/ 
--{@+rewrite((*f), name_of_file, "/O");return rewrite_OK((*f));
-+{  rewrite(*f,   name_of_file, "w"); return rewrite_OK(*f);
+-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  @#
  bool w_open_in(@!word_file *@!f)
     /*open a word file for input*/ 
--{@+reset((*f), name_of_file, "/O");return reset_OK((*f));
-+{  reset(*f,   name_of_file, "r"); return reset_OK(*f);
+-{@+reset((*f), name_of_file,"/O");return reset_OK((*f));
++{  reset(*f,   name_of_file,"r"); return reset_OK(*f);
  } 
  @#
  bool w_open_out(@!word_file *@!f)
     /*open a word file for output*/ 
--{@+rewrite((*f), name_of_file, "/O");return rewrite_OK((*f));
-+{  rewrite(*f,   name_of_file, "w"); return rewrite_OK(*f);
+-{@+rewrite((*f), name_of_file,"/O");return rewrite_OK((*f));
++{  rewrite(*f,   name_of_file,"w"); return rewrite_OK(*f);
  } 
  
  @ Files can be closed with the \ph\ routine `|pascal_close(f)|', which
@@ -83,8 +83,8 @@
  @:PASCAL H}{\ph@>
  @^system dependencies@>
  
--@d t_open_in reset(term_in, "TTY:", "/O/I") /*open the terminal for text input*/ 
--@d t_open_out rewrite(term_out, "TTY:", "/O")
+-@d t_open_in reset(term_in,"TTY:","/O/I") /*open the terminal for text input*/ 
+-@d t_open_out rewrite(term_out,"TTY:","/O")
 +@d t_open_in term_in.f=stdin /*open the terminal for text input*/
 +@d t_open_out term_out.f=stdout
    /*open the terminal for text output*/ 
@@ -238,8 +238,8 @@
  @/
  #ifdef @!INIT
  wlog_cr; /*this will be done only after |init_screen==true|*/ 
--wlog_ln("Calling BLANKRECTANGLE(", left_col, ",",
--  right_col, ",", top_row, ",", bot_row, ")");
+-wlog_ln("Calling BLANKRECTANGLE(", left_col: 1,",",
+-  right_col: 1,",", top_row: 1,",", bot_row: 1,")");
 +wlog_ln("Calling BLANKRECTANGLE(%d,%d,%d,%d)", left_col,
 +  right_col, top_row, bot_row);
  #endif
@@ -249,11 +249,11 @@
  #endif
  @/
  #ifdef @!INIT
--wlog("Calling PAINTROW(", r, ",", b, ";");
+-wlog("Calling PAINTROW(", r: 1,",", b: 1,";");
 +wlog("Calling PAINTROW(%d,%d;", r, b);
     /*this is done only after |init_screen==true|*/ 
  for (k=0; k<=n; k++) 
--  {@+wlog((*a)[k]);if (k!=n) wlog(",");
+-  {@+wlog((*a)[k]: 1);if (k!=n) wlog(",");
 +  {  wlog("%d", a[k]);if (k!=n) wlog(",");
    } 
  wlog_ln(")");
@@ -313,7 +313,7 @@
       /*now try the system base file area*/ 
    if (w_open_in(&base_file)) goto found;
    wake_up_terminal;
--  wterm_ln("Sorry, I can't find that base;", " will try PLAIN.");
+-  wterm_ln("Sorry, I can't find that base;"," will try PLAIN.");
 +  wterm_ln("Sorry, I can't find that base; will try PLAIN.");
  @.Sorry, I can't find...@>
    update_terminal;
@@ -355,12 +355,12 @@
  @ @<Log the subfile sizes of the \.{TFM} file@>=
  {@+wlog_ln(" ");
  if (bch_label < undefined_label) decr(nl);
--wlog_ln("(You used ", nw, "w,",@|nh, "h,",@|nd, "d,",@|ni, "i,",@|
-- nl, "l,",@|nk, "k,",@|ne, "e,",@|
-- np, "p metric file positions");
+-wlog_ln("(You used ", nw: 1,"w,",@|nh: 1,"h,",@|nd: 1,"d,",@|ni: 1,"i,",@|
+- nl: 1,"l,",@|nk: 1,"k,",@|ne: 1,"e,",@|
+- np: 1,"p metric file positions");
 -wlog_ln("  out of ",@|"256w,16h,16d,64i,",@|
-- lig_table_size, "l,", max_kerns, "k,256e,",@|
-- max_font_dimen, "p)");
+- lig_table_size: 1,"l,", max_kerns: 1,"k,256e,",@|
+- max_font_dimen: 1,"p)");
 +wlog_ln("(You used %dw,%dh,%dd,%di,%dl,%dk,%de,%dp metric file positions", nw,nh,nd,ni,
 + nl,nk,ne,
 + np);
@@ -393,7 +393,7 @@
  @<Check the ``constant'' values...@>@;
  if (bad > 0) 
 -  {@+wterm_ln("Ouch---my internal constants have been clobbered!",
--    "---case ", bad);
+-    "---case ", bad: 1);
 +  {  wterm_ln("Ouch---my internal constants have been clobbered!"
 +    "---case %d", bad);
  @.Ouch...clobbered@>
@@ -410,28 +410,28 @@
  @<Output statistics...@>=
  if (log_opened) 
    {@+wlog_ln(" ");
--  wlog_ln("Here is how much of METAFONT's memory", " you used:");
+-  wlog_ln("Here is how much of METAFONT's memory"," you used:");
 +  wlog_ln("Here is how much of METAFONT's memory you used:");
  @.Here is how much...@>
--  wlog(" ", max_str_ptr-init_str_ptr, " string");
+-  wlog(" ", max_str_ptr-init_str_ptr: 1," string");
 -  if (max_str_ptr!=init_str_ptr+1) wlog("s");
--  wlog_ln(" out of ", max_strings-init_str_ptr);@/
--  wlog_ln(" ", max_pool_ptr-init_pool_ptr, " string characters out of ",
--    pool_size-init_pool_ptr);@/
--  wlog_ln(" ", lo_mem_max-mem_min+mem_end-hi_mem_min+2,@|
--    " words of memory out of ", mem_end+1-mem_min);@/
--  wlog_ln(" ", st_count, " symbolic tokens out of ",
--    hash_size);@/
--  wlog_ln(" ", max_in_stack, "i,",@|
--    int_ptr, "n,",@|
--    max_rounding_ptr, "r,",@|
--    max_param_stack, "p,",@|
--    max_buf_stack+1, "b stack positions out of ",@|
--    stack_size, "i,",
--    max_internal, "n,",
--    max_wiggle, "r,",
--    param_size, "p,",
--    buf_size, "b");
+-  wlog_ln(" out of ", max_strings-init_str_ptr: 1);@/
+-  wlog_ln(" ", max_pool_ptr-init_pool_ptr: 1," string characters out of ",
+-    pool_size-init_pool_ptr: 1);@/
+-  wlog_ln(" ", lo_mem_max-mem_min+mem_end-hi_mem_min+2: 1,@|
+-    " words of memory out of ", mem_end+1-mem_min: 1);@/
+-  wlog_ln(" ", st_count: 1," symbolic tokens out of ",
+-    hash_size: 1);@/
+-  wlog_ln(" ", max_in_stack: 1,"i,",@|
+-    int_ptr: 1,"n,",@|
+-    max_rounding_ptr: 1,"r,",@|
+-    max_param_stack: 1,"p,",@|
+-    max_buf_stack+1: 1,"b stack positions out of ",@|
+-    stack_size: 1,"i,",
+-    max_internal: 1,"n,",
+-    max_wiggle: 1,"r,",
+-    param_size: 1,"p,",
+-    buf_size: 1,"b");
 +  wlog(" %d string", max_str_ptr-init_str_ptr);
 +  if (max_str_ptr!=init_str_ptr+1) wlog("s");
 +  wlog_ln(" out of %d", max_strings-init_str_ptr);
