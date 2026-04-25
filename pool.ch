@@ -1,7 +1,7 @@
 @x
-@<|"debug # (-1 to exit):"|@>=@+1081
+@<|"debug # (-1 to exit):"|@>= 1081
 @y
-@<|"debug # (-1 to exit):"|@>=@+1081
+@<|"debug # (-1 to exit):"|@>= 1081
 @ @d str_1082 "MFinputs/"
 @d MF_area_short 1082
 @z
