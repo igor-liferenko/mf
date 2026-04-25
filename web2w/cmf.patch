@@ -280,7 +280,7 @@
  for (j=str_start[e]; j<=str_start[e+1]-1; j++) append_to_name(so(str_pool[j]));
  if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
 -for (k=name_length+1; k<=file_name_size; k++) name_of_file[k]= ' ' ;
-+name_of_file[name_length+1]=0;
++name_of_file[name_length+1]='\0';
  } 
  
  @ A messier routine is also needed, since base file names must be scanned
@@ -305,7 +305,7 @@
    append_to_name(xord[MF_base_default[j]]);
  if (k <= file_name_size) name_length=k;@+else name_length=file_name_size;
 -for (k=name_length+1; k<=file_name_size; k++) name_of_file[k]= ' ' ;
-+name_of_file[name_length+1]=0;
++name_of_file[name_length+1]='\0';
  } 
  
  @ Here is the only place we use |pack_buffered_name|. This part of the program
@@ -325,7 +325,7 @@
 -uint8_t @!months0[36], *const @!months = @!months0-1; /*abbreviations of month names*/ 
 +unsigned char months0[36+1], *const months = months0-1; /*abbreviations of month names*/
  old_setting=selector;
- if (job_name==0) job_name=@[@<|"mfput"|@>@];
+ if (job_name==0) job_name=@<|"mfput"|@>;
  @.mfput@>
 @@ -15932,11 +15959,11 @@
  } 
@@ -333,7 +333,7 @@
  @ @<Print the banner...@>=
 -{@+wlog(banner);
 +{  wlog("%s",banner);
- slow_print(base_ident);print(@[@<|"  "|@>@]);
+ slow_print(base_ident);print(@<|"  "|@>);
  print_int(sys_day);print_char(' ');
 -months="JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 -for (k=3*sys_month-2; k<=3*sys_month; k++) wlog(months[k]);
@@ -414,7 +414,8 @@
 +  wlog_ln("Here is how much of METAFONT's memory you used:");
  @.Here is how much...@>
 -  wlog(" ", max_str_ptr-init_str_ptr: 1," string");
--  if (max_str_ptr!=init_str_ptr+1) wlog("s");
++  wlog(" %d string", max_str_ptr-init_str_ptr);
+   if (max_str_ptr!=init_str_ptr+1) wlog("s");
 -  wlog_ln(" out of ", max_strings-init_str_ptr: 1);@/
 -  wlog_ln(" ", max_pool_ptr-init_pool_ptr: 1," string characters out of ",
 -    pool_size-init_pool_ptr: 1);@/
@@ -432,8 +433,6 @@
 -    max_wiggle: 1,"r,",
 -    param_size: 1,"p,",
 -    buf_size: 1,"b");
-+  wlog(" %d string", max_str_ptr-init_str_ptr);
-+  if (max_str_ptr!=init_str_ptr+1) wlog("s");
 +  wlog_ln(" out of %d", max_strings-init_str_ptr);
 +  wlog_ln(" %d string characters out of %d", max_pool_ptr-init_pool_ptr,
 +    pool_size-init_pool_ptr);
@@ -456,28 +455,28 @@
  @ We get to the |final_cleanup| routine when \&{end} or \&{dump} has
 @@ -24373,7 +24400,7 @@
  @d str_647 "I've deleted the partial string; you might want to"
- @<|"I've deleted the partial string; you might want to"|@>=@+647
+ @<|"I've deleted the partial string; you might want to"|@>= 647
  @ 
 -@d str_648 "insert another by typing, e.g., `I""new string""'."
 +@d str_648 "insert another by typing, e.g., `I\"new string\"'."
- @<|"insert another by typing, e.g., `I""new string""'."|@>=@+648
+ @<|"insert another by typing, e.g., `I""new string""'."|@>= 648
  @ 
  @d str_649 "Enormous number has been reduced"
 @@ -24877,7 +24904,7 @@
  @d str_815 "(Chapter 27 of The METAFONTbook explains that"
- @<|"(Chapter 27 of The METAFONTbook explains that"|@>=@+815
+ @<|"(Chapter 27 of The METAFONTbook explains that"|@>= 815
  @ 
 -@d str_816 "you might want to type `I ???' now.)"
 +@d str_816 "you might want to type `I ??\?' now.)"
- @<|"you might want to type `I ???' now.)"|@>=@+816
+ @<|"you might want to type `I ???' now.)"|@>= 816
  @ 
  @d str_817 "Undefined x coordinate has been replaced by 0"
 @@ -25342,7 +25369,7 @@
  @d str_970 " is the wrong type ("
- @<|" is the wrong type ("|@>=@+970
+ @<|" is the wrong type ("|@>= 970
  @ 
 -@d str_971 "I was looking for a ""known"" picture variable."
 +@d str_971 "I was looking for a \"known\" picture variable."
- @<|"I was looking for a ""known"" picture variable."|@>=@+971
+ @<|"I was looking for a ""known"" picture variable."|@>= 971
  @ 
  @d str_972 "So I'll not change anything just now."
