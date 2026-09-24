@@ -4,7 +4,7 @@ Base name is passed via environment variable 'base'.
 load_base_file() has its own error message ("(Fatal format file error; I'm stymied)"),
 but we use assert() which prints its own error message,
 so error message would be printed two times. To avoid this, error message during base loading
-at startup is suppressed (besides, the error message could not appear on the system where TeX
+at startup is suppressed (besides, the error message could not appear on the system where MF
 was written, i.e., where ready_already trick was used).
 
 @x
