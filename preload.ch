@@ -1,3 +1,8 @@
+'ready_already' trick does not work on modern systems, so load base file on each run.
+Base name is passed via environment variable 'base'.
+load_base_file() is called with silenced output,
+in order to reproduce the behaviour of original MF which can not fail here.
+
 @x
 initialize(); /*set global variables to their starting values*/ 
 @y
