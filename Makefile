@@ -1,7 +1,7 @@
 all:
 	make -C web2w
 	tie -m mf.w web2w/cmf.w web2w/cmf.ch >/dev/null
-	tie -c mf.ch mf.w $(CHF) path.ch constants.ch pool.ch print.ch time.ch screen.ch comment.ch >/dev/null
+	tie -c mf.ch mf.w $(CHF) path.ch constants.ch print.ch time.ch screen.ch >/dev/null
 	ctangle mf mf
 	@./pool-size.sh
 	gcc -DINIT mf.c -o inimf -lrt
@@ -17,4 +17,4 @@ trapmf:
 	@./pool-size.sh
 	gcc -DINIT -DSTAT mf.c -o trap/trapmf
 
-CHF=charset.ch interrupt.ch arg.ch preload.ch log.ch edit.ch exit.ch close.ch 64bit.ch
+CHF=charset.ch interrupt.ch arg.ch preload.ch log.ch edit.ch exit.ch close.ch comment.ch 64bit.ch
